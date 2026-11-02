@@ -1,0 +1,35 @@
+# Credential injection via direnv — see ADR-0018
+# Copy this file to .envrc and fill in the values for your environment.
+# Never commit .envrc.local or credentials directly.
+
+_REMOTE=$(git remote get-url origin 2>/dev/null || echo "")
+_REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")
+
+# Project-specific variable — must be set before the token block (per-project tokens).
+# Update with your namespace/project path.
+export PROJECT_NAMESPACE="your-namespace/your-project"
+
+case "$_REMOTE" in
+  *your-git-host*)
+    export GIT_HOST="https://your-git-host"
+    # Retrieve the per-project token from your credential store:
+    # export GIT_TOKEN="$(pass show "git/<host>/${PROJECT_NAMESPACE}/pat")"
+    # env->git credential bridge (ADR-0018 D-5): supplies the injected token to any
+    # ad-hoc git invocation. GIT_TERMINAL_PROMPT=0 makes git fail closed (no prompt)
+    # when the token is absent. Uncomment alongside the GIT_TOKEN export above.
+    # export GIT_ASKPASS="${_REPO_ROOT}/.core/scripts/git-askpass.sh"
+    # export GIT_TERMINAL_PROMPT=0
+    ;;
+  *github.com*)
+    # export GITHUB_TOKEN="$(pass show github/github.com/pat)"
+    ;;
+  *)
+    unset GIT_HOST GIT_TOKEN GITHUB_TOKEN GIT_ASKPASS GIT_TERMINAL_PROMPT
+    ;;
+esac
+unset _REMOTE _REPO_ROOT
+
+# opencode TUI (OpenTUI) rendering isolation test — see GitHub issues #38012, #38110
+# Forces stdout passthrough instead of split-footer capture. Remove once upstream
+# ships a fix or this is confirmed to have no effect on the corruption bug.
+export OTUI_OVERRIDE_STDOUT=false

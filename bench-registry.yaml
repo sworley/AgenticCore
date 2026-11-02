@@ -1,0 +1,30 @@
+# bench-registry.yaml — AgenticCore Bench Registry
+#
+# Tracks the state of every git-worktree bench. Owned and maintained by
+# lead-engineer (`.01`). See `mddocs/AGENTICCORE_SPEC.md` §6 (Bench Model)
+# and `mddocs/adr/adr-0007-bench-scope-isolation.md`.
+#
+# Rules:
+#   - `.00` and `.01` are permanent; never torn down.
+#   - Teardown of a worker bench (`.02`+) requires HIL authorization.
+#   - Check the `locked` field before `git worktree remove`.
+
+benches:
+  - path: .00
+    role: owner
+    agent: hil-assistant
+    status: active
+    locked: true
+
+  - path: .01
+    role: lead-engineer
+    agent: lead-engineer
+    status: active
+    locked: true
+
+  - path: .02
+    role: worker
+    agent: <assigned-agent>
+    task: <task-id>
+    status: active
+    locked: false

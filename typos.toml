@@ -1,0 +1,46 @@
+# typos.toml — spell-check configuration for AgenticCore
+# Run: typos
+# CI: typos --color always
+#
+# Allowlist covers framework acronyms, compliance terms, and project-specific
+# identifiers that typos would otherwise flag as misspellings.
+
+[default.extend-words]
+# Compliance / gov acronyms
+ATO    = "ATO"
+DoD    = "DoD"
+FedRAMP = "FedRAMP"
+FIPS   = "FIPS"
+IL4    = "IL4"
+IL5    = "IL5"
+IL6    = "IL6"
+STIG   = "STIG"
+
+# Framework / tooling acronyms
+ADR    = "ADR"
+COA    = "COA"
+HIL    = "HIL"
+IaC    = "IaC"
+MCP    = "MCP"
+POC    = "POC"
+SOP    = "SOP"
+
+# Case variants that typos misreads
+mddocs   = "mddocs"
+mdbook   = "mdbook"
+typos    = "typos"
+opencode = "opencode"
+
+# Short domain-specific variable names in framework code
+nd       = "nd"      # BM25 variable name in mcp-rag-docs/server.py
+
+[files]
+# Ignore generated build output and ephemeral directories.
+# tasks.yaml is excluded because it contains commit SHAs that typos flags as misspellings.
+extend-exclude = [
+    "mddocs/book/**",
+    ".opencode/node_modules/**",
+    "_oob/**",
+    "_poc/**",
+    "tasks.yaml",
+]

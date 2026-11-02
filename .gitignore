@@ -1,0 +1,44 @@
+# Nested git repositories (sub-projects / worktrees that contain their own .git)
+**/.git/
+
+# Machine-local agentic tool settings — never commit
+.mcp.json
+opencode.json.local
+
+# Git worktree directories (ephemeral benches)
+.worktrees/
+worktrees/
+
+# Bench artifacts — relay-pending.md and .bench/ are worktree-local (written by provision-bench.sh), regenerable, never committed; canonical bench provenance lives in bench-registry.yaml (AP-056, ADR-0015 amendment)
+relay-pending.md
+.bench/
+
+# mdBook build output
+mddocs/book/
+
+# macOS filesystem metadata
+.DS_Store
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Environment / credential injection — see .envrc.template
+# .envrc is never committed (ADR-0001 D-2, ADR-0021 D-4) — .envrc.template is the reference
+.envrc
+.envrc.local
+
+# Machine-local env var overrides (never commit)
+# .env-required itself is committed — only var names, no values
+.env-required.local
+
+# Archive and packaging artifacts
+*.tgz
+*.tgz.sha256
+*.tgz.toc
+
+# Out-of-band scratch logs (tracked for audit recovery only)
+_oob/*.log
+
+# Session reasoning logs (append-only, machine-local, never committed)
+_scratch/sessions/

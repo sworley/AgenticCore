@@ -1,0 +1,116 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "shell": "/bin/bash",
+  "instructions": [
+    ".agents/_security-policy.md",
+    ".opencode/commit-push-gate.md",
+    ".core/invariants.md",
+    "AGENT.md",
+    "PROCESS.md",
+    "mddocs/operations/runbooks/session-continuity.md"
+  ],
+  "model": "${OPENCODE_MODEL}",
+  "default_agent": "${OPENCODE_DEFAULT_AGENT}",
+  "share": "disabled",
+  "autoupdate": "notify",
+  "plugin": [
+    ".opencode/plugins/secret-scan-output.ts",
+    ".opencode/plugins/session-close-reminder.ts"
+  ],
+  "mcp": {
+    "rag-docs": {
+      "type": "local",
+      "command": [
+        "uv",
+        "run",
+        "mddocs/mcp/mcp-rag-docs/server.py",
+        "--docs-root",
+        "mddocs"
+      ],
+      "enabled": true
+    },
+    "review-ledger-security": {
+      "type": "local",
+      "command": [
+        "uv",
+        "run",
+        "mcp/review-ledger/server.py",
+        "--data-path",
+        ".core/review-ledger/security",
+        "--id-prefix",
+        "SF",
+        "--run-prefix",
+        "SR"
+      ],
+      "enabled": true
+    },
+    "review-ledger-reviews": {
+      "type": "local",
+      "command": [
+        "uv",
+        "run",
+        "mcp/review-ledger/server.py",
+        "--data-path",
+        ".core/review-ledger/reviews",
+        "--id-prefix",
+        "RF",
+        "--run-prefix",
+        "RR"
+      ],
+      "enabled": true
+    }
+  },
+  "tools": {
+    "*_approve_finding_update": false
+  },
+  "agent": {
+    "hil-assistant": {
+      "tools": {
+        "*_approve_finding_update": true
+      }
+    }
+  },
+  "permission": {
+    "bash": {
+      "*": "ask",
+      "pip install *": "deny",
+      "pip3 install *": "deny",
+      "uv add *": "deny",
+      "uvx *": "deny",
+      "pipx install *": "deny",
+      "npm install *": "deny",
+      "npm i *": "deny",
+      "npx *": "deny",
+      "yarn add *": "deny",
+      "yarn install *": "deny",
+      "brew install *": "deny",
+      "brew upgrade *": "deny",
+      "brew tap *": "deny",
+      "cargo install *": "deny",
+      "gem install *": "deny",
+      "apt install *": "deny",
+      "apt-get install *": "deny",
+      "dnf install *": "deny",
+      "yum install *": "deny",
+      "jq *": "allow",
+      "mdbook *": "allow",
+      "git *": "allow",
+      "git commit *": "ask",
+      "git push *": "ask",
+      "git push": "ask",
+      "git reset --hard *": "ask",
+      "git rebase *": "ask",
+      "git merge *": "ask",
+      "git tag *": "ask",
+      "git branch -D *": "ask",
+      "git branch -d *": "ask",
+      "git worktree remove *": "ask"
+    },
+    "webfetch": "ask",
+    "websearch": "ask"
+  },
+  "compaction": {
+    "auto": true,
+    "tail_turns": 10
+  }
+}

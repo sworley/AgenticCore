@@ -1,0 +1,14 @@
+# merge=ours — .01 always wins on inbound merges for these files.
+# Bench branches must not commit tool-specific or .01-owned files at these paths.
+# tasks.yaml: .01 never receives bench lead-engineer queue updates.
+# opencode.json: each bench has its own config; never clobbered by main.
+# The ours driver must be registered locally before it activates:
+#
+#   git config merge.ours.driver true
+#
+# See: mddocs/reference.architecture/provision-worker-bench.md
+#      mddocs/adr/adr-0012-bench-assignment-canonical-generated-split.md
+
+AGENT.md      merge=ours
+tasks.yaml     merge=ours
+opencode.json  merge=ours

@@ -13,6 +13,7 @@
 
 # Onboarding
 
+- [Visual Overview](onboarding/visual-overview.md)
 - [Getting Started](onboarding/getting-started.md)
 - [Repository Structure](onboarding/repository-structure.md)
 - [Agentic Workflow Overview](onboarding/agentic-workflow-overview.md)

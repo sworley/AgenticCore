@@ -10,8 +10,10 @@ for developers, DevOps engineers, and SREs building AI-assisted workflows.
 - **Adopting this framework into your own project?** → [Quick Start (Adopter)](#quick-start-adopter)
 - **Working on the framework itself?** → [Contributing / Extending](#contributing--extending-maintainer)
 
-New to the concepts first? The full guide lives in the docs:
-[`mddocs/onboarding/getting-started.md`](mddocs/onboarding/getting-started.md).
+Want a visual map of the whole system first? Start with the
+[`mddocs/onboarding/visual-overview.md`](mddocs/onboarding/visual-overview.md)
+— benches, personas, workflows, and the agent roster at a glance. The full guide
+lives in the docs: [`mddocs/onboarding/getting-started.md`](mddocs/onboarding/getting-started.md).
 
 ---
 
@@ -289,7 +291,7 @@ mdbook serve mddocs/
 
 Key sections:
 
-- `mddocs/onboarding/` — getting started, repo structure, bench model
+- `mddocs/onboarding/` — visual overview, getting started, repo structure, bench model
 - `mddocs/reference.architecture/` — all runbooks and process docs
 - `mddocs/faq/` — distilled Q&A from working sessions, each linked to its canonical source
 - `mddocs/adr/` — architecture decisions (ADR-0001 through ADR-0027)

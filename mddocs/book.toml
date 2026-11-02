@@ -6,3 +6,4 @@ src = "."
 [output.html]
 site-url = "/"
 no-section-label = true
+additional-js = ["mermaid.min.js", "mermaid-init.js"]

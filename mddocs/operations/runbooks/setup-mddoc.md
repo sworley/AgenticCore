@@ -4,7 +4,8 @@
 
 Installs and configures the tools needed to build and serve the `mddocs/` documentation
 site locally using [mdbook](https://rust-lang.github.io/mdBook/) with Mermaid diagram
-support. Run this once per machine, then run the per-checkout step for each new clone.
+support. Run this once per machine; Mermaid assets are committed and need no per-clone
+setup.
 
 ## Prerequisites
 
@@ -29,35 +30,23 @@ Verify:
 rustc --version   # should be 1.88.0 or later
 ```
 
-### 2. Install mdbook and mdbook-mermaid
+### 2. Install mdbook
 
 ```bash
-cargo install mdbook mdbook-mermaid
+cargo install mdbook
 ```
 
 Verify:
 ```bash
 mdbook --version
-mdbook-mermaid --version
 ```
 
-### 3. Run the per-checkout setup
+Mermaid diagrams are rendered **client-side** using the committed
+`mermaid.min.js` + `mermaid-init.js` assets, wired through `additional-js` in
+`mddocs/book.toml`. There is no `mdbook-mermaid` preprocessor and no per-checkout
+setup step.
 
-This step is only needed after upgrading `mdbook-mermaid` to refresh the
-bundled JS assets. `mermaid.min.js` and `mermaid-init.js` are committed to the
-repository and do not need to be regenerated on each clone.
-
-```bash
-cd mddocs
-mdbook-mermaid install .
-```
-
-Expected output:
-```
-INFO Files & configuration for mdbook-mermaid are installed.
-```
-
-### 4. Serve the documentation site
+### 3. Serve the documentation site
 
 ```bash
 cd mddocs
@@ -96,13 +85,14 @@ rm -rf mddocs/book/
 Tool installation is non-destructive. To remove:
 
 ```bash
-cargo uninstall mdbook mdbook-mermaid
+cargo uninstall mdbook
 ```
 
 ## Mermaid Diagram Usage
 
-Mermaid diagrams render in both Git (natively) and mdbook (via `mdbook-mermaid`).
-Use a fenced code block tagged `mermaid`:
+Mermaid diagrams render in Git (natively) on GitHub/GitLab, and in the mdBook site
+via the committed `mermaid.min.js` + `mermaid-init.js` assets (`additional-js` in
+`book.toml`). Use a fenced code block tagged `mermaid`:
 
 ````markdown
 ```mermaid
@@ -141,11 +131,11 @@ in the surrounding runbook steps.
 
 ```bash
 rustup update stable
-cargo install mdbook mdbook-mermaid   # re-run to upgrade to latest versions
+cargo install mdbook   # re-run to upgrade to the latest version
 ```
 
-After upgrading `mdbook-mermaid`, re-run the per-checkout setup (Step 3) to refresh
-the bundled JS assets.
+To refresh the Mermaid bundle, replace `mddocs/mermaid.min.js` with a newer release
+from `https://cdn.jsdelivr.net/npm/mermaid@<version>/dist/mermaid.min.js`.
 
 ## Related
 

@@ -112,4 +112,4 @@ enough detail to implement as a future sprint.
 
 ## Related
 
-- [ADR-: AI toolchain Config Versioning and Bench Manifest](adr--opencode-config-versioning-bench-manifest.md)
+- [ADR-: AI toolchain Config Versioning and Bench Manifest](adr-0011-lead-engineer-identity-anchoring.md)

@@ -211,4 +211,4 @@ bash mddocs/scripts/setup/opencode.json
 ## Related
 
 - [Hook Rollback](hook-rollback.md) — emergency disable, revert, and full rollback procedure for all hooks
-- [ADR-: Agentic Agent Enforcement Posture](../../adr/adr--opencode-agent-enforcement-posture.md)
+- [ADR-: Agentic Agent Enforcement Posture](../../adr/adr-0022-git-pre-commit-permission-order-check.md)

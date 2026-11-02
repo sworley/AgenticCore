@@ -6,7 +6,7 @@ in `mddocs/operations/runbooks/`.
 
 | Script | Language | Runbook | Purpose |
 |---|---|---|---|
-| [git-sync.sh](gl-sync.md) | zsh | [gl-sync runbook](../../operations/runbooks/git-sync-runbook.md) | Clone/update all repos in a Git group |
+| [git-sync.sh](git-sync.md) | zsh | [git-sync runbook](../../operations/runbooks/git-sync-runbook.md) | Clone/update all repos in a Git group |
 | [check-env.sh](check-env.md) | sh | [sync-agent-definitions](../../operations/runbooks/sync-agent-definitions.md) | Validate developer environment |
 | [bench-status.sh](bench-status.md) | sh | — | Show all worktree states |
 | [provision-bench.sh](provision-bench.md) | sh | [provision-worker-bench](../../reference.architecture/provision-worker-bench.md) | Provision a worker bench |

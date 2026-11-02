@@ -184,8 +184,8 @@ whether the extension point exists before the third tool arrives.
 
 ## Related
 
-- [ADR-: AI toolchain Profile Inheritance](adr--opencode-profile-inheritance.md)
-- [ADR-: AI toolchain Config Versioning and Bench Manifest](adr--opencode-config-versioning-bench-manifest.md)
+- AI toolchain Profile Inheritance (modeled by this ADR — see the [ADR Index](index.md), "Profile/Context Inheritance Across Projects")
+- [ADR-: AI toolchain Config Versioning and Bench Manifest](adr-0011-lead-engineer-identity-anchoring.md)
 - [ADR-0006: External Content Gate Scope](adr-0006-external-content-gate-scope.md)
 - [ADR-0007: Bench Scope Isolation](adr-0007-bench-scope-isolation.md)
 - [ADR-0008: Orchestrator Subagent Routing Layer](adr-0008-orchestrator-subagent-routing-layer.md)

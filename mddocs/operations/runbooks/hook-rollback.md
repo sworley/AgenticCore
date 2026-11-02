@@ -215,5 +215,5 @@ git checkout HEAD -- .agentic/hooks/<script-name>.py
 ## Related
 
 - [secret-guard Hook](secret-guard.md) — per-rule documentation, safe alternatives, and update guide
-- [ADR-: Agentic Agent Enforcement Posture](../../adr/adr--opencode-agent-enforcement-posture.md)
+- [ADR-: Agentic Agent Enforcement Posture](../../adr/adr-0022-git-pre-commit-permission-order-check.md)
 - [ADR-0010: Hook Rollback Strategy](../../adr/adr-0010-hook-rollback-strategy.md) — circuit breakers, env var naming convention, staged rollout, companion script

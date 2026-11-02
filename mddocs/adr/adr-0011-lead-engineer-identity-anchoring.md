@@ -126,6 +126,6 @@ Rules that stay in memory (project/task state, user profile, feedback history):
 
 ## Related
 
-- [ADR-: AI toolchain Profile Inheritance](adr--opencode-profile-inheritance.md)
+- [ADR-: AI toolchain Profile Inheritance](adr-0009-agent-portability-model.md)
 - [ADR-0008: Orchestrator Subagent Routing Layer](adr-0008-orchestrator-subagent-routing-layer.md)
 - [ADR-0009: Agent Portability Model](adr-0009-agent-portability-model.md)

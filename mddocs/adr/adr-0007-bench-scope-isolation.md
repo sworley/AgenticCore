@@ -104,6 +104,6 @@ extend to Bash.
 
 ## Related
 
-- [ADR-: Agentic Agent Enforcement Posture](adr--opencode-agent-enforcement-posture.md)
+- [ADR-: Agentic Agent Enforcement Posture](adr-0022-git-pre-commit-permission-order-check.md)
 - [ADR-0006: External Content Gate Scope](adr-0006-external-content-gate-scope.md)
 - [ADR-0008: Orchestrator Subagent Routing Layer](adr-0008-orchestrator-subagent-routing-layer.md)

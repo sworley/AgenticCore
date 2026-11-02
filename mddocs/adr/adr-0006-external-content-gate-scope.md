@@ -119,6 +119,6 @@ well understood.
 
 ## Related
 
-- [ADR-: Agentic Agent Enforcement Posture](adr--opencode-agent-enforcement-posture.md)
+- [ADR-: Agentic Agent Enforcement Posture](adr-0022-git-pre-commit-permission-order-check.md)
 - [ADR-0007: Bench Scope Isolation](adr-0007-bench-scope-isolation.md)
 - `PROCESS.md` — human gate and security inspection gate contract

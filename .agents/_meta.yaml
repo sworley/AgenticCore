@@ -1,0 +1,212 @@
+# .agents/_meta.yaml — Agent metadata for sync-agents.sh
+#
+# This file drives the generation of .opencode/agents/.
+# Do not hand-edit the generated files — edit here and run sync-agents.sh.
+#
+# Schema:
+#   <agent-name>:
+#     description: "<one sentence — what the agent does and when to invoke it>"
+#     opencode:
+#       mode: primary | subagent
+#       model: provider/model-<tier>   # optional — omit to fall through to the
+#                                              # top-level "model" default in opencode.json
+#                                              # (see ADR-0020). opencode-only field; see
+#                                              # ADR-0021 for per-agent tiering rationale.
+#       permission:                   # optional — omit to accept defaults
+#         edit: deny
+#         bash: deny
+#
+# Permission values: deny only. Omit the permission block entirely for default (ask/allow) behavior.
+#
+# --- Adding a new AI tool runtime ---
+#
+# To onboard a new agent runtime (e.g. Cursor, Copilot Workspace, a custom harness):
+#
+#   1. Add a block under each agent entry using the new tool's key:
+#        <new-tool>:
+#          mode: primary | subagent
+#          <tool-specific-fields>: ...
+#
+#   2. Extend sync-agents.sh to read the new block and emit the appropriate output
+#      format for that tool (agent .md file, JSON config, API payload, etc.).
+#      Each tool's generation logic must be isolated in a clearly labelled function;
+#      a failing tool's generation must not affect others.
+#
+#   3. Run .agents/sync-agents.sh to regenerate all per-tool files.
+#
+#   4. Verify that the new tool's output loads correctly before committing.
+#
+#   5. Add the new tool's generated output directory to .gitignore following the
+#      same pattern as .opencode/agents/.
+#
+#   6. Confirm that the new tool loads .core/invariants.md at session start.
+#      If no loading mechanism exists, onboarding is blocked until one is found.
+#
+# --- Editing existing agents ---
+#
+#   Always edit .agents/<name>.md (body) and this file (metadata).
+#   Never hand-edit .opencode/agents/ — it is auto-generated output.
+#   After any change here or in .agents/<name>.md: run .agents/sync-agents.sh
+
+lead-engineer:
+  description: "Lead engineer for agentic orchestration. Manages task queue, bench lifecycle, and HIL coordination. Primary entry point for all work."
+  opencode:
+    mode: primary
+    # model tier: opus-4-8 — sole task-queue/bench coordinator; routing and gate
+    # decisions compound across the whole session, high cost of a bad call (ADR-0021)
+    model: provider/model-opus-4-8
+    permission:
+      bash: ask
+      edit: allow
+
+orchestrator:
+  description: "Routes complex multi-step tasks to the correct specialist agents. Produces routing plans only — never executes work directly."
+  opencode:
+    mode: subagent
+    # model tier: opus-4-8 — routing-plan correctness (invariant coverage, gap
+    # detection) is the entire job; a cheap misroute propagates downstream (ADR-0021)
+    model: provider/model-opus-4-8
+    permission:
+      bash: deny
+      edit: deny
+
+docs-engineer:
+  description: "Owns mddocs/ — writes and maintains runbooks, ADRs, and documentation. No infrastructure changes."
+  opencode:
+    mode: subagent
+    # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
+    model: provider/model-sonnet-5
+    permission:
+      bash: deny
+      edit: allow
+
+ops-engineer:
+  description: "Operational scripts, automation, developer environment tooling, and runbook implementation."
+  opencode:
+    mode: subagent
+    # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
+    model: provider/model-sonnet-5
+    permission:
+      bash: ask
+      edit: allow
+
+ai-engineer:
+  description: "AI agent configuration, MCP server development, and AI-assisted workflow integration. Owns .agents/, opencode.json, .mcp.json.template, and mddocs/mcp/."
+  opencode:
+    mode: subagent
+    # model tier: opus-4-8 — edits agent definitions and MCP servers that gate every
+    # other agent's behavior; errors here are systemic, not local (ADR-0021)
+    model: provider/model-opus-4-8
+    permission:
+      bash: ask
+      edit: allow
+
+attendant:
+  description: "Pattern W bench-lead for customer/project-scoped work. Executes tasks autonomously on behalf of the HIL; reports completion via relay-pending.md."
+  opencode:
+    mode: primary
+    # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
+    model: provider/model-sonnet-5
+
+baseline-steward:
+  description: "Owns the AgenticCore framework improvement lifecycle — governance, baseline versioning, propagation guidance, and release coordination. Never operates in customer project benches or touches deployment tooling."
+  opencode:
+    mode: subagent
+    # model tier: opus-4-8 — framework-steward role (this repo's analogue to
+    # lead-engineer at the framework layer); governs versioning, scrubbing, and
+    # release lifecycle decisions that are hard/costly to reverse (ADR-0021)
+    model: provider/model-opus-4-8
+    permission:
+      bash: ask
+      edit: allow
+
+release-engineer:
+  description: "Manages tactical release execution — CI/CD pipeline, branch/tag workflow, and README as-built updates. Scoped to what adopters build with the framework, not the framework itself."
+  opencode:
+    mode: subagent
+    # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
+    model: provider/model-sonnet-5
+    permission:
+      bash: ask
+      edit: allow
+
+security-engineer:
+  description: "Security controls, hook logic, and security-relevant configuration. Implements and maintains security tooling."
+  opencode:
+    mode: subagent
+    # model tier: opus-4-8 — implements security controls and hooks; subtle
+    # reasoning errors here are exploitable, not just wrong (ADR-0021)
+    model: provider/model-opus-4-8
+    permission:
+      bash: ask
+      edit: allow
+
+security-reviewer:
+  description: "Adversarial security review. Reviews security-relevant changes and produces a verdict. Never modifies files."
+  opencode:
+    mode: subagent
+    # model tier: opus-4-8 — adversarial review is the security gate of last resort
+    # before merge; false APPROVED verdicts are the highest-cost failure mode in
+    # the whole framework (ADR-0021)
+    model: provider/model-opus-4-8
+    permission:
+      bash: deny
+      edit: deny
+
+docs-reviewer:
+  description: "Documentation quality gatekeeper — spell check via typos-cli, broken link detection, ADR status progression, and style review. Evaluative only; does not fix. Invoke after docs-engineer authors content and before branch_ready."
+  opencode:
+    mode: subagent
+    # model tier: haiku-4-5 — mechanical checklist work (spell check, link check,
+    # status-field progression); low reasoning depth, high call volume (ADR-0021)
+    model: provider/model-haiku-4-5
+    permission:
+      bash: allow
+      edit: deny
+
+ux-engineer:
+  description: "UI/UX specialist — information architecture, visual design, accessibility (WCAG 2.1 AA), developer experience, and UX evaluation across the delivery lifecycle. Evaluative and authoring; escalates infrastructure and security concerns."
+  opencode:
+    mode: subagent
+    # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
+    model: provider/model-sonnet-5
+
+hil-assistant:
+  description: "HIL-proximate collaborator in the .00 workspace — personal management plane for scratch, oversight, and cross-bench coordination. Subordinate to .01 Lead-Engineer for framework tasks. Pattern H bench-lead."
+  opencode:
+    mode: primary
+    # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
+    model: provider/model-sonnet-5
+
+code-reviewer:
+  description: "Evaluates code changes for correctness, clarity, and adherence to project conventions before they become commitments. Reviews and produces a verdict; never modifies files."
+  opencode:
+    mode: subagent
+    # model tier: sonnet-5 — semantic code-review judgment, deliberately distinct
+    # from the writing model (ADR-0021)
+    model: provider/model-sonnet-5
+    permission:
+      bash: deny
+      edit: deny
+
+azure-cloud-engineer:
+  description: "Cloud architecture specialist — IaC authoring (Bicep/ARM/Terraform), Well-Architected design, regional/sovereign availability and compliance-aware resource selection."
+  opencode:
+    mode: subagent
+    # model tier: opus-4-8 — cloud architecture decisions are expensive to reverse;
+    # subtle region/compliance errors propagate broadly (ADR-0021)
+    model: provider/model-opus-4-8
+    permission:
+      bash: ask
+      edit: allow
+
+infra-engineer:
+  description: "Infrastructure engineer — owns all IaC, networking, deployment, and resource lifecycle across cloud and on-premises environments."
+  opencode:
+    mode: subagent
+    # model tier: opus-4-8 — infra and network changes are high-blast-radius and
+    # hard to roll back (ADR-0021)
+    model: provider/model-opus-4-8
+    permission:
+      bash: ask
+      edit: allow

@@ -1,0 +1,29 @@
+# Bench registry — __SLUG__
+# Schema: see mddocs/reference.architecture/bench-registry.md
+# Tracks the state of all open and historical worktree benches for this
+# project. Update this file whenever a bench is provisioned or torn down.
+#
+# .00 and .01 are pre-registered below with locked: true, matching the
+# "never tear down" rule (see bench-registry.md Rules) — fill in the
+# `created` date when you provision each; do not remove these two entries.
+# Add a new entry for every `.02`+ worker bench you provision; never delete
+# a torn_down entry — keep the history.
+benches:
+  - id: ".00"
+    pattern: H
+    branch: workspace/owner
+    ticket: ""
+    status: active
+    locked: true
+    created: "YYYY-MM-DD"
+    notes: "HIL workspace — never tear down"
+
+  - id: ".01"
+    pattern: A
+    flavor: project
+    branch: main
+    ticket: ""
+    status: active
+    locked: true
+    created: "YYYY-MM-DD"
+    notes: "Lead-engineer — __SLUG__ project management plane; never tear down"

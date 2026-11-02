@@ -1,0 +1,41 @@
+{
+  "_comment": "AgenticCore opencode settings template. Copy to settings.local.json and customize.",
+  "hooks": {
+    "pre-tool-use": {
+      "secret-guard": {
+        "script": ".core/hooks/secret-guard.py",
+        "blocking": true
+      },
+      "read-scope-guard": {
+        "script": ".core/hooks/read-scope-guard.py",
+        "blocking": true
+      },
+      "package-install-guard": {
+        "script": ".core/hooks/package-install-guard.py",
+        "blocking": true
+      }
+    },
+    "post-tool-use": {
+      "egress-audit-log": {
+        "script": ".core/hooks/egress-audit-log.py",
+        "blocking": false
+      }
+    },
+    "session-close": {
+      "session-close-reminder": {
+        "script": ".core/hooks/session-close-reminder.py",
+        "blocking": true
+      }
+    }
+  },
+  "permissions": {
+    "subagents": {
+      "bash": "deny",
+      "edit": "deny"
+    },
+    "primary": {
+      "bash": "ask",
+      "edit": "allow"
+    }
+  }
+}

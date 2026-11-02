@@ -1,0 +1,32 @@
+# tasks.yaml — AgenticCore Task Queue
+#
+# Single source of truth for all work in the harness. Maintained by
+# lead-engineer (`.01`). Only `.01` writes to this file. See
+# `.core/work/README.md` for the full schema and lifecycle reference.
+#
+# ADR provenance rule: if a task's scope touches governed behavior
+# (task-queue rules, bench model, HIL gates, agent roster, security
+# controls, branch protection), the `adr` field must list the accepted
+# ADR(s) that authorize the change.
+
+tasks:
+  - id: AC-0001
+    title: "Initialize AgenticCore baseline"
+    description: |
+      Establish the initial harness baseline: canonical agent roster,
+      enforcement hooks, ADR governance layer, and bench model.
+    acceptance_criteria:
+      - "All registry agents import cleanly"
+      - "Hook wiring passes check-hook-wiring"
+      - "mdbook builds with zero errors"
+    adr: [ADR-0001]
+    priority: P1
+    size: M
+    labels: [chore, bootstrap]
+    agent: lead-engineer
+    status: in_progress
+    branch: ""
+    bench: .01
+    blocked_by: []
+    created: "2026-11-01"
+    updated: "2026-11-01"

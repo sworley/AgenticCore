@@ -1,4 +1,4 @@
-# Runbook: gl-sync — Git Workspace Sync
+# Runbook: git-sync — Git Workspace Sync
 
 **Script:** `mddocs/scripts/git-sync.sh`
 **Purpose:** Clone or update every project in a Git group into the current
@@ -21,7 +21,7 @@ lead-engineer to populate and refresh bench worktrees.
 
 ## Profiles File
 
-Create `~/.config/gl-sync/profiles` with one entry per Git instance:
+Create `~/.config/git-sync/profiles` with one entry per Git instance:
 
 ```
 # name     url                                    pass-path                    default-group
@@ -51,7 +51,7 @@ Lines starting with `#` are comments.
 ./mddocs/scripts/git-sync.sh --dry-run
 
 # Supply token directly (non-interactive scripts only)
-GL_SYNC_TOKEN="$(pass show git/example.internal.com/pat)" \
+GIT_SYNC_TOKEN="$(pass show git/example.internal.com/pat)" \
   ./mddocs/scripts/git-sync.sh --mode sync
 ```
 
@@ -67,7 +67,7 @@ GL_SYNC_TOKEN="$(pass show git/example.internal.com/pat)" \
 ```zsh
 ./mddocs/scripts/git-sync.sh --mode update
 # or
-GL_SYNC_MODE=update ./mddocs/scripts/git-sync.sh
+GIT_SYNC_MODE=update ./mddocs/scripts/git-sync.sh
 ```
 
 ---
@@ -96,7 +96,7 @@ GL_SYNC_MODE=update ./mddocs/scripts/git-sync.sh
 
 - Tokens are retrieved via `pass` — never embedded in URLs or `.git/config`
 - A temporary `GIT_ASKPASS` script is created in `/tmp` and deleted on exit
-- `GL_SYNC_TOKEN` env var is available for CI use but should not be used
+- `GIT_SYNC_TOKEN` env var is available for CI use but should not be used
   interactively — prefer `pass`
 - The token is never written to disk, logs, or git history
 
@@ -122,12 +122,12 @@ git commit -m "chore: gitignore synced namespace my-new-subgroup"
 
 | Variable | Purpose | Default |
 |---|---|---|
-| `GL_SYNC_PROFILE` | Profile name from profiles file | `default` |
-| `GL_SYNC_GROUP` | Override group/namespace path | Profile default or `pwd` basename |
-| `GL_SYNC_URL` | Override Git base URL | Profile value |
-| `GL_SYNC_PASS_PATH` | Override pass store path | Profile value |
-| `GL_SYNC_TOKEN` | Supply token directly | *(from pass)* |
-| `GL_SYNC_MODE` | `sync` or `update` | Interactive prompt |
+| `GIT_SYNC_PROFILE` | Profile name from profiles file | `default` |
+| `GIT_SYNC_GROUP` | Override group/namespace path | Profile default or `pwd` basename |
+| `GIT_SYNC_URL` | Override Git base URL | Profile value |
+| `GIT_SYNC_PASS_PATH` | Override pass store path | Profile value |
+| `GIT_SYNC_TOKEN` | Supply token directly | *(from pass)* |
+| `GIT_SYNC_MODE` | `sync` or `update` | Interactive prompt |
 
 ---
 

@@ -291,6 +291,7 @@ Key sections:
 
 - `mddocs/onboarding/` — getting started, repo structure, bench model
 - `mddocs/reference.architecture/` — all runbooks and process docs
+- `mddocs/faq/` — distilled Q&A from working sessions, each linked to its canonical source
 - `mddocs/adr/` — architecture decisions (ADR-0001 through ADR-0027)
 - `mddocs/examples/` — worked examples: ticket lifecycle, bench session, ADR process, release
 

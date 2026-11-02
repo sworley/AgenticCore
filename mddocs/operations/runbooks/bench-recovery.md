@@ -277,7 +277,7 @@ If the reprovision is incorrect:
 
 ## Related
 
-- [ADR-: AI toolchain Config Versioning and Bench Manifest](../../adr/adr--opencode-config-versioning-bench-manifest.md)
+- [ADR-: AI toolchain Config Versioning and Bench Manifest](../../adr/adr-0011-lead-engineer-identity-anchoring.md)
 - [Provision Worker Bench](../../reference.architecture/provision-worker-bench.md) — first-time bench creation
 - [Configure Agent Namespace](configure-agents.md) — agent namespace setup
 - [Bench Registry](../../reference.architecture/bench-registry.md) — bench tracking and registration

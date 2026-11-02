@@ -78,6 +78,8 @@
 - [Operations Index](operations/index.md)
   - [Runbook: git-sync — Git Workspace Sync](operations/runbooks/git-sync-runbook.md)
   - [Runbook: Sync Agent Definitions](operations/runbooks/sync-agent-definitions.md)
+  - [Runbook: Configure Agent Namespace](operations/runbooks/configure-agents.md)
+  - [Runbook: Sync Agent Config](operations/runbooks/sync-opencode-config.md)
   - [Runbook: Build and Publish mdBook](operations/runbooks/build-publish-mddocs.md)
   - [Runbook: Rotate Git PAT](operations/runbooks/rotate-git-pat.md)
   - [Runbook: Set Up mddoc Local Documentation Site](operations/runbooks/setup-mddoc.md)
@@ -92,6 +94,13 @@
   - [Runbook: Agent Authoring Workflow](operations/runbooks/agent-authoring-workflow.md)
   - [Runbook: Review Ledger](operations/runbooks/review-ledger-runbook.md)
   - [Runbook: Session Reasoning Log](operations/runbooks/session-reasoning-log.md)
+
+---
+
+# FAQ
+
+- [FAQ Index](faq/index.md)
+  - [How Is the Project Workspace Managed?](faq/workspace-management.md)
 
 ---
 
@@ -116,6 +125,7 @@
 
 - [Scripts Index](scripts/operations/index.md)
   - [git-sync.sh](scripts/operations/git-sync.md)
+  - [sync-agent-config.sh](scripts/operations/sync-opencode-config.md)
   - [check-env.sh](scripts/operations/check-env.md)
   - [bench-status.sh](scripts/operations/bench-status.md)
   - [provision-bench.sh](scripts/operations/provision-bench.md)
@@ -131,6 +141,7 @@
 
 - [Onboarding](scripts/setup/index.md)
   - [adopt.sh](scripts/setup/adopt.md)
+  - [opencode.json — init-opencode-settings](scripts/setup/init-opencode-settings.md)
   - [phase2-dev-toolchain.sh](scripts/setup/phase2-dev-toolchain.md)
   - [verify-toolchain.sh](scripts/setup/verify-toolchain.md)
 

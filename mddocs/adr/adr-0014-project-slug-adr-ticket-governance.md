@@ -235,7 +235,7 @@ All items are unblocked. ADR-0015 is accepted; D-3 and D-5 are resolved.
 ## Related
 
 - [ADR-0001: Bootstrap Architecture](adr-0001-bootstrap-architecture.md)
-- [ADR-: AI toolchain Profile Inheritance](adr--opencode-profile-inheritance.md)
+- [ADR-: AI toolchain Profile Inheritance](adr-0009-agent-portability-model.md)
 - [ADR-0013: Pattern A — Two-Flavor Model](adr-0013-pattern-a-two-flavor-model.md)
 - [ADR-0015: Framework Distribution and Adoption Model](adr-0015-framework-distribution-adoption-model.md) — open question in D-3 and D-5
 - `EXAMPLE-ADR-0015` — Prior art: Program-Level Task Governance and Unified Slug

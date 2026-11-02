@@ -163,5 +163,5 @@ addressed as capacity allows.
 
 - [ADR-0018: Credential Injection Pattern](adr-0018-credential-injection-pattern.md) — how credentials reach the environment
 - [ADR-0006: External Content Gate Scope](adr-0006-external-content-gate-scope.md) — capability gate controls
-- [ADR-: Agentic Agent Enforcement Posture](adr--opencode-agent-enforcement-posture.md) — guardrail model that these rules operate within
+- [ADR-: Agentic Agent Enforcement Posture](adr-0022-git-pre-commit-permission-order-check.md) — guardrail model that these rules operate within
 - `mddocs/scripts/check-env.sh` — pre-session environment verification tool

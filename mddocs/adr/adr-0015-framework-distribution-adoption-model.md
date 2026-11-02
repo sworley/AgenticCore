@@ -507,7 +507,7 @@ The following tasks are spawned from this ADR:
 ## Related
 
 - [ADR-0014: Project Task Slug and ADR Ticket Governance](adr-0014-project-slug-adr-ticket-governance.md) — slug init procedure resolved by D-5
-- [ADR-: AI toolchain Profile Inheritance](adr--opencode-profile-inheritance.md)
+- [ADR-: AI toolchain Profile Inheritance](adr-0009-agent-portability-model.md)
 - [ADR-0001: Bootstrap Architecture](adr-0001-bootstrap-architecture.md)
 - [ADR-0026: Release-Branch Curation Model](adr-0026-release-branch-curation-model.md) — the
   framework-release-specific `dev`-staging / curated-release discipline that D-8 clarifies

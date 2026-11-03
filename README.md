@@ -291,7 +291,7 @@ mdbook serve mddocs/
 
 Key sections:
 
-- `mddocs/onboarding/` — visual overview, getting started, repo structure, bench model
+- `mddocs/onboarding/` — visual overview, agent roster, getting started, repo structure, bench model
 - `mddocs/reference.architecture/` — all runbooks and process docs
 - `mddocs/faq/` — distilled Q&A from working sessions, each linked to its canonical source
 - `mddocs/adr/` — architecture decisions (ADR-0001 through ADR-0027)

@@ -102,7 +102,7 @@ ai-engineer:
       edit: allow
 
 attendant:
-  description: "Pattern W bench-lead for customer/project-scoped work. Executes tasks autonomously on behalf of the HIL; reports completion via relay-pending.md."
+  description: "Customer/project plane lead (Pattern W) in the .00 worktree. Facilitates customer/project tasks autonomously on behalf of the HIL; reports via relay-pending.md."
   opencode:
     mode: primary
     # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)

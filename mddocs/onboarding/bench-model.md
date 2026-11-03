@@ -9,17 +9,36 @@ different roles and tasks. Each bench is a checked-out worktree on a named branc
 
 | Namespace | Role | Lifecycle | Owner |
 |---|---|---|---|
-| `.00` | HIL workspace | Long-living | Human (owner) |
-| `.01` | Lead-engineer | Long-living | lead-engineer agent |
-| `.02`+ | Worker benches | Ephemeral (per-ticket) | bench-lead agents |
+| `.00` | HIL / customer-project workspace | Long-living | Human (owner) |
+| `.01` | Lead-engineer (management repo) | Long-living | lead-engineer agent |
+| `.02`+ | Worker benches (management/framework) | Ephemeral (per-ticket) | bench-lead agents |
 
 ## Bench Patterns
 
 | Pattern | Namespace | Purpose | Bench-Lead Agent |
 |---|---|---|---|
-| Pattern H | `.00` | HIL management plane — scratch, oversight, coordination | — |
+| Pattern H | `.00` | HIL management plane — scratch, oversight, coordination | `hil-assistant` |
 | Pattern A | `.02`+ | Framework management work (scripts, config, docs) | lead-engineer |
-| Pattern W | `.02`+ | Customer/project code work (when applicable) | attendant |
+| Pattern W | `.00` | Customer/project work — repos cloned into `.00`, gitignored by `.01` | attendant |
+
+## Customer / Project Plane (`.00`)
+
+Customer/project work is performed in the **long-standing `.00` worktree** (the
+HIL/client plane). A git worktree materializes only **tracked** files, and customer
+repositories are listed in the management repo's `.gitignore` (the ADR-0006 hard
+boundary), so a fresh `.02+` worktree never contains customer code. Therefore:
+
+1. The HIL (with the `attendant`, relaxed model) clones the customer/project
+   repositories it needs **into `.00`**.
+2. `.01` adds each customer repo to the **management `.gitignore`** so customer code
+   never enters management history.
+3. Because `.00` is long-standing (never torn down), the cloned repositories persist
+   there.
+4. Work intentionally left out of the customer repo is captured on a
+   **management-repo branch (`.01`)** for review, test, and merge to `main`.
+
+Consequently, `.02+` worktrees are reserved for **management/framework work (Pattern A)**
+on tracked content. See [ADR-0028](../adr/adr-0028-customer-plane-provisioning.md).
 
 ## Bench Files — Disk-Local vs. Generated vs. Registry
 

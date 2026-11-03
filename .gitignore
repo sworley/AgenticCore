@@ -1,23 +1,34 @@
+# ---------------------------------------------------------------------------
+# AgenticCore .gitignore
+#
+# These rules ship with the framework and are inherited by adopters
+# (export-framework.sh copies the framework tree into the adopter repo).
+# They fall into two classes:
+#
+#   UNIVERSAL — machine-local config / secrets / build output. Never commit in
+#   ANY repo (framework or adopter). An adopter must NOT un-ignore these.
+#
+#   FRAMEWORK-BENCH — bench/worktree mechanics that the framework and adopters
+#   both use (benches are git worktrees, relay notes, session logs). Regenerable.
+#
+# Adopters manage their OWN project-specific ignores on top of this file;
+# export-framework.sh never writes an adopter's .gitignore for customer paths.
+# See mddocs/reference.architecture/bootstrap-new-project.md for the adoption
+# inheritance note.
+# ---------------------------------------------------------------------------
+
+# --- UNIVERSAL -----------------------------------------------------------
+
 # Nested git repositories (sub-projects / worktrees that contain their own .git)
 **/.git/
 
 # Machine-local agentic tool settings — never commit
 .mcp.json
 opencode.json.local
-
-# Git worktree directories (ephemeral benches)
-.worktrees/
-worktrees/
-
-# Bench artifacts — relay-pending.md and .bench/ are worktree-local (written by provision-bench.sh), regenerable, never committed; canonical bench provenance lives in bench-registry.yaml (AP-056, ADR-0015 amendment)
-relay-pending.md
-.bench/
+.agentic/
 
 # mdBook build output
 mddocs/book/
-
-# macOS filesystem metadata
-.DS_Store
 
 # Python bytecode
 __pycache__/
@@ -36,6 +47,25 @@ __pycache__/
 *.tgz
 *.tgz.sha256
 *.tgz.toc
+
+# macOS filesystem metadata
+.DS_Store
+
+# Review-ledger runtime data (findings) — machine-local audit entries.
+# The framework's own authoring does NOT utilize the review-ledger; adopters get
+# both ledgers (security + reviews) wired and ready. The .gitkeep files that
+# create the directories remain tracked.
+.core/review-ledger/**/findings.yaml
+
+# --- FRAMEWORK-BENCH -------------------------------------------------------
+
+# Git worktree directories (ephemeral benches)
+.worktrees/
+worktrees/
+
+# Bench artifacts — relay-pending.md and .bench/ are worktree-local (written by provision-bench.sh), regenerable, never committed; canonical bench provenance lives in bench-registry.yaml (AP-056, ADR-0015 amendment)
+relay-pending.md
+.bench/
 
 # Out-of-band scratch logs (tracked for audit recovery only)
 _oob/*.log

@@ -46,6 +46,7 @@ decisions get a new ADR that references the one it replaces.
 | [ADR-0025](adr-0025-framework-write-protection-model.md) | Framework Write-Protection Model — Layered Newcomer-Write Control | proposed | 2026-08-18 |
 | [ADR-0026](adr-0026-release-branch-curation-model.md) | Release-Branch Curation Model (git-flow-style) | accepted | 2026-08-20 |
 | [ADR-0027](adr-0027-authoring-agent-execution-model.md) | Authoring-Agent Execution Model — Execution-Light Workers, Lead-Run Gates | accepted | 2026-08-21 |
+| [ADR-0028](adr-0028-customer-plane-provisioning.md) | Customer/Project Plane Provisioning — Clone into `.00`, Gitignore in `.01` | accepted | 2026-11-02 |
 
 **Adding a new ADR**
 

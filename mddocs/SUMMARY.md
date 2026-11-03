@@ -52,6 +52,7 @@
   - [ADR-0025: Framework Write-Protection Model](adr/adr-0025-framework-write-protection-model.md)
   - [ADR-0026: Release-Branch Curation Model](adr/adr-0026-release-branch-curation-model.md)
   - [ADR-0027: Authoring-Agent Execution Model](adr/adr-0027-authoring-agent-execution-model.md)
+  - [ADR-0028: Customer/Project Plane Provisioning](adr/adr-0028-customer-plane-provisioning.md)
 
 ---
 

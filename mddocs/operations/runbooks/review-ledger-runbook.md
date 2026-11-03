@@ -19,8 +19,8 @@ access tier separation at the process level (ADR-0019 D-1).
 
 | Instance | Backing path | Finding IDs | Run IDs | Wired to |
 |---|---|---|---|---|
-| `review-ledger-security` | `.security/` | `SF-NNN` | `SR-YYYY-MM-DD-NN` | security-reviewer, hil-assistant |
-| `review-ledger-reviews` | `.reviews/` | `RF-NNN` | `RR-YYYY-MM-DD-NN` | docs-reviewer, code-reviewer, hil-assistant |
+| `review-ledger-security` | `.core/review-ledger/security/` | `SF-NNN` | `SR-YYYY-MM-DD-NN` | security-reviewer, hil-assistant |
+| `review-ledger-reviews` | `.core/review-ledger/reviews/` | `RF-NNN` | `RR-YYYY-MM-DD-NN` | docs-reviewer, code-reviewer, hil-assistant |
 
 No `path_tier` parameter exists on any tool. The instance itself determines
 the backing path and ID namespace, preventing callers from cross-writing tiers.
@@ -34,13 +34,13 @@ Each instance is launched with `uv run` and three required CLI args:
 ```sh
 # Security instance
 uv run mcp/review-ledger/server.py \
-  --data-path .security \
+  --data-path .core/review-ledger/security \
   --id-prefix SF \
   --run-prefix SR
 
 # Reviews instance
 uv run mcp/review-ledger/server.py \
-  --data-path .reviews \
+  --data-path .core/review-ledger/reviews \
   --id-prefix RF \
   --run-prefix RR
 ```
@@ -50,35 +50,33 @@ matches the expected path before using the server in a session.
 
 ---
 
-## MCP Config Wiring (`.mcp.json.template`)
+## MCP Config Wiring (`opencode.json`)
 
-Both instances are registered in `.mcp.json.template`. The `${COLLECTION_ROOT}`
-variable is expanded at launch time by the MCP host:
+Both instances are registered in `opencode.json` (the OpenCode-first wiring). Paths
+are relative to the repository root:
 
 ```json
 "review-ledger-security": {
-  "type": "stdio",
-  "command": "uv",
-  "args": [
-    "run",
-    "${COLLECTION_ROOT}/mcp/review-ledger/server.py",
-    "--data-path", "${COLLECTION_ROOT}/.security",
-    "--id-prefix", "SF",
-    "--run-prefix", "SR"
-  ]
+  "type": "local",
+  "command": ["uv", "run", "mcp/review-ledger/server.py",
+              "--data-path", ".core/review-ledger/security",
+              "--id-prefix", "SF", "--run-prefix", "SR"],
+  "enabled": true
 },
 "review-ledger-reviews": {
-  "type": "stdio",
-  "command": "uv",
-  "args": [
-    "run",
-    "${COLLECTION_ROOT}/mcp/review-ledger/server.py",
-    "--data-path", "${COLLECTION_ROOT}/.reviews",
-    "--id-prefix", "RF",
-    "--run-prefix", "RR"
-  ]
+  "type": "local",
+  "command": ["uv", "run", "mcp/review-ledger/server.py",
+              "--data-path", ".core/review-ledger/reviews",
+              "--id-prefix", "RF", "--run-prefix", "RR"],
+  "enabled": true
 }
 ```
+
+> **Adopter inheritance:** both ledgers ship wired and ready in the exported tree
+> (via the `.gitkeep` placeholders and the `opencode.json` MCP entries above). The
+> framework's own authoring does **not** utilize the review-ledger, and its runtime
+> `findings.yaml` data is gitignored (machine-local). See
+> [`.gitignore` Inheritance & the Review-Ledger](../../reference.architecture/bootstrap-new-project.md#gitignore-inheritance--the-review-ledger).
 
 ---
 
@@ -234,7 +232,7 @@ the correct `--data-path` argument.
 
 **Stale `pending-<id>.yaml`:** If an update was requested but never approved, the pending
 file remains. Inspect it with `get_finding`, then either approve it (hil-assistant) or
-remove it manually with `rm .security/pending-sf-NNN.yaml`.
+remove it manually with `rm .core/review-ledger/security/pending-sf-NNN.yaml`.
 
 **ID collision risk:** IDs are assigned by reading the current maximum at write time.
 Under heavy concurrent load, two simultaneous `log_finding` calls could theoretically

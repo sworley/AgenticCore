@@ -390,6 +390,39 @@ caught even on a repeat invocation.
 
 ---
 
+## `.gitignore` Inheritance & the Review-Ledger
+
+The framework ships its `.gitignore` (see the header comment for the two rule
+classes). These rules are inherited by the adopter by design:
+
+- **Universal** rules (machine-local config/secrets/build output: `.agentic/`,
+  `.envrc`, `.mcp.json`, `mddocs/book/`, `__pycache__/`, ...) — keep in every repo.
+  Do not un-ignore these; they prevent committing local secrets/config.
+- **Framework-bench** rules (`.bench/`, `relay-pending.md`, `.worktrees/`,
+  `_oob/*.log`, `_scratch/sessions/`) — the adopter's own bench mechanism uses
+  these too.
+
+`export-framework.sh` never writes an adopter's `.gitignore` for customer paths —
+the operator classifies pre-existing customer content (see
+[Step 4](#step-4--flow-b-only-review-the-reconciliation-report)). Adopters add
+their own project-specific ignores on top.
+
+### Review-ledger
+
+The framework ships **two** file-backed review ledgers, both wired via the MCP
+servers in `opencode.json`:
+
+- `.core/review-ledger/security/` — security findings (SF / SR)
+- `.core/review-ledger/reviews/` — review findings (RF / RR)
+
+Both are wired and ready to receive entries for an adopter, but are **not utilized
+by the framework's own authoring** — the framework repo gitignores their runtime
+`findings.yaml` data, and the `.gitkeep` placeholders keep both directories present
+in the exported tree. See the
+[Review Ledger runbook](../operations/runbooks/review-ledger-runbook.md).
+
+---
+
 ## Manual fallback (for environments where the script cannot run)
 
 Use this procedure only when `export-framework.sh` genuinely cannot run (for example,

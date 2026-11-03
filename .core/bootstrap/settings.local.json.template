@@ -13,6 +13,10 @@
       "package-install-guard": {
         "script": ".core/hooks/package-install-guard.py",
         "blocking": true
+      },
+      "block-web-tools": {
+        "script": ".core/hooks/block-web-tools.py",
+        "blocking": true
       }
     },
     "post-tool-use": {

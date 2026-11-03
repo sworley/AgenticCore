@@ -4,6 +4,11 @@ This guide starts with one question, because the two answers lead to completely
 different setup procedures: **are you adopting the framework into your own project,
 or contributing to the framework itself?**
 
+> **New to AgenticCore?** Get oriented in one place first — the
+> [Visual Overview](visual-overview.md) shows the bench hierarchy, personas,
+> workflows, and agent roster at a glance. Then come back to the routing question
+> below.
+
 ## Which Are You?
 
 Answer this before running any command below — the two paths diverge immediately,
@@ -96,7 +101,6 @@ If you are new to the framework, read this before you clone anything.
 | `git` | Version control | System package |
 | `direnv` | Credential injection | `brew install direnv` |
 | `mdbook` | Documentation build | `cargo install mdbook` |
-| `mdbook-mermaid` | Diagram rendering | `cargo install mdbook-mermaid` |
 | `pass` | Credential store (optional) | `brew install pass` |
 | `jq` | JSON processing | `brew install jq` |
 | `uv` | Python runner for MCP server | `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
@@ -208,6 +212,7 @@ The lead-engineer agent will:
 
 ## Next Steps
 
+- [Visual Overview](visual-overview.md) — the system at a glance
 - [Repository Structure](repository-structure.md) — understand the layout
 - [Agentic Workflow Overview](agentic-workflow-overview.md) — understand how work flows
 - [Bench Model](bench-model.md) — understand the namespace hierarchy

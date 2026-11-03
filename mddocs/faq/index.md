@@ -24,3 +24,6 @@ page in [`../SUMMARY.md`](../SUMMARY.md) under **# FAQ**.
 | Topic | Page |
 |---|---|
 | How is the project workspace managed? | [Workspace Management](workspace-management.md) |
+| How do I quickly get oriented with the framework? | [Orientation](orientation.md) |
+| How do diagrams render and how do I build the docs? | [Docs Build](docs-build.md) |
+| Which git hosts does the workspace sync support? | [git-sync Hosts](git-sync-hosts.md) |

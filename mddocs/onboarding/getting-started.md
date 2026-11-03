@@ -30,6 +30,25 @@ consuming a release to build something else, you are adopting.
 
 ---
 
+## Set Your Models
+
+The agent definitions and `opencode.json` use **placeholder model IDs**
+(`provider/model-*`) per [ADR-0020](../adr/adr-0020-default-model-selection.md) and
+[ADR-0021](../adr/adr-0021-per-agent-model-tiering.md). Set your real models before
+running the agent team:
+
+- **Default model** — in `opencode.json`, set `"model"` to your provider/model (e.g.
+  `anthropic/claude-sonnet-5-5`).
+- **Per-agent tiers** — specialists reference `provider/model-opus-4-8` (high-reasoning),
+  `provider/model-sonnet-5` (general), and `provider/model-haiku-4-5` (mechanical).
+  Replace these with your own provider/models to match the ADR-0021 tiering, as
+  documented in the [Agent Roster](agent-roster.md).
+
+List available models with `opencode models [provider]`. The [Agent Roster](agent-roster.md)
+is built from `.agents/_meta.yaml`, the single source of truth for these tiers.
+
+---
+
 ## Adopting the Framework
 
 **Do not `git clone` the framework repository for this.** Adoption uses a dedicated

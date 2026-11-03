@@ -154,10 +154,14 @@ the `.00` customer/HIL plane (Pattern W `attendant` + Pattern H `hil-assistant`)
 | `infra-engineer` | subagent | subagent | lead-engineer | Infrastructure, IaC, networking |
 | `ux-engineer` | subagent | subagent | lead-engineer | UI/UX, information architecture, DX |
 
+Full roster with model tiers and permission posture:
+[Agent Roster](agent-roster.md).
+
 ---
 
 ## Related
 
+- [Agent Roster](agent-roster.md)
 - [Getting Started](getting-started.md)
 - [Agentic Workflow Overview](agentic-workflow-overview.md)
 - [Bench Model](bench-model.md)

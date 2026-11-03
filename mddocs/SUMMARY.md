@@ -102,6 +102,9 @@
 
 - [FAQ Index](faq/index.md)
   - [How Is the Project Workspace Managed?](faq/workspace-management.md)
+  - [How Do I Quickly Get Oriented?](faq/orientation.md)
+  - [How Do Diagrams Render and How Do I Build the Docs?](faq/docs-build.md)
+  - [Which Git Hosts Does git-sync Support?](faq/git-sync-hosts.md)
 
 ---
 

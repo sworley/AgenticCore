@@ -18,8 +18,11 @@ Key behaviors:
 - **`-y` / `--yes`** skips the confirmation prompt for scripted or non-interactive use.
   `adopt.sh` automatically forwards `--yes` to `export-framework.sh` so the path is
   not confirmed a second time.
-- **Relative `--target` paths work** (TC-084) — e.g. `--target ./my-project.01` is
-  canonicalized to an absolute path immediately after `mkdir -p`.
+- **Relative `--target` paths work** (TC-084) — e.g. `--target ./my-project` is
+  canonicalized to an absolute path immediately after `mkdir -p` (`./my-project.01`).
+- **The `.01` management-layer suffix is always appended.** `--target` is your base
+  project name; the harness appends `.01` (so `./my-project` -> `./my-project.01`, and
+  `./myproject.v0.01` -> `./myproject.v0.01.01`).
 - **`--dry-run`** skips the confirmation prompt entirely (zero side effects end to end).
 
 ```bash

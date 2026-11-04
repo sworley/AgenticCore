@@ -71,20 +71,24 @@
 #
 # EXAMPLES
 #   # Preview only — zero side effects
-#   adopt.sh --target ~/dev/my-project.01 --slug ACME --dry-run
+#   adopt.sh --target ~/dev/my-project --slug ACME --dry-run
 #
 #   # Real run, greenfield target
-#   adopt.sh --target ~/dev/my-project.01 --slug ACME
+#   adopt.sh --target ~/dev/my-project --slug ACME
 #
 #   # Real run with a RELATIVE path (AP-084: canonicalized to absolute before use)
-#   adopt.sh --target ./my-project.01 --slug ACME
+#   adopt.sh --target ./my-project --slug ACME
 #
 #   # Non-interactive adoption (skip confirmation prompt)
-#   adopt.sh --target ~/dev/my-project.01 --slug ACME --yes
+#   adopt.sh --target ~/dev/my-project --slug ACME --yes
 #
 #   # Re-home into an existing repository, skip agent configuration (OpenCode only)
 #   adopt.sh --target ~/dev/existing-repo --slug ACME --flow rehome \
 #     
+#
+#   # The .01 management-layer suffix is always appended (base -> <base>.01):
+#   #   --target ~/dev/my-project        -> ~/dev/my-project.01
+#   #   --target ~/dev/myproject.v0.01   -> ~/dev/myproject.v0.01.01
 #
 # See also:
 #   mddocs/scripts/export-framework.sh                       (does the export)
@@ -137,11 +141,14 @@ Single-command adopter onboarding — wraps README Quick Start (Adopter)
 steps 3-7 (create target, run export, validate, generate agent configuration).
 Step 2 (clone) and Step 8 (open an agentic session) remain manual.
 
-  --target <dir>          Target directory for the adopter repo.
+  --target <dir>          Target directory (the adopter's BASE project name).
                           Prompted interactively if omitted and stdin is a
                           TTY (following AP-074's convention:
                           <workdir>/<toolset>/<host>/<group>/<project>).
                           ALWAYS confirmed before mkdir -p (skippable with -y).
+                          The `.01` management-layer suffix is ALWAYS appended:
+                          `./my-project` -> `./my-project.01`, and
+                          `./myproject.v0.01` -> `./myproject.v0.01.01`.
   --slug <SLUG>           Adopter project slug (non-empty uppercase ASCII;
                           prompted if omitted and stdin is a TTY)
   --flow empty|rehome     Pass-through to export-framework.sh
@@ -157,12 +164,13 @@ Step 2 (clone) and Step 8 (open an agentic session) remain manual.
   -h, --help              Show this help and exit
 
 Examples:
-  adopt.sh --target ~/dev/my-project.01 --slug ACME --dry-run
-  adopt.sh --target ~/dev/my-project.01 --slug ACME
-  adopt.sh --target ./my-project.01 --slug ACME         # relative path OK (AP-084)
-  adopt.sh --slug ACME                                   # prompted for --target
-  adopt.sh --target ~/dev/my-project.01 --slug ACME --yes   # no confirm
-  adopt.sh --target ~/dev/existing-repo --slug ACME --flow rehome 
+  adopt.sh --target ~/dev/my-project --slug ACME --dry-run
+  adopt.sh --target ~/dev/my-project --slug ACME
+  adopt.sh --target ./my-project --slug ACME             # relative path OK (AP-084)
+  adopt.sh --slug ACME                                    # prompted for --target
+  adopt.sh --target ~/dev/my-project --slug ACME --yes    # no confirm
+  adopt.sh --target ~/dev/existing-repo --slug ACME --flow rehome
+  # --target is the base name; .01 is appended -> <name>.01
 
 This script orchestrates existing tooling only:
   export-framework.sh    — the export/adoption logic (ADR-0015 D-7)
@@ -205,19 +213,22 @@ done
 # adopter sees a concrete, contextual example rather than an abstract template.
 # ---------------------------------------------------------------------------
 prompt_for_target() {
-  # Derive a suggested path: <cwd>/<basename-of-cwd>.01 as a minimal anchor.
+  # Derive a suggested path: <cwd>/<basename-of-cwd> as a minimal anchor (the
+  # .01 management-layer suffix is appended later by normalize_target_plane).
   # In the common "I cloned into ./AgenticCore" pattern, the cwd is the
-  # parent of the clone — this gives "~/dev/my-project.01" as a suggestion.
+  # parent of the clone — this gives "~/dev/my-project" as a suggestion.
   # Adopters running from inside the clone will see the clone dir's parent.
   local _suggested
-  _suggested="$(pwd)/$(basename "$(pwd)").01"
+  _suggested="$(pwd)/$(basename "$(pwd)")"
 
   printf '\n' >&2
   printf 'No --target supplied. Where should the adopter project directory be created?\n' >&2
   printf '\n' >&2
   printf 'AP-074 convention:  <workdir>/<toolset>/<host>/<group>/<project>\n' >&2
-  printf 'Example (full):     ~/dev/git/git.example.com/acme-group/my-project.01\n' >&2
-  printf 'Example (minimal):  ~/dev/my-project.01\n' >&2
+  printf 'Example (full):     ~/dev/git/git.example.com/acme-group/my-project\n' >&2
+  printf 'Example (minimal):  ~/dev/my-project\n' >&2
+  printf '\n' >&2
+  printf 'The .01 management-layer suffix is appended automatically (my-project -> my-project.01).\n' >&2
   printf '\n' >&2
   printf 'Suggested path:     %s\n' "$_suggested" >&2
   printf '\n' >&2
@@ -246,6 +257,26 @@ confirm_target() {
   esac
 }
 
+# ---------------------------------------------------------------------------
+# normalize_target_plane — append the `.01` management-plane suffix to TARGET.
+#
+# `--target` is the adopter's BASE project identity. The management layer is
+# ALWAYS this base + `.01` (e.g. `myproject.v0.01` -> `myproject.v0.01.01`),
+# enforced onto the `.01` namespace that the agent runtime, bench provisioning,
+# and personae all key off. Benches are provisioned as siblings of that layer in
+# the SAME parent (`myproject.v0.01.00`, `myproject.v0.01.02`, ...), matching how
+# `.00` is auto-materialized as a sibling worktree. Always appended — even when
+# the base already ends in `.01`, so a base `myproject.v0.01` becomes the
+# management layer `myproject.v0.01.01`. Apply this BEFORE the confirmation
+# prompt so the adopter sees (and confirms) the real `.01` path.
+# ---------------------------------------------------------------------------
+normalize_target_plane() {
+  TARGET="${TARGET%/}"
+  local _base
+  _base="$(basename "$TARGET")"
+  TARGET="$(dirname "$TARGET")/${_base}.01"
+}
+
 if [ -z "$TARGET" ]; then
   if [ ! -t 0 ]; then
     err "--target is required in non-interactive mode (stdin is not a tty)"
@@ -254,6 +285,14 @@ if [ -z "$TARGET" ]; then
   fi
   prompt_for_target
 fi
+
+# BASE_TARGET is the adopter's raw base name (the --target value as given).
+# When we hand off to export-framework.sh we pass THIS so export applies the
+# .01 normalization once (it is the single authority on the plane path).
+# TARGET is then normalized to the `.01` management plane for this script's own
+# confirmation / mkdir / Steps 6-7 bookkeeping.
+BASE_TARGET="$TARGET"
+normalize_target_plane
 
 # Confirm the target path (show it back, require y/N) unless --yes was passed.
 # This runs for both flag-supplied and prompted values, so doc example values
@@ -300,10 +339,13 @@ log "    framework root: $FRAMEWORK_ROOT"
 #
 # AP-085 confirmation happened above; mkdir is the first mutating operation.
 #
-# Note (not enforced): suffixing the target with .01 marks it as the
-# lead-engineer management plane namespace (see the Bench Model doc). This
-# script does not force that suffix — the adopter's --target value is used
-# exactly as given.
+# Note: suffixing the target with .01 marks it as the lead-engineer
+# management plane namespace (see the Bench Model doc). normalize_target_plane()
+# above ALWAYS appends .01 to the given base — `--target ./my-project` lands at
+# `./my-project.01`, and `--target ./myproject.v0.01` lands at
+# `./myproject.v0.01.01` (the base's own trailing .01 is part of the project
+# identity; the management-layer suffix is added on top). Benches are then
+# provisioned as siblings: `./myproject.v0.01.00`, `./myproject.v0.01.02`, ...
 #
 # --dry-run: do NOT create the directory for real (zero side effects) —
 # report only.
@@ -332,7 +374,7 @@ fi
 # export-framework.sh's own message and exit code faithfully — no retry,
 # no masking, no continuing to Steps 6-7.
 # ---------------------------------------------------------------------------
-EXPORT_ARGS=(--target "$TARGET" --slug "$SLUG")
+EXPORT_ARGS=(--target "$BASE_TARGET" --slug "$SLUG")
 [ -n "$FLOW" ] && EXPORT_ARGS+=(--flow "$FLOW")
 [ "$DRY_RUN" -eq 1 ] && EXPORT_ARGS+=(--dry-run)
 [ "$FORCE" -eq 1 ] && EXPORT_ARGS+=(--force)

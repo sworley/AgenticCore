@@ -82,6 +82,12 @@ bench number and branch are fixed:
 - Branch: `workspace/owner` (created with `-b` if it does not already exist; reused if
   a `workspace/owner` branch is already present — e.g. after a prior `.00` teardown)
 
+The `.00` worktree is created as a **sibling of the management plane** in the same
+parent directory: `provision-bench.sh` strips the trailing `.NN` suffix from the repo
+root (`.01`) to derive the base name, then appends `.00` — so a management plane at
+`AgenticCore.v0.02.01` provisions `.00` at `AgenticCore.v0.02.00` (and `.02`+ workers
+the same way).
+
 Pattern H materializes two overlay files in the new `.00` worktree, both tracked but
 excluded from `git status` via `update-index --skip-worktree` (same mechanism as
 Pattern A's `AGENT.md`):

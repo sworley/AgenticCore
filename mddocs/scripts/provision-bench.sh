@@ -177,7 +177,12 @@ fi
 
 # Derive paths
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-PROJECT_NAME="$(basename "$REPO_ROOT" | sed 's/\.v[0-9]*$//')"
+# Derive the base project name by stripping the trailing .NN bench suffix
+# (e.g. AgenticCore.01 -> AgenticCore, AgenticCore.v0.02.01 -> AgenticCore.v0.02).
+# This matches git-sync.sh and the documented ".01 management plane, benches are
+# siblings (<base>.00/.02)" convention. (Was previously stripping a .vNN version
+# suffix, which broke versioned base names like AgenticCore.v0.02.)
+PROJECT_NAME="$(basename "$REPO_ROOT" | sed 's/\.[0-9]*$//')"
 PARENT_DIR="$(dirname "$REPO_ROOT")"
 
 if [ "$PATTERN" = "h" ]; then

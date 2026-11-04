@@ -104,6 +104,13 @@ the script's next-steps output reminds the operator of this. `.00` and `.01` are
 torn down (see [Bench Model](../onboarding/bench-model.md)); `locked: true` is the
 signal that blocks any accidental `git worktree remove`.
 
+**First-startup auto-provision:** a fresh project has no `.00` yet. At session open the
+`.01` lead-engineer provisions `.00` automatically (runs `provision-bench.sh --pattern h`
+and registers it with `locked: true`) rather than deferring to the operator. This is the
+sole exception to the "`.00` is HIL-owned" rule — after `.00` exists it is HIL-owned and
+never reprovisioned (use the [in-place overlay refresh](#in-place-00-overlay-refresh) if
+`.01` config changes).
+
 ### Step 3 — Bench files (automatic)
 
 `provision-bench.sh` creates two bench-identity files automatically:

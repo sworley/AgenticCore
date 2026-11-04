@@ -245,7 +245,7 @@ else
   echo "-- Group 5: end-to-end CLI smoke test (real throwaway worktree) --"
 
   PARENT_DIR="$(dirname "$FRAMEWORK_ROOT")"
-  PROJECT_NAME="$(basename "$FRAMEWORK_ROOT" | sed 's/\.v[0-9]*$//')"
+  PROJECT_NAME="$(basename "$FRAMEWORK_ROOT" | sed 's/\.[0-9]*$//')"
   E2E_BENCH_A="98"
   E2E_BENCH_W="99"
   E2E_DIR_A="${PARENT_DIR}/${PROJECT_NAME}.${E2E_BENCH_A}"

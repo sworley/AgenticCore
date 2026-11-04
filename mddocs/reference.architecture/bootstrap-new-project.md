@@ -63,13 +63,20 @@ If the target directory exists, is non-empty, and is **not** a git repository, f
 detection is ambiguous and the script stops rather than guessing — pass `--flow`
 explicitly.
 
-> **Name the target with a `.01` suffix.** For a management-plane adoption, suffix the
-> `--target` directory with `.01` (e.g. `~/dev/my-project.01`). This marks it as the
-> lead-engineer `.01` namespace: the agent runtime recognizes `.01` and operates as
-> `lead-engineer` within it, and tooling such as `git-sync.sh` derives your
-> project/group name by stripping the `.NN` suffix. The **slug** is your project
-> identity and does not carry the suffix — only the directory does. See the
+> **Give the base project name; the `.01` suffix is appended automatically.** `--target`
+> is your *base* project name (e.g. `~/dev/my-project`, or `~/dev/myproject.v0.01`). The
+> harness ALWAYS appends `.01` to form the lead-engineer management layer — `./my-project`
+> becomes `./my-project.01`, and `./myproject.v0.01` becomes `./myproject.v0.01.01` (a base
+> that already ends in `.01` still gets the management-layer `.01` on top). The `.01`
+> namespace matters: the agent runtime recognizes `.01` and operates as `lead-engineer`
+> within it, and tooling such as `git-sync.sh` derives your project/group name by stripping
+> the trailing `.NN` suffix. The **slug** is your project identity and does **not** carry
+> the suffix — only the directory does. See the
 > [Bench Model](../onboarding/bench-model.md) for the full `.00`/`.01`/`.02`+ hierarchy.
+>
+> `.00` (HIL) and `.02`+ (worker) benches are then provisioned as siblings of that layer
+> in the same parent (`myproject.v0.01.00`, `myproject.v0.01.02`, ...);
+> `provision-bench.sh` derives the base name by stripping the trailing `.NN` suffix.
 
 ---
 
@@ -131,14 +138,15 @@ Type `y` to proceed. Any other input aborts with no side effects.
 > In non-interactive mode (stdin not a TTY), `--target` is required; the script
 > fails immediately with exit code 1 if it is omitted.
 
-> **Relative paths work:** `--target ./my-project.01` is valid — the path is
-> canonicalized to an absolute path immediately after `mkdir -p` (TC-084), so
-> downstream steps (validation, agent configuration generation) are always working
-> against the correct location.
+> **Relative paths work:** `--target ./my-project` is valid — the `.01` management-layer
+> suffix is appended (`./my-project.01`) and the path is canonicalized to an absolute path
+> immediately after `mkdir -p` (TC-084), so downstream steps (validation, agent
+> configuration generation) are always working against the correct location.
 
 > **Choosing your target path:** See [Choosing your target path](#choosing-your-target-path)
 > below for the recommended TC-074 path convention. A simple flat path such as
-> `~/dev/my-project.01` is fully supported and is what the README Quick Start uses.
+> `~/dev/my-project` is fully supported and is what the README Quick Start uses — the
+> management layer `.01` is appended automatically.
 
 `adopt.sh` orchestrates `export-framework.sh` — it does not reimplement any part of
 the export or its D-7 confidentiality controls. A non-zero exit from

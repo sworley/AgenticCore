@@ -198,13 +198,15 @@ prompt_for_target() {
     exit 1
   fi
   local _suggested
-  _suggested="$(pwd)/$(basename "$(pwd)").01"
+  _suggested="$(pwd)/$(basename "$(pwd)")"
   printf '\n' >&2
   printf 'No --target supplied. Where should the adopter project directory be created?\n' >&2
   printf '\n' >&2
   printf 'TC-074 convention:  <workdir>/<toolset>/<host>/<group>/<project>\n' >&2
-  printf 'Example (full):     ~/dev/git/git.example.com/acme-group/my-project.01\n' >&2
-  printf 'Example (minimal):  ~/dev/my-project.01\n' >&2
+  printf 'Example (full):     ~/dev/git/git.example.com/acme-group/my-project\n' >&2
+  printf 'Example (minimal):  ~/dev/my-project\n' >&2
+  printf '\n' >&2
+  printf 'The .01 management-layer suffix is appended automatically (my-project -> my-project.01).\n' >&2
   printf '\n' >&2
   printf 'Suggested path:     %s\n' "$_suggested" >&2
   printf '\n' >&2
@@ -229,6 +231,27 @@ confirm_target() {
       exit 1
       ;;
   esac
+}
+
+# ---------------------------------------------------------------------------
+# normalize_target_plane — append the `.01` management-plane suffix to TARGET.
+#
+# `--target` is the adopter's BASE project identity. The management layer is
+# ALWAYS this base + `.01` (e.g. `myproject.v0.01` -> `myproject.v0.01.01`), so
+# adoption is enforced onto the `.01` namespace that the agent runtime, bench
+# provisioning (provision-bench.sh), and the personae all key off. Benches are
+# then provisioned as siblings of that layer in the SAME parent
+# (`myproject.v0.01.00`, `myproject.v0.01.02`, ...). The base name is the
+# adopter's own choice; only the `.01` layer suffix is appended here — ALWAYS,
+# even when the base already ends in `.01`, so a base `myproject.v0.01` becomes
+# the management layer `myproject.v0.01.01` (the base's own `.01` is part of the
+# project identity, not (yet) a management-plane suffix).
+# ---------------------------------------------------------------------------
+normalize_target_plane() {
+  TARGET="${TARGET%/}"
+  local _base
+  _base="$(basename "$TARGET")"
+  TARGET="$(dirname "$TARGET")/${_base}.01"
 }
 
 # NOTE: prompt_for_target / confirm_target are called inside the
@@ -1640,6 +1663,9 @@ if [ "${EXPORT_FRAMEWORK_SOURCED:-0}" != "1" ]; then
   # Runs inside this guard so sourcing (EXPORT_FRAMEWORK_SOURCED=1) never
   # triggers interactive prompts or the mkdir decision point.
   prompt_for_target
+  # Normalize to the `.01` management-plane namespace before anything else
+  # (confirmation, identity guard, flow detection) sees the path.
+  normalize_target_plane
   if [ "$DRY_RUN" -eq 0 ] && [ "$YES" -eq 0 ]; then
     confirm_target
   fi

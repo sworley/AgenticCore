@@ -97,7 +97,7 @@ Still in your working directory, `adopt.sh` wraps steps 3-7 (create target, run
 export, validate, generate AI toolchain settings) into a single call:
 
 ```sh
-bash ./AgenticCore/mddocs/scripts/setup/adopt.sh --target ./my-project.01 --slug MYPROJECT
+bash ./AgenticCore/mddocs/scripts/setup/adopt.sh --target ./my-project --slug MYPROJECT
 ```
 
 The script echoes the resolved target path and asks you to confirm before creating
@@ -113,13 +113,21 @@ framework export. Confirm? [y/N]
 Type `y` and press Enter to proceed. If the path is wrong, press Enter (or type
 anything other than `y`/`yes`) to abort — then re-run with the correct `--target`.
 
+> **The `.01` management-layer suffix is always appended.** `--target` is your *base*
+> project name; the harness appends `.01` to create the lead-engineer management layer.
+> So `--target ./my-project` becomes `./my-project.01`, and `--target ./myproject.v0.01`
+> becomes `./myproject.v0.01.01` (a base that already ends in `.01` still gets the
+> management-layer `.01` on top). `.00` (HIL) and `.02`+ (worker) benches are then
+> provisioned as siblings in the same parent: `./myproject.v0.01.00`, `./myproject.v0.01.02`,
+> ... The base name is your own choice; only the `.01` layer suffix is enforced at adoption.
+
 > **Scripted / non-interactive use:** pass `-y` / `--yes` to skip the confirmation
 > prompt. Use this in CI pipelines or wrapper scripts where the path is already
 > validated by the caller:
 >
 > ```sh
 > bash ./AgenticCore/mddocs/scripts/setup/adopt.sh \
->   --target ./my-project.01 --slug MYPROJECT --yes
+>   --target ./my-project --slug MYPROJECT --yes
 > ```
 >
 > In non-interactive mode (stdin not a TTY) without `--yes`, the script fails
@@ -129,7 +137,7 @@ Preview first with `--dry-run` (zero side effects — reports what would happen,
 nothing; skips the confirmation prompt automatically):
 
 ```sh
-bash ./AgenticCore/mddocs/scripts/setup/adopt.sh --target ./my-project.01 --slug MYPROJECT --dry-run
+bash ./AgenticCore/mddocs/scripts/setup/adopt.sh --target ./my-project --slug MYPROJECT --dry-run
 ```
 
 `adopt.sh` orchestrates existing tooling only — it calls `export-framework.sh` for the
@@ -140,13 +148,13 @@ with no further steps run. Full reference:
 <details>
 <summary>What it does / manual path (steps 3-7 explicit)</summary>
 
-#### 3. Create your target project directory
+#### 3. Create your base target directory
 
-Suffix the directory with `.01` — this marks it as your **lead-engineer management
-plane** (the `.01` namespace):
+Name the target with your *base* project name. The export appends the `.01` management
+plane suffix automatically (given `./my-project`, it creates `./my-project.01`):
 
 ```sh
-mkdir -p ./my-project.01
+mkdir -p ./my-project
 ```
 
 > **Why `.01`?** The `.01` suffix marks this as your lead-engineer management plane —
@@ -157,7 +165,9 @@ mkdir -p ./my-project.01
 > [Bench Model](mddocs/onboarding/bench-model.md) for the full namespace hierarchy.
 >
 > The **slug** (below) is your project identity and does **not** carry the suffix —
-> only the directory does.
+> only the directory does. The `.01` layer suffix is appended automatically at adoption
+> (even a base that already ends in `.01`, e.g. `myproject.v0.01`, becomes the management
+> layer `myproject.v0.01.01`).
 
 #### 4. Run the export into your target
 
@@ -165,7 +175,7 @@ Still in your working directory, run the export by relative path — `export-fra
 auto-detects Flow A (empty-dir init) or Flow B (re-home into an existing repo):
 
 ```sh
-./AgenticCore/mddocs/scripts/export-framework.sh --target ./my-project.01 --slug MYPROJECT
+./AgenticCore/mddocs/scripts/export-framework.sh --target ./my-project --slug MYPROJECT
 ```
 
 The script echoes the resolved target path and requires `y` confirmation before

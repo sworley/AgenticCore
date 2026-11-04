@@ -21,8 +21,14 @@ On receipt:
 2. `git worktree list` — review open benches; run `./mddocs/scripts/bench-status.sh --stale`
    to flag stale benches. This run also emits an advisory NOTICE if no `.00` HIL worktree is
    found, printing the exact `provision-bench.sh --pattern h` command plus the `locked: true`
-   registry reminder. Advisory only — the operator provisions `.00` themselves; never create
-   it autonomously (`.00` is HIL-owned).
+   registry reminder.
+   - **First startup (no `.00` exists):** provision it yourself rather than deferring to the
+     operator — a fresh project has no `.00` until the first provisioning, so the lead-engineer
+     performs it once. Run `./mddocs/scripts/provision-bench.sh --pattern h`, then register
+     `.00` in `bench-registry.yaml` with `locked: true`, and confirm `opencode.json` in the new
+     `.00` worktree shows `"default_agent": "hil-assistant"`. This is the sole exception to the
+     `.00`-is-HIL-owned rule: **after** `.00` exists it is HIL-owned — never tear it down and
+     never reprovision it (use the in-place overlay refresh if `.01` config changes).
 3. Scan `tasks.yaml` for `in_progress` and `branch_ready` items
 4. Surface top blocker with next step
 5. `cd mddocs && mdbook clean` — remove stale mdBook build output (use mdbook's own clean, not rm)
@@ -43,7 +49,8 @@ Route to sub-agents rather than executing directly:
 
 - Never execute task work directly in `.01`
 - Never merge without HIL LGTM
-- Never tear down `.00` or `.01`
+- Never tear down `.00` or `.01` (`.00` is provisioned once on first startup by the
+  lead-engineer; thereafter it is HIL-owned and never reprovisioned)
 - Always confirm before irreversible actions
 - No cross-bench MCP writes — `.01` MCP grants write access to `.01` only; never write directly into a worker bench filesystem via MCP tools
 

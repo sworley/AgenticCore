@@ -97,7 +97,7 @@ if ! git worktree list --porcelain | grep -qE '^worktree .*\.00$'; then
   echo "NOTICE: no .00 HIL worktree found."
   echo "  The .00 management plane is the HIL's personal workspace (Pattern H, branch"
   echo "  workspace/owner). A fresh workspace does not have it until it is provisioned."
-  echo "  Provision it with:"
+  echo "  On first startup the lead-engineer provisions it automatically — run:"
   echo "    ./mddocs/scripts/provision-bench.sh --pattern h"
   echo "  Then register .00 in bench-registry.yaml with \`locked: true\` so the"
   echo "  worktree-teardown guardrail protects it from day one."

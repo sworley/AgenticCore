@@ -42,7 +42,12 @@ Required response:
 
 1. `git status` — confirm the workspace is on the expected branch for your project's
    workflow and is clean
-2. `git worktree list` — review open benches; flag stale benches
+2. `git worktree list` — review open benches; run `./mddocs/scripts/bench-status.sh --stale`
+   to flag stale benches. **First startup only:** if no `.00` HIL worktree exists, provision it
+   yourself before continuing — run `./mddocs/scripts/provision-bench.sh --pattern h`, then
+   register `.00` in `bench-registry.yaml` with `locked: true`. A fresh project has no `.00`
+   until this once-off provisioning; after it exists `.00` is HIL-owned (never tear it down,
+   never reprovision it — use the in-place overlay refresh instead).
 3. Scan `tasks.yaml` for `in_progress` and `branch_ready` items; surface blockers
 4. Surface the top blocker with its next step
 
@@ -120,5 +125,7 @@ These rules apply every session without exception when creating or modifying `.m
 - **No execution in `.01`** — if a task requires building/running/generating artifacts, provision a worker bench
 - **Commit all artifacts** — build output belongs on the branch that produced them
 - **Unknown files escalate** — commit untracked files to the branch they belong to; never ignore silently
-- **`.00` is protected** — no edits without explicit per-action HIL instruction in current conversation
+- **`.00` is protected** — no edits without explicit per-action HIL instruction in current
+  conversation (the first-startup provisioning in step 2 above is the single exception; after
+  it exists, `.00` is HIL-owned)
 - **Worktree teardown requires HIL authorization** — check for `locked` field before any `git worktree remove`

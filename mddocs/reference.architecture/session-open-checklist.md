@@ -71,8 +71,12 @@ Stale benches should be torn down via the session-close checklist before proceed
 
 `bench-status.sh` also flags a missing `.00` HIL worktree with an advisory NOTICE
 (on both the normal run and `--stale`) and prints the exact command to provision
-one — `./mddocs/scripts/provision-bench.sh --pattern h`. This is advisory only: the
-script never creates or modifies `.00` itself; the operator runs the command. See
+one — `./mddocs/scripts/provision-bench.sh --pattern h`. **On first startup** (no
+`.00` yet) the lead-engineer provisions `.00` itself rather than deferring to the
+operator: run `provision-bench.sh --pattern h`, register `.00` in `bench-registry.yaml`
+with `locked: true`, and confirm the new `.00` opens as `hil-assistant`. After `.00`
+exists it is HIL-owned — never torn down, never reprovisioned. The script itself never
+creates or modifies `.00`; the lead-engineer runs the command. See
 [Pattern H — provisioning the `.00` HIL worktree](provision-worker-bench.md#pattern-h--provisioning-the-00-hil-worktree).
 
 ### Step 4 — Scan task queue
@@ -126,7 +130,7 @@ Session open is complete when:
 - [ ] `git-sync.sh` completed (or skipped with reason)
 - [ ] `git status` shows clean `dev` (or `main` at release cutover)
 - [ ] All open benches are accounted for; no stale benches flagged
-- [ ] `.00` HIL worktree present, or its absence surfaced with the provision command
+- [ ] `.00` HIL worktree present (provisioned automatically on first startup if absent); the provision command ran if it was missing
 - [ ] Top task surfaced to HIL
 - [ ] Both review ledger paths queried; escalations (>7 days) surfaced to HIL
 - [ ] `mddocs/book/` removed

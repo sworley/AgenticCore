@@ -639,9 +639,9 @@ fi
 # reference material that ships with every export). A whole-tree grep for
 # `TC-0`/`SF-0`/`RF-0` would false-positive on those files immediately.
 # Instead this scopes to exactly the files that MUST be adopter-clean
-# per FRAMEWORK_EXCLUDE_PATTERNS/SEED_RELATIVE_PATHS: tasks.yaml, .security/,
-# .reviews/, bench-registry.yaml, .core/agents/_context.md,
-# mddocs/backlog.md — plus a direct existence check that .bench/,
+# per FRAMEWORK_EXCLUDE_PATTERNS/SEED_RELATIVE_PATHS: tasks.yaml,
+# bench-registry.yaml, .core/agents/_context.md, mddocs/backlog.md — plus
+# a direct existence check that .bench/,
 # relay-pending.md, and .core/work/ never reached the adopter working tree at
 # all (SF-124).
 #
@@ -711,16 +711,16 @@ fi
 # adopter-clean CONTENT — an exclude-only entry must be completely ABSENT
 # from the exported tree.
 #
-# Directory-ancestor match (not exact-only) is required because some
-# exclude entries are DIRECTORIES that are excluded wholesale but only
-# PARTIALLY reconstructed by seeding — e.g. ".security" (the directory) is
-# in FRAMEWORK_EXCLUDE_PATTERNS, while SEED_RELATIVE_PATHS seeds two files
-# underneath it individually (".security/findings.yaml",
-# ".security/reviewer-log.yaml"). An exact-match-only comparison would
-# wrongly classify ".security" itself as exclude-only (nothing in
-# SEED_RELATIVE_PATHS equals the literal string ".security"), which would
-# then make the absence check below FALSE-FAIL on every real export (the
-# directory legitimately exists post-seed, holding the two seeded files).
+# Directory-ancestor match (not exact-only) is kept as a defensive
+# generality: if a future exclude entry is a DIRECTORY that is excluded
+# wholesale but only PARTIALLY reconstructed by seeding (a directory
+# ancestor of one or more SEED_RELATIVE_PATHS entries), an exact-match-only
+# comparison would wrongly classify that directory itself as exclude-only,
+# which would then make the absence check below FALSE-FAIL on every real
+# export (the directory legitimately exists post-seed, holding the seeded
+# files). There is no such case today — every seeded path is an exact file
+# match and every directory exclude entry is exclude-only — but the match
+# stays so a future partially-seeded directory cannot trip the harness.
 #
 # ".git" is deliberately excluded from this derived set even though it IS
 # in FRAMEWORK_EXCLUDE_PATTERNS (the framework's own .git must never be

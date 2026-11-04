@@ -981,24 +981,25 @@ FRAMEWORK_EXCLUDE_PATTERNS=(
   ".work"
   "mddocs/book"
   # SF-117/SF-122 — framework LIVE OPERATIONAL STATE must never land in the
-  # adopter tree: the framework's own task queue (69 AP-* tickets),
-  # security/review ledgers (findings + reviewer runs + pending-sf-*.yaml
-  # sidecars), and the framework's own populated shared-context file. These
-  # are excluded here and SEEDED with adopter-generic empty starting files
-  # by seed_adopter_state() below (see seed_adopter_state's own header for
-  # the seed-template inventory). mddocs/adr is deliberately NOT excluded —
-  # ADRs are reference material that must continue to ship (D-4/D-6).
+  # adopter tree: the framework's own task queue (69 AP-* tickets) and the
+  # framework's own populated shared-context file. These are excluded here
+  # and SEEDED with adopter-generic empty starting files by
+  # seed_adopter_state() below (see seed_adopter_state's own header for the
+  # seed-template inventory). The review ledgers (`.security`/`.reviews`)
+  # were reconciled to `.core/review-ledger/{security,reviews}`, which ship
+  # wired via .gitkeep and are NOT excluded (the framework's authoring does
+  # not use them, so there is no operational state to scrub). mddocs/adr is
+  # deliberately NOT excluded — ADRs are reference material that must
+  # continue to ship (D-4/D-6).
   "tasks.yaml"
-  ".security"
-  ".reviews"
   ".core/agents/_context.md"
   # SF-123 — bench-registry.yaml is the framework's own LIVE bench-provenance
   # record: it names internal AP-* ticket IDs, security/review finding IDs
   # (SF-*, RF-*), reviewer-run IDs (SR-*, RR-*), commit SHAs, and teardown
   # narrative for every bench this framework repo has ever provisioned for
-  # itself. Same leak class as tasks.yaml/.security/.reviews above — excluded
-  # here and SEEDED with an adopter-generic template by seed_adopter_state()
-  # below (see mddocs/scripts/seed/bench-registry.yaml).
+  # itself. Same leak class as tasks.yaml/.core/agents/_context.md above —
+  # excluded here and SEEDED with an adopter-generic template by
+  # seed_adopter_state() below (see mddocs/scripts/seed/bench-registry.yaml).
   "bench-registry.yaml"
   # SF-124 — .bench/ and relay-pending.md are ON-DISK framework operational
   # state (bench assignment, cross-bench relay notes). Both are already
@@ -1063,18 +1064,23 @@ copy_framework_content() {
 # SF-117/SF-122/SF-123/SF-127 — Adopter state seeding.
 #
 # The paths excluded from copy_framework_content above that carry an
-# adopter-generic replacement (tasks.yaml, .security, .reviews,
-# .core/agents/_context.md, bench-registry.yaml — SF-123 added the
-# last of these, mddocs/backlog.md — SF-127 added this one) are the
-# framework's own LIVE OPERATIONAL STATE and must never land in an adopter
-# tree verbatim. seed_adopter_state() replaces them
-# with adopter-generic, EMPTY (or schema-only) starting files from
+# adopter-generic replacement (tasks.yaml, .core/agents/_context.md,
+# bench-registry.yaml — SF-123 added this one, mddocs/backlog.md — SF-127
+# added this one) are the framework's own LIVE OPERATIONAL STATE and must
+# never land in an adopter tree verbatim. seed_adopter_state() replaces
+# them with adopter-generic, EMPTY (or schema-only) starting files from
 # mddocs/scripts/seed/ — one seed template per excluded path, mirrored at
 # the same relative path under seed/ as it has in the adopter target (e.g.
-# seed/.security/findings.yaml -> <target>/.security/findings.yaml), so the
-# mapping here is a straight relative-path copy, not a lookup table.
+# seed/.core/agents/_context.md -> <target>/.core/agents/_context.md), so
+# the mapping here is a straight relative-path copy, not a lookup table.
 # (.bench and relay-pending.md are excluded too but NOT seeded — see their
 # FRAMEWORK_EXCLUDE_PATTERNS entries above for why.)
+#
+# NOTE — the review ledgers (`.security`, `.reviews`) are NOT seeded. The
+# ledgers were reconciled to `.core/review-ledger/{security,reviews}` and
+# ship wired via their .gitkeep placeholders; the framework's own authoring
+# does not use them, so there is no framework operational state to scrub
+# and nothing to seed in their place.
 #
 # Every seed template uses the `__SLUG__` placeholder token (same
 # convention as the pre-existing mddocs/scripts/seed/tasks.yaml), which
@@ -1086,10 +1092,6 @@ copy_framework_content() {
 # ---------------------------------------------------------------------------
 SEED_RELATIVE_PATHS=(
   "tasks.yaml"
-  ".security/findings.yaml"
-  ".security/reviewer-log.yaml"
-  ".reviews/findings.yaml"
-  ".reviews/reviewer-log.yaml"
   ".core/agents/_context.md"
   # SF-123 — bench-registry.yaml (see FRAMEWORK_EXCLUDE_PATTERNS above).
   "bench-registry.yaml"
@@ -1497,8 +1499,8 @@ do_flow_rehome() {
   # of these files where it didn't already exist.
   #
   # SF-117/SF-122/SF-123/SF-127 — the seed_adopter_state() paths (tasks.yaml,
-  # .security/*, .reviews/*, .core/agents/_context.md,
-  # bench-registry.yaml, mddocs/backlog.md) are DIFFERENT again: they ARE in
+  # .core/agents/_context.md, bench-registry.yaml, mddocs/backlog.md) are
+  # DIFFERENT again: they ARE in
   # FRAMEWORK_EXCLUDE_PATTERNS, so
   # write_framework_manifest's walk of the throwaway scratch copy never
   # saw them at all (they were tar --exclude'd before the scratch copy was

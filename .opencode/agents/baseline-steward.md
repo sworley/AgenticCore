@@ -2,7 +2,6 @@
 description: Owns the AgenticCore framework improvement lifecycle — governance, baseline versioning, propagation guidance, and release coordination. Never operates in customer project benches or touches deployment tooling.
 mode: subagent
 permission:
-  bash: ask
   edit: allow
 ---
 

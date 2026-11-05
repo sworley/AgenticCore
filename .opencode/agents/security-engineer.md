@@ -2,7 +2,6 @@
 description: Security controls, hook logic, and security-relevant configuration. Implements and maintains security tooling.
 mode: subagent
 permission:
-  bash: ask
   edit: allow
 ---
 

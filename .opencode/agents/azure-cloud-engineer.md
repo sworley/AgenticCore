@@ -2,7 +2,6 @@
 description: Cloud architecture specialist — IaC authoring (Bicep/ARM/Terraform), Well-Architected design, regional/sovereign availability and compliance-aware resource selection.
 mode: subagent
 permission:
-  bash: ask
   edit: allow
 ---
 

@@ -2,7 +2,6 @@
 description: Operational scripts, automation, developer environment tooling, and runbook implementation.
 mode: subagent
 permission:
-  bash: ask
   edit: allow
 ---
 

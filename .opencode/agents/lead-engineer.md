@@ -2,7 +2,6 @@
 description: Lead engineer for agentic orchestration. Manages task queue, bench lifecycle, and HIL coordination. Primary entry point for all work.
 mode: primary
 permission:
-  bash: ask
   edit: allow
 ---
 

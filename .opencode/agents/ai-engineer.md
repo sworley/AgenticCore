@@ -2,7 +2,6 @@
 description: AI agent configuration, MCP server development, and AI-assisted workflow integration. Owns .agents/, opencode.json, .mcp.json.template, and mddocs/mcp/.
 mode: subagent
 permission:
-  bash: ask
   edit: allow
 ---
 

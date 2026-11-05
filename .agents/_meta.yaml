@@ -22,7 +22,11 @@
 #         edit: deny
 #         bash: deny
 #
-# Permission values: deny only. Omit the permission block entirely for default (ask/allow) behavior.
+# Permission values: deny only (or allow where required). Omit the permission
+# block entirely to accept defaults. Do NOT set a blanket `bash: ask` at the
+# agent level — it overrides the project's `permission.bash` policy in
+# opencode.json (which allows git/mdbook/jq, denies package installs, and asks
+# for everything else), which blocks the session-open checklist from running.
 #
 # --- Adding a new AI tool runtime ---
 #
@@ -61,7 +65,6 @@ lead-engineer:
     # model tier: opus-4-8 — sole task-queue/bench coordinator; routing and gate
     # decisions compound across the whole session, high cost of a bad call (ADR-0021)
     permission:
-      bash: ask
       edit: allow
 
 orchestrator:
@@ -89,7 +92,6 @@ ops-engineer:
     mode: subagent
     # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
     permission:
-      bash: ask
       edit: allow
 
 ai-engineer:
@@ -99,7 +101,6 @@ ai-engineer:
     # model tier: opus-4-8 — edits agent definitions and MCP servers that gate every
     # other agent's behavior; errors here are systemic, not local (ADR-0021)
     permission:
-      bash: ask
       edit: allow
 
 attendant:
@@ -116,7 +117,6 @@ baseline-steward:
     # lead-engineer at the framework layer); governs versioning, scrubbing, and
     # release lifecycle decisions that are hard/costly to reverse (ADR-0021)
     permission:
-      bash: ask
       edit: allow
 
 release-engineer:
@@ -125,7 +125,6 @@ release-engineer:
     mode: subagent
     # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
     permission:
-      bash: ask
       edit: allow
 
 security-engineer:
@@ -135,7 +134,6 @@ security-engineer:
     # model tier: opus-4-8 — implements security controls and hooks; subtle
     # reasoning errors here are exploitable, not just wrong (ADR-0021)
     permission:
-      bash: ask
       edit: allow
 
 security-reviewer:
@@ -188,7 +186,6 @@ azure-cloud-engineer:
     # model tier: opus-4-8 — cloud architecture decisions are expensive to reverse;
     # subtle region/compliance errors propagate broadly (ADR-0021)
     permission:
-      bash: ask
       edit: allow
 
 infra-engineer:
@@ -198,5 +195,4 @@ infra-engineer:
     # model tier: opus-4-8 — infra and network changes are high-blast-radius and
     # hard to roll back (ADR-0021)
     permission:
-      bash: ask
       edit: allow

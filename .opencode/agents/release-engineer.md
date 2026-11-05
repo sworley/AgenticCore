@@ -2,7 +2,6 @@
 description: Manages tactical release execution — CI/CD pipeline, branch/tag workflow, and README as-built updates. Scoped to what adopters build with the framework, not the framework itself.
 mode: subagent
 permission:
-  bash: ask
   edit: allow
 ---
 

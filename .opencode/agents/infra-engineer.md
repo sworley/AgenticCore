@@ -2,7 +2,6 @@
 description: Infrastructure engineer — owns all IaC, networking, deployment, and resource lifecycle across cloud and on-premises environments.
 mode: subagent
 permission:
-  bash: ask
   edit: allow
 ---
 

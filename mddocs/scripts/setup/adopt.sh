@@ -142,8 +142,8 @@ REGEN=0       # 1 when --regen: regenerate agents/models (skip export on existin
 
 usage() {
   cat >&2 << 'EOF'
-Usage: adopt.sh [--target <dir>] --slug <SLUG> [--flow empty|rehome] [--dry-run]
-                [--force]  [-y|--yes]
+Usage: adopt.sh [--target <dir>] --slug <SLUG> [--flow empty|rehome] [--tool none|opencode|codex]
+                [--regen] [--dry-run] [--force]  [-y|--yes]
 
 Single-command adopter onboarding — wraps README Quick Start (Adopter)
 steps 3-7 (create target, run export, validate, generate agent configuration).
@@ -176,7 +176,6 @@ Step 2 (clone) and Step 8 (open an agentic session) remain manual.
   --force                 Pass-through to export-framework.sh (scoped by
                           export-framework.sh to the Flow B dirty-tree
                           guard ONLY)
-                          use if you plan to use OpenCode only
   -y, --yes               Skip the mkdir confirmation prompt (non-interactive
                           / scripted adoption)
   -h, --help              Show this help and exit
@@ -190,6 +189,7 @@ Examples:
   adopt.sh --target ~/dev/existing-repo --slug ACME --flow rehome
   adopt.sh --target ~/dev/my-project --slug ACME --tool opencode   # generate opencode adapter
   adopt.sh --target ~/dev/my-project --slug ACME --tool codex      # generate codex adapter
+  adopt.sh --target ~/dev/my-project --tool opencode --regen       # refresh agents/models in place
   # --target is the base name; .01 is appended -> <name>.01
 
 This script orchestrates existing tooling only:

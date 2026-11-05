@@ -8,11 +8,22 @@
 ## Overview
 
 This runbook covers the one-time MCP configuration steps required after cloning
-AgenticCore or provisioning a new bench. The framework ships with one MCP server:
-`mcp-rag-docs` — a local BM25 search server for the `mddocs/` corpus.
+AgenticCore or provisioning a new bench. The framework ships with **three** MCP
+server entries, configured **inline** in `opencode.json` (read directly by
+OpenCode; no `.mcp.json` generation step is needed):
 
-See [ADR-0002](../adr/adr-0002-mcp-rag-docs.md) for design decisions.
-See [ADR-0003](../adr/adr-0003-mcp-stdio-architecture.md) for the stdio architecture rationale.
+| opencode.json entry | Server | Purpose |
+|---------------------|--------|---------|
+| `rag-docs` | `mddocs/mcp/mcp-rag-docs/server.py` | BM25 search over the `mddocs/` corpus |
+| `review-ledger-security` | `mcp/review-ledger/server.py` | Security findings/review ledger (data path `.core/review-ledger/security`, prefixes `SF`/`SR`) |
+| `review-ledger-reviews` | `mcp/review-ledger/server.py` | Review ledger (data path `.core/review-ledger/reviews`, prefixes `RF`/`RR`) |
+
+The `review-ledger` server is launched as two instances, each bound to a dedicated
+backing path and ID/run prefix.
+
+See [ADR-0002](../adr/adr-0002-mcp-rag-docs.md), the
+[review-ledger runbook](../operations/runbooks/review-ledger-runbook.md), and
+[ADR-0003](../adr/adr-0003-mcp-stdio-architecture.md) for the stdio architecture rationale.
 
 ---
 
@@ -23,30 +34,28 @@ See [ADR-0003](../adr/adr-0003-mcp-stdio-architecture.md) for the stdio architec
 | `uv` | `which uv` | `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
 
 `uv` must be on `PATH`. It is used to launch `server.py` at session start and to
-resolve `fastmcp` into an isolated dependency cache on first run.
+resolve dependencies into an isolated cache on first run.
 
 ---
 
 ## Step 1 — Warm the dependency cache (first run only)
 
-On the first invocation, `uv` downloads `fastmcp==3.4.2` and its dependencies
-(~4–6 MB). All subsequent session starts are fully offline.
+On the first invocation, `uv` downloads each server's dependencies. Subsequent
+session starts are fully offline.
 
 ```bash
 # Run from the repository root
 uv run mddocs/mcp/mcp-rag-docs/server.py --docs-root mddocs &
 sleep 15 && kill %1
+
+uv run mcp/review-ledger/server.py --data-path .core/review-ledger/security --id-prefix SF --run-prefix SR &
+sleep 15 && kill %1
 ```
 
-Wait for these two lines to appear on stderr before killing:
-
-```
-[mcp-rag-docs] corpus root: /abs/path/to/mddocs
-[mcp-rag-docs] indexed NNN sections from /abs/path/to/mddocs
-```
-
-If those lines do not appear within 30 seconds, the cache warm is still in progress —
-wait longer or check network connectivity.
+Wait for the startup lines on stderr before killing (e.g. the indexed-corpus line
+for `mcp-rag-docs`, and the resolved data-path line for `review-ledger`). If they do
+not appear within 30 seconds, the cache warm is still in progress — wait longer or
+check network connectivity.
 
 **Verify the cache is warm (no downloading output):**
 
@@ -58,48 +67,40 @@ sleep 6 && kill %1
 
 ---
 
-## Step 2 — OpenCode: verify rag-docs entry in opencode.json
+## Step 2 — OpenCode: verify the MCP entries in opencode.json
 
-The `opencode.json` at the repository root already contains the `rag-docs` MCP entry
-with relative paths. No edits are needed. Verify it is present:
+The `opencode.json` at the repository root already contains all three MCP entries
+with relative paths. No edits are needed. Verify they are present:
 
 ```bash
 python3 -c "import json; d=json.load(open('opencode.json')); print(list(d.get('mcp',{}).keys()))"
-# Expected: ['rag-docs']
+# Expected: ['rag-docs', 'review-ledger-security', 'review-ledger-reviews']
 ```
 
 ---
 
-## Step 3 — AI toolchain: generate .mcp.json from template
+## Step 3 — Verify the servers at session start
 
-`.mcp.json` is gitignored and machine-specific. Generate it once per checkout:
+**OpenCode:** Start a session. Confirm the MCP servers are connected:
 
 ```bash
-COLLECTION_ROOT="$(pwd)" envsubst < .mcp.json.template > .mcp.json
+opencode mcp list
 ```
 
-Verify:
+Expected: `rag-docs`, `review-ledger-security`, and `review-ledger-reviews` each
+report `connected`.
 
-```bash
-python3 -c "import json; d=json.load(open('.mcp.json')); print(list(d['mcpServers'].keys()))"
-# Expected: ['rag-docs']
-```
+Confirm the expected tools are available: `search_docs`, `list_docs`, `get_doc`
+(`rag-docs`); `list_findings`, `log_finding`, `log_reviewer_run`,
+`request_finding_update` (`review-ledger-security` / `review-ledger-reviews`).
+
+If a server does not appear, follow the diagnostic steps in
+[mcp-rag-docs Operations Reference](../mcp/mcp-rag-docs/README.md) or
+[review-ledger runbook](../operations/runbooks/review-ledger-runbook.md).
 
 ---
 
-## Step 4 — Verify the server at session start
-
-**OpenCode:** Start a session and confirm `search_docs`, `list_docs`, and `get_doc`
-are available as tools.
-
-**AI toolchain:** Start a session and run `/mcp` — `rag-docs` should show as connected.
-
-If the server does not appear, follow the diagnostic steps in
-[mcp-rag-docs Operations Reference](../mcp/mcp-rag-docs/README.md).
-
----
-
-## Step 5 — Run smoke tests (optional but recommended)
+## Step 4 — Run smoke tests (optional but recommended)
 
 ```bash
 uv run mddocs/scripts/mcp-tests/test-mcp-rag-docs.py
@@ -117,13 +118,16 @@ Expected output:
 rag-docs: 5/5 passed
 ```
 
+The `review-ledger` server has no automated smoke test; verify it via `opencode mcp
+list` (Step 3) and the [review-ledger runbook](../operations/runbooks/review-ledger-runbook.md).
+
 ---
 
 ## Updating After Corpus Changes
 
-The index is rebuilt at every session start from the current state of `mddocs/`. No
-manual rebuild step is needed. New files committed to `mddocs/` are automatically
-included at the next session start.
+The `rag-docs` index is rebuilt at every session start from the current state of
+`mddocs/`. No manual rebuild step is needed. New files committed to `mddocs/` are
+automatically included at the next session start.
 
 To pick up mid-session edits: close and reopen the session.
 
@@ -132,6 +136,8 @@ To pick up mid-session edits: close and reopen the session.
 ## Related
 
 - [mcp-rag-docs Operations Reference](../mcp/mcp-rag-docs/README.md) — detailed diagnostics and version bump
+- [Review Ledger Runbook](../operations/runbooks/review-ledger-runbook.md) — review-ledger server details and tools
+- [MCP Servers Index](../mcp/index.md) — server inventory
 - [ADR-0002](../adr/adr-0002-mcp-rag-docs.md) — rag-docs design decisions
 - [ADR-0003](../adr/adr-0003-mcp-stdio-architecture.md) — stdio MCP architecture
 - [Provision Worker Bench](provision-worker-bench.md) — includes cache warm step

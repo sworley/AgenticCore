@@ -23,8 +23,8 @@
 #   exit aborts this script immediately with no further steps run.
 #
 # USAGE
-#   adopt.sh --target <dir> --slug <SLUG> [--flow empty|rehome] [--dry-run]
-#            [--force]  [-y|--yes]
+#   adopt.sh --target <dir> --slug <SLUG> [--flow empty|rehome] [--tool none|opencode|codex]
+#            [--dry-run] [--force]  [-y|--yes]
 #
 # ARGUMENTS
 #   --target <dir>          Target directory for the adopter repo.
@@ -41,6 +41,11 @@
 #                            re-validate or re-prompt, it delegates entirely).
 #   --flow empty|rehome     Pass-through to export-framework.sh (explicit
 #                            flow selection; usually left to auto-detect).
+#   --tool none|opencode|codex
+#                            Agent-runtime adapter to generate (default: none).
+#                            The harness core is tool-agnostic; adapters are
+#                            produced on demand by tool-adapter.sh. none = bring
+#                            your own tool (no prescription).
 #   --dry-run                Pass-through to export-framework.sh AND skips
 #                            every mutating step in this script (mkdir,
 #                            validation, agent configuration gen). Zero side
@@ -131,6 +136,7 @@ FLOW=""
 DRY_RUN=0
 FORCE=0
 YES=0   # AP-085: -y/--yes skips the mkdir confirmation prompt
+TOOL="none"   # tool-neutral default — adapter generated on demand (tool-adapter.sh)
 
 usage() {
   cat >&2 << 'EOF'
@@ -152,6 +158,10 @@ Step 2 (clone) and Step 8 (open an agentic session) remain manual.
   --slug <SLUG>           Adopter project slug (non-empty uppercase ASCII;
                           prompted if omitted and stdin is a TTY)
   --flow empty|rehome     Pass-through to export-framework.sh
+  --tool none|opencode|codex
+                          Agent-runtime adapter to generate (default: none).
+                          The harness core is tool-agnostic; adapters are
+                          generated on demand. none = bring your own tool.
   --dry-run               Pass-through to export-framework.sh; also skips
                           every mutating step in this script — zero side
                           effects end to end
@@ -170,6 +180,8 @@ Examples:
   adopt.sh --slug ACME                                    # prompted for --target
   adopt.sh --target ~/dev/my-project --slug ACME --yes    # no confirm
   adopt.sh --target ~/dev/existing-repo --slug ACME --flow rehome
+  adopt.sh --target ~/dev/my-project --slug ACME --tool opencode   # generate opencode adapter
+  adopt.sh --target ~/dev/my-project --slug ACME --tool codex      # generate codex adapter
   # --target is the base name; .01 is appended -> <name>.01
 
 This script orchestrates existing tooling only:
@@ -187,6 +199,7 @@ while [ $# -gt 0 ]; do
     --target)               TARGET="$2"; shift 2 ;;
     --slug)                 SLUG="$2"; shift 2 ;;
     --flow)                 FLOW="$2"; shift 2 ;;
+    --tool)                 TOOL="$2"; shift 2 ;;
     --dry-run)               DRY_RUN=1; shift ;;
     --force)                 FORCE=1; shift ;;
       -y|--yes)                YES=1; shift ;;
@@ -308,6 +321,13 @@ if [ -n "$FLOW" ]; then
   esac
 fi
 
+# --tool selects the agent-runtime adapter to generate (tool-neutral default).
+# The harness core is tool-agnostic; adapters are produced on demand.
+case "$TOOL" in
+  none|opencode|codex) ;;
+  *) err "--tool must be one of: none opencode codex"; exit 1 ;;
+esac
+
 # --slug is not re-validated here — export-framework.sh is the single
 # authority on slug validation and interactive prompting (do not reimplement
 # it). An empty --slug is passed through as-is; export-framework.sh will
@@ -400,7 +420,7 @@ log "==> Step 4 complete: export-framework.sh exited 0"
 
 if [ "$DRY_RUN" -eq 1 ]; then
   dry_note "would run Step 6 validation (check-env.sh + mdbook build) in $TARGET"
-  dry_note "would run Step 7 in $TARGET — no-op (OpenCode uses committed opencode.json)"
+  dry_note "would run Step 7 (tool adapter) in $TARGET for --tool $TOOL"
   log ""
   log "[dry-run] zero side effects — report only. Nothing was created or written."
   exit 0
@@ -452,25 +472,49 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 7 — agent runtime configuration (OpenCode uses committed opencode.json directly).
-# No generation step required; skip.
+# Step 7 — generate/configure the agent-runtime adapter (tool-adapter.sh).
+#
+# The harness core is TOOL-AGNOSTIC (roles, process, benches, MCP servers).
+# tool-adapter.sh emits an OPTIONAL adapter for a chosen runtime, driven by
+# --tool (default: none = bring your own). It does not prescribe a tool.
 # Step 8 — NOT executed here. Print the exact copy-pasteable instruction,
 # matching export-framework.sh's own cold-start pointer tone.
 # ---------------------------------------------------------------------------
+TOOL_ADAPTER="$TARGET/mddocs/scripts/setup/tool-adapter.sh"
+if [ -x "$TOOL_ADAPTER" ]; then
+  log "==> Step 7: configuring tool adapter (--tool $TOOL)"
+  if ! ( cd "$TARGET" && "$TOOL_ADAPTER" --tool "$TOOL" ); then
+    warn "tool-adapter.sh reported a failure in $TARGET (post-export, does not undo the export)"
+  fi
+else
+  warn "tool-adapter.sh not found at: $TOOL_ADAPTER — skipping tool adapter generation"
+fi
+
 log ""
 log "You are here — adopter management plane ready"
 log ""
-log "adopt.sh finished Steps 3-7 (create, export, validate)."
+log "adopt.sh finished Steps 3-7 (create, export, validate, tool adapter)."
 log "Target: $TARGET"
 if [ "$validation_failed" -eq 1 ]; then
   log ""
   warn "One or more post-export steps above reported a failure — review before proceeding."
 fi
 log ""
-log "Next step (manual):"
-log "  cd $TARGET"
-log "  opencode"
-log "  Say: \"Lead-engineer, session open\""
+if [ "$TOOL" = "none" ]; then
+  log "Next step (manual):"
+  log "  cd $TARGET"
+  log "  [open your agent runtime of choice]"
+  log "  Say: \"Lead-engineer, session open\""
+  log ""
+  log "The harness is tool-agnostic. To generate a runtime adapter:"
+  log "  ./mddocs/scripts/setup/tool-adapter.sh --tool <opencode|codex>"
+  log "See mddocs/reference.architecture/tooling-contract.md."
+else
+  log "Next step (manual):"
+  log "  cd $TARGET"
+  log "  [open the configured agent runtime]"
+  log "  Say: \"Lead-engineer, session open\""
+fi
 log ""
 log "Persona: as an adopter you operate as lead-engineer for your own project —"
 log "distinct from framework development (baseline-steward)."

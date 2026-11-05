@@ -143,6 +143,10 @@ Type `y` to proceed. Any other input aborts with no side effects.
 > immediately after `mkdir -p` (TC-084), so downstream steps (validation, agent
 > configuration generation) are always working against the correct location.
 
+> **Tool neutrality:** the harness core is tool-agnostic. `--tool none|opencode|codex`
+> (default `none`) generates an optional agent-runtime adapter via `tool-adapter.sh`; it
+> never prescribes a tool. See [Tooling Contract](tooling-contract.md).
+
 > **Choosing your target path:** See [Choosing your target path](#choosing-your-target-path)
 > below for the recommended TC-074 path convention. A simple flat path such as
 > `~/dev/my-project` is fully supported and is what the README Quick Start uses — the

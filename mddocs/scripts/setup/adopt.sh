@@ -648,6 +648,9 @@ else
   log "The codex adapter was generated (.codex/ reference + start script)."
 fi
 log ""
+log "Later, to refresh agents/models without a full re-adopt (e.g. newer models):"
+log "  ./mddocs/scripts/setup/adopt.sh --target <base> --tool $TOOL --regen"
+log ""
 log "Persona: as an adopter you operate as lead-engineer for your own project —"
 log "distinct from framework development (baseline-steward)."
 

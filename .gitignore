@@ -19,6 +19,12 @@
 
 # --- UNIVERSAL -----------------------------------------------------------
 
+# Ephemeral / scratch working directory (project-local). Durable rule: do
+# throwaway work in ./.tmp at the project root, not /tmp. Never committed.
+# (The workspace-root AgenticCore.v0.5/.tmp lives outside this repo; this rule
+# also guards any .tmp created inside the repo.)
+.tmp/
+
 # Nested git repositories (sub-projects / worktrees that contain their own .git)
 **/.git/
 

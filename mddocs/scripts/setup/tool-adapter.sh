@@ -79,6 +79,31 @@ dry() {
   return 0
 }
 
+# strip_opencode_placeholder_models — remove the placeholder `model` key from
+# each generated agent's frontmatter so opencode uses the user's configured
+# default model (global config or `-m`) instead of an unresolvable 'provider/*'
+# placeholder, which would stop the session cold.
+strip_opencode_placeholder_models() {
+  local f
+  for f in "$REPO_ROOT"/.opencode/agents/*.md; do
+    [ -f "$f" ] || continue
+    python3 - "$f" << 'PY'
+import sys
+p = sys.argv[1]
+lines = open(p).read().splitlines()
+if len(lines) >= 2 and lines[0].strip() == '---':
+    end = None
+    for i in range(1, len(lines)):
+        if lines[i].strip() == '---':
+            end = i
+            break
+    if end is not None:
+        fm = [l for l in lines[1:end] if not l.startswith('model:')]
+        open(p, 'w').write('\n'.join([lines[0]] + fm + lines[end:]) + '\n')
+PY
+  done
+}
+
 SYNC="$REPO_ROOT/.agents/sync-agents.sh"
 
 case "$TOOL" in
@@ -113,6 +138,7 @@ case "$TOOL" in
     dry "would run: $SYNC"
     if [ "$DRY_RUN" -ne 1 ]; then
       bash "$SYNC"
+      strip_opencode_placeholder_models
     fi
     dry "would write: $REPO_ROOT/start-opencode.sh"
     if [ "$DRY_RUN" -ne 1 ]; then

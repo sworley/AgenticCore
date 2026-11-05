@@ -9,7 +9,6 @@
     "PROCESS.md",
     "mddocs/operations/runbooks/session-continuity.md"
   ],
-  "model": "provider/model",
   "default_agent": "lead-engineer",
   "share": "disabled",
   "autoupdate": "notify",

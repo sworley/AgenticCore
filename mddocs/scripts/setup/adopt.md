@@ -24,6 +24,10 @@ Key behaviors:
   project name; the harness appends `.01` (so `./my-project` -> `./my-project.01`, and
   `./myproject.v0.01` -> `./myproject.v0.01.01`).
 - **`--dry-run`** skips the confirmation prompt entirely (zero side effects end to end).
+- **`--tool none|opencode|codex`** selects an agent-runtime adapter (default
+  `none` = bring your own). Prompted interactively if omitted and stdin is a TTY.
+  `opencode` generates local opencode config + `start-opencode.sh`; `codex` writes a
+  `.codex/` reference + `start-codex.sh`. The harness core is tool-agnostic.
 
 ```bash
 {{#include adopt.sh}}

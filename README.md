@@ -122,14 +122,18 @@ anything other than `y`/`yes`) to abort — then re-run with the correct `--targ
 > ... The base name is your own choice; only the `.01` layer suffix is enforced at adoption.
 
 > **The harness doesn't prescribe an agent runtime.** The core is tool-agnostic
-> (roles, process, benches, MCP servers). Pass `--tool none|opencode|codex` to
-> generate a runtime adapter on demand (default `none` = bring your own tool):
+> (roles, process, benches, MCP servers). `--tool` selects an optional adapter —
+> default `none` = bring your own:
 >
 > ```sh
 > bash ./AgenticCore/mddocs/scripts/setup/adopt.sh --target ./my-project --slug MYPROJECT --tool opencode
 > ```
 >
-> See [Tooling Contract](mddocs/reference.architecture/tooling-contract.md).
+> `--tool opencode` generates local opencode config + a `start-opencode.sh`;
+> `--tool codex` writes a `.codex/` reference + a `start-codex.sh`. Each start
+> script `cd`s into the project root so opencode/codex uses the local config
+> (your global config still applies). See
+> [Tooling Contract](mddocs/reference.architecture/tooling-contract.md).
 
 > **Scripted / non-interactive use:** pass `-y` / `--yes` to skip the confirmation
 > prompt. Use this in CI pipelines or wrapper scripts where the path is already

@@ -85,15 +85,17 @@ case "$TOOL" in
   none)
     log "==> tool-adapter: --tool none (bring your own tool)"
     log ""
-    log "The AgenticCore harness is tool-agnostic. No adapter was generated."
-    log "The exported tree carries a committed 'opencode.json' as a REFERENCE adapter;"
-    log "it is optional and may be removed or replaced if you use a different runtime."
+    log "The AgenticCore harness is tool-agnostic; no adapter was generated."
+    log "The committed 'opencode.json' is a REFERENCE adapter — optional, and it may"
+    log "be removed or replaced if you use a different runtime."
+    log ""
+    log "To pick a runtime adapter at adoption time, re-run adopt.sh with --tool, or"
+    log "generate one now:"
+    log "  ./mddocs/scripts/setup/tool-adapter.sh --tool opencode   # start-opencode.sh + local config"
+    log "  ./mddocs/scripts/setup/tool-adapter.sh --tool codex      # start-codex.sh + .codex/"
     log ""
     log "To connect any agent runtime, honor the Tooling Contract:"
     log "  mddocs/reference.architecture/tooling-contract.md"
-    log ""
-    log "Runtime adapters are generated on demand with:"
-    log "  ./mddocs/scripts/setup/tool-adapter.sh --tool <opencode|codex|...>"
     ;;
 
   opencode)
@@ -107,20 +109,38 @@ case "$TOOL" in
       [ "$DRY_RUN" -eq 1 ] && { dry "would regenerate .opencode/agents/"; exit 0; }
       exit 2
     fi
-    log "==> tool-adapter: --tool opencode (regenerating the opencode adapter)"
+    log "==> tool-adapter: --tool opencode (generating the opencode adapter)"
     dry "would run: $SYNC"
     if [ "$DRY_RUN" -ne 1 ]; then
       bash "$SYNC"
     fi
+    dry "would write: $REPO_ROOT/start-opencode.sh"
+    if [ "$DRY_RUN" -ne 1 ]; then
+      cat > "$REPO_ROOT/start-opencode.sh" << 'EOF'
+#!/usr/bin/env bash
+# start-opencode.sh — launch opencode in this project with its local config.
+# cd'ing here isolates the directory so opencode picks up ./opencode.json;
+# your global ~/.config/opencode still applies (deep-merged).
+set -euo pipefail
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$DIR"
+exec opencode "$@"
+EOF
+      chmod +x "$REPO_ROOT/start-opencode.sh"
+      log "    wrote $REPO_ROOT/start-opencode.sh"
+    fi
     log "    opencode.json present: $(test -f "$REPO_ROOT/opencode.json" && echo yes || echo no)"
     log "    .opencode/agents/ regenerated from canonical .agents/"
     log ""
-    log "opencode adapter ready. Open with 'opencode' and say: \"Lead-engineer, session open\"."
+    log "opencode adapter ready. Open with:"
+    log "  cd $REPO_ROOT"
+    log "  ./start-opencode.sh      # (or: opencode)"
+    log "  Say: \"Lead-engineer, session open\""
     ;;
 
   codex)
     CODEX_DIR="$REPO_ROOT/.codex"
-    log "==> tool-adapter: --tool codex (writing a reference codex adapter)"
+    log "==> tool-adapter: --tool codex (writing a codex adapter reference)"
     dry "would write $CODEX_DIR/README.md"
     if [ "$DRY_RUN" -ne 1 ]; then
       mkdir -p "$CODEX_DIR"
@@ -153,8 +173,26 @@ authoritative config. See the Tooling Contract for the stable contract.
 EOF
       log "    wrote $CODEX_DIR/README.md"
     fi
-    log "    codex reference adapter written (refine for your Codex version)."
-    log "    Contract: mddocs/reference.architecture/tooling-contract.md"
+    dry "would write: $REPO_ROOT/start-codex.sh"
+    if [ "$DRY_RUN" -ne 1 ]; then
+      cat > "$REPO_ROOT/start-codex.sh" << 'EOF'
+#!/usr/bin/env bash
+# start-codex.sh — launch codex in this project with its local context.
+# cd'ing here isolates the directory; your global codex config still applies.
+set -euo pipefail
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$DIR"
+exec codex "$@"
+EOF
+      chmod +x "$REPO_ROOT/start-codex.sh"
+      log "    wrote $REPO_ROOT/start-codex.sh"
+    fi
+    log ""
+    log "codex adapter ready. Open with:"
+    log "  cd $REPO_ROOT"
+    log "  ./start-codex.sh        # (or: codex)"
+    log "  Say: \"Lead-engineer, session open\""
+    log "  (Refine .codex/README.md for your Codex version.)"
     ;;
 esac
 

@@ -137,6 +137,7 @@ DRY_RUN=0
 FORCE=0
 YES=0   # AP-085: -y/--yes skips the mkdir confirmation prompt
 TOOL="none"   # tool-neutral default — adapter generated on demand (tool-adapter.sh)
+TOOL_SET=0    # 1 when --tool was supplied explicitly (vs. prompt-default)
 
 usage() {
   cat >&2 << 'EOF'
@@ -199,7 +200,7 @@ while [ $# -gt 0 ]; do
     --target)               TARGET="$2"; shift 2 ;;
     --slug)                 SLUG="$2"; shift 2 ;;
     --flow)                 FLOW="$2"; shift 2 ;;
-    --tool)                 TOOL="$2"; shift 2 ;;
+    --tool)                 TOOL="$2"; TOOL_SET=1; shift 2 ;;
     --dry-run)               DRY_RUN=1; shift ;;
     --force)                 FORCE=1; shift ;;
       -y|--yes)                YES=1; shift ;;
@@ -290,6 +291,29 @@ normalize_target_plane() {
   TARGET="$(dirname "$TARGET")/${_base}.01"
 }
 
+# ---------------------------------------------------------------------------
+# prompt_for_tool — interactive pick of the agent-runtime adapter (when
+# --tool was NOT supplied and stdin is a TTY). The harness core is
+# tool-agnostic; this only surfaces the choice so adoption never prescribes a
+# tool by surprise. Default: none (bring your own). Scripted / non-interactive
+# use keeps TOOL as given (or none).
+# ---------------------------------------------------------------------------
+prompt_for_tool() {
+  printf '\n' >&2
+  printf 'Agent runtime adapter? (the harness core is tool-agnostic)\n' >&2
+  printf '  none      bring your own tool (default)\n' >&2
+  printf '  opencode  generate opencode adapter (local config + start-opencode.sh)\n' >&2
+  printf '  codex     generate codex adapter (reference + start-codex.sh)\n' >&2
+  printf '\n' >&2
+  printf 'Select (none/opencode/codex, default none): ' >&2
+  read -r _tool_in
+  case "$_tool_in" in
+    ""|none)          TOOL="none" ;;
+    opencode|codex)   TOOL="$_tool_in" ;;
+    *) err "unknown tool: $_tool_in — defaulting to none"; TOOL="none" ;;
+  esac
+}
+
 if [ -z "$TARGET" ]; then
   if [ ! -t 0 ]; then
     err "--target is required in non-interactive mode (stdin is not a tty)"
@@ -312,6 +336,12 @@ normalize_target_plane
 # ("./my-project.01") are never silently treated as real adopter intent.
 if [ "$DRY_RUN" -eq 0 ] && [ "$YES" -eq 0 ]; then
   confirm_target
+fi
+
+# Surface the agent-runtime choice when --tool was not supplied (TTY only).
+# Keeps adoption from silently prescribing a tool; default is none (BYO).
+if [ "$TOOL_SET" -eq 0 ] && [ -t 0 ]; then
+  prompt_for_tool
 fi
 
 if [ -n "$FLOW" ]; then
@@ -509,11 +539,20 @@ if [ "$TOOL" = "none" ]; then
   log "The harness is tool-agnostic. To generate a runtime adapter:"
   log "  ./mddocs/scripts/setup/tool-adapter.sh --tool <opencode|codex>"
   log "See mddocs/reference.architecture/tooling-contract.md."
-else
-  log "Next step (manual):"
+elif [ "$TOOL" = "opencode" ]; then
+  log "Next step:"
   log "  cd $TARGET"
-  log "  [open the configured agent runtime]"
+  log "  ./start-opencode.sh     # (or: opencode)"
   log "  Say: \"Lead-engineer, session open\""
+  log ""
+  log "The opencode adapter was generated: local opencode.json + start script."
+else
+  log "Next step:"
+  log "  cd $TARGET"
+  log "  ./start-codex.sh        # (or: codex)"
+  log "  Say: \"Lead-engineer, session open\""
+  log ""
+  log "The codex adapter was generated (.codex/ reference + start script)."
 fi
 log ""
 log "Persona: as an adopter you operate as lead-engineer for your own project —"

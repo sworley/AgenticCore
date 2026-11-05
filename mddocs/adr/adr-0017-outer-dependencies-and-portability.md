@@ -162,4 +162,4 @@ Scripts that reference tools outside the project root use:
 - [ADR-0002: mcp-rag-docs](adr-0002-mcp-rag-docs.md) — MCP server config uses the template model defined here
 - [ADR-0015: Framework Distribution and Adoption Model](adr-0015-framework-distribution-adoption-model.md) — export+init model depends on these conventions
 - [ADR-0018: Credential Injection Pattern](adr-0018-credential-injection-pattern.md) — credential injection tooling is an outer dependency per this ADR
-- `mddocs/scripts/setup/opencode.json` — generates machine-specific config from templates
+- `mddocs/scripts/setup/tool-adapter.sh` — generates the agent-runtime adapter (regenerates `.opencode/agents/`, writes a start script); machine-local overrides go in the gitignored `opencode.json.local`

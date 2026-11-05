@@ -24,7 +24,7 @@
 #
 # USAGE
 #   adopt.sh --target <dir> --slug <SLUG> [--flow empty|rehome] [--tool none|opencode|codex]
-#            [--dry-run] [--force]  [-y|--yes]
+#            [--regen] [--dry-run] [--force]  [-y|--yes]
 #
 # ARGUMENTS
 #   --target <dir>          Target directory for the adopter repo.
@@ -138,6 +138,7 @@ FORCE=0
 YES=0   # AP-085: -y/--yes skips the mkdir confirmation prompt
 TOOL="none"   # tool-neutral default — adapter generated on demand (tool-adapter.sh)
 TOOL_SET=0    # 1 when --tool was supplied explicitly (vs. prompt-default)
+REGEN=0       # 1 when --regen: regenerate agents/models (skip export on existing tree)
 
 usage() {
   cat >&2 << 'EOF'
@@ -163,6 +164,12 @@ Step 2 (clone) and Step 8 (open an agentic session) remain manual.
                           Agent-runtime adapter to generate (default: none).
                           The harness core is tool-agnostic; adapters are
                           generated on demand. none = bring your own tool.
+  --regen                 Force-regenerate the agent adapter and re-apply the
+                          model distribution, refreshing the framework's
+                          canonical agent source + setup scripts into the
+                          target (preserving its .agents/model-profile.yaml).
+                          On an existing framework export this skips the full
+                          re-export and updates agents/models in place.
   --dry-run               Pass-through to export-framework.sh; also skips
                           every mutating step in this script — zero side
                           effects end to end
@@ -201,6 +208,7 @@ while [ $# -gt 0 ]; do
     --slug)                 SLUG="$2"; shift 2 ;;
     --flow)                 FLOW="$2"; shift 2 ;;
     --tool)                 TOOL="$2"; TOOL_SET=1; shift 2 ;;
+    --regen)                 REGEN=1; shift ;;
     --dry-run)               DRY_RUN=1; shift ;;
     --force)                 FORCE=1; shift ;;
       -y|--yes)                YES=1; shift ;;
@@ -307,11 +315,67 @@ prompt_for_tool() {
   printf '\n' >&2
   printf 'Select (none/opencode/codex, default none): ' >&2
   read -r _tool_in
-  case "$_tool_in" in
-    ""|none)          TOOL="none" ;;
-    opencode|codex)   TOOL="$_tool_in" ;;
-    *) err "unknown tool: $_tool_in — defaulting to none"; TOOL="none" ;;
-  esac
+   case "$_tool_in" in
+     ""|none)          TOOL="none" ;;
+     opencode|codex)   TOOL="$_tool_in" ;;
+     *) err "unknown tool: $_tool_in — defaulting to none"; TOOL="none" ;;
+   esac
+}
+
+# ---------------------------------------------------------------------------
+# regen_adapter — regenerate the agent runtime adapter + re-apply the model
+# distribution, refreshing the framework's canonical agent source and setup
+# scripts into the target. Preserves the adopter's .agents/model-profile.yaml
+# so their configured models survive the refresh. Used by --regen to update a
+# project to newer agents/models in place, without a full re-export.
+# ---------------------------------------------------------------------------
+regen_adapter() {
+  local src_agents="$FRAMEWORK_ROOT/.agents"
+  local dst_agents="$TARGET/.agents"
+  local profile_backup=""
+
+  # Preserve the adopter's model profile across the refresh.
+  if [ -f "$dst_agents/model-profile.yaml" ]; then
+    profile_backup="$dst_agents/model-profile.yaml.$$"
+    cp "$dst_agents/model-profile.yaml" "$profile_backup"
+  fi
+
+  log "==> regen: refreshing canonical agent source + setup scripts"
+  if [ "$DRY_RUN" -eq 1 ]; then
+    dry_note "would refresh .agents/ + setup scripts from $FRAMEWORK_ROOT"
+  else
+    cp -f "$FRAMEWORK_ROOT/mddocs/scripts/setup/tool-adapter.sh" "$TARGET/mddocs/scripts/setup/"
+    cp -f "$FRAMEWORK_ROOT/mddocs/scripts/setup/model-distribution.sh" "$TARGET/mddocs/scripts/setup/"
+    chmod +x "$TARGET/mddocs/scripts/setup/tool-adapter.sh" "$TARGET/mddocs/scripts/setup/model-distribution.sh"
+    # Refresh canonical agent source, leaving the adopter's model profile alone.
+    ( cd "$src_agents" && tar -c --exclude='model-profile.yaml' . ) | ( cd "$dst_agents" && tar -x )
+    if [ -n "$profile_backup" ]; then
+      mv "$profile_backup" "$dst_agents/model-profile.yaml"
+    fi
+  fi
+
+  log "==> regen: regenerating agent adapter (--tool $TOOL)"
+  if [ "$DRY_RUN" -eq 1 ]; then
+    dry_note "would run: ./mddocs/scripts/setup/tool-adapter.sh --tool $TOOL"
+  elif ! ( cd "$TARGET" && ./mddocs/scripts/setup/tool-adapter.sh --tool "$TOOL" ); then
+    warn "tool-adapter.sh reported a failure during regen (post-export, does not undo the tree)"
+  fi
+
+  log "==> regen: applying model distribution"
+  if [ "$DRY_RUN" -eq 1 ]; then
+    dry_note "would run: ./mddocs/scripts/setup/model-distribution.sh --apply"
+  elif ! ( cd "$TARGET" && ./mddocs/scripts/setup/model-distribution.sh --apply ); then
+    warn "model-distribution.sh --apply reported a failure (optional step)"
+  fi
+}
+
+# ---------------------------------------------------------------------------
+# is_framework_export — 1 when the target already looks like an AgenticCore
+# framework export (has the tool-adapter). Used by --regen to decide whether
+# to regenerate in place (skip the full re-export) or export first.
+# ---------------------------------------------------------------------------
+is_framework_export() {
+  [ -x "$TARGET/mddocs/scripts/setup/tool-adapter.sh" ]
 }
 
 if [ -z "$TARGET" ]; then
@@ -322,7 +386,6 @@ if [ -z "$TARGET" ]; then
   fi
   prompt_for_target
 fi
-
 # BASE_TARGET is the adopter's raw base name (the --target value as given).
 # When we hand off to export-framework.sh we pass THIS so export applies the
 # .01 normalization once (it is the single authority on the plane path).
@@ -330,6 +393,29 @@ fi
 # confirmation / mkdir / Steps 6-7 bookkeeping.
 BASE_TARGET="$TARGET"
 normalize_target_plane
+
+# --regen against an existing framework export: refresh agent source + setup
+# scripts and regenerate the adapter/models in place. Skip the full re-export,
+# the mkdir confirmation, and validation — this is an in-place update, not a
+# fresh adoption.
+if [ "$REGEN" -eq 1 ] && ! [ "$DRY_RUN" -eq 1 ]; then
+  if is_framework_export; then
+    log "==> adopt.sh: --regen on an existing framework export at $TARGET"
+    regen_adapter
+    log ""
+    log "==> adopt.sh: --regen complete for $TARGET (--tool $TOOL)"
+    log "  To open an agentic session:"
+    log "  cd $TARGET"
+    if [ "$TOOL" = "opencode" ]; then
+      log "  ./start-opencode.sh"
+    else
+      log "  (open your agent runtime of choice)"
+    fi
+    log "  Say: \"Lead-engineer, session open\""
+    exit 0
+  fi
+  warn "--regen given but $TARGET is not yet a framework export — exporting fresh first, then regenerating."
+fi
 
 # Confirm the target path (show it back, require y/N) unless --yes was passed.
 # This runs for both flag-supplied and prompted values, so doc example values
@@ -518,6 +604,13 @@ if [ -x "$TOOL_ADAPTER" ]; then
   fi
 else
   warn "tool-adapter.sh not found at: $TOOL_ADAPTER — skipping tool adapter generation"
+fi
+
+# --regen on a freshly exported/new target: refresh + regenerate agent source and
+# re-apply the model distribution (idempotent; the existing-target path already
+# exited above).
+if [ "$REGEN" -eq 1 ]; then
+  regen_adapter
 fi
 
 log ""

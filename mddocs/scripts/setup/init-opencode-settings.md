@@ -1,23 +1,29 @@
-# init-opencode-settings (opencode.json)
+# init-opencode-settings
 
-Generates the machine-local AI toolchain settings from portable templates:
-`.mcp.json` and `.agentic/settings.local.json`. Run once after cloning the project
-or when the repository moves.
+opencode reads the committed `opencode.json` directly — no machine-local
+generation step is required. MCP servers are configured inline in `opencode.json`,
+and `.opencode/agents/` is regenerated from the canonical `.agents/` source.
+
+## Setup
+
+Configure the opencode adapter (regenerates `.opencode/agents/`, writes
+`start-opencode.sh`) — or use it at adoption time with `--tool opencode`:
 
 ```sh
-bash mddocs/scripts/setup/opencode.json
+bash mddocs/scripts/setup/tool-adapter.sh --tool opencode
 ```
 
-The script is idempotent and safe to re-run. The committed `opencode.json` is used
-directly by OpenCode; no generation step is required for OpenCode itself.
+## Machine-local overrides
 
-## What It Produces
+For machine-specific settings (alternate MCP config, local runtime overrides,
+host-specific values) use the gitignored `opencode.json.local`. opencode
+deep-merges it over the committed `opencode.json`:
 
-- `.mcp.json` — MCP server wiring (tool-local overrides)
-- `.agentic/settings.local.json` — machine-specific agent runtime settings
-
-These files are gitignored (machine-local) and derive from the portable templates in
-the repo.
+```jsonc
+{
+  // machine-local overrides merged over opencode.json
+}
+```
 
 ## Related
 

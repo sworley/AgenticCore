@@ -1002,6 +1002,7 @@ FRAMEWORK_EXCLUDE_PATTERNS=(
   ".git"
   "_poc"
   ".work"
+  ".tmp"
   "mddocs/book"
   # SF-117/SF-122 — framework LIVE OPERATIONAL STATE must never land in the
   # adopter tree: the framework's own task queue (69 AP-* tickets) and the

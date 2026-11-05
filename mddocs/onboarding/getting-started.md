@@ -157,29 +157,34 @@ echo $GIT_HOST      # should print your Git host
 echo $GIT_TOKEN    # should print your PAT (redact this after checking)
 ```
 
-#### 3. Generate AI toolchain settings
+#### 3. Configure the agent runtime (opencode)
+
+opencode reads the committed `opencode.json` directly — no separate generation
+step is required. MCP servers are configured inline in `opencode.json`, and the
+agent definitions are regenerated from the canonical `.agents/` source.
+
+Generate/refresh the opencode adapter (regenerates `.opencode/agents/` and
+writes `start-opencode.sh`), or use it at adoption time with `--tool opencode`:
 
 ```sh
-bash mddocs/scripts/setup/opencode.json
+bash mddocs/scripts/setup/tool-adapter.sh --tool opencode
 ```
 
-This script generates `.mcp.json` and `.agentic/settings.local.json` from the
-committed templates, resolving all paths for your current machine. It is
-idempotent — safe to re-run if you move the repository to a different directory.
-
-> **Important:** MCP servers and hooks will not work without this step. Re-run
-> it any time the repository moves.
+> **Note:** For machine-specific overrides (e.g. an alternate MCP config or
+> local runtime settings), add them to the gitignored `opencode.json.local` —
+> opencode deep-merges it over the committed `opencode.json`.
 
 #### 4. Verify MCP configuration
 
-Confirm `.mcp.json` was generated and is valid:
+Confirm the MCP servers defined in `opencode.json` are connected:
 
 ```sh
-jq . .mcp.json
+opencode mcp list
 ```
 
-Expected: a JSON object with an `mcpServers` key. If `jq` reports a parse error,
-re-run Step 3.
+Expected: `rag-docs`, `review-ledger-security`, and `review-ledger-reviews` each
+report `connected`. If not, check that `uv` is installed and that the MCP server
+paths resolve.
 
 Run the MCP smoke tests to confirm `mcp-rag-docs` is live:
 
@@ -187,8 +192,7 @@ Run the MCP smoke tests to confirm `mcp-rag-docs` is live:
 bash mddocs/scripts/mcp-tests/run-all.sh
 ```
 
-Expected output: `MCP tests: 1/1 passed`. If the test fails, check that `uv` is
-installed and that the binary paths in `.mcp.json` resolve correctly.
+Expected output: `MCP tests: 1/1 passed`.
 
 #### 5. Verify environment
 

@@ -101,8 +101,13 @@ the command object for the offending script. Example — to disable `secret-guar
 
 **Step 3.** Restart the AI toolchain session. Hooks are loaded at session start.
 
-**Restore:** Re-run `bash mddocs/scripts/setup/opencode.json` to regenerate
-`settings.local.json` from the template. This re-enables all hooks.
+**Restore:** Re-install the git hooks to refresh their wiring in `.git/hooks/`:
+
+```sh
+bash .core/scripts/install-git-hooks.sh
+```
+
+This re-enables all hooks.
 
 ---
 
@@ -203,8 +208,8 @@ All lines should print `PASS`. Any `FAIL` line identifies a regression.
 If this runbook's own steps produce an unexpected state:
 
 ```bash
-# Regenerate settings.local.json from the committed template
-bash mddocs/scripts/setup/opencode.json
+# Re-install the git hooks to refresh their wiring in .git/hooks/
+bash .core/scripts/install-git-hooks.sh
 
 # Restore a hook script to HEAD
 git checkout HEAD -- .agentic/hooks/<script-name>.py

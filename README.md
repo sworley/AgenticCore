@@ -211,13 +211,14 @@ mdbook build mddocs/
 
 #### 7. Generate agent runtime settings
 
-**AI toolchain** — generate `.mcp.json` and `.agentic/settings.local.json`:
+Configure the opencode adapter (regenerates `.opencode/agents/` and writes
+`start-opencode.sh`). opencode reads the committed `opencode.json` directly, so
+no machine-local generation step is required; use the gitignored
+`opencode.json.local` for machine-specific overrides.
 
 ```sh
-bash mddocs/scripts/setup/opencode.json
+bash mddocs/scripts/setup/tool-adapter.sh --tool opencode
 ```
-
-**OpenCode** — uses the committed `opencode.json` directly; no generation step required.
 
 </details>
 

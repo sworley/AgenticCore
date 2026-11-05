@@ -28,6 +28,12 @@ Key behaviors:
   `none` = bring your own). Prompted interactively if omitted and stdin is a TTY.
   `opencode` generates local opencode config + `start-opencode.sh`; `codex` writes a
   `.codex/` reference + `start-codex.sh`. The harness core is tool-agnostic.
+- **`--regen`** force-regenerates the agent adapter and re-applies the model
+  distribution, refreshing the framework's canonical agent source and setup scripts
+  into the target while preserving its `.agents/model-profile.yaml`. On an existing
+  framework export it skips the full re-export and updates agents/models in place —
+  a fast way to bring a project up to date with newer agents or models. On a fresh
+  target it runs after the normal export.
 
 ```bash
 {{#include adopt.sh}}

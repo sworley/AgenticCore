@@ -203,7 +203,7 @@ pattern, add a tuple to the `RULES` list:
 Re-deploy after editing:
 
 ```bash
-bash mddocs/scripts/setup/opencode.json
+bash .core/scripts/install-git-hooks.sh
 ```
 
 ---

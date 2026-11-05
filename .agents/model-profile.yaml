@@ -1,0 +1,41 @@
+# model-profile.yaml — per-agent LLM model distribution (tailorable).
+#
+# The harness is tool-agnostic; this profile tailors which concrete model each
+# agent uses, so you can target your provider/plan (e.g. your OpenAI Business
+# plan) and update it as new models become available.
+#
+#   # Review what's currently assigned (flags placeholders / drift)
+#   ./mddocs/scripts/setup/model-distribution.sh --review
+#   # Apply the profile (writes model: into .opencode/agents/*.md)
+#   ./mddocs/scripts/setup/model-distribution.sh --apply
+#   # List available models for a provider (fetches models.dev)
+#   ./mddocs/scripts/setup/model-distribution.sh --detect openai
+#
+# `default` is used when a role's tier (or that tier's model) is missing.
+# Leave it as the placeholder to push NO per-agent model — each agent then falls
+# back to the session's configured default model. Edit `models` below to real
+# provider/model IDs (e.g. openai/gpt-4.1, openai/o3-mini) to start distributing.
+
+default: "provider/model-default"
+
+models:
+  strong: "provider/model-opus-4-8"
+  mid:    "provider/model-sonnet-5"
+  cheap:  "provider/model-haiku-4-5"
+
+# role -> tier (which tier each agent uses)
+role_tiers:
+  lead-engineer: strong
+  orchestrator: strong
+  ai-engineer: strong
+  security-engineer: strong
+  azure-cloud-engineer: strong
+  infra-engineer: strong
+  docs-engineer: mid
+  ops-engineer: mid
+  attendant: mid
+  release-engineer: mid
+  ux-engineer: mid
+  hil-assistant: mid
+  code-reviewer: mid
+  docs-reviewer: cheap

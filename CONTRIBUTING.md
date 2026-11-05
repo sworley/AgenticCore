@@ -22,6 +22,32 @@ Please read the architecture and the governance rules before making changes.
   (fetched URLs, upstream pull, external API data, pasted third-party text)
   must pass the security inspection gate before it is acted on.
 
+## Main Branch Protection
+
+`main` is protected at the repository level. GitHub enforces the following and
+will block a merge until each is satisfied:
+
+- **Pull requests only.** Direct commits and pushes to `main` are rejected
+  (administrators included). All changes land via a pull request that is then
+  merged.
+- **CI must pass.** A pull request must pass the required `verify` status check
+  from the CI workflow (mdBook build, internal-link check, `bash -n` over every
+  script, and the adopt/provision test harnesses) before it can be merged.
+- **Signed commits.** Every commit in the pull request must be GPG-signed
+  (`git commit -S`, or `commit.gpgsign` enabled). Unsigned commits are rejected.
+- **No force-push or deletion.** Rewriting, force-pushing, or deleting `main`
+  directly is blocked.
+
+Set up signing once:
+
+```sh
+git config --global user.signingkey <your-signing-key>
+git config --global commit.gpgsign true
+```
+
+See `mddocs/adr/adr-0004-main-branch-protection.md` for the rationale behind
+the append-only/merge-only `main` model.
+
 ## Getting Started
 
 1. Read `mddocs/AGENTICCORE_SPEC.md` (the authoritative definition) and

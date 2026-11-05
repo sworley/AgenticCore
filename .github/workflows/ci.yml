@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Install mdbook
+        run: cargo install mdbook --version 0.4.40 --locked
+
+      - name: mdbook build
+        run: cd mddocs && mdbook build
+
+      - name: Check internal links
+        run: ./mddocs/scripts/check-links.sh
+
+      - name: Bash syntax check
+        run: |
+          set -e
+          for f in $(git ls-files '*.sh'); do bash -n "$f"; done
+
+      - name: Run test harnesses (skip e2e)
+        run: |
+          bash mddocs/scripts/test-adopt-target-handling.sh --skip-e2e
+          bash mddocs/scripts/test-provision-bench-substitution.sh --skip-e2e

@@ -1,8 +1,8 @@
 import type { Plugin } from "@opencode-ai/plugin";
 import { execSync } from "child_process";
 
-const plugin: Plugin = {
-  hooks: {
+export default (async () => {
+  return {
     "chat.message": async () => {
       try {
         const worktrees = execSync("git worktree list --porcelain", {
@@ -31,7 +31,5 @@ const plugin: Plugin = {
         // non-fatal — never interrupt agent work
       }
     },
-  },
-};
-
-export default plugin;
+  };
+}) satisfies Plugin;

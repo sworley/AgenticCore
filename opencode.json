@@ -13,10 +13,6 @@
   "default_agent": "lead-engineer",
   "share": "disabled",
   "autoupdate": "notify",
-  "plugin": [
-    ".opencode/plugins/secret-scan-output.ts",
-    ".opencode/plugins/session-close-reminder.ts"
-  ],
   "mcp": {
     "rag-docs": {
       "type": "local",

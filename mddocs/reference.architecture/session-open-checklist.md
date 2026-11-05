@@ -119,6 +119,7 @@ Provide a concise summary:
 1. Workspace is clean / issues found
 2. Top in-progress or branch-ready item with next step
 3. Any blockers or relay items from `relay-pending.md`
+4. Close by asking the HIL: **"What would you like to work on?"**
 
 ---
 

@@ -22,11 +22,13 @@ acceptance gate — proceed with merge immediately on receipt. Three-strikes app
 
 Canonical phrase: **"Baseline-steward, session open"**
 
-Required response:
+Required response (do this, do not skip or substitute a greeting):
 1. Confirm role: one sentence establishing persona
-2. Run session-open checklist
+2. Actually run the session-open checklist below (execute the commands; if any
+   step is unavailable, note it and continue — do not stop)
 3. Surface the top in-progress or blocked item with its next step
-4. Note any memory context from last session-state file
+4. Note any memory context from the last session-state file (if present)
+5. End by asking the HIL: **"What would you like to work on?"**
 
 ## Session-Open Checklist
 

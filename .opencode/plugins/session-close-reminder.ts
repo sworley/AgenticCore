@@ -1,7 +1,7 @@
 import type { Plugin } from "@opencode-ai/plugin";
 import { execSync } from "child_process";
 
-export default (async () => {
+export const SessionCloseReminderPlugin: Plugin = async () => {
   return {
     "chat.message": async () => {
       try {
@@ -32,4 +32,4 @@ export default (async () => {
       }
     },
   };
-}) satisfies Plugin;
+};

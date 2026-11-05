@@ -1,5 +1,5 @@
 /**
- * secret-scan-output.ts — opencode PostToolUse plugin
+ * secret-scan-output.ts — opencode plugin
  *
  * Mirrors the behavior of .core/hooks/secret-scan-output.py.
  * Scans tool output for sensitive patterns after Read, Bash, and MCP
@@ -73,16 +73,13 @@ function extractText(value: unknown): string {
   return String(value ?? "")
 }
 
-export default (async () => {
+export const SecretScanOutputPlugin: Plugin = async () => {
   return {
-    "tool.execute.after": async (
-      input: { tool: { name: string }; params: unknown },
-      output: { result: unknown }
-    ) => {
-      const toolName = input.tool?.name?.toLowerCase() ?? ""
+    "tool.execute.after": async (input, output) => {
+      const toolName = (input.tool ?? "").toLowerCase()
       if (!WATCHED_TOOLS.has(toolName)) return
 
-      const text = extractText(output.result)
+      const text = extractText(output.output ?? output.result)
       const findings: string[] = []
 
       for (const [pattern, label] of PATTERNS) {
@@ -102,4 +99,4 @@ export default (async () => {
       }
     },
   }
-}) satisfies Plugin
+}

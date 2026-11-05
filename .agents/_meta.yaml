@@ -8,10 +8,16 @@
 #     description: "<one sentence — what the agent does and when to invoke it>"
 #     opencode:
 #       mode: primary | subagent
-#       model: provider/model-<tier>   # optional — omit to fall through to the
-#                                              # top-level "model" default in opencode.json
-#                                              # (see ADR-0020). opencode-only field; see
-#                                              # ADR-0021 for per-agent tiering rationale.
+#     model: provider/model-<id>    # optional — set a REAL model id to pin this agent
+#                                              # to a specific model. OMIT it (or use a
+#                                              # provider/* placeholder, which is skipped)
+#                                              # to let the agent fall through to the
+#                                              # session's configured default model.
+#                                              # opencode-only field; see ADR-0021 for
+#                                              # per-agent tiering rationale. To tailor
+#                                              # real models across the team, edit
+#                                              # .agents/model-profile.yaml and run
+#                                              # mddocs/scripts/setup/model-distribution.sh --apply.
 #       permission:                   # optional — omit to accept defaults
 #         edit: deny
 #         bash: deny
@@ -54,7 +60,6 @@ lead-engineer:
     mode: primary
     # model tier: opus-4-8 — sole task-queue/bench coordinator; routing and gate
     # decisions compound across the whole session, high cost of a bad call (ADR-0021)
-    model: provider/model-opus-4-8
     permission:
       bash: ask
       edit: allow
@@ -65,7 +70,6 @@ orchestrator:
     mode: subagent
     # model tier: opus-4-8 — routing-plan correctness (invariant coverage, gap
     # detection) is the entire job; a cheap misroute propagates downstream (ADR-0021)
-    model: provider/model-opus-4-8
     permission:
       bash: deny
       edit: deny
@@ -75,7 +79,6 @@ docs-engineer:
   opencode:
     mode: subagent
     # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
-    model: provider/model-sonnet-5
     permission:
       bash: deny
       edit: allow
@@ -85,7 +88,6 @@ ops-engineer:
   opencode:
     mode: subagent
     # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
-    model: provider/model-sonnet-5
     permission:
       bash: ask
       edit: allow
@@ -96,7 +98,6 @@ ai-engineer:
     mode: subagent
     # model tier: opus-4-8 — edits agent definitions and MCP servers that gate every
     # other agent's behavior; errors here are systemic, not local (ADR-0021)
-    model: provider/model-opus-4-8
     permission:
       bash: ask
       edit: allow
@@ -106,7 +107,6 @@ attendant:
   opencode:
     mode: primary
     # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
-    model: provider/model-sonnet-5
 
 baseline-steward:
   description: "Owns the AgenticCore framework improvement lifecycle — governance, baseline versioning, propagation guidance, and release coordination. Never operates in customer project benches or touches deployment tooling."
@@ -115,7 +115,6 @@ baseline-steward:
     # model tier: opus-4-8 — framework-steward role (this repo's analogue to
     # lead-engineer at the framework layer); governs versioning, scrubbing, and
     # release lifecycle decisions that are hard/costly to reverse (ADR-0021)
-    model: provider/model-opus-4-8
     permission:
       bash: ask
       edit: allow
@@ -125,7 +124,6 @@ release-engineer:
   opencode:
     mode: subagent
     # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
-    model: provider/model-sonnet-5
     permission:
       bash: ask
       edit: allow
@@ -136,7 +134,6 @@ security-engineer:
     mode: subagent
     # model tier: opus-4-8 — implements security controls and hooks; subtle
     # reasoning errors here are exploitable, not just wrong (ADR-0021)
-    model: provider/model-opus-4-8
     permission:
       bash: ask
       edit: allow
@@ -148,7 +145,6 @@ security-reviewer:
     # model tier: opus-4-8 — adversarial review is the security gate of last resort
     # before merge; false APPROVED verdicts are the highest-cost failure mode in
     # the whole framework (ADR-0021)
-    model: provider/model-opus-4-8
     permission:
       bash: deny
       edit: deny
@@ -159,7 +155,6 @@ docs-reviewer:
     mode: subagent
     # model tier: haiku-4-5 — mechanical checklist work (spell check, link check,
     # status-field progression); low reasoning depth, high call volume (ADR-0021)
-    model: provider/model-haiku-4-5
     permission:
       bash: allow
       edit: deny
@@ -169,14 +164,12 @@ ux-engineer:
   opencode:
     mode: subagent
     # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
-    model: provider/model-sonnet-5
 
 hil-assistant:
   description: "HIL-proximate collaborator in the .00 workspace — personal management plane for scratch, oversight, and cross-bench coordination. Subordinate to .01 Lead-Engineer for framework tasks. Pattern H bench-lead."
   opencode:
     mode: primary
     # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
-    model: provider/model-sonnet-5
 
 code-reviewer:
   description: "Evaluates code changes for correctness, clarity, and adherence to project conventions before they become commitments. Reviews and produces a verdict; never modifies files."
@@ -184,7 +177,6 @@ code-reviewer:
     mode: subagent
     # model tier: sonnet-5 — semantic code-review judgment, deliberately distinct
     # from the writing model (ADR-0021)
-    model: provider/model-sonnet-5
     permission:
       bash: deny
       edit: deny
@@ -195,7 +187,6 @@ azure-cloud-engineer:
     mode: subagent
     # model tier: opus-4-8 — cloud architecture decisions are expensive to reverse;
     # subtle region/compliance errors propagate broadly (ADR-0021)
-    model: provider/model-opus-4-8
     permission:
       bash: ask
       edit: allow
@@ -206,7 +197,6 @@ infra-engineer:
     mode: subagent
     # model tier: opus-4-8 — infra and network changes are high-blast-radius and
     # hard to roll back (ADR-0021)
-    model: provider/model-opus-4-8
     permission:
       bash: ask
       edit: allow

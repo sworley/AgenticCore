@@ -1,7 +1,6 @@
 ---
 description: Security controls, hook logic, and security-relevant configuration. Implements and maintains security tooling.
 mode: subagent
-model: provider/model-opus-4-8
 permission:
   bash: ask
   edit: allow

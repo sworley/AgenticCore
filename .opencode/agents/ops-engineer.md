@@ -1,7 +1,6 @@
 ---
 description: Operational scripts, automation, developer environment tooling, and runbook implementation.
 mode: subagent
-model: provider/model-sonnet-5
 permission:
   bash: ask
   edit: allow

@@ -1,7 +1,6 @@
 ---
 description: Adversarial security review. Reviews security-relevant changes and produces a verdict. Never modifies files.
 mode: subagent
-model: provider/model-opus-4-8
 permission:
   bash: deny
   edit: deny

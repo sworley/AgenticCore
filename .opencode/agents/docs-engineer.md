@@ -1,7 +1,6 @@
 ---
 description: Owns mddocs/ — writes and maintains runbooks, ADRs, and documentation. No infrastructure changes.
 mode: subagent
-model: provider/model-sonnet-5
 permission:
   bash: deny
   edit: allow

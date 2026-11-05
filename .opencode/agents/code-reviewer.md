@@ -1,7 +1,6 @@
 ---
 description: Evaluates code changes for correctness, clarity, and adherence to project conventions before they become commitments. Reviews and produces a verdict; never modifies files.
 mode: subagent
-model: provider/model-sonnet-5
 permission:
   bash: deny
   edit: deny

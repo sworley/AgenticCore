@@ -1,7 +1,6 @@
 ---
 description: Documentation quality gatekeeper — spell check via typos-cli, broken link detection, ADR status progression, and style review. Evaluative only; does not fix. Invoke after docs-engineer authors content and before branch_ready.
 mode: subagent
-model: provider/model-haiku-4-5
 permission:
   bash: allow
   edit: deny

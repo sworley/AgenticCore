@@ -1,7 +1,6 @@
 ---
 description: Routes complex multi-step tasks to the correct specialist agents. Produces routing plans only — never executes work directly.
 mode: subagent
-model: provider/model-opus-4-8
 permission:
   bash: deny
   edit: deny

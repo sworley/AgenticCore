@@ -573,18 +573,18 @@ else
   validation_failed=1
 fi
 
-# Build .envrc from the template so the venv is sourced on cd (if absent).
-if [ -f "$TARGET/.envrc.template" ] && [ ! -f "$TARGET/.envrc" ]; then
+# Build .envrc from the template so the venv is sourced on cd. Always rebuild
+# at adoption: the export can carry the framework's own gitignored placeholder
+# .envrc (which predates `layout python`), so refreshing from the canonical
+# .envrc.template guarantees both the venv source and the adopter credential
+# scaffold are present. The adopter fills in their real values afterward.
+if [ -f "$TARGET/.envrc.template" ]; then
   log "    building .envrc from .envrc.template"
   cp "$TARGET/.envrc.template" "$TARGET/.envrc"
   log "    .envrc created — run 'direnv allow' once to activate the venv on cd"
 else
-  if [ -f "$TARGET/.envrc" ]; then
-    log "    .envrc exists — leaving as-is"
-  else
-    warn "    .envrc.template not found — skipping .envrc build"
-    validation_failed=1
-  fi
+  warn "    .envrc.template not found — skipping .envrc build"
+  validation_failed=1
 fi
 
 # ---------------------------------------------------------------------------

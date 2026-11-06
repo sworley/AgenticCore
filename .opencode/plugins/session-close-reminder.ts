@@ -1,9 +1,10 @@
-import type { Plugin } from "@opencode-ai/plugin";
+import { Plugin } from "@opencode/plugin";
 import { execSync } from "child_process";
 
-export const SessionCloseReminderPlugin: Plugin = async () => {
-  return {
-    "chat.message": async () => {
+export default Plugin.define({
+  id: "session-close-reminder",
+  async setup(ctx) {
+    await ctx.session.hook("prompt", () => {
       try {
         const worktrees = execSync("git worktree list --porcelain", {
           encoding: "utf-8",
@@ -30,6 +31,6 @@ export const SessionCloseReminderPlugin: Plugin = async () => {
       } catch {
         // non-fatal — never interrupt agent work
       }
-    },
-  };
-};
+    });
+  },
+});

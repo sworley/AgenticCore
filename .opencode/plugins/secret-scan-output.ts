@@ -12,7 +12,7 @@
  *   - Private keys / certificates
  */
 
-import type { Plugin } from "@opencode-ai/plugin"
+import { Plugin } from "@opencode/plugin"
 
 const PATTERNS: Array<[RegExp, string]> = [
   [
@@ -73,13 +73,17 @@ function extractText(value: unknown): string {
   return String(value ?? "")
 }
 
-export const SecretScanOutputPlugin: Plugin = async () => {
-  return {
-    "tool.execute.after": async (input, output) => {
-      const toolName = (input.tool ?? "").toLowerCase()
+export default Plugin.define({
+  id: "secret-scan-output",
+  async setup(ctx) {
+    await ctx.tool.hook("execute.after", (event) => {
+      // Only completed calls produce output to scan; errors carry no output.
+      if (event.status !== "completed") return
+
+      const toolName = (event.tool ?? "").toLowerCase()
       if (!WATCHED_TOOLS.has(toolName)) return
 
-      const text = extractText(output.output ?? output.result)
+      const text = extractText(event.result)
       const findings: string[] = []
 
       for (const [pattern, label] of PATTERNS) {
@@ -97,6 +101,6 @@ export const SecretScanOutputPlugin: Plugin = async () => {
           `  Reference resources by name or logical identifier only.\n`
         )
       }
-    },
-  }
-}
+    })
+  },
+})

@@ -2,10 +2,17 @@
 # Copy this file to .envrc and fill in the values for your environment.
 # Never commit .envrc.local or credentials directly.
 
-# Project-local Python virtualenv — activate .venv simply by cd'ing into the
-# repo root. Reuses the .venv created at adoption time by python-env.sh
-# (mddocs/scripts/setup/python-env.sh). Requires direnv; ignore if unused.
-layout python
+# Project-local Python virtualenv — activate .venv by cd'ing into the repo root.
+# Created at adoption time by mddocs/scripts/setup/python-env.sh. We source it
+# explicitly (rather than `layout python`) so VIRTUAL_ENV reliably points at the
+# project root's .venv, not a pre-existing or home-directory virtualenv.
+# Requires direnv (dotenv allow once); ignore if unused.
+if [ -f ".venv/bin/activate" ]; then
+  # shellcheck disable=SC1091
+  source .venv/bin/activate
+else
+  echo "WARN: no .venv found — run ./mddocs/scripts/setup/python-env.sh to create the project virtualenv"
+fi
 
 _REMOTE=$(git remote get-url origin 2>/dev/null || echo "")
 _REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")

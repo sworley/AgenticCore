@@ -115,8 +115,8 @@ tier matching, not on ad-hoc decision making.
 | Node | Role | K8s Scheduler |
 |---|---|---|
 | `harness-cluster` | Control plane + sole K8s worker + shared storage | Accepts all Tier 1/2/3 pods |
-| `inference-node-1` (GPU node #1) | Bare-metal vLLM head node — <model-id> node 1/2 | Tainted `NoSchedule` — inference only, outside K8s |
-| `inference-node-2` (GPU node #2) | Bare-metal vLLM worker — <model-id> node 2/2 | Tainted `NoSchedule` — inference only, outside K8s |
+| `inference-node-1` (GPU node #1) | Bare-metal vLLM head node — `<model-id>` node 1/2 | Tainted `NoSchedule` — inference only, outside K8s |
+| `inference-node-2` (GPU node #2) | Bare-metal vLLM worker — `<model-id>` node 2/2 | Tainted `NoSchedule` — inference only, outside K8s |
 | Operator workstation | Interactive dev seat, local orchestrator CLI | Outside K8s — API consumer only |
 
 Both inference nodes are 100% committed to the distributed vLLM instance. Stopping or

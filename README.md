@@ -52,10 +52,16 @@ of the framework to *run* the export from, so obtain it first (below).
 |---|---|---|
 | `git` | Version control + worktrees | 2.35+ |
 | `bash` | Runs `export-framework.sh` | 4.x+ |
-| `mdbook` | Build documentation | 0.4.x |
+| `mdbook` | Build documentation | 0.5.x |
 | `direnv` | Credential injection via `.envrc` | 2.x |
 | `pass` | Secrets store (GPG-backed) | 1.7+ |
 | OpenCode or compatible runtime | AI coding agent runtime | latest |
+
+> **Toolchain helper:** validate (or install) the docs/dev toolchain — `mdbook`,
+> `mdbook-mermaid`, `typos-cli`, `shellcheck`, `gh`, `jq` — with
+> `./mddocs/scripts/setup/toolchain.sh --check` (read-only) or `--install` (opt-in).
+> The Python deps (`mcp`, `pyyaml`, `fastmcp`) are provisioned into a project-local
+> `.venv` at adoption time.
 
 ### 1. Create or change to a working directory
 

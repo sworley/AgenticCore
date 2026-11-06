@@ -161,6 +161,13 @@ Type `y` to proceed. Any other input aborts with no side effects.
 > directory before the environment activates. See
 > [python-env.sh](../scripts/setup/python-env.md).
 
+> **The toolchain is checked (and optionally installed) during adoption (Step 6).**
+> `adopt.sh` runs `toolchain.sh --check` against the docs/dev toolchain (`mdbook`,
+> `typos`, `shellcheck`, `gh`, `jq`). If something is missing or out of date it offers to
+> **install/update or skip**; skipping prints a note on what was skipped and its impact,
+> and does not fail the adoption. Nothing is installed unless you choose to. See
+> [toolchain.sh](../scripts/setup/toolchain.md).
+
 > **Choosing your target path:** See [Choosing your target path](#choosing-your-target-path)
 > below for the recommended TC-074 path convention. A simple flat path such as
 > `~/dev/my-project` is fully supported and is what the README Quick Start uses — the

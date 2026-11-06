@@ -52,7 +52,7 @@ of the framework to *run* the export from, so obtain it first (below).
 |---|---|---|
 | `git` | Version control + worktrees | 2.35+ |
 | `bash` | Runs `export-framework.sh` | 4.x+ |
-| `mdbook` | Build documentation | 0.4.x |
+| `mdbook` | Build documentation | 0.5.x |
 | `direnv` | Credential injection via `.envrc` | 2.x |
 | `pass` | Secrets store (GPG-backed) | 1.7+ |
 | OpenCode or compatible runtime | AI coding agent runtime | latest |

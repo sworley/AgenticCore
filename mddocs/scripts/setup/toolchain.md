@@ -32,15 +32,16 @@ Tools are pinned in the script's manifest to match the framework's CI/validation
 | Tool | Tier | Installer | Pin |
 |------|------|-----------|-----|
 | `git`, `jq`, `python3`, `uv` | required | system | — |
-| `mdbook` | required | `cargo` | `0.4.40` |
+| `mdbook` | required | `cargo` | `0.5.3` |
 | `mdbook-mermaid` | optional | `cargo` | `0.17.0` |
 | `typos-cli` | optional | `cargo` | `1.48.0` |
 | `shellcheck`, `gh` | optional | `brew` | — |
 
-> **Note on mdbook version:** `mdbook` is pinned to **`0.4.40`** to match
-> `.github/workflows/ci.yml` and the README's "0.4.x" prerequisite. The legacy
-> `phase2-dev-toolchain.sh` pins `0.5.3`, which is **out of sync** (mdbook 0.5.x
-> breaks mdbook-linkcheck — see TC-017 and AGENT.md).
+> **mdbook version:** `mdbook` is pinned to **`0.5.3`** (the current standard),
+> matching `.github/workflows/ci.yml`, `phase2-dev-toolchain.sh`, and the
+> README's "0.5.x" prerequisite. The framework's `check-links.sh` (not
+> `mdbook-linkcheck`) validates internal links and stays compatible with
+> mdbook 0.5.x.
 
 ```bash
 {{#include toolchain.sh}}

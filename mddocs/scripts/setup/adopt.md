@@ -31,6 +31,12 @@ Key behaviors:
   **sourced automatically** on `cd` — but only after you run **`direnv allow`** once in
   the project (the first `cd` into a newly created `.envrc` always requires it). See
   [python-env.sh](python-env.md).
+- **Toolchain is checked (Step 6).** `adopt.sh` runs `toolchain.sh --check` against the
+  docs/dev toolchain (`mdbook`, `typos`, `shellcheck`, `gh`, `jq`). If everything is
+  present at the pinned version it proceeds; if a required or optional tool is missing
+  or out of date it offers to **install/update or skip** (interactive). Skipping does not
+  fail adoption — it prints a note on what was skipped and its impact, then continues.
+  Nothing is force-installed unless you choose to. See [toolchain.sh](toolchain.md).
 - **`--tool none|opencode|codex`** selects an agent-runtime adapter (default
   `none` = bring your own). Prompted interactively if omitted and stdin is a TTY.
   `opencode` generates local opencode config + `start-opencode.sh`; `codex` writes a

@@ -11,8 +11,10 @@
 #     Step 5  — provision the project-local Python virtualenv (python-env.sh:
 #               create .venv, install requirements.txt, validate deps) and build
 #               .envrc from .envrc.template so the venv sources on cd
-#     Step 6  — validate the exported target (check-env.sh + mdbook build)
-#     Step 7  — agent runtime configuration (OpenCode uses committed opencode.json directly)
+#     Step 6  — toolchain dependency check (toolchain.sh --check; optional
+#               --install, or skip with an impact note)
+#     Step 7  — validate the exported target (check-env.sh + mdbook build)
+#     Step 8  — agent runtime configuration (OpenCode uses committed opencode.json directly)
 #
 #   Step 2 (clone the framework) and Step 8 (open an agentic session) remain
 #   manual — see the printed instruction at the end of this script for Step 8.
@@ -539,8 +541,9 @@ log "==> Step 4 complete: export-framework.sh exited 0"
 
 if [ "$DRY_RUN" -eq 1 ]; then
   dry_note "would run Step 5 python env (python-env.sh + build .envrc) in $TARGET"
-  dry_note "would run Step 6 validation (check-env.sh + mdbook build) in $TARGET"
-  dry_note "would run Step 7 (tool adapter) in $TARGET for --tool $TOOL"
+  dry_note "would run Step 6 toolchain check (toolchain.sh --check) in $TARGET"
+  dry_note "would run Step 7 validation (check-env.sh + mdbook build) in $TARGET"
+  dry_note "would run Step 8 (tool adapter) in $TARGET for --tool $TOOL"
   log ""
   log "[dry-run] zero side effects — report only. Nothing was created or written."
   exit 0
@@ -588,7 +591,54 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 6 — validate the exported target.
+# Step 6 — toolchain dependency check (validate / install / skip).
+#
+# Checks the harness's non-Python dev/docs toolchain (mdbook, typos, shellcheck,
+# gh, jq). If a required or optional tool is missing or out of date, offers to
+# install/update or skip. Skipping does not fail the adoption — it prints a
+# note about what is skipped and the impact, then continues. The toolchain is
+# validated in the target but uses the adopter's installed tools; nothing is
+# force-installed unless the adopter chooses to.
+# ---------------------------------------------------------------------------
+log "==> Step 6: checking toolchain dependencies"
+
+tc_script="$TARGET/mddocs/scripts/setup/toolchain.sh"
+if [ "$DRY_RUN" -eq 1 ]; then
+  dry_note "would run toolchain.sh --check (and optionally --install) in $TARGET"
+elif [ ! -x "$tc_script" ]; then
+  warn "toolchain.sh not found or not executable at: $tc_script — skipping toolchain check"
+  validation_failed=1
+else
+  log "    running: $tc_script --check"
+  tc_output="$(cd "$TARGET" && "$tc_script" --check 2>&1)"; tc_exit=$?
+  printf '%s\n' "$tc_output"
+  if [ "$tc_exit" -eq 0 ]; then
+    log "    toolchain OK"
+  else
+    tc_action="skip"
+    if [ "$YES" -eq 0 ] && [ -t 0 ]; then
+      printf 'Toolchain needs install/update. Install/update now, or skip? [i]nstall / [s]kip: ' >&2
+      read -r _tc
+      case "$_tc" in
+        i|I|install|Install|y|Y|yes|YES) tc_action="install" ;;
+        *) tc_action="skip" ;;
+      esac
+    fi
+    if [ "$tc_action" = "install" ]; then
+      log "    running: $tc_script --install"
+      if ( cd "$TARGET" && "$tc_script" --install ); then
+        log "    toolchain updated"
+      else
+        warn "toolchain --install reported a failure — continuing with the findings above"
+      fi
+    else
+      warn "Skipping toolchain install/update (exit $tc_exit). Impact: docs build / docs-reviewer (typos) and quality gates may need tools that are missing or out of date. Resolve later with: ./mddocs/scripts/setup/toolchain.sh --install"
+    fi
+  fi
+fi
+
+# ---------------------------------------------------------------------------
+# Step 7 — validate the exported target.
 #
 # Runs check-env.sh and `mdbook build` INSIDE the target (the target already
 # exists at this point because export-framework.sh exited 0 above). A
@@ -596,7 +646,7 @@ fi
 # POST-export — the target has already been created — so this is reported
 # as a validation failure, not masked as export failure or silently ignored.
 # ---------------------------------------------------------------------------
-log "==> Step 6: validating exported target"
+log "==> Step 7: validating exported target"
 
 target_check_env="$TARGET/mddocs/scripts/check-env.sh"
 if [ -x "$target_check_env" ]; then
@@ -641,7 +691,7 @@ fi
 # ---------------------------------------------------------------------------
 TOOL_ADAPTER="$TARGET/mddocs/scripts/setup/tool-adapter.sh"
 if [ -x "$TOOL_ADAPTER" ]; then
-  log "==> Step 7: configuring tool adapter (--tool $TOOL)"
+  log "==> Step 8: configuring tool adapter (--tool $TOOL)"
   if ! ( cd "$TARGET" && "$TOOL_ADAPTER" --tool "$TOOL" ); then
     warn "tool-adapter.sh reported a failure in $TARGET (post-export, does not undo the export)"
   fi
@@ -659,7 +709,7 @@ fi
 log ""
 log "You are here — adopter management plane ready"
 log ""
-log "adopt.sh finished Steps 3-7 (create, export, python env, validate, tool adapter)."
+log "adopt.sh finished Steps 3-8 (create, export, python env, toolchain, validate, tool adapter)."
 log "Target: $TARGET"
 if [ "$validation_failed" -eq 1 ]; then
   log ""

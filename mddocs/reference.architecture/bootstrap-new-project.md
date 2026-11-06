@@ -147,6 +147,15 @@ Type `y` to proceed. Any other input aborts with no side effects.
 > (default `none`) generates an optional agent-runtime adapter via `tool-adapter.sh`; it
 > never prescribes a tool. See [Tooling Contract](tooling-contract.md).
 
+> **A project-local Python environment is provisioned automatically.** As part of
+> onboarding, `adopt.sh` runs `python-env.sh` in the target: it creates `<target>/.venv`,
+> installs the committed `requirements.txt` (the harness's MCP Python deps), and validates
+> that `mcp`, `yaml`, and `fastmcp` import. It also builds `.envrc` from `.envrc.template`
+> so the venv is **sourced on `cd`**. Because creating `.envrc` is a new file in the
+> project, direnv requires you to run **`direnv allow` once** on the first `cd` into the
+> directory before the environment activates. See
+> [python-env.sh](../scripts/setup/python-env.md).
+
 > **Choosing your target path:** See [Choosing your target path](#choosing-your-target-path)
 > below for the recommended TC-074 path convention. A simple flat path such as
 > `~/dev/my-project` is fully supported and is what the README Quick Start uses — the
@@ -222,12 +231,19 @@ mddocs/scripts/export-framework.sh --target /path/to/target --slug ACME
 
 ```sh
 cd /path/to/target
-./mddocs/scripts/check-env.sh        # verify environment
+./mddocs/scripts/check-env.sh        # verify environment (tools, python env, MCP wiring)
+./mddocs/scripts/setup/python-env.sh --check   # confirm .venv has the harness's Python deps
 mdbook build mddocs/                 # verify docs build
 git log --oneline -1                 # confirm the initial commit recorded the release
 cat framework-version.txt            # confirm the baseline reference
 git remote -v                        # confirm no framework remote is present
 ```
+
+> **Python environment:** `adopt.sh` Step 5 creates `.venv` and installs
+> `requirements.txt`. `check-env.sh` above reports `[ok] .venv` and `[ok] python deps
+> (mcp, yaml, fastmcp)` when it is healthy. If your project's `.envrc` was created during
+> adoption, remember to run **`direnv allow`** once before the venv activates on `cd`
+> (`echo $VIRTUAL_ENV` should then show `<project>/.venv`).
 
 ### Step 4 — Flow B only: review the reconciliation report
 
@@ -393,7 +409,9 @@ caught even on a repeat invocation.
 - [ ] `framework-version.txt` present at the repo root with the correct release tag
 - [ ] `AGENT.md`, `tasks.yaml`, and `PROCESS.md` carry the adopter's slug
 - [ ] `mddocs/` builds without errors (`mdbook build mddocs/`)
-- [ ] `./mddocs/scripts/check-env.sh` passes
+- [ ] `./mddocs/scripts/check-env.sh` passes (tools, `.venv`, Python deps, MCP wiring)
+- [ ] `.venv` exists and `./mddocs/scripts/setup/python-env.sh --check` reports imports OK
+- [ ] `direnv allow` run in the project (one-time), and `echo $VIRTUAL_ENV` shows `<project>/.venv`
 - [ ] Initial commit message records the framework release version
 - [ ] A remote Git project exists and is wired (`git remote add origin <adopter-repo-url>`), if desired — the script never adds an adopter remote on its own initiative
 - [ ] Working/integration branch created and pushed, per the adopter's own branch

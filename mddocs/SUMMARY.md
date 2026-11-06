@@ -149,6 +149,7 @@
 
 - [Onboarding](scripts/setup/index.md)
   - [adopt.sh](scripts/setup/adopt.md)
+  - [python-env.sh](scripts/setup/python-env.md)
   - [opencode.json — init-opencode-settings](scripts/setup/init-opencode-settings.md)
   - [phase2-dev-toolchain.sh](scripts/setup/phase2-dev-toolchain.md)
   - [verify-toolchain.sh](scripts/setup/verify-toolchain.md)

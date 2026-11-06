@@ -24,6 +24,13 @@ Key behaviors:
   project name; the harness appends `.01` (so `./my-project` -> `./my-project.01`, and
   `./myproject.v0.01` -> `./myproject.v0.01.01`).
 - **`--dry-run`** skips the confirmation prompt entirely (zero side effects end to end).
+- **Python environment is provisioned (Step 5).** After the export, `adopt.sh` runs
+  `python-env.sh` in the target: it creates `<target>/.venv`, installs the pinned
+  `requirements.txt`, and validates the harness's Python modules (`mcp`, `yaml`,
+  `fastmcp`) import. It then builds `.envrc` from `.envrc.template` so the venv is
+  **sourced automatically** on `cd` — but only after you run **`direnv allow`** once in
+  the project (the first `cd` into a newly created `.envrc` always requires it). See
+  [python-env.sh](python-env.md).
 - **`--tool none|opencode|codex`** selects an agent-runtime adapter (default
   `none` = bring your own). Prompted interactively if omitted and stdin is a TTY.
   `opencode` generates local opencode config + `start-opencode.sh`; `codex` writes a

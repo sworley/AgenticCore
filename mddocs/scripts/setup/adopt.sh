@@ -8,6 +8,9 @@
 #     Step 3  — confirm the target path, create the target project directory,
 #               and canonicalize to an absolute path (AP-084, AP-085)
 #     Step 4  — run export-framework.sh into that target
+#     Step 5  — provision the project-local Python virtualenv (python-env.sh:
+#               create .venv, install requirements.txt, validate deps) and build
+#               .envrc from .envrc.template so the venv sources on cd
 #     Step 6  — validate the exported target (check-env.sh + mdbook build)
 #     Step 7  — agent runtime configuration (OpenCode uses committed opencode.json directly)
 #
@@ -535,11 +538,53 @@ fi
 log "==> Step 4 complete: export-framework.sh exited 0"
 
 if [ "$DRY_RUN" -eq 1 ]; then
+  dry_note "would run Step 5 python env (python-env.sh + build .envrc) in $TARGET"
   dry_note "would run Step 6 validation (check-env.sh + mdbook build) in $TARGET"
   dry_note "would run Step 7 (tool adapter) in $TARGET for --tool $TOOL"
   log ""
   log "[dry-run] zero side effects — report only. Nothing was created or written."
   exit 0
+fi
+
+# ---------------------------------------------------------------------------
+# Step 5 — create the project-local Python virtualenv and validate deps.
+#
+# The harness's Python dependencies are pinned in requirements.txt. This step
+# creates <target>/.venv, installs from requirements.txt, and validates that the
+# required modules (mcp, yaml, fastmcp) import. It is tool-neutral and
+# idempotent. It also builds .envrc from .envrc.template (if absent) so the
+# venv is sourced on cd via direnv's `layout python`. Set up here (post-export)
+# because the target tree — including requirements.txt and python-env.sh — must
+# exist first.
+# ---------------------------------------------------------------------------
+log "==> Step 5: provisioning Python environment"
+
+validation_failed=0
+
+target_python_env="$TARGET/mddocs/scripts/setup/python-env.sh"
+if [ -x "$target_python_env" ]; then
+  log "    running: $target_python_env (create + install + validate)"
+  if ! ( cd "$TARGET" && "$target_python_env" ); then
+    warn "python-env.sh reported failures in $TARGET (venv/deps)"
+    validation_failed=1
+  fi
+else
+  warn "python-env.sh not found or not executable at: $target_python_env — skipping"
+  validation_failed=1
+fi
+
+# Build .envrc from the template so the venv is sourced on cd. Always rebuild
+# at adoption: the export can carry the framework's own gitignored placeholder
+# .envrc (which predates `layout python`), so refreshing from the canonical
+# .envrc.template guarantees both the venv source and the adopter credential
+# scaffold are present. The adopter fills in their real values afterward.
+if [ -f "$TARGET/.envrc.template" ]; then
+  log "    building .envrc from .envrc.template"
+  cp "$TARGET/.envrc.template" "$TARGET/.envrc"
+  log "    .envrc created — run 'direnv allow' once to activate the venv on cd"
+else
+  warn "    .envrc.template not found — skipping .envrc build"
+  validation_failed=1
 fi
 
 # ---------------------------------------------------------------------------
@@ -552,8 +597,6 @@ fi
 # as a validation failure, not masked as export failure or silently ignored.
 # ---------------------------------------------------------------------------
 log "==> Step 6: validating exported target"
-
-validation_failed=0
 
 target_check_env="$TARGET/mddocs/scripts/check-env.sh"
 if [ -x "$target_check_env" ]; then
@@ -616,7 +659,7 @@ fi
 log ""
 log "You are here — adopter management plane ready"
 log ""
-log "adopt.sh finished Steps 3-7 (create, export, validate, tool adapter)."
+log "adopt.sh finished Steps 3-7 (create, export, python env, validate, tool adapter)."
 log "Target: $TARGET"
 if [ "$validation_failed" -eq 1 ]; then
   log ""

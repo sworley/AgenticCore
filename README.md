@@ -121,6 +121,13 @@ anything other than `y`/`yes`) to abort — then re-run with the correct `--targ
 > provisioned as siblings in the same parent: `./myproject.v0.01.00`, `./myproject.v0.01.02`,
 > ... The base name is your own choice; only the `.01` layer suffix is enforced at adoption.
 
+> **A project-local Python environment is provisioned for you.** As part of
+> onboarding, `adopt.sh` creates `<project>/.venv` and installs the harness's
+> pinned Python deps from `requirements.txt` (MCP servers, review-ledger,
+> rag-docs), then validates the modules import. It also builds `.envrc` from
+> `.envrc.template` so the venv is **sourced automatically when you `cd`** into
+> the project (run `direnv allow` once). To re-provision: `./mddocs/scripts/setup/python-env.sh`.
+
 > **The harness doesn't prescribe an agent runtime.** The core is tool-agnostic
 > (roles, process, benches, MCP servers). `--tool` selects an optional adapter —
 > default `none` = bring your own:

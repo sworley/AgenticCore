@@ -86,6 +86,32 @@ else
   check "uv" "not found — install with: curl -LsSf https://astral.sh/uv/install.sh | sh"
 fi
 
+# --- Python virtualenv / dependencies ---
+echo ""
+echo "-- python env --"
+
+if [ -f "requirements.txt" ]; then
+  check "requirements.txt" "ok"
+else
+  check "requirements.txt" "not found — run ./mddocs/scripts/setup/python-env.sh --freeze (or re-adopt) to pin harness deps"
+fi
+
+if [ -d ".venv" ]; then
+  check ".venv" "ok"
+else
+  check ".venv" "not found — run ./mddocs/scripts/setup/python-env.sh"
+fi
+
+if [ -x ".venv/bin/python" ]; then
+  if ".venv/bin/python" -c "import mcp, yaml, fastmcp" >/dev/null 2>&1; then
+    check "python deps (mcp, yaml, fastmcp)" "ok"
+  else
+    check "python deps (mcp, yaml, fastmcp)" "missing modules — run ./mddocs/scripts/setup/python-env.sh --install"
+  fi
+else
+  check "python deps (mcp, yaml, fastmcp)" ".venv/bin/python not found — run ./mddocs/scripts/setup/python-env.sh"
+fi
+
 # --- MCP server presence checks ---
 echo ""
 echo "-- mcp servers --"

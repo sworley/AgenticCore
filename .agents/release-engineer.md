@@ -98,7 +98,7 @@ reference section:
 
 | Version | Date | Release Notes | Status |
 |---|---|---|---|
-| v1.0.0 | YYYY-MM-DD | [Release Notes](mddocs/release-notes/v1.0.0.md) | current |
+| vX.Y.Z | YYYY-MM-DD | [Release Notes](mddocs/release-notes/vX.Y.Z.md) | current |
 ```
 
 Mark the previous release as `superseded` when a new release is published.

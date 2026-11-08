@@ -103,7 +103,7 @@ to take this release?*
 
 You **own and gate** this workflow; the `release-engineer` executes the tactical git
 mechanics under your tasking. The canonical, gate-by-gate runbook is
-[`mddocs/reference.architecture/release-process.md`](../reference.architecture/release-process.md).
+`mddocs/reference.architecture/release-process.md`.
 
 Curated release-branch model (PROCESS.md §5, ADR-0026). `dev` is the integration +
 durability surface, **not** the release candidate. Each step requires explicit HIL

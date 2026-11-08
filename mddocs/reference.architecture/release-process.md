@@ -44,7 +44,7 @@ covers a subsequent gate.
 | Gate | Action | Requires |
 |---|---|---|
 | G-1 | Version confirmed | HIL verbal confirmation |
-| G-2 | Release prep branch created | lead-engineer task |
+| G-2 | Release prep branch created | baseline-steward task |
 | G-3 | Release notes written (incl. adopter impact section) | security-reviewer APPROVED |
 | G-4 | Release notes reviewed | HIL LGTM |
 | G-5 | Merge prep → main | HIL LGTM |
@@ -67,7 +67,7 @@ git log $(git describe --tags --abbrev=0)..HEAD --oneline
 grep -l "Status: accepted" mddocs/adr/*.md
 ```
 
-Present to lead-engineer and HIL:
+Present to baseline-steward and HIL:
 > "Proposed: vX.Y.Z — reason: [MAJOR/MINOR/PATCH justification]. Last release: vA.B.C."
 
 Wait for explicit HIL confirmation of the version number before proceeding.
@@ -161,7 +161,7 @@ git add mddocs/release-notes/vX.Y.Z.md
 git commit -m "docs: release notes for vX.Y.Z [AP-NNN]"
 ```
 
-Present staged diff to lead-engineer. Relay to `.01` for HIL surface.
+Present staged diff to baseline-steward. Relay to `.01` for HIL surface.
 
 ### Step 5 — HIL review of release notes (G-4)
 

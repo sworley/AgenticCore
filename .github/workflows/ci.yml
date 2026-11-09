@@ -14,7 +14,7 @@ jobs:
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
       - name: Install mdbook
-        run: cargo install mdbook --version 0.4.40
+        run: cargo install mdbook --version 0.5.3
 
       - name: mdbook build
         run: cd mddocs && mdbook build

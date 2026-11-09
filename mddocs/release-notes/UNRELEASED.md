@@ -1,4 +1,11 @@
-# Unreleased
+# Unreleased — Next Release Notes (running draft)
 
-Placeholder for AgenticCore release notes. Release history intentionally starts
-clean with the initial baseline.
+Running candidate material for the next baseline release. This is the single
+source of truth for what will ship. Formal release notes are written to
+`mddocs/release-notes/vX.Y.Z.md` at release time (see
+[`mddocs/reference.architecture/release-process.md`](../reference.architecture/release-process.md)).
+
+**Last release:** `v0.6.0` (2026-11-08).
+
+Candidate material is gathered here across sessions — append `[type] short description`
+entries at session close. The next release notes (v0.7.0) will be seeded at release time.

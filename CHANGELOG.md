@@ -1,12 +1,14 @@
 # Changelog
 
 All notable changes to AgenticCore are documented here.
-Format: semantic versioning. Release history starts clean with the initial
-open-source baseline; see `mddocs/release-notes/` for future entries.
+Versioning follows semantic versioning: `MAJOR.MINOR.PATCH` (see
+[`mddocs/reference.architecture/release-process.md`](mddocs/reference.architecture/release-process.md)).
+Release history starts with the open-source baseline; see `mddocs/release-notes/` for
+published notes.
 
 ## [v0.5.0] — 2026-11-01
 
-Initial open-source baseline.
+Initial open-source baseline (starting point for the formal release process).
 
 - Established the `.core/` governance and enforcement layer (instruction
   contract, invariants, security/docs policy, hooks, scripts, bootstrap, task queue).

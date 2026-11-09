@@ -53,7 +53,9 @@ Full procedure: `mddocs/reference.architecture/session-open-checklist.md`
 3. Commit any orphaned artifacts to the branch that produced them
 4. Push to `origin/dev` if any commits landed this session — no HIL-confirmed work may
    remain unpushed at session close (ADR-0026 durability backstop)
-5. Append notable changes to `.core/work/next-release-notes.md` (create if absent)
+5. Append notable changes to `mddocs/release-notes/UNRELEASED.md` — the committed
+   running draft for the next release (per-session `.core/work/next-release-notes.md`
+   scratch consolidates here; create if absent)
 6. Sweep open out-of-scope reviewer notes (note-severity findings) into backlog tickets or
    consciously accept — do not let out-of-scope reviewer observations leak
 7. Update `tasks.yaml` to reflect end-of-session state

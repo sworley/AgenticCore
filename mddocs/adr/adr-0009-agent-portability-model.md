@@ -149,7 +149,7 @@ the existing memory-dir manifest. Content:
 |---|---|
 | Bench ID | NN |
 | Role | lead \| worker |
-| Assigned tasks | AP-NNN, … (or —) |
+| Assigned tasks | AC-NNNN, … (or —) |
 | Created | ISO-8601 date |
 
 ## Constraints

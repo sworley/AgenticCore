@@ -56,13 +56,15 @@ tasks:
     size: M
     labels: [docs, governance, release]
     agent: baseline-steward
-    status: in_progress
+    status: released
     branch: "docs/AC-0002-release-process-formalization"
     bench: .01
     blocked_by: []
     created: "2026-11-08"
     updated: "2026-11-08"
     started_at: "2026-11-08T12:00:00"
+    released_in: "v0.6.0"
+    completed_at: "2026-11-08T15:30:00"
 
   - id: AC-0003
     title: "Release v0.6.0"
@@ -82,10 +84,12 @@ tasks:
     size: S
     labels: [release]
     agent: baseline-steward
-    status: in_progress
+    status: released
     branch: "release/v0.6.0-prep"
     bench: .01
     blocked_by: [AC-0002]
     created: "2026-11-08"
     updated: "2026-11-08"
     started_at: "2026-11-08T13:00:00"
+    released_in: "v0.6.0"
+    completed_at: "2026-11-08T15:30:00"

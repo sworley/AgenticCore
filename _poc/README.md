@@ -7,13 +7,13 @@ directories belong on those branches only — this file is the only artifact com
 
 ## Active POCs
 
-| AP ID | COA | Branch | Status |
+| AC ID | COA | Branch | Status |
 |---|---|---|---|
 | — | — | — | — |
 
 ## Closed POCs
 
-| AP ID | COA | Branch | Status | Decision |
+| AC ID | COA | Branch | Status | Decision |
 |---|---|---|---|---|
 | — | — | — | — | — |
 

@@ -56,7 +56,7 @@ Wire the MCP servers the agents rely on. See
 git add .agents/ .opencode/agents/
 git status
 # Present to HIL and wait for LGTM
-git commit -m "feat: configure agent namespace [AP-NNN]"
+git commit -m "feat: configure agent namespace [AC-NNNN]"
 ```
 
 ---

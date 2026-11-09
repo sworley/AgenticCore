@@ -1,4 +1,4 @@
-# AP ADR-0017: Outer Dependencies and Portable Configuration
+# AC ADR-0017: Outer Dependencies and Portable Configuration
 
 **Date:** 2026-07-02
 **Status:** Accepted

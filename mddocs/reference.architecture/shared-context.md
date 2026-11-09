@@ -19,7 +19,7 @@ AI toolchain, opencode, and any future tool — read the same file.
 
 | Path | Purpose |
 |------|---------|
-| `.core/agents/_context.md` | AP framework's own populated shared context — the reference example |
+| `.core/agents/_context.md` | AC framework's own populated shared context — the reference example |
 | `.agents/bootstrap/project-context.md.template` | Blank template — copy and fill in for a new project |
 
 ---
@@ -34,7 +34,7 @@ AI toolchain, opencode, and any future tool — read the same file.
 | **Task Queue** | Location of `tasks.yaml`, task lifecycle states |
 | **Environment** | Hardware, OS, shell, toolchain, credential store |
 | **Agent Tool Directories** | `.agents/` canonical source, sync contract, tool-specific output dirs |
-| **Agent Roster** | All 10 AP agents — role, mode, invoked-by |
+| **Agent Roster** | All 10 AC agents — role, mode, invoked-by |
 | **Key Paths** | Canonical paths for all significant directories and files |
 | **Multi-Tool Note** | How AI toolchain and opencode share state; branch naming; commit discipline |
 
@@ -59,13 +59,13 @@ AI toolchain, opencode, and any future tool — read the same file.
    - `{{TOOLCHAIN}}` — comma-separated list of confirmed tools
    - `{{CREDENTIAL_STORE}}` — how credentials are managed
 
-3. Update the Key Paths section if your project layout differs from the AP defaults.
+3. Update the Key Paths section if your project layout differs from the AC defaults.
 
 4. Commit the populated file to `main` before the first agentic session.
 
 5. Agents configured to read the context file will load it automatically at session open.
 
-**The Agent Roster section requires no changes** — the 10 AP agents are pre-populated.
+**The Agent Roster section requires no changes** — the 10 AC agents are pre-populated.
 Add project-specific specialist agents below the roster table if your project introduces new roles.
 
 ---
@@ -85,16 +85,16 @@ are narrow-scope plan-only / verdict-only agents invoked mid-session.
 
 ---
 
-## AP Framework Reference Context
+## AC Framework Reference Context
 
-The populated context for the AP framework itself lives at:
+The populated context for the AC framework itself lives at:
 
 ```
 .core/agents/_context.md
 ```
 
 This file serves dual purpose:
-1. The AP framework's own populated shared context, used when agents work on the framework
+1. The AC framework's own populated shared context, used when agents work on the framework
 2. The reference example that adopters inspect when filling in their own context file
 
 ---
@@ -105,4 +105,4 @@ This file serves dual purpose:
 - [Runbook: Agent Authoring Workflow](../operations/runbooks/agent-authoring-workflow.md) — adding agents and keeping rosters in sync
 - [ADR-0009: Agent Portability Model](../adr/adr-0009-agent-portability-model.md)
 - `.agents/bootstrap/project-context.md.template` — blank template
-- `.core/agents/_context.md` — populated AP framework context
+- `.core/agents/_context.md` — populated AC framework context

@@ -8,7 +8,7 @@
 
 - EXAMPLE-ADR- (Lead-Engineer Identity Anchoring, 2026-06-08) — session-open anchor,
   AGENT.md policy/memory split, `.00` behavioral overlay model; carried forward into
-  AP ADR-0011.
+  AC ADR-0011.
 - EXAMPLE-ADR- (Agent Context Drift — Guardrail Policy, 2026-07-09) — cross-bench drift
   incident; `.00` persona collision with generic "assistant" identity as root cause.
 - EXAMPLE-ADR-0011 (Agentic Orchestration Architecture, 2026-05-05) — User → Lead-Engineer →
@@ -29,7 +29,7 @@ The Hil re-explains the hierarchy every session because no single document state
 **Gap 2 — `.00` persona is unnamed.** The `.00` workspace has been called "owner assistant",
 "assistant", "Pattern H", and "lead-engineer in scratch mode" across ADRs and sessions.
 The collision with the generic "assistant" identity caused a real drift incident documented
-in EXAMPLE-ADR-. The AP framework has not assigned a canonical name.
+in EXAMPLE-ADR-. The AC framework has not assigned a canonical name.
 
 **Gap 3 — Reviewer findings are untracked and unassembled.** The current process allows
 `APPROVED WITH NOTES` verdicts to defer finding logging to a future session. Session-state

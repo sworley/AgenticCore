@@ -1005,7 +1005,7 @@ FRAMEWORK_EXCLUDE_PATTERNS=(
   ".tmp"
   "mddocs/book"
   # SF-117/SF-122 — framework LIVE OPERATIONAL STATE must never land in the
-  # adopter tree: the framework's own task queue (69 AP-* tickets) and the
+  # adopter tree: the framework's own task queue (69 AC-* tickets) and the
   # framework's own populated shared-context file. These are excluded here
   # and SEEDED with adopter-generic empty starting files by
   # seed_adopter_state() below (see seed_adopter_state's own header for the
@@ -1018,7 +1018,7 @@ FRAMEWORK_EXCLUDE_PATTERNS=(
   "tasks.yaml"
   ".core/agents/_context.md"
   # SF-123 — bench-registry.yaml is the framework's own LIVE bench-provenance
-  # record: it names internal AP-* ticket IDs, security/review finding IDs
+  # record: it names internal AC-* ticket IDs, security/review finding IDs
   # (SF-*, RF-*), reviewer-run IDs (SR-*, RR-*), commit SHAs, and teardown
   # narrative for every bench this framework repo has ever provisioned for
   # itself. Same leak class as tasks.yaml/.core/agents/_context.md above —
@@ -1041,7 +1041,7 @@ FRAMEWORK_EXCLUDE_PATTERNS=(
   "relay-pending.md"
   # SF-127 — mddocs/backlog.md is the human-readable MIRROR of tasks.yaml
   # (its own preamble says so verbatim: "mirrors the current state of
-  # tasks.yaml"): it carries the same framework AP-* ticket IDs,
+  # tasks.yaml"): it carries the same framework AC-* ticket IDs,
   # per-ticket status/priority, and internal agent role names (including
   # "baseline-steward") as tasks.yaml itself — same leak class as
   # SF-117/SF-122 (tasks.yaml) and SF-123 (bench-registry.yaml). mddocs/ is

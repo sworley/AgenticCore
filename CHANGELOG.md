@@ -6,6 +6,16 @@ Versioning follows semantic versioning: `MAJOR.MINOR.PATCH` (see
 Release history starts with the open-source baseline; see `mddocs/release-notes/` for
 published notes.
 
+## [v0.7.0] — 2026-11-09
+
+Maintenance/consistency release.
+
+- Completed the `AP` → `AC` namespace migration across docs, bench tooling, and
+  ADRs (framework consistency).
+- Dependency refresh: `mcp` 1.30.0, `fastmcp` 3.4.10, `fastmcp-slim` 3.4.10.
+- Release-process hardening (repository-specific mechanics + operational notes).
+- See `mddocs/release-notes/v0.7.0.md` for the full release notes.
+
 ## [v0.6.0] — 2026-11-08
 
 First release under the formalized release/baseline process.

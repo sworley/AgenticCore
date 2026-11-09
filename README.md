@@ -33,7 +33,7 @@ in a team or solo engineering context. It defines:
 
 ## Releases
 
-The current baseline is **v0.6.0** (2026-11-08). The initial open-source baseline was
+The current baseline is **v0.7.0** (2026-11-09). The initial open-source baseline was
 **v0.5.0** (2026-11-01). Releases follow a curated, gated process owned by
 `baseline-steward` with tactical execution by `release-engineer` — see the
 [Release Process runbook](mddocs/reference.architecture/release-process.md) and

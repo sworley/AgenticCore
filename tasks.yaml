@@ -217,3 +217,27 @@ tasks:
     created: "2026-11-09"
     updated: "2026-11-09"
     started_at: "2026-11-09T12:00:00"
+
+  - id: AC-0009
+    title: "Dependency update: fastmcp-slim 3.4.2 -> 3.4.10"
+    description: |
+      Bump fastmcp-slim to 3.4.10 (Dependabot #8). Single-line requirements pin.
+      Verified compatible with mcp 1.30.0 + fastmcp 3.4.10 + pyyaml. fastmcp-slim
+      is not directly imported by the framework (low-risk), but kept in lockstep
+      with fastmcp.
+    acceptance_criteria:
+      - "requirements.txt pins fastmcp-slim==3.4.10"
+      - "fastmcp/mcp/yaml import cleanly"
+      - "CI verify passes"
+    adr: []
+    priority: P3
+    size: XS
+    labels: [deps, chore]
+    agent: ops-engineer
+    status: in_progress
+    branch: "chore/deps/bump-fastmcp-slim-3.4.10"
+    bench: .01
+    blocked_by: [AC-0008]
+    created: "2026-11-09"
+    updated: "2026-11-09"
+    started_at: "2026-11-09T13:00:00"

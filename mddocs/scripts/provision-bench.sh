@@ -30,7 +30,7 @@ set -eu
 # render_bench_agent_md <template> <output>
 #
 # Strips the template's single-line header comment and substitutes the
-# AP-NNN / feat/AP-NNN-short-slug / "Brief description of the task"
+# AC-NNNN / feat/AC-NNNN-short-slug / "Brief description of the task"
 # placeholders with the real TICKET / BRANCH / TASK values (read from the
 # caller's environment/globals — not passed positionally, matching this
 # script's existing convention of reading BENCH/TICKET/BRANCH/etc. as
@@ -71,9 +71,9 @@ set -eu
 #     value containing e.g. `\n` or `\t`. ENVIRON entries are used verbatim.
 #
 # Substitution ORDER also matters, independent of escaping (TC-081 defect
-# 2): the feat/AP-NNN-short-slug -> BRANCH replacement runs BEFORE the
-# AP-NNN -> TICKET replacement. Reversing the order rewrites the template's
-# literal "AP-NNN" inside "feat/AP-NNN-short-slug" first, so the branch
+# 2): the feat/AC-NNNN-short-slug -> BRANCH replacement runs BEFORE the
+# AC-NNNN -> TICKET replacement. Reversing the order rewrites the template's
+# literal "AC-NNNN" inside "feat/AC-NNNN-short-slug" first, so the branch
 # placeholder never matches on the later pass and BRANCH renders as the
 # literal short-slug placeholder instead of the real branch name.
 render_bench_agent_md() {
@@ -92,8 +92,8 @@ render_bench_agent_md() {
     NR == 1 { next }
     {
       line = $0
-      line = litrepl(line, "feat/AP-NNN-short-slug", ENVIRON["BRANCH"])
-      line = litrepl(line, "AP-NNN", ENVIRON["TICKET"])
+      line = litrepl(line, "feat/AC-NNNN-short-slug", ENVIRON["BRANCH"])
+      line = litrepl(line, "AC-NNNN", ENVIRON["TICKET"])
       line = litrepl(line, "Brief description of the task", ENVIRON["TASK"])
       print line
     }
@@ -261,7 +261,7 @@ if [ "$PATTERN" = "h" ]; then
   PATTERN_TEMPLATE="$REPO_ROOT/.agents/bootstrap/bench-AGENT.md.pattern-h"
 
   # Strip the single-line header comment from the pattern file. The pattern-h
-  # template has no AP-NNN/branch/task placeholders, so no substitution is needed.
+  # template has no AC-NNNN/branch/task placeholders, so no substitution is needed.
   sed "1d" "$PATTERN_TEMPLATE" > "$BENCH_DIR/AGENT.md"
   git -C "$BENCH_DIR" update-index --skip-worktree AGENT.md
 

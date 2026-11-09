@@ -8,8 +8,8 @@
 #   --stale   Cross-reference branch names against tasks.yaml and flag benches
 #             whose associated task is merged or cancelled (stale benches)
 #
-# Branch naming convention assumed: `<type>`/AP-NNN-slug
-# Task ID is extracted from the first AP-NNN segment in the branch name.
+# Branch naming convention assumed: `<type>`/AC-NNNN-slug
+# Task ID is extracted from the first AC-NNNN segment in the branch name.
 #
 # Also prints an advisory NOTICE (stdout, does not affect exit code) if no
 # `.00` HIL worktree is found among the enumerated worktrees, along with the
@@ -71,8 +71,8 @@ while IFS='|' read -r path sha branch; do
 
   bench_name=$(basename "$path")
 
-  # Extract task ID from branch name (matches AP-NNN pattern)
-  task_id=$(echo "$branch" | grep -oE 'AP-[0-9]+' | head -1)
+  # Extract task ID from branch name (matches AC-NNNN pattern)
+  task_id=$(echo "$branch" | grep -oE 'AC-[0-9]+' | head -1)
   task_label="${task_id:--}"
 
   printf "%-20s %-40s %-8s %-6s %-8s\n" \

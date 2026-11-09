@@ -111,12 +111,12 @@ tasks:
     size: S
     labels: [fix, tooling]
     agent: ops-engineer
-    status: in_progress
+    status: merged
     branch: "fix/AC-slug-tooling"
     bench: .01
     blocked_by: []
     created: "2026-11-08"
-    updated: "2026-11-08"
+    updated: "2026-11-09"
     started_at: "2026-11-08T16:00:00"
 
   - id: AC-0005
@@ -137,10 +137,35 @@ tasks:
     size: M
     labels: [docs, governance]
     agent: baseline-steward
-    status: in_progress
+    status: merged
     branch: "docs/AC-namespace-migration"
     bench: .01
     blocked_by: [AC-0002]
     created: "2026-11-09"
     updated: "2026-11-09"
     started_at: "2026-11-09T09:00:00"
+
+  - id: AC-0006
+    title: "Complete AP to AC namespace migration (bench-status, severance test, comments)"
+    description: |
+      Finish the AP -> AC migration for leftover references missed by AC-0004/AC-0005:
+      bench-status.sh's embedded Python --stale regex, the export-framework severance
+      test marker, and doc/comment references (_poc/README, agent-authoring-workflow,
+      export-framework.sh comments). Also mark AC-0004/AC-0005 as merged.
+    acceptance_criteria:
+      - "bench-status.sh --stale extracts AC-NNNN (AC-\\d+)"
+      - "test-export-framework-severance.sh asserts AC-[0-9] marker and passes"
+      - "Remaining AP namespace references migrated (historical AP-NNN digit citations left intact)"
+      - "AC-0004/AC-0005 status = merged"
+    adr: []
+    priority: P2
+    size: S
+    labels: [fix, tooling, governance]
+    agent: ops-engineer
+    status: in_progress
+    branch: "fix/AC-namespace-completion"
+    bench: .01
+    blocked_by: [AC-0004, AC-0005]
+    created: "2026-11-09"
+    updated: "2026-11-09"
+    started_at: "2026-11-09T10:00:00"

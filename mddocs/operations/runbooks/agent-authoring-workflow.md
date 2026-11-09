@@ -68,7 +68,7 @@ keywords. Write in third person. Use "Use ONLY when..." for narrow-scope agents.
 
 ---
 
-## AP Agent Roster
+## AC Agent Roster
 
 | Agent | Role |
 |---|---|
@@ -136,7 +136,7 @@ keywords. Write in third person. Use "Use ONLY when..." for narrow-scope agents.
 
    ```zsh
    git add .agents/ .agentic/agents/ .opencode/agents/
-   git commit -m "feat(AP-NNN): add <name> agent"
+   git commit -m "feat(AC-NNNN): add <name> agent"
    ```
 
 ---
@@ -158,7 +158,7 @@ keywords. Write in third person. Use "Use ONLY when..." for narrow-scope agents.
 4. **Commit the source and both generated outputs together.**
    ```zsh
    git add .agents/ .agentic/agents/ .opencode/agents/
-   git commit -m "chore(AP-NNN): update <name> agent — <what changed>"
+   git commit -m "chore(AC-NNNN): update <name> agent — <what changed>"
    ```
 
 ---

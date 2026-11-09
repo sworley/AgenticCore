@@ -1,4 +1,4 @@
-# AP ADR-0015: Framework Distribution and Adoption Model
+# AC ADR-0015: Framework Distribution and Adoption Model
 
 **Date:** 2026-07-02
 **Status:** Accepted
@@ -28,53 +28,53 @@ Governance), which defers its onboarding procedure here.
 
 ## Decision Drivers
 
-- A new project operator must be able to get a working AP-governed environment
+- A new project operator must be able to get a working AC-governed environment
   with a minimal and well-documented onboarding procedure
 - An adopter project must have its own independent Git identity from day one —
-  AP commits and history must not be present in adopter repos
-- Framework improvements released in AP must be reachable by adopters on their
+  AC commits and history must not be present in adopter repos
+- Framework improvements released in AC must be reachable by adopters on their
   own cadence without requiring a live upstream connection
 - The distribution model must not assume a specific Git hosting platform
 - Hard requirements must be minimal and explicitly documented; everything else
   is adopter's choice
-- AP is committed to compounding value from all sources — adopters, other
+- AC is committed to compounding value from all sources — adopters, other
   agentic teams, and innovations not yet anticipated — and the ecosystem model
-  must support bidirectional knowledge flow between AP and adopters
+  must support bidirectional knowledge flow between AC and adopters
 
 ---
 
 ## Options Considered
 
 ### Option A — Clone and re-remote
-Operator clones AP, replaces the `origin` remote, pushes as a new repo. AP
+Operator clones AC, replaces the `origin` remote, pushes as a new repo. AC
 added back as `upstream` for future pulls.
-- Lineage in Git: preserved (AP history present in adopter repo)
+- Lineage in Git: preserved (AC history present in adopter repo)
 - Update path: `git fetch upstream && git merge`
-- Rejected: AP history in adopter repo is unwanted noise; classification
+- Rejected: AC history in adopter repo is unwanted noise; classification
   boundaries between framework development and customer environments make
   shared history a liability
 
 ### Option B — Fork (platform-native)
-Operator forks AP via hosting platform. Platform tracks the fork relationship.
+Operator forks AC via hosting platform. Platform tracks the fork relationship.
 - Lineage in Git: preserved and platform-tracked
 - Update path: platform-native sync
-- Rejected: requires AP and adopter to share a hosting platform; cross-platform
+- Rejected: requires AC and adopter to share a hosting platform; cross-platform
   forks are not natively supported; fork model does not fit the versioned
   baseline pattern government programs require
 
 ### Option C — Template repository
-AP published as a Git template. Operator creates a new repo from the template.
+AC published as a Git template. Operator creates a new repo from the template.
 - Lineage in Git: severed at creation
 - Update path: manual diff and patch only
 - Rejected: a template is a static snapshot; it breaks the living ecosystem
-  model in which AP continuously improves from adopter contributions and
-  adopters pull from AP releases. Template dispensers cannot compound value.
+  model in which AC continuously improves from adopter contributions and
+  adopters pull from AC releases. Template dispensers cannot compound value.
 
 ### Option D — Export and new Git init ✓ Selected
-A script exports AP release content to a target directory and runs `git init`.
-No AP remote or history is present in the new repo.
+A script exports AC release content to a target directory and runs `git init`.
+No AC remote or history is present in the new repo.
 - Lineage in Git: completely severed — adopter repo starts clean
-- Update path: adopter pulls a future AP release export at their own cadence
+- Update path: adopter pulls a future AC release export at their own cadence
 - Selected: cleanest adopter identity; no classification boundary concerns;
   fits versioned baseline discipline; slug initialized by the export script
   on day one
@@ -87,16 +87,16 @@ No AP remote or history is present in the new repo.
 
 AgenticCore is distributed as versioned release exports. An adopter
 initializes a new project by running `export-framework.sh` against a specific
-AP release tag, which:
+AC release tag, which:
 
 1. Copies framework content to a target directory
 2. Runs `git init` in that directory
 3. Prompts for the adopter's project slug
 4. Writes the slug to `AGENT.md`, `tasks.yaml`, and `PROCESS.md`
-5. Creates an initial commit recording the AP release version used
+5. Creates an initial commit recording the AC release version used
 
-No AP remote, upstream reference, or commit history is present in the adopter
-repo after initialization. The AP release version is recorded in the initial
+No AC remote, upstream reference, or commit history is present in the adopter
+repo after initialization. The AC release version is recorded in the initial
 commit message and in a `framework-version.txt` file at the repo root, serving
 as the permanent baseline reference.
 
@@ -110,25 +110,25 @@ things the framework mandates. Everything else is the adopter's choice.
 | Requirement | Rationale |
 |---|---|
 | **Git** | Commit discipline, branch naming, ADR ticket linkage, and all agentic session hygiene depend on Git as the authoritative source of record |
-| **AI toolchain and/or OpenCode, configured to a AI toolchain-compatible API** | AP is an agentic product framework — the AI agent interface is the operating layer the entire framework is built on. EXAMPLE-ORG Model Runtime API is the reference implementation; any AI toolchain-compatible endpoint is acceptable |
+| **AI toolchain and/or OpenCode, configured to a AI toolchain-compatible API** | AC is an agentic product framework — the AI agent interface is the operating layer the entire framework is built on. EXAMPLE-ORG Model Runtime API is the reference implementation; any AI toolchain-compatible endpoint is acceptable |
 
 Adopter's choice (not prescribed by the framework):
 - Operating system and hardware
 - Shell environment
 - Git hosting platform (Git, GitHub, Azure DevOps, self-hosted, or local-only)
 - Credential management tooling (pass, gpg, system keychain, vault, etc.)
-- Additional developer tooling beyond what AP scripts use
+- Additional developer tooling beyond what AC scripts use
 
 ---
 
 ### D-3: Upstream connection — optional, versioned baseline
 
-An adopter that wants to track AP improvements may add AP as a named remote
+An adopter that wants to track AC improvements may add AC as a named remote
 (`ap-upstream`) and pull selectively. This is supported but not required.
 
 The default and recommended stance is **versioned baseline**: the adopter
-records which AP release they initialized from, and upgrades by running the
-export script against a newer AP release at a time of their choosing. Upgrade
+records which AC release they initialized from, and upgrades by running the
+export script against a newer AC release at a time of their choosing. Upgrade
 decisions are owned by the adopter — there is no automatic or pressured update
 mechanism.
 
@@ -143,16 +143,16 @@ own release cycle.
 When an adopter develops a pattern, decision, or tooling improvement that merits
 lifting to the framework, the promotion path is:
 
-1. Adopter's steward opens an AP task (`AP-NNNN`) describing the pattern and
+1. Adopter's steward opens an AC task (`AC-NNNN`) describing the pattern and
    referencing the source artifact (`<PROJECT>-ADR-NNNN` or `<PROJECT>-NNNN`)
    using the cross-project citation format defined in ADR-0014 D-6
-2. AP baseline-steward reviews the submission and assigns a disposition:
+2. AC baseline-steward reviews the submission and assigns a disposition:
    new ADR, runbook addition, script, or decline with rationale
-3. If accepted, the pattern enters AP's normal development lifecycle — bench,
+3. If accepted, the pattern enters AC's normal development lifecycle — bench,
    review, release
 
 There is no automation. Promotion is a judgment-driven, HIL-gated decision
-documented as an AP ticket. AP is committed to compounding value from all
+documented as an AC ticket. AC is committed to compounding value from all
 sources, including adopters, partner teams, and innovations not yet anticipated
 at framework authoring time. The promotion gate is intentionally lightweight —
 the bar is "does this improve the framework for future adopters?" not
@@ -168,7 +168,7 @@ any files, validates it is non-empty uppercase ASCII, and writes it to all three
 required locations (`AGENT.md`, `tasks.yaml`, `PROCESS.md`) in the initial
 commit.
 
-There is no slug registry maintained by AP. Slug uniqueness within an
+There is no slug registry maintained by AC. Slug uniqueness within an
 organization is the adopter's responsibility. The guidance in ADR-0014 D-1
 (short, derived from program name, not a person name) is advisory.
 
@@ -180,7 +180,7 @@ Patterns promoted via D-4 originate under real project constraint. The expected
 maturation path is:
 
 > Emerges under real constraint → Stabilizes across sessions (shape becomes
-> clear) → Adopter opens AP promotion (D-4) → AP ticket opened
+> clear) → Adopter opens AC promotion (D-4) → AC ticket opened
 
 A pattern is ready for promotion when all three criteria are met:
 
@@ -205,9 +205,9 @@ patterns from each have different promotion profiles:
 | HIL / project layer | `.00` | Bench patterns, delegation models, scaling mechanisms | HIL has hit a real operational limit; the solution has been exercised, not just designed |
 
 **The abstraction step is the gate.** The adopter's steward performs the
-abstraction — not the HIL directly, and not the AP baseline-steward. The
+abstraction — not the HIL directly, and not the AC baseline-steward. The
 steward strips project-specific content, identifies the portable shape, and
-writes the AP task description from generic requirements. The AP
+writes the AC task description from generic requirements. The AC
 baseline-steward evaluates the abstraction, not the raw project artifact.
 Submitting a raw project artifact (e.g., a source-project ADR with customer
 references intact) is not a valid promotion submission.
@@ -373,7 +373,7 @@ elsewhere in this ADR and in the framework's governance model:
   the same template and status lifecycle
 - Git commit discipline — review-before-push, no secrets, no attribution
   statements, meaningful commit messages
-- AP-ticket tracking — adopters run their own ticket queue in `tasks.yaml`
+- AC-ticket tracking — adopters run their own ticket queue in `tasks.yaml`
   under their own slug
 - The review gates — security-reviewer and docs-reviewer passes before
   `branch_ready`
@@ -449,31 +449,31 @@ resolved here.
 ## Consequences
 
 **Positive:**
-- Adopter repos are completely clean — no AP history, no upstream coupling
+- Adopter repos are completely clean — no AC history, no upstream coupling
   unless deliberately added
 - Hard requirements are minimal and explicit; operators know exactly what they
   need before starting
 - Versioned baseline model fits government program CM discipline
 - Pattern promotion gate creates a formal but lightweight path for ecosystem
-  growth — AP compounds value over time from all adopter innovations
-- Distribution is platform-agnostic; no assumption about where AP or the
+  growth — AC compounds value over time from all adopter innovations
+- Distribution is platform-agnostic; no assumption about where AC or the
   adopter's repo is hosted
-- EXAMPLE re-initialization from AP (as a v2.0 project) is a natural first
+- EXAMPLE re-initialization from AC (as a v2.0 project) is a natural first
   real-world validation of this workflow
 
 **Negative / Trade-offs:**
 - No automated upstream sync means adopters can drift silently. Mitigation:
-  `framework-version.txt` makes the baseline explicit; AP release notes
+  `framework-version.txt` makes the baseline explicit; AC release notes
   document what changed since any prior version
 - `export-framework.sh` does not yet exist — it is an implementation deliverable
   from this ADR
 - Slug collision between organizations is possible; convention-only uniqueness
-  is sufficient at current scale but may require a registry if AP adoption
+  is sufficient at current scale but may require a registry if AC adoption
   grows broadly
 
 **Neutral:**
 - Adopters who prefer a live upstream connection may add `ap-upstream` as a
-  remote; this is unsupported in the sense that AP does not maintain a merge
+  remote; this is unsupported in the sense that AC does not maintain a merge
   compatibility guarantee, but it is not prohibited
 
 ---
@@ -482,7 +482,7 @@ resolved here.
 
 The following tasks are spawned from this ADR:
 
-1. **Write `export-framework.sh`** — copies AP release content to target
+1. **Write `export-framework.sh`** — copies AC release content to target
    directory; supports both adoption flows (D-7): Flow A `git init` into an
    empty dir, and Flow B re-home into an existing customer tree. Prompts for slug,
    writes slug to `AGENT.md` / `tasks.yaml` / `PROCESS.md`, severs framework
@@ -490,11 +490,11 @@ The following tasks are spawned from this ADR:
    verifies removal of framework history/refs/objects (D-7.5), honors the
    re-home safety interlock and bounded `--force` scope (D-7.2), the
    target-identity guard (D-7.6), and `--dry-run` with zero side effects (D-7.4),
-   and creates an initial commit recording the AP release version. The D-7.3 and
+   and creates an initial commit recording the AC release version. The D-7.3 and
    D-7.5 assertions are non-overridable and run on every invocation.
    **Tracked by TC-050.**
-2. **Write `framework-version.txt`** — included in every AP release export;
-   records AP release tag and export date. **Tracked by TC-050.**
+2. **Write `framework-version.txt`** — included in every AC release export;
+   records AC release tag and export date. **Tracked by TC-050.**
 3. **Update `getting-started.md`** — replace current onboarding flow with
    export-and-init procedure; document hard requirements prominently
 4. **Update ADR-0014** — remove `Proposed — pending ADR-0015` from status

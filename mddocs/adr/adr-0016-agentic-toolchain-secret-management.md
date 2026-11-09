@@ -1,4 +1,4 @@
-# AP ADR-0016: Agentic Toolchain Secret Management
+# AC ADR-0016: Agentic Toolchain Secret Management
 
 **Date:** 2026-07-02
 **Status:** Accepted

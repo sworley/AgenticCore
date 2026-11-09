@@ -125,7 +125,7 @@ metadata:
   type: project
 ---
 
-Current focus: <AP-NNN> — <ticket title>
+Current focus: <AC-NNNN> — <ticket title>
 Status: <where I stopped — e.g., "hook implemented, runbook in progress">
 Next: <immediate next step>
 Open: <any blocking question or pending decision, or "none">
@@ -156,7 +156,7 @@ metadata:
   type: project
 ---
 
-Current focus: AP-NNN — <title>
+Current focus: AC-NNNN — <title>
 Status: <where stopped>
 Next: <next step>
 Open: <open questions or "none">

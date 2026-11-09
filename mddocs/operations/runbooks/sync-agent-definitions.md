@@ -45,7 +45,7 @@ Confirm the diffs match your intent.
 git add .agents/ .opencode/agents/
 git status
 # Present summary to HIL and wait for LGTM
-git commit -m "feat: update agent definitions [AP-NNN]"
+git commit -m "feat: update agent definitions [AC-NNNN]"
 ```
 
 ---

@@ -9,7 +9,7 @@
 ## Task Schema Reference
 
 ```yaml
-- id: AP-NNN
+- id: AC-NNNN
   title: Short title (< 80 chars)
   description: Full description of the task and its scope
   acceptance_criteria:
@@ -75,7 +75,7 @@ Update in `tasks.yaml`:
 ```yaml
   status: claimed
   bench: ".02"
-  branch: feat/AP-NNN-short-slug
+  branch: feat/AC-NNNN-short-slug
   updated: YYYY-MM-DD
 ```
 
@@ -92,7 +92,7 @@ Update in `tasks.yaml`:
 ```yaml
   status: branch_ready
   updated: YYYY-MM-DD
-  note: "Branch feat/AP-NNN-short-slug ready for review. SHA: <sha>"
+  note: "Branch feat/AC-NNNN-short-slug ready for review. SHA: <sha>"
 ```
 
 ### Close / merge
@@ -195,9 +195,9 @@ Bench leads cannot write `tasks.yaml` directly. Use `relay-pending.md`:
 ## Relay pending — YYYY-MM-DD
 
 **Destination:** .01 / lead-engineer
-**Task:** AP-NNN
+**Task:** AC-NNNN
 **Request:** Update status to branch_ready
-**Branch:** feat/AP-NNN-short-slug
+**Branch:** feat/AC-NNNN-short-slug
 **SHA:** <sha>
 **Detail:** All acceptance criteria met. Ready for HIL review.
 ```

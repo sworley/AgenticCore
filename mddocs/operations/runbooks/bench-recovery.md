@@ -110,7 +110,7 @@ Choose the next available `NN` (e.g., `.02`, `.03`) not currently in use.
 # Run from the parent directory containing the .01 worktree
 git -C <program>.01 worktree add \
     ../<program>.NN \
-    -b feat/AP-NNN-<slug>
+    -b feat/AC-NNNN-<slug>
 ```
 
 **4 — Bootstrap worker files**
@@ -226,8 +226,8 @@ If the branch needs to restart from main (all work already merged or abandoned):
 ```bash
 git checkout main
 git pull origin main
-git branch -D feat/AP-NNN-<slug>
-git checkout -b feat/AP-NNN-<slug>
+git branch -D feat/AC-NNNN-<slug>
+git checkout -b feat/AC-NNNN-<slug>
 ```
 
 **4 — Restore stashed work if needed**
@@ -269,7 +269,7 @@ If the reprovision is incorrect:
    ```
 2. Delete the branch:
    ```bash
-   git branch -d feat/AP-NNN-<slug>
+   git branch -d feat/AC-NNNN-<slug>
    ```
 3. Re-run from Step 3 with corrected parameters.
 

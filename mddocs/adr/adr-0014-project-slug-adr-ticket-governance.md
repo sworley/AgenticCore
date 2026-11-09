@@ -1,4 +1,4 @@
-# AP ADR-0014: Project Task Slug and ADR Ticket Governance
+# AC ADR-0014: Project Task Slug and ADR Ticket Governance
 
 **Date:** 2026-07-02
 **Status:** Accepted
@@ -28,7 +28,7 @@ currently uses three-digit IDs (`TC-001`) while ADRs use four-digit numbers
 (`ADR-0001`) — an inconsistency that adds friction.
 
 **Gap 2 — ADR lineage loss.** When a new project is initialized from a
-predecessor (as AP was built from patterns incubated in EXAMPLE), all reference
+predecessor (as AC was built from patterns incubated in EXAMPLE), all reference
 to the predecessor's architectural lineage is severed at project creation.
 Future stewards reading an ADR have no way to trace its origins or the
 operational experience that shaped it.
@@ -74,7 +74,7 @@ The slug is declared in three places on day one:
 Slug selection criteria (guidance for new projects):
 - Short: two to six uppercase letters preferred
 - Derived from the canonical program or project name, not a team or person name
-- Unique within the organization's portfolio of AP-adopting projects
+- Unique within the organization's portfolio of AC-adopting projects
 
 Slugs are permanent for the life of a project. Renaming a slug requires a
 new ADR documenting the migration mapping and rationale.
@@ -88,7 +88,7 @@ new ADR documenting the migration mapping and rationale.
 ### D-2: Four-digit IDs universally
 
 All sequence numbers across all ID types in AgenticCore-governed projects
-use four digits: `TC-0001`, `AP ADR-0001`. No exceptions.
+use four digits: `TC-0001`, `AC ADR-0001`. No exceptions.
 
 Current three-digit IDs in `tasks.yaml` (`TC-001` through `TC-020`) are
 migrated to `TC-0001` through `TC-0020` as an implementation task spawned from
@@ -110,22 +110,22 @@ and ticket linkage formats are platform-agnostic.
 > **Resolved — see ADR-0015:** Distribution model is export + git init
 > (ADR-0015 D-1). Git is required; hosting platform is adopter's choice.
 > AI toolchain / OpenCode on a AI toolchain-compatible API is the second hard
-> requirement (ADR-0015 D-2). No AP history is present in adopter repos.
+> requirement (ADR-0015 D-2). No AC history is present in adopter repos.
 
 ---
 
 ### D-4: ADR as a tracked ticket type
 
 An ADR is a first-class ticket in the project's issue tracker, referenced as
-`<PROJECT> ADR-NNNN`. Example: `AP ADR-0014`.
+`<PROJECT> ADR-NNNN`. Example: `AC ADR-0014`.
 
 The ADR ticket is the decision anchor — an Epic-equivalent that owns the
 architectural decision and links to child implementation tickets:
 
-- **ADR ticket** (`AP ADR-0014`) — the decision record; follows the ADR
+- **ADR ticket** (`AC ADR-0014`) — the decision record; follows the ADR
   template; status tracks the ADR lifecycle (`proposed` → `accepted` →
   `superseded`)
-- **Child tickets** (`AP-NNNN`) — implementation tasks spawned from the ADR's
+- **Child tickets** (`AC-NNNN`) — implementation tasks spawned from the ADR's
   Implementation Notes; linked to the parent ADR ticket
 
 The ADR document in `mddocs/adr/` is the written record. The ADR ticket in
@@ -162,10 +162,10 @@ with instructions to populate when a predecessor exists).
 ### D-6: Cross-project citation format
 
 When any project document (release notes, commit message, ADR, runbook)
-references a decision or ticket from another AP-adopting project, the
+references a decision or ticket from another AC-adopting project, the
 canonical citation format is:
 
-- **ADR reference:** `<PROJECT>-ADR-NNNN`  — e.g., `EXAMPLE-ADR-0015`, `AP-ADR-0014`
+- **ADR reference:** `<PROJECT>-ADR-NNNN`  — e.g., `EXAMPLE-ADR-0015`, `AC-ADR-0014`
 - **Ticket reference:** `<PROJECT>-NNNN` — e.g., `EXAMPLE-0183`, `TC-0020`
 
 Each project is responsible only for its own ADR and ticket history. A cross-
@@ -190,7 +190,7 @@ This convention applies in:
   has a predecessor
 - The ADR-as-Epic model gives hosted projects a structured way to track
   architectural decisions with implementation children
-- Four-digit IDs eliminate the three/four-digit inconsistency in current AP
+- Four-digit IDs eliminate the three/four-digit inconsistency in current AC
   artifacts
 - Cross-project citations are self-identifying — no lookup required to
   determine which project owns a referenced ticket
@@ -203,7 +203,7 @@ This convention applies in:
   friction for the project's lifetime. Onboarding guidance must include
   selection criteria.
 - Slug uniqueness is a convention, not a technical enforcement. Organizations
-  with many AP-adopting projects may need a lightweight slug registry to
+  with many AC-adopting projects may need a lightweight slug registry to
   prevent collisions. This is deferred to ADR-0015.
 
 **Neutral:**
@@ -216,15 +216,15 @@ This convention applies in:
 
 The following tasks are spawned from this ADR:
 
-1. **Migrate AP `tasks.yaml`** — rename `TC-001` through `TC-020` to
+1. **Migrate AC `tasks.yaml`** — rename `TC-001` through `TC-020` to
    `TC-0001` through `TC-0020`; update all `blocked_by:` references
-2. **Add `slug: AP` header block to `tasks.yaml`**
-3. **Add `## Project Slug` section to `AGENT.md`** — value: `AP`
+2. **Add `slug: AC` header block to `tasks.yaml`**
+3. **Add `## Project Slug` section to `AGENT.md`** — value: `AC`
 4. **Update ADR-0000 template** — add `## Prior Art` section (blank default
    with fill instructions)
-5. **Backfill Prior Art sections** — AP ADR- through ADR-0011 have direct
+5. **Backfill Prior Art sections** — AC ADR- through ADR-0011 have direct
    EXAMPLE predecessors; add one-line Prior Art entries to each
-6. **Update `PROCESS.md`** — branch naming example to use `AP-NNNN` format
+6. **Update `PROCESS.md`** — branch naming example to use `AC-NNNN` format
 7. **Update `getting-started.md`** — add slug declaration step (procedure
    deferred until ADR-0015 defines the onboarding flow)
 

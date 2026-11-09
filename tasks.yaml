@@ -56,13 +56,15 @@ tasks:
     size: M
     labels: [docs, governance, release]
     agent: baseline-steward
-    status: in_progress
+    status: released
     branch: "docs/AC-0002-release-process-formalization"
     bench: .01
     blocked_by: []
     created: "2026-11-08"
     updated: "2026-11-08"
     started_at: "2026-11-08T12:00:00"
+    released_in: "v0.6.0"
+    completed_at: "2026-11-08T15:30:00"
 
   - id: AC-0003
     title: "Release v0.6.0"
@@ -82,10 +84,160 @@ tasks:
     size: S
     labels: [release]
     agent: baseline-steward
-    status: in_progress
+    status: released
     branch: "release/v0.6.0-prep"
     bench: .01
     blocked_by: [AC-0002]
     created: "2026-11-08"
     updated: "2026-11-08"
     started_at: "2026-11-08T13:00:00"
+    released_in: "v0.6.0"
+    completed_at: "2026-11-08T15:30:00"
+
+  - id: AC-0004
+    title: "Align bench tooling task slug to AC-NNNN"
+    description: |
+      The framework slug is AC (AgenticCore) but bench tooling still hardcoded the
+      old AP slug: provision-bench.sh substitution literals, bench templates,
+      bench-status.sh task-ID extraction, and the substitution test. Update them
+      to AC-NNNN and verify with the substitution test harness.
+    acceptance_criteria:
+      - "provision-bench.sh substitutes feat/AC-NNNN-short-slug and AC-NNNN correctly"
+      - "bench-status.sh extracts AC-NNNN task IDs from branch names"
+      - "bench templates use AC-NNNN placeholders"
+      - "test-provision-bench-substitution.sh passes (12/12)"
+    adr: []
+    priority: P2
+    size: S
+    labels: [fix, tooling]
+    agent: ops-engineer
+    status: merged
+    branch: "fix/AC-slug-tooling"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-08"
+    updated: "2026-11-09"
+    started_at: "2026-11-08T16:00:00"
+
+  - id: AC-0005
+    title: "Migrate AP namespace to AC across ADRs and reference docs"
+    description: |
+      The framework namespace code was AP (old product slug). Migrate it to AC
+      (AgenticCore) for consistency with the AC-NNNN task slug: ADRs (adr-0009,
+      0014, 0015, 0016, 0017, 0018, 0019) and reference docs (adopter-reconciliation,
+      shared-context, PROCESS POC refs). Historical digit citations (AP-084/085/035/068)
+      remain.
+    acceptance_criteria:
+      - "AP ADR-NNNN -> AC ADR-NNNN in all ADRs"
+      - "Standalone AP namespace -> AC in adopter-reconciliation and shared-context"
+      - "mdbook build + links + typos pass"
+      - "No unintended changes to API/App or historical AP-NNN digit citations"
+    adr: [ADR-0014]
+    priority: P2
+    size: M
+    labels: [docs, governance]
+    agent: baseline-steward
+    status: merged
+    branch: "docs/AC-namespace-migration"
+    bench: .01
+    blocked_by: [AC-0002]
+    created: "2026-11-09"
+    updated: "2026-11-09"
+    started_at: "2026-11-09T09:00:00"
+
+  - id: AC-0006
+    title: "Complete AP to AC namespace migration (bench-status, severance test, comments)"
+    description: |
+      Finish the AP -> AC migration for leftover references missed by AC-0004/AC-0005:
+      bench-status.sh's embedded Python --stale regex, the export-framework severance
+      test marker, and doc/comment references (_poc/README, agent-authoring-workflow,
+      export-framework.sh comments). Also mark AC-0004/AC-0005 as merged.
+    acceptance_criteria:
+      - "bench-status.sh --stale extracts AC-NNNN (AC-\\d+)"
+      - "test-export-framework-severance.sh asserts AC-[0-9] marker and passes"
+      - "Remaining AP namespace references migrated (historical AP-NNN digit citations left intact)"
+      - "AC-0004/AC-0005 status = merged"
+    adr: []
+    priority: P2
+    size: S
+    labels: [fix, tooling, governance]
+    agent: ops-engineer
+    status: in_progress
+    branch: "fix/AC-namespace-completion"
+    bench: .01
+    blocked_by: [AC-0004, AC-0005]
+    created: "2026-11-09"
+    updated: "2026-11-09"
+    started_at: "2026-11-09T10:00:00"
+
+  - id: AC-0007
+    title: "Dependency update: mcp 1.28.1 -> 1.30.0"
+    description: |
+      Bump the MCP SDK (mcp) to 1.30.0. Trivial requirements.txt pin change
+      surfaced by dependabot. Verified compatible with fastmcp 3.4.2 + pyyaml
+      (modules import cleanly). Part of the dependency/security review
+      (mcp, fastmcp, fastmcp-slim) — reviewed one at a time on dev.
+    acceptance_criteria:
+      - "requirements.txt pins mcp==1.30.0"
+      - "mcp/fastmcp/yaml import cleanly"
+      - "CI verify passes"
+    adr: []
+    priority: P2
+    size: XS
+    labels: [deps, chore]
+    agent: ops-engineer
+    status: in_progress
+    branch: "chore/deps/bump-mcp-1.30.0"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-09"
+    updated: "2026-11-09"
+    started_at: "2026-11-09T11:00:00"
+
+  - id: AC-0008
+    title: "Dependency update: fastmcp 3.4.2 -> 3.4.10"
+    description: |
+      Bump fastmcp to 3.4.10. Single-line requirements.txt pin change from
+      dependabot. Verified compatible with mcp 1.30.0 + pyyaml (imports OK).
+      Part of the dependency/security review (mcp, fastmcp, fastmcp-slim),
+      evaluated one at a time on dev.
+    acceptance_criteria:
+      - "requirements.txt pins fastmcp==3.4.10"
+      - "fastmcp/mcp/yaml import cleanly"
+      - "CI verify passes"
+    adr: []
+    priority: P2
+    size: XS
+    labels: [deps, chore]
+    agent: ops-engineer
+    status: in_progress
+    branch: "chore/deps/bump-fastmcp-3.4.10"
+    bench: .01
+    blocked_by: [AC-0007]
+    created: "2026-11-09"
+    updated: "2026-11-09"
+    started_at: "2026-11-09T12:00:00"
+
+  - id: AC-0009
+    title: "Dependency update: fastmcp-slim 3.4.2 -> 3.4.10"
+    description: |
+      Bump fastmcp-slim to 3.4.10 (Dependabot #8). Single-line requirements pin.
+      Verified compatible with mcp 1.30.0 + fastmcp 3.4.10 + pyyaml. fastmcp-slim
+      is not directly imported by the framework (low-risk), but kept in lockstep
+      with fastmcp.
+    acceptance_criteria:
+      - "requirements.txt pins fastmcp-slim==3.4.10"
+      - "fastmcp/mcp/yaml import cleanly"
+      - "CI verify passes"
+    adr: []
+    priority: P3
+    size: XS
+    labels: [deps, chore]
+    agent: ops-engineer
+    status: in_progress
+    branch: "chore/deps/bump-fastmcp-slim-3.4.10"
+    bench: .01
+    blocked_by: [AC-0008]
+    created: "2026-11-09"
+    updated: "2026-11-09"
+    started_at: "2026-11-09T13:00:00"

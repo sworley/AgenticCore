@@ -53,7 +53,7 @@ ADRs accepted in this release cycle:
 
 | ID | Title | Type |
 |---|---|---|
-| AP-NNN | Ticket title | feat/fix/docs/security |
+| AC-NNNN | Ticket title | feat/fix/docs/security |
 
 ## Known Limitations
 

@@ -216,7 +216,7 @@ _poc/
 - POC work must not modify `mddocs/`, `.agentic/`, or any other production directory.
   If a POC branch includes a change outside `_poc/`, it is out of scope for the POC
   and must be extracted to its own task and branch before the POC is reviewed.
-- All POC branches follow the naming convention `poc/<AP-ID>-<coa-slug>`.
+- All POC branches follow the naming convention `poc/<AC-ID>-<coa-slug>`.
 
 ### Lifecycle rules
 
@@ -225,7 +225,7 @@ _poc/
    by virtue of being on `main`. All POC artifacts live exclusively on their branches.
 2. **POC branches are preserved after close.** Unlike feature branches, POC branches
    are not deleted after the selection decision. The branch is the reference. To evaluate
-   a COA at any time: `git checkout poc/<AP-ID>-<coa-slug>`.
+   a COA at any time: `git checkout poc/<AC-ID>-<coa-slug>`.
 3. **When a COA is not selected**, set its ticket status to `closed` with a
    `closed_reason` recording the rationale and date. The branch remains intact.
 4. **When the owner selects a COA**, the POC is complete. baseline-steward:

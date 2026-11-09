@@ -2,8 +2,8 @@
 
 # Bench Assignment
 
-**TICKET:** AP-NNN
-**BRANCH:** feat/AP-NNN-short-slug
+**TICKET:** AC-NNNN
+**BRANCH:** feat/AC-NNNN-short-slug
 **PATTERN:** W
 **TASK:** Brief description of the task
 
@@ -36,8 +36,8 @@ When the task is done (or blocked), write `relay-pending.md` at the bench root:
 # Relay Pending
 
 **Status:** branch_ready | blocked | needs_hil
-**Ticket:** AP-NNN
-**Branch:** feat/AP-NNN-short-slug
+**Ticket:** AC-NNNN
+**Branch:** feat/AC-NNNN-short-slug
 
 ## What was done
 

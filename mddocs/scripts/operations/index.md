@@ -21,7 +21,7 @@ All scripts are invoked from the repository root:
 ./mddocs/scripts/git-sync.sh --profile <name>
 ./mddocs/scripts/check-env.sh
 ./mddocs/scripts/bench-status.sh
-./mddocs/scripts/provision-bench.sh --bench 02 --ticket AP-NNN --type feat --slug slug
+./mddocs/scripts/provision-bench.sh --bench 02 --ticket AC-NNNN --type feat --slug slug
 ./mddocs/scripts/check-worktree-hygiene.sh
 ./mddocs/scripts/check-links.sh
 ```

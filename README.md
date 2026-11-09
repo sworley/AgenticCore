@@ -33,14 +33,11 @@ in a team or solo engineering context. It defines:
 
 ## Releases
 
-The current baseline is **v0.5.0** (2026-11-01) — the initial open-source AgenticCore,
-and the starting point for the formal release process. The next release is planned as
-**v0.6.0**. Releases follow a curated, gated process owned by `baseline-steward` with
-tactical execution by `release-engineer` — see the
+The current baseline is **v0.6.0** (2026-11-08). The initial open-source baseline was
+**v0.5.0** (2026-11-01). Releases follow a curated, gated process owned by
+`baseline-steward` with tactical execution by `release-engineer` — see the
 [Release Process runbook](mddocs/reference.architecture/release-process.md) and
-[`CHANGELOG.md`](CHANGELOG.md).
-
-Release notes are published under
+[`CHANGELOG.md`](CHANGELOG.md). Release notes are published under
 [`mddocs/release-notes/`](mddocs/release-notes/UNRELEASED.md).
 
 ---

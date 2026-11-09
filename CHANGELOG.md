@@ -6,6 +6,17 @@ Versioning follows semantic versioning: `MAJOR.MINOR.PATCH` (see
 Release history starts with the open-source baseline; see `mddocs/release-notes/` for
 published notes.
 
+## [v0.6.0] — 2026-11-08
+
+First release under the formalized release/baseline process.
+
+- Adoption toolchain: project-local Python venv (`python-env.sh`), generic toolchain
+  manager (`toolchain.sh`), mdBook 0.5.3 standardization, `.envrc` hardening.
+- Formalized release process: baseline-steward owner/gate ↔ release-engineer executor
+  split; release runbook re-attributed; release scaffolding on the v0.5.0 baseline.
+- Docs/governance: `CONTRIBUTING.md` two-ways-to-contribute; onboarding/visual clarity.
+- See `mddocs/release-notes/v0.6.0.md` for the full release notes.
+
 ## [v0.5.0] — 2026-11-01
 
 Initial open-source baseline (starting point for the formal release process).

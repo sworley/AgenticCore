@@ -4,6 +4,26 @@ Thanks for contributing. This is a harness for orchestrating AI agents; changes
 are governed by the same discipline the harness enforces on its own agents.
 Please read the architecture and the governance rules before making changes.
 
+## Two Ways to Contribute
+
+There are **two distinct paths** for improvements to reach AgenticCore, depending
+on how you came to the framework:
+
+- **Contributing to this repo directly** — you cloned or forked
+  `sworley/AgenticCore`. Your branch shares history with `main`, so a standard
+  PR works: branch, open a PR against `main`, attach the `AC-NNNN` task id and
+  governing ADR, and pass the required gates (below). This is the normal OSS
+  contribution flow.
+
+- **You adopted the framework via `export-framework.sh`** — your copy is a
+  **severed** release with no shared history with this repo, so a raw PR cannot
+  be merged cleanly. Contribute improvements back through **Pattern Promotion**
+  instead: abstract the portable pattern (strip all project-specific content),
+  then open an `AP-NNNN` task against this repo and let `baseline-steward`
+  evaluate the *abstraction*. See
+  [`mddocs/reference.architecture/adopter-reconciliation.md`](mddocs/reference.architecture/adopter-reconciliation.md)
+  §Pattern Promotion and ADR-0015 D-4.
+
 ## Ground Rules
 
 - **All work goes through branches and pull requests.** No direct commits or

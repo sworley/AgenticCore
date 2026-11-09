@@ -55,7 +55,7 @@ Gates that require HIL:
 | `docs-engineer` | subagent | lead-engineer for documentation work |
 | `ai-engineer` | subagent | lead-engineer for AI agent configuration and MCP development |
 | `ops-engineer` | subagent | lead-engineer for scripts/automation |
-| `release-engineer` | subagent | lead-engineer for CI/CD/releases |
+| `release-engineer` | subagent | baseline-steward (framework releases) / lead-engineer (adopter releases) |
 | `security-engineer` | subagent | lead-engineer for security controls |
 | `security-reviewer` | subagent | lead-engineer for adversarial review |
 

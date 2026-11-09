@@ -41,7 +41,7 @@ git checkout <bench-branch> -- mddocs/   # if any doc updates
 
 # b. Commit
 git add -A
-git commit -m "docs: land session artifacts from <branch> [AP-NNN]"
+git commit -m "docs: land session artifacts from <branch> [AC-NNNN]"
 ```
 
 ### Step 3 — Update running release notes draft
@@ -52,8 +52,8 @@ Use plain bullet entries grouped by tier:
 ```markdown
 ## YYYY-MM-DD
 
-- [significant] short description (ADR-NNNN / AP-NNN)
-- [routine] short description (AP-NNN)
+- [significant] short description (ADR-NNNN / AC-NNNN)
+- [routine] short description (AC-NNNN)
 - [patch] short description
 ```
 
@@ -72,7 +72,7 @@ Patch = typo, broken link, formatting — include only if worth noting.
 Review open note-severity findings in the review and security ledgers. Each note
 either:
 - becomes a backlog ticket in `tasks.yaml` — the finding cites the new ticket's
-  AP-ID, and the ticket cites the finding's SF-/RF-ID (cross-referenced both ways), or
+  AC-ID, and the ticket cites the finding's SF-/RF-ID (cross-referenced both ways), or
 - is consciously accepted (rationale recorded on the finding).
 
 Do not let out-of-scope reviewer observations leak past session close unresolved.
@@ -85,7 +85,7 @@ Create `.core/work/session-state-$(date +%Y-%m-%d).md` if it doesn't exist:
 # Session State — YYYY-MM-DD
 
 **Branch:** dev
-**Active tasks:** AP-NNN (status)
+**Active tasks:** AC-NNNN (status)
 **Work done this session:** ...
 **Blockers:** ...
 **Next step:** ...

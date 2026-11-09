@@ -243,7 +243,7 @@ If the push to the remote already completed, do not force-push `main`. Open a ne
 branch and revert the merge commit:
 
 ```bash
-git checkout -b fix/AP-NNN-revert-bad-merge
+git checkout -b fix/AC-NNNN-revert-bad-merge
 git revert -m 1 <merge-commit-sha>
 git commit
 # Then follow the normal human review + merge sequence above

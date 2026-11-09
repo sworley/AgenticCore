@@ -83,7 +83,7 @@ decision (e.g., adding a domain-specific specialist).
 Commit:
 ```sh
 git add .agents/ .opencode/agents/
-git commit -m "feat: add your-agent definition [AP-NNN]"
+git commit -m "feat: add your-agent definition [AC-NNNN]"
 ```
 
 ---
@@ -184,7 +184,7 @@ in the same commit:
 
 ```sh
 git add .core/hooks/<name>.py AGENT.md
-git commit -m "feat: add <name> hook [AP-NNN]"
+git commit -m "feat: add <name> hook [AC-NNNN]"
 ```
 
 ---

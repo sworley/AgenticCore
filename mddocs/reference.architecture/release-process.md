@@ -185,7 +185,7 @@ propagation policy.
 
 ```sh
 git add mddocs/release-notes/vX.Y.Z.md
-git commit -m "docs: release notes for vX.Y.Z [AP-NNN]"
+git commit -m "docs: release notes for vX.Y.Z [AC-NNNN]"
 ```
 
 Present staged diff to baseline-steward. Relay to `.01` for HIL surface.
@@ -203,7 +203,7 @@ On explicit HIL confirmation:
 ```sh
 git checkout main
 git merge --no-ff release/vX.Y.Z-prep \
-  -m "release: merge vX.Y.Z release notes to main [AP-NNN]"
+  -m "release: merge vX.Y.Z release notes to main [AC-NNNN]"
 git push origin main
 ```
 
@@ -235,7 +235,7 @@ Update `README.md` as-built table — mark prior release `superseded`, add new e
 Commit:
 ```sh
 git add README.md
-git commit -m "docs: update README as-built for vX.Y.Z [AP-NNN]"
+git commit -m "docs: update README as-built for vX.Y.Z [AC-NNNN]"
 git push origin main
 ```
 
@@ -249,7 +249,7 @@ Write relay note to `.core/work/relay-pending.md`:
 ## Relay pending — YYYY-MM-DD
 
 **Destination:** .01 / baseline-steward
-**Request:** Mark release ticket AP-NNN as released
+**Request:** Mark release ticket AC-NNNN as released
 **Detail:** vX.Y.Z released. Tag pushed. Branch release/vX.Y.Z cut.
             README as-built updated. All gates passed.
 ```
@@ -257,7 +257,7 @@ Write relay note to `.core/work/relay-pending.md`:
 Commit relay note:
 ```sh
 git add .core/work/relay-pending.md
-git commit -m "chore: relay release vX.Y.Z completion [AP-NNN]"
+git commit -m "chore: relay release vX.Y.Z completion [AC-NNNN]"
 git push origin main
 ```
 

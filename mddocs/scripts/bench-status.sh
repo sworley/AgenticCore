@@ -150,7 +150,7 @@ for line in result.stdout.splitlines():
         branch = line.split("refs/heads/", 1)[-1]
     elif line == "":
         if path and branch:
-            match = re.search(r"AP-\d+", branch)
+            match = re.search(r"AC-\d+", branch)
             if match and match.group(0) in terminal_ids:
                 stale.append((path, branch, match.group(0)))
         path = branch = None

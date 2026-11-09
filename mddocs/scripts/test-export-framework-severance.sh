@@ -628,7 +628,7 @@ fi
 # Group 10 — SF-125 confidentiality assertion: exported target must be free
 # of framework operational-state markers (ticket IDs, finding IDs, reviewer-
 # run IDs, framework identity strings). This is the assertion that WOULD
-# have caught SF-123 (bench-registry.yaml leaking framework AP-*/SF-*/RF-*
+# have caught SF-123 (bench-registry.yaml leaking framework AC-*/SF-*/RF-*
 # ticket and finding IDs into the adopter tree) had it existed before that
 # finding was filed. SF-127 extended the scope to mddocs/backlog.md (the
 # human-readable mirror of tasks.yaml — same leak class).
@@ -760,7 +760,7 @@ assert_adopter_confidentiality() {
   # Marker patterns that indicate framework-internal identity/ticket/finding
   # state leaked through, rather than adopter-generic seed content.
   local -a markers=(
-    'AP-[0-9]'
+    'AC-[0-9]'
     'SF-[0-9]'
     'RF-[0-9]'
     'SR-[0-9]'
@@ -842,7 +842,7 @@ fi
 # because the check itself is broken. Run the SAME assertion directly
 # against the framework's OWN bench-registry.yaml (never exported to an
 # adopter — this is the real, unseeded file this ticket is protecting
-# against), which is known to carry AP-*/SF-*/RF-* markers and torn_down
+# against), which is known to carry AC-*/SF-*/RF-* markers and torn_down
 # entries. The assertion MUST fail here, proving it actually detects the
 # leak class SF-123 described instead of trivially passing on anything.
 NEGATIVE_DIR="$WORKDIR/confidentiality_negative_control"

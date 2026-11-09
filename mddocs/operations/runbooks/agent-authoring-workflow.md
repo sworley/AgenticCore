@@ -68,7 +68,7 @@ keywords. Write in third person. Use "Use ONLY when..." for narrow-scope agents.
 
 ---
 
-## AP Agent Roster
+## AC Agent Roster
 
 | Agent | Role |
 |---|---|

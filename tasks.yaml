@@ -94,6 +94,31 @@ tasks:
     released_in: "v0.6.0"
     completed_at: "2026-11-08T15:30:00"
 
+  - id: AC-0004
+    title: "Align bench tooling task slug to AC-NNNN"
+    description: |
+      The framework slug is AC (AgenticCore) but bench tooling still hardcoded the
+      old AP slug: provision-bench.sh substitution literals, bench templates,
+      bench-status.sh task-ID extraction, and the substitution test. Update them
+      to AC-NNNN and verify with the substitution test harness.
+    acceptance_criteria:
+      - "provision-bench.sh substitutes feat/AC-NNNN-short-slug and AC-NNNN correctly"
+      - "bench-status.sh extracts AC-NNNN task IDs from branch names"
+      - "bench templates use AC-NNNN placeholders"
+      - "test-provision-bench-substitution.sh passes (12/12)"
+    adr: []
+    priority: P2
+    size: S
+    labels: [fix, tooling]
+    agent: ops-engineer
+    status: in_progress
+    branch: "fix/AC-slug-tooling"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-08"
+    updated: "2026-11-08"
+    started_at: "2026-11-08T16:00:00"
+
   - id: AC-0005
     title: "Migrate AP namespace to AC across ADRs and reference docs"
     description: |

@@ -134,7 +134,7 @@ git checkout <commit-sha> -- .agentic/hooks/<script-name>.py
 
 ```bash
 git add .agentic/hooks/<script-name>.py
-git commit -m "fix(AP-NNN): revert <script-name>.py to <commit-sha> — <reason>"
+git commit -m "fix(AC-NNNN): revert <script-name>.py to <commit-sha> — <reason>"
 ```
 
 ---

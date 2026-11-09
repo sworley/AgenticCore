@@ -10,7 +10,7 @@
 #     "sed: bad flag in substitute command" and mangled `&`/`\`).
 #   Defect 2 (placeholder-ordering double-substitution) — the rendered
 #     BRANCH line must equal the real branch, never the literal
-#     "feat/AP-NNN-short-slug" placeholder residue.
+#     "feat/AC-NNNN-short-slug" placeholder residue.
 #
 # Exercises render_bench_agent_md() directly, in isolation, by sourcing
 # provision-bench.sh with PROVISION_BENCH_SOURCED=1 (see the guard at the
@@ -198,9 +198,9 @@ fi
 # ---------------------------------------------------------------------------
 # Group 4 — TC-081 Defect 2: placeholder-ordering double-substitution. The
 # rendered BRANCH line must equal the real branch, never the literal
-# "feat/AP-NNN-short-slug" placeholder (which is what the old
+# "feat/AC-NNNN-short-slug" placeholder (which is what the old
 # TICKET-before-BRANCH substitution order produced, since it rewrote the
-# AP-NNN inside the branch placeholder before the branch rule ever ran).
+# AC-NNNN inside the branch placeholder before the branch rule ever ran).
 # ---------------------------------------------------------------------------
 echo ""
 echo "-- Group 4: TC-081 Defect 2 — placeholder-ordering (BRANCH line correctness) --"
@@ -225,9 +225,9 @@ fi
 # fix didn't just stop substituting TICKET to dodge the ordering bug).
 ticket_hits="$(grep -c 'TC-081' "$out" || true)"
 if [ "${ticket_hits:-0}" -ge 2 ]; then
-  pass_case "Group4: AP-NNN -> TICKET substitution still applied elsewhere (TICKET line + BRANCH)"
+  pass_case "Group4: AC-NNNN -> TICKET substitution still applied elsewhere (TICKET line + BRANCH)"
 else
-  fail_case "Group4: AP-NNN -> TICKET substitution still applied elsewhere (TICKET line + BRANCH)"
+  fail_case "Group4: AC-NNNN -> TICKET substitution still applied elsewhere (TICKET line + BRANCH)"
 fi
 
 # ---------------------------------------------------------------------------

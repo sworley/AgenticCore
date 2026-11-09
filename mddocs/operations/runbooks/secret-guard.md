@@ -176,7 +176,7 @@ git log --oneline -- .agentic/hooks/secret-guard.py
 
 # Restore the file from that commit (creates a forward change, does not rewrite history)
 git checkout <commit> -- .agentic/hooks/secret-guard.py
-git commit -m "fix(AP-NNN): revert secret-guard.py to known-good state"
+git commit -m "fix(AC-NNNN): revert secret-guard.py to known-good state"
 ```
 
 **Emergency disable for the current session only (no commit required):**

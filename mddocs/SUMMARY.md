@@ -164,6 +164,7 @@
 # Release Notes
 
 - [Unreleased](release-notes/UNRELEASED.md)
+- [v0.6.0](release-notes/v0.6.0.md)
 
 ---
 

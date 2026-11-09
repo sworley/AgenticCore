@@ -118,3 +118,29 @@ tasks:
     created: "2026-11-08"
     updated: "2026-11-08"
     started_at: "2026-11-08T16:00:00"
+
+  - id: AC-0005
+    title: "Migrate AP namespace to AC across ADRs and reference docs"
+    description: |
+      The framework namespace code was AP (old product slug). Migrate it to AC
+      (AgenticCore) for consistency with the AC-NNNN task slug: ADRs (adr-0009,
+      0014, 0015, 0016, 0017, 0018, 0019) and reference docs (adopter-reconciliation,
+      shared-context, PROCESS POC refs). Historical digit citations (AP-084/085/035/068)
+      remain.
+    acceptance_criteria:
+      - "AP ADR-NNNN -> AC ADR-NNNN in all ADRs"
+      - "Standalone AP namespace -> AC in adopter-reconciliation and shared-context"
+      - "mdbook build + links + typos pass"
+      - "No unintended changes to API/App or historical AP-NNN digit citations"
+    adr: [ADR-0014]
+    priority: P2
+    size: M
+    labels: [docs, governance]
+    agent: baseline-steward
+    status: in_progress
+    branch: "docs/AC-namespace-migration"
+    bench: .01
+    blocked_by: [AC-0002]
+    created: "2026-11-09"
+    updated: "2026-11-09"
+    started_at: "2026-11-09T09:00:00"

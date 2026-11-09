@@ -1,4 +1,4 @@
-# AP ADR-0018: Credential Injection Pattern
+# AC ADR-0018: Credential Injection Pattern
 
 **Date:** 2026-07-02
 **Status:** Accepted

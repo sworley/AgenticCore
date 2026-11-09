@@ -26,6 +26,33 @@ executed by `release-engineer`; they are out of scope for this runbook.
 
 ---
 
+## Repository-Specific Mechanics (branch-protected repos)
+
+On a branch-protected host (e.g. GitHub with PR-only `main`/`dev`, signed commits, and a
+required `verify` CI check), the git writes below are performed via **pull requests**, not
+direct pushes. The gates are unchanged; the PR merge is the mechanism:
+
+- **G-5** — push `release/vX.Y.Z-prep` and open a PR → `main`; merge on HIL LGTM + CI green.
+- **G-7** — push the `release/vX.Y.Z` branch and open a PR → `main`.
+- **G-8** — update the README as-built on a branch and open a PR → `main`.
+- **Release close** — mark the scoped tickets `released` (terminal, ADR-0026), then catch
+  `dev` up by opening a PR `main → dev` (`--no-ff`, never rebase — `main` is append-only per
+  ADR-0004). Verify: `git merge-base --is-ancestor main dev`.
+
+**First release bootstrap.** Before the first release under this model there are no tags,
+so `git describe --tags` (Step 1) fails. Establish the baseline tag first:
+
+```sh
+git tag -a vX.Y.Z -m "baseline: vX.Y.Z" <current-main-sha>
+git push origin vX.Y.Z
+```
+
+**Before merging `main` into a catch-up branch, `git pull origin main` first** — using a
+stale local `main` leaves `dev` behind the as-built baseline. Verify the catch-up with
+`git merge-base --is-ancestor main dev` after the PR is merged.
+
+---
+
 ## Prerequisites
 
 - All tickets scoped to this release are at `status: merged` in `tasks.yaml`

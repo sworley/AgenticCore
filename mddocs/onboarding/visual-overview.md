@@ -148,7 +148,7 @@ the `.00` customer/HIL plane (Pattern W `attendant` + Pattern H `hil-assistant`)
 | `code-reviewer` | subagent | subagent | lead-engineer | Code quality gate (verdict only) |
 | `ops-engineer` | subagent | subagent | lead-engineer | Scripts, automation, developer tooling |
 | `ai-engineer` | subagent | subagent | lead-engineer | Agent config, MCP servers, workflow integration |
-| `release-engineer` | subagent | subagent | lead-engineer | CI/CD and tactical release execution |
+| `release-engineer` | subagent | subagent | baseline-steward (framework) / lead-engineer (adopter) | CI/CD and tactical release execution |
 | `security-engineer` | subagent | subagent | lead-engineer | Security controls, hooks, content inspection |
 | `security-reviewer` | subagent | subagent | lead-engineer | Adversarial security review (verdict only) |
 | `infra-engineer` | subagent | subagent | lead-engineer | Infrastructure, IaC, networking |

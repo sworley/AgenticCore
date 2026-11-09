@@ -31,3 +31,35 @@ tasks:
     created: "2026-11-01"
     updated: "2026-11-02"
     completed_at: "2026-11-02T09:19:33"
+
+  - id: AC-0002
+    title: "Formalize framework release & baseline process (leads to v0.6.0)"
+    description: |
+      Establish a formal, release-baseline process for AgenticCore:
+      1. Resolve the baseline-steward vs release-engineer role split (framework
+         release ownership/gating vs tactical execution).
+      2. Make the release runbook authoritative: release-process.md owned and
+         gated by baseline-steward, with tactical release mechanics (prep branch,
+         cherry-pick/merge, tag, release branch) executed by release-engineer.
+      3. Set up release scaffolding with v0.5.0 as the starting baseline: running
+         release-notes draft (mddocs/release-notes/UNRELEASED.md), CHANGELOG and
+         README Releases section reflecting the baseline and the new process.
+      No backfill of pre-v0.5.0 history. Release notes for v0.6.0 are seeded at
+      release time (Phase 2).
+    acceptance_criteria:
+      - "baseline-steward is unambiguous owner/gate of the framework release; release-engineer scoped to tactical execution"
+      - "release-process.md attributed to baseline-steward with explicit release-engineer delegation and the tag-to-main flow"
+      - "release scaffolding established on the v0.5.0 baseline; CHANGELOG and README updated"
+      - "agents re-synced (.opencode/agents/) and mdbook builds with zero errors"
+    adr: [ADR-0026]
+    priority: P1
+    size: M
+    labels: [docs, governance, release]
+    agent: baseline-steward
+    status: in_progress
+    branch: "docs/AC-0002-release-process-formalization"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-08"
+    updated: "2026-11-08"
+    started_at: "2026-11-08T12:00:00"

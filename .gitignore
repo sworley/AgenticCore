@@ -51,6 +51,10 @@ __pycache__/
 # .env-required itself is committed — only var names, no values
 .env-required.local
 
+# Project-local Python virtualenv (created at adoption time by
+# mddocs/scripts/setup/python-env.sh). requirements.txt is committed; .venv is not.
+.venv/
+
 # Archive and packaging artifacts
 *.tgz
 *.tgz.sha256

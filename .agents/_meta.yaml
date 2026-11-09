@@ -110,7 +110,7 @@ attendant:
     # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)
 
 baseline-steward:
-  description: "Owns the AgenticCore framework improvement lifecycle — governance, baseline versioning, propagation guidance, and release coordination. Never operates in customer project benches or touches deployment tooling."
+  description: "Owns the AgenticCore framework improvement lifecycle and release process — governance, baseline versioning, propagation guidance, and framework release ownership/gating. Delegates tactical release execution to release-engineer (HIL → baseline-steward → release-engineer). Never operates in customer project benches or touches deployment tooling."
   opencode:
     mode: subagent
     # model tier: opus-4-8 — framework-steward role (this repo's analogue to
@@ -120,7 +120,7 @@ baseline-steward:
       edit: allow
 
 release-engineer:
-  description: "Manages tactical release execution — CI/CD pipeline, branch/tag workflow, and README as-built updates. Scoped to what adopters build with the framework, not the framework itself."
+  description: "Executes tactical release mechanics — branch/tag workflow, release automation, release notes drafting, and README as-built updates. Executes framework releases under baseline-steward and adopter-project releases under lead-engineer."
   opencode:
     mode: subagent
     # model tier: sonnet-5 — balanced general/authoring workload (ADR-0021)

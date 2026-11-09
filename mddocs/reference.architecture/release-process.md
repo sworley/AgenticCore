@@ -1,8 +1,28 @@
 # Runbook: Release Process
 
-**Agent:** release-engineer
-**Triggered by:** Explicit task from lead-engineer
+**Owner / gate:** baseline-steward
+**Tactical execution:** release-engineer
+**Triggered by:** Explicit task from lead-engineer; the framework release is owned and
+gated by baseline-steward and executed by release-engineer
 **Requires:** HIL approval at every numbered gate below
+
+---
+
+## Scope & Ownership
+
+This runbook defines the **AgenticCore framework release** flow (the curated release
+baseline). Ownership is split:
+
+- **baseline-steward** owns and gates the release (versioning, scope curation, adopter
+  impact classification, propagation guidance, the security/docs gates, and the HIL
+  surface for every gate G-1..G-8).
+- **release-engineer** executes the tactical git mechanics (cut prep branch,
+  cherry-pick/merge curated commits, create/push the tag, cut the release branch, update
+  README as-built) **under** baseline-steward's tasking — `HIL → baseline-steward →
+  release-engineer`.
+
+Adopter-project releases use the same mechanics but are owned by the `lead-engineer` and
+executed by `release-engineer`; they are out of scope for this runbook.
 
 ---
 
@@ -24,7 +44,7 @@ covers a subsequent gate.
 | Gate | Action | Requires |
 |---|---|---|
 | G-1 | Version confirmed | HIL verbal confirmation |
-| G-2 | Release prep branch created | lead-engineer task |
+| G-2 | Release prep branch created | baseline-steward task |
 | G-3 | Release notes written (incl. adopter impact section) | security-reviewer APPROVED |
 | G-4 | Release notes reviewed | HIL LGTM |
 | G-5 | Merge prep → main | HIL LGTM |
@@ -47,7 +67,7 @@ git log $(git describe --tags --abbrev=0)..HEAD --oneline
 grep -l "Status: accepted" mddocs/adr/*.md
 ```
 
-Present to lead-engineer and HIL:
+Present to baseline-steward and HIL:
 > "Proposed: vX.Y.Z — reason: [MAJOR/MINOR/PATCH justification]. Last release: vA.B.C."
 
 Wait for explicit HIL confirmation of the version number before proceeding.
@@ -141,7 +161,7 @@ git add mddocs/release-notes/vX.Y.Z.md
 git commit -m "docs: release notes for vX.Y.Z [AP-NNN]"
 ```
 
-Present staged diff to lead-engineer. Relay to `.01` for HIL surface.
+Present staged diff to baseline-steward. Relay to `.01` for HIL surface.
 
 ### Step 5 — HIL review of release notes (G-4)
 
@@ -201,8 +221,8 @@ Write relay note to `.core/work/relay-pending.md`:
 ```markdown
 ## Relay pending — YYYY-MM-DD
 
-**Destination:** .01 / lead-engineer
-**Request:** Mark release ticket AP-NNN as merged
+**Destination:** .01 / baseline-steward
+**Request:** Mark release ticket AP-NNN as released
 **Detail:** vX.Y.Z released. Tag pushed. Branch release/vX.Y.Z cut.
             README as-built updated. All gates passed.
 ```
@@ -228,6 +248,28 @@ If the tag has not yet been pushed:
 ```sh
 git tag -d vX.Y.Z   # delete local tag only
 ```
+
+---
+
+## Operational Notes (from prior releases)
+
+Practical hard-won rules for executing a release cleanly:
+
+- **`approve_finding_update` is HIL-only and not in baseline-steward's toolset.** If a
+  security/review finding must be updated during a release and the tool is unavailable,
+  use the documented manual-fallback protocol: HIL explicitly authorizes a manual
+  hand-edit, annotate each change as `manual-fallback`, and still stage → diff → commit.
+- **Never hand-edit `findings.yaml` with a generic text editor.** Use a structure-preserving
+  Python script (not `yaml.safe_dump`), then validate with `yaml.safe_load` before staging;
+  a naive line edit corrupts the 0/2-space indentation.
+- **`docs-engineer` has no bash/git tool.** The release owner/steward runs `mdbook build`
+  and `git commit` on its behalf each iteration.
+- **Reviewer agents auto-log to ledgers.** Watch for duplicate run_ids and for uncommitted
+  ledger changes that block a checkout; commit gate records before switching branches.
+- **The all-selected vs mixed discriminator is mandatory.** Before choosing
+  `git merge --no-ff dev`, verify every commit in `origin/main..dev` maps to a
+  release-selected ticket; if any does not, use per-ticket cherry-pick. The signal for a
+  correct all-selected merge is a prep tree byte-identical to `dev`.
 
 ---
 

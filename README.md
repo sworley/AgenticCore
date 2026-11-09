@@ -33,8 +33,14 @@ in a team or solo engineering context. It defines:
 
 ## Releases
 
-The current baseline is **v0.5.0** — the initial open-source AgenticCore. Release
-history starts clean with this baseline; see [`CHANGELOG.md`](CHANGELOG.md) and
+The current baseline is **v0.5.0** (2026-11-01) — the initial open-source AgenticCore,
+and the starting point for the formal release process. The next release is planned as
+**v0.6.0**. Releases follow a curated, gated process owned by `baseline-steward` with
+tactical execution by `release-engineer` — see the
+[Release Process runbook](mddocs/reference.architecture/release-process.md) and
+[`CHANGELOG.md`](CHANGELOG.md).
+
+Release notes are published under
 [`mddocs/release-notes/`](mddocs/release-notes/UNRELEASED.md).
 
 ---
@@ -52,10 +58,16 @@ of the framework to *run* the export from, so obtain it first (below).
 |---|---|---|
 | `git` | Version control + worktrees | 2.35+ |
 | `bash` | Runs `export-framework.sh` | 4.x+ |
-| `mdbook` | Build documentation | 0.4.x |
+| `mdbook` | Build documentation | 0.5.x |
 | `direnv` | Credential injection via `.envrc` | 2.x |
 | `pass` | Secrets store (GPG-backed) | 1.7+ |
 | OpenCode or compatible runtime | AI coding agent runtime | latest |
+
+> **Toolchain helper:** validate (or install) the docs/dev toolchain — `mdbook`,
+> `mdbook-mermaid`, `typos-cli`, `shellcheck`, `gh`, `jq` — with
+> `./mddocs/scripts/setup/toolchain.sh --check` (read-only) or `--install` (opt-in).
+> The Python deps (`mcp`, `pyyaml`, `fastmcp`) are provisioned into a project-local
+> `.venv` at adoption time.
 
 ### 1. Create or change to a working directory
 
@@ -120,6 +132,13 @@ anything other than `y`/`yes`) to abort — then re-run with the correct `--targ
 > management-layer `.01` on top). `.00` (HIL) and `.02`+ (worker) benches are then
 > provisioned as siblings in the same parent: `./myproject.v0.01.00`, `./myproject.v0.01.02`,
 > ... The base name is your own choice; only the `.01` layer suffix is enforced at adoption.
+
+> **A project-local Python environment is provisioned for you.** As part of
+> onboarding, `adopt.sh` creates `<project>/.venv` and installs the harness's
+> pinned Python deps from `requirements.txt` (MCP servers, review-ledger,
+> rag-docs), then validates the modules import. It also builds `.envrc` from
+> `.envrc.template` so the venv is **sourced automatically when you `cd`** into
+> the project (run `direnv allow` once). To re-provision: `./mddocs/scripts/setup/python-env.sh`.
 
 > **The harness doesn't prescribe an agent runtime.** The core is tool-agnostic
 > (roles, process, benches, MCP servers). `--tool` selects an optional adapter —

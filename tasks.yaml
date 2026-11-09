@@ -169,3 +169,27 @@ tasks:
     created: "2026-11-09"
     updated: "2026-11-09"
     started_at: "2026-11-09T10:00:00"
+
+  - id: AC-0007
+    title: "Dependency update: mcp 1.28.1 -> 1.30.0"
+    description: |
+      Bump the MCP SDK (mcp) to 1.30.0. Trivial requirements.txt pin change
+      surfaced by dependabot. Verified compatible with fastmcp 3.4.2 + pyyaml
+      (modules import cleanly). Part of the dependency/security review
+      (mcp, fastmcp, fastmcp-slim) — reviewed one at a time on dev.
+    acceptance_criteria:
+      - "requirements.txt pins mcp==1.30.0"
+      - "mcp/fastmcp/yaml import cleanly"
+      - "CI verify passes"
+    adr: []
+    priority: P2
+    size: XS
+    labels: [deps, chore]
+    agent: ops-engineer
+    status: in_progress
+    branch: "chore/deps/bump-mcp-1.30.0"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-09"
+    updated: "2026-11-09"
+    started_at: "2026-11-09T11:00:00"

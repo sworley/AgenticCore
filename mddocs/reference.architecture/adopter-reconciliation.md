@@ -106,7 +106,7 @@ the framework (ADR-0015 D-4). The promotion path:
 
 1. The adopter's steward abstracts the pattern — strips project-specific content,
    states the requirement without reference to customer or environment.
-2. Steward opens an `AP-NNNN` task in the AgenticCore issue tracker, describing the
+2. Steward opens an `AC-NNNN` task in the AgenticCore issue tracker, describing the
    portable pattern and citing the source artifact (`<PROJECT> ADR-NNNN` or
    `<PROJECT>-NNNN`) using the cross-project citation format (ADR-0014 D-6).
 3. AP baseline-steward evaluates the abstraction — not the raw source artifact — and

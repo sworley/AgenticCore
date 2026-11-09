@@ -102,7 +102,7 @@ Quick reference:
 ```sh
 # From .01 (main):
 ./mddocs/scripts/provision-bench.sh \
-  --bench 02 --ticket AP-NNN --type feat --slug short-slug \
+  --bench 02 --ticket AC-NNNN --type feat --slug short-slug \
   --task "Brief description of the task"
 # provision-bench.sh creates .bench/assignment.md (gitignored, disk-local, not committed) and AGENT.md (generated; Pattern A: not committed; Pattern W: committed)
 # Register in bench-registry.yaml

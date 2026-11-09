@@ -76,7 +76,7 @@ entry; disabled by default until corpus reaches meaningful size.
 
 ## Implementation Notes
 
-Server implementation: mddocs/mcp/ (to be added in AP-NNN)
+Server implementation: mddocs/mcp/ (to be added in AC-NNNN)
 Configuration: opencode.json → mcp.rag-docs (disabled: true by default)
 ```
 
@@ -90,7 +90,7 @@ Lead-engineer relays branch-ready, surfaces to HIL:
 
 > "ADR-0028 proposed — MCP RAG docs server. Optional, local stdio, BM25 over
 > mddocs/. Disabled by default. Draft is at `mddocs/adr/adr-0028-mcp-rag-docs-server.md`
-> on branch `docs/AP-NNN-adr-0028-mcp-rag-docs`. Ready for your review."
+> on branch `docs/AC-NNNN-adr-0028-mcp-rag-docs`. Ready for your review."
 
 ---
 

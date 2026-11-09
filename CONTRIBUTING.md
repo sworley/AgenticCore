@@ -19,7 +19,7 @@ on how you came to the framework:
   **severed** release with no shared history with this repo, so a raw PR cannot
   be merged cleanly. Contribute improvements back through **Pattern Promotion**
   instead: abstract the portable pattern (strip all project-specific content),
-  then open an `AP-NNNN` task against this repo and let `baseline-steward`
+  then open an `AC-NNNN` task against this repo and let `baseline-steward`
   evaluate the *abstraction*. See
   [`mddocs/reference.architecture/adopter-reconciliation.md`](mddocs/reference.architecture/adopter-reconciliation.md)
   §Pattern Promotion and ADR-0015 D-4.

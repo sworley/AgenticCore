@@ -241,3 +241,29 @@ tasks:
     created: "2026-11-09"
     updated: "2026-11-09"
     started_at: "2026-11-09T13:00:00"
+
+  - id: AC-0010
+    title: "Release v0.7.0"
+    description: |
+      Cut the v0.7.0 release from dev to main under the formalized release process:
+      curate release/v0.7.0-prep (all-selected from dev), gate via security/docs
+      review + HIL, tag v0.7.0, cut release/v0.7.0, update README as-built, and
+      merge main back to dev. Scope: AP->AC namespace migration + dependency bumps.
+    acceptance_criteria:
+      - "mddocs/release-notes/v0.7.0.md published"
+      - "v0.7.0 tag pushed"
+      - "release/v0.7.0 branch pushed"
+      - "README as-built updated"
+      - "main -> dev merge-back complete; tickets released"
+    adr: [ADR-0026]
+    priority: P1
+    size: S
+    labels: [release]
+    agent: baseline-steward
+    status: in_progress
+    branch: "release/v0.7.0-prep"
+    bench: .01
+    blocked_by: [AC-0009]
+    created: "2026-11-09"
+    updated: "2026-11-09"
+    started_at: "2026-11-09T14:00:00"

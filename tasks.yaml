@@ -111,12 +111,14 @@ tasks:
     size: S
     labels: [fix, tooling]
     agent: ops-engineer
-    status: merged
+    status: released
     branch: "fix/AC-slug-tooling"
     bench: .01
     blocked_by: []
     created: "2026-11-08"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-08T16:00:00"
 
   - id: AC-0005
@@ -137,12 +139,14 @@ tasks:
     size: M
     labels: [docs, governance]
     agent: baseline-steward
-    status: merged
+    status: released
     branch: "docs/AC-namespace-migration"
     bench: .01
     blocked_by: [AC-0002]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T09:00:00"
 
   - id: AC-0006
@@ -162,12 +166,14 @@ tasks:
     size: S
     labels: [fix, tooling, governance]
     agent: ops-engineer
-    status: in_progress
+    status: released
     branch: "fix/AC-namespace-completion"
     bench: .01
     blocked_by: [AC-0004, AC-0005]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T10:00:00"
 
   - id: AC-0007
@@ -186,12 +192,14 @@ tasks:
     size: XS
     labels: [deps, chore]
     agent: ops-engineer
-    status: in_progress
+    status: released
     branch: "chore/deps/bump-mcp-1.30.0"
     bench: .01
     blocked_by: []
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T11:00:00"
 
   - id: AC-0008
@@ -210,12 +218,14 @@ tasks:
     size: XS
     labels: [deps, chore]
     agent: ops-engineer
-    status: in_progress
+    status: released
     branch: "chore/deps/bump-fastmcp-3.4.10"
     bench: .01
     blocked_by: [AC-0007]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T12:00:00"
 
   - id: AC-0009
@@ -234,12 +244,14 @@ tasks:
     size: XS
     labels: [deps, chore]
     agent: ops-engineer
-    status: in_progress
+    status: released
     branch: "chore/deps/bump-fastmcp-slim-3.4.10"
     bench: .01
     blocked_by: [AC-0008]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T13:00:00"
 
   - id: AC-0010
@@ -260,10 +272,12 @@ tasks:
     size: S
     labels: [release]
     agent: baseline-steward
-    status: in_progress
+    status: released
     branch: "release/v0.7.0-prep"
     bench: .01
     blocked_by: [AC-0009]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T14:00:00"

@@ -111,12 +111,14 @@ tasks:
     size: S
     labels: [fix, tooling]
     agent: ops-engineer
-    status: merged
+    status: released
     branch: "fix/AC-slug-tooling"
     bench: .01
     blocked_by: []
     created: "2026-11-08"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-08T16:00:00"
 
   - id: AC-0005
@@ -137,12 +139,14 @@ tasks:
     size: M
     labels: [docs, governance]
     agent: baseline-steward
-    status: merged
+    status: released
     branch: "docs/AC-namespace-migration"
     bench: .01
     blocked_by: [AC-0002]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T09:00:00"
 
   - id: AC-0006
@@ -162,12 +166,14 @@ tasks:
     size: S
     labels: [fix, tooling, governance]
     agent: ops-engineer
-    status: in_progress
+    status: released
     branch: "fix/AC-namespace-completion"
     bench: .01
     blocked_by: [AC-0004, AC-0005]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T10:00:00"
 
   - id: AC-0007
@@ -186,12 +192,14 @@ tasks:
     size: XS
     labels: [deps, chore]
     agent: ops-engineer
-    status: in_progress
+    status: released
     branch: "chore/deps/bump-mcp-1.30.0"
     bench: .01
     blocked_by: []
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T11:00:00"
 
   - id: AC-0008
@@ -210,12 +218,14 @@ tasks:
     size: XS
     labels: [deps, chore]
     agent: ops-engineer
-    status: in_progress
+    status: released
     branch: "chore/deps/bump-fastmcp-3.4.10"
     bench: .01
     blocked_by: [AC-0007]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T12:00:00"
 
   - id: AC-0009
@@ -234,10 +244,63 @@ tasks:
     size: XS
     labels: [deps, chore]
     agent: ops-engineer
-    status: in_progress
+    status: released
     branch: "chore/deps/bump-fastmcp-slim-3.4.10"
     bench: .01
     blocked_by: [AC-0008]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T13:00:00"
+
+  - id: AC-0010
+    title: "Release v0.7.0"
+    description: |
+      Cut the v0.7.0 release from dev to main under the formalized release process:
+      curate release/v0.7.0-prep (all-selected from dev), gate via security/docs
+      review + HIL, tag v0.7.0, cut release/v0.7.0, update README as-built, and
+      merge main back to dev. Scope: AP->AC namespace migration + dependency bumps.
+    acceptance_criteria:
+      - "mddocs/release-notes/v0.7.0.md published"
+      - "v0.7.0 tag pushed"
+      - "release/v0.7.0 branch pushed"
+      - "README as-built updated"
+      - "main -> dev merge-back complete; tickets released"
+    adr: [ADR-0026]
+    priority: P1
+    size: S
+    labels: [release]
+    agent: baseline-steward
+    status: released
+    branch: "release/v0.7.0-prep"
+    bench: .01
+    blocked_by: [AC-0009]
+    created: "2026-11-09"
+    updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
+    started_at: "2026-11-09T14:00:00"
+
+  - id: AC-0011
+    title: "Seed next release baseline (v0.8.0)"
+    description: |
+      Seed the next release cycle after v0.7.0: reset the running release-notes
+      draft (mddocs/release-notes/UNRELEASED.md) to the v0.7.0 baseline and begin
+      gathering candidate material for v0.8.0. The curated release process
+      (ADR-0026) is proven by v0.6.0/v0.7.0.
+    acceptance_criteria:
+      - "UNRELEASED.md reflects baseline v0.7.0 + next v0.8.0"
+      - "Candidate-material gather point established"
+    adr: [ADR-0026]
+    priority: P3
+    size: XS
+    labels: [release, chore]
+    agent: baseline-steward
+    status: in_progress
+    branch: "dev"
+    bench: .01
+    blocked_by: [AC-0010]
+    created: "2026-11-09"
+    updated: "2026-11-09"
+    started_at: "2026-11-09T17:00:00"

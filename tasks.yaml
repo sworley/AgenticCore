@@ -304,3 +304,132 @@ tasks:
     created: "2026-11-09"
     updated: "2026-11-09"
     started_at: "2026-11-09T17:00:00"
+
+  - id: AC-0012
+    title: "HIL submission: adopt documentation and knowledge taxonomy (ADR-0029)"
+    description: |
+      Formalize the adoption of the proposed documentation and knowledge taxonomy
+      (PROPOSAL-DKT-0001 v0.4) as the governance framework for all current and
+      future mddocs/ artefacts.
+
+      Governing principle: the taxonomy covers documentation and metadata
+      contracts. The metadata on a tool is the contractual record of its owner,
+      its domain, and the governance it enforces or participates in. Physical
+      file location is downstream of both — it is an execution detail, not an
+      authority. Artefacts are governed by their frontmatter contract, not by
+      their directory path.
+
+      Deliverable: management-plane ADR-0029 with all eight sub-decisions resolved
+      (D1–D8), submitted to HIL for approval. Supporting evidence is recorded in
+      ACT-DKT-0002 (taxonomy reconciliation).
+
+      Scope of this ticket: approve the taxonomy adoption decision and the
+      frontmatter annotation contract. Physical directory restructuring, ADR
+      migration, and script relocation are explicitly out of scope — they are
+      future migration ADR work, not prerequisites for this approval.
+    acceptance_criteria:
+      - "ADR-0029 drafted with all 8 sub-decisions (D1–D8) resolved and recorded"
+      - "ACT-DKT-0002 reconciliation exists as supporting evidence"
+      - "HIL APPROVED on ADR-0029"
+    adr: [ADR-0029]
+    priority: P1
+    size: L
+    labels: [governance, taxonomy, docs, hil-approval]
+    agent: baseline-steward
+    status: merged
+    completed_at: "2026-11-12T00:00:00"
+    branch: "chore/taxonomy-adoption"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-12"
+    updated: "2026-11-12"
+
+  - id: AC-0013
+    title: "Annotate script frontmatter contracts (ADR-0029 D4 implementation)"
+    description: |
+      Execute the one-time frontmatter annotation pass required by ADR-0029
+      D4. The adopted taxonomy governs documentation and metadata contracts;
+      the metadata on a tool is the contractual record of its owner, its
+      domain, and the governance it enforces or participates in. Physical
+      file location is downstream of both — this ticket adds the metadata,
+      it does not move files.
+
+      Scope covers every file under mddocs/scripts/:
+
+      **Executables (27 files):**
+      - .sh (23): bench-status, check-env, check-links, check-worktree-hygiene,
+        export-framework, git-sync, mcp-tests/run-all, mcp-tests/test-mcp-filesystem,
+        mcp-tests/test-mcp-git, provision-bench, read-audit-log, setup/{adopt,
+        model-distribution, phase2-dev-toolchain, python-env, tool-adapter,
+        toolchain, verify-toolchain}, statusline-command, sync-agent-config,
+        test-{adopt-target-handling, export-framework-severance,
+        provision-bench-substitution}
+      - .py (2): mcp-tests/test-mcp-rag-docs.py, update-summary-on-adr-write.py
+      - .yaml (2): seed/bench-registry.yaml, seed/tasks.yaml
+
+      **Script documentation sidecars (26 files)** under:
+      scripts/hooks-index.md, scripts/mcp-tests/*.md (5),
+      scripts/operations/*.md (7), scripts/seed/*.md (2),
+      scripts/setup/*.md (8), scripts/*.md (3)
+
+      **Classification contract per ADR-0029 D4:**
+
+      Each artefact receives frontmatter encoding:
+        id:        SH-<STABLE_ID>
+        document_type: script | script-docs | data
+        status:    active | template | superseded | retired
+        lifecycle: active | template | shared (migrated) | superseded | retired
+        domain:    Management | Projects/<context>
+        category:  Operations | Security | Agentic | Architecture | Adoption | Governance | Testing
+        process:   <workflow artefact participates in>
+        owner:     <agent role>
+        allowed_in_adopter_repos: false | true   (default: false)
+        enforces:  ADR-XXXX   (only for governance enforcement scripts; omit otherwise)
+        source_activity: ACT-XXXX   (only for project-activity scripts; omit for Management-owned)
+        source_context: <context>   (only for project-activity scripts; omit for Management-owned)
+        migrated_from: <path>       (only when lifecycle=shared; omit otherwise)
+        related.paths: [<relative paths to docs this script is documented by or governs>]
+
+      For executable files (.sh, .py, .yaml, .js) that cannot carry YAML
+      frontmatter natively, a .meta.yaml companion file is created alongside
+      the executable using the same contract.
+
+      **Four-class classification:**
+
+      1. Harness-owned tooling — domain: Management, allowed_in_adopter_repos: false
+      2. Harness-provided general-use — domain: Management, allowed_in_adopter_repos: true
+         (adopt.sh, provision-bench.sh, git-sync.sh as exemplars)
+      3. Project-activity script — domain: Projects/<context>, source_activity and
+         source_context populated; currently no instances exist; annotate as
+         domain: Management with a NOTE that these will be classified when
+         Projects/<context> activity begins
+      4. Governance enforcement — enforces: ADR-XXXX as primary identity field;
+         placement governed by the mandating ADR, not the taxonomy
+
+      **Out of scope:**
+      - Physical file relocation (future migration ADR per D4)
+      - Creation of Management/Tools/ or Projects/Tools/ directories
+      - Changes to mddocs/scripts/seed/ provisioning templates (handled separately if needed)
+
+      Source document for all decisions: ACT-DKT-0002 section 4.10 and D4.
+      Approval authority: this ticket requires lead-engineer sign-off before
+      commit, per ADR-0019 HIL gates.
+    acceptance_criteria:
+      - "All 27 executables annotated — .meta.yaml companion on .sh/.py/.yaml executables; frontmatter where natively supported"
+      - "All 26 sidecar .md files annotated with document_type: script-docs and inheriting domain from parent artefact"
+      - "Governance enforcement scripts identified and annotated with enforces: ADR-XXXX"
+      - "Harness-provided general-use scripts (adopt.sh, provision-bench.sh, git-sync.sh) annotated with allowed_in_adopter_repos: true"
+      - "lead-engineer review and sign-off recorded before commit"
+      - "No files relocated; no scripts renamed; no provisioning templates modified"
+      - "ADR-0029 D4 frontmatter contract verified against ACT-DKT-0002 reference positions"
+    adr: [ADR-0029]
+    priority: P1
+    size: L
+    labels: [governance, taxonomy, docs, scripts]
+    agent: baseline-steward
+    status: awaiting_review
+    branch: "dev"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-12"
+    updated: "2026-11-12"

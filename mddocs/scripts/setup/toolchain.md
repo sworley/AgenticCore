@@ -1,3 +1,20 @@
+---
+id: SH-0016-doc
+document_type: script-docs
+status: active
+lifecycle: active
+title: Docs/dev toolchain manager (script docs)
+domain: Management
+category: Architecture
+process: toolchain-manage
+owner: infra-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - toolchain.sh
+    - ../../reference.architecture/bootstrap-new-project.md
+---
+
 # toolchain.sh
 
 <a href="toolchain.sh" download>Download toolchain.sh</a> · bash · [Bootstrap New Project](../../reference.architecture/bootstrap-new-project.md)

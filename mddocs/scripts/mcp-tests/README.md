@@ -1,3 +1,11 @@
+---
+id: SDX-001
+document_type: index
+status: active
+lifecycle: active
+domain: Management
+---
+
 # MCP Server Test Scripts
 
 Smoke tests for the MCP servers configured in this framework.

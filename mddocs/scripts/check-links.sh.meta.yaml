@@ -1,0 +1,14 @@
+id: SH-0004
+title: Markdown link integrity checker
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Operations
+process: docs-quality-check
+owner: docs-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - operations/check-links.md
+    - ../operations/runbooks/check-links-runbook.md

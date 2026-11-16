@@ -1,0 +1,14 @@
+id: SH-0008
+title: Egress audit log viewer
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Security
+process: egress-audit-review
+owner: security-engineer
+allowed_in_adopter_repos: false
+related:
+  paths:
+    - operations/read-audit-log.md
+    - ../adr/adr-0006-external-content-gate-scope.md

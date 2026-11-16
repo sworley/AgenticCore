@@ -1,3 +1,11 @@
+---
+id: SDX-003
+document_type: index
+status: active
+lifecycle: active
+domain: Management
+---
+
 # Operations Scripts
 
 Automation scripts collocated with documentation for browsability alongside runbooks.

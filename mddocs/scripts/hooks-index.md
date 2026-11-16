@@ -1,3 +1,11 @@
+---
+id: SDX-002
+document_type: index
+status: active
+lifecycle: active
+domain: Management
+---
+
 # Hooks and Utilities
 
 Standalone scripts used as hooks or session utilities.

@@ -1,0 +1,14 @@
+id: SH-0018
+title: MCP smoke test runner
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Testing
+process: mcp-smoke-test
+owner: ops-engineer
+allowed_in_adopter_repos: false
+related:
+  paths:
+    - run-all.md
+    - README.md

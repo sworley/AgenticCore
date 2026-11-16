@@ -1,3 +1,12 @@
+---
+id: SEED-CONTEXT
+document_type: seed-template
+status: template
+lifecycle: template
+domain: Management
+purpose: provisioned-workspace shared agent context template
+---
+
 # __SLUG__ — Shared Agent Context
 
 <!-- schema: agent-context/v1 -->

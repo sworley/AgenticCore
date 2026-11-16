@@ -1,3 +1,13 @@
+---
+id: SEED-BACKLOG
+document_type: backlog
+status: template
+lifecycle: template
+domain: Management
+primary: false
+redirect: ../../../backlog.md
+---
+
 # Backlog — __SLUG__
 
 This page mirrors the current state of `tasks.yaml` for human-readable review.

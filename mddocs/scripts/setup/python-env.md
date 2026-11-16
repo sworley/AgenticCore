@@ -1,3 +1,20 @@
+---
+id: SH-0014-doc
+document_type: script-docs
+status: active
+lifecycle: active
+title: Project-local Python virtualenv provider (script docs)
+domain: Management
+category: Operations
+process: python-env-provision
+owner: ops-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - python-env.sh
+    - ../../reference.architecture/bootstrap-new-project.md
+---
+
 # python-env.sh
 
 <a href="python-env.sh" download>Download python-env.sh</a> · bash · [Bootstrap New Project](../../reference.architecture/bootstrap-new-project.md)

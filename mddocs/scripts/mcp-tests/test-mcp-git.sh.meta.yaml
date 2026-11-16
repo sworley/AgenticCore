@@ -1,0 +1,13 @@
+id: SH-0020
+title: MCP git smoke test
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Testing
+process: mcp-smoke-test
+owner: ops-engineer
+allowed_in_adopter_repos: false
+related:
+  paths:
+    - test-mcp-git.md

@@ -1,3 +1,11 @@
+---
+id: SDX-004
+document_type: index
+status: active
+lifecycle: active
+domain: Management
+---
+
 # Onboarding Scripts
 
 Scripts for bootstrapping and verifying the AgenticCore development environment.

@@ -1,0 +1,16 @@
+id: SH-0011
+title: Adopter onboarding wrapper
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Adoption
+process: adoption-onboarding
+owner: release-engineer
+allowed_in_adopter_repos: false
+related:
+  paths:
+    - adopt.md
+    - ../export-framework.sh
+    - ../../reference.architecture/bootstrap-new-project.md
+    - ../test-adopt-target-handling.sh

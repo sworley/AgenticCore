@@ -1664,14 +1664,17 @@ if [ "${EXPORT_FRAMEWORK_SOURCED:-0}" != "1" ]; then
   # Runs inside this guard so sourcing (EXPORT_FRAMEWORK_SOURCED=1) never
   # triggers interactive prompts or the mkdir decision point.
   prompt_for_target
-  # Normalize to the `.01` management-plane namespace before anything else
-  # (confirmation, identity guard, flow detection) sees the path.
+  # D-7.6 identity guard runs on the RAW --target, BEFORE the `.01` suffix is
+  # appended. Otherwise normalize_target_plane would redirect `--target <repo>`
+  # to `<repo>.01` and the "target IS the framework repo" case could never
+  # fire. (The nested-in-repo case is unaffected either way.)
+  guard_target_identity
+  # Normalize to the `.01` management-plane namespace before confirmation and
+  # flow detection see the path.
   normalize_target_plane
   if [ "$DRY_RUN" -eq 0 ] && [ "$YES" -eq 0 ]; then
     confirm_target
   fi
-
-  guard_target_identity
 
   FLOW_SELECTED="$(detect_flow "$TARGET")"
 

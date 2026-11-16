@@ -1,3 +1,12 @@
+---
+document_type: index
+status: superseded-by-taxonomy
+lifecycle: superseded
+records: ADR-0000 through ADR-0028
+redirect: ../Management/Governance/Decisions/
+primary: false
+---
+
 # ADR Index
 
 This index tracks all Architectural Decision Records for AgenticCore.

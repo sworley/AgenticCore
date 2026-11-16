@@ -1,3 +1,16 @@
+---
+document_type: runbook
+status: active
+lifecycle: active
+primary: true
+redirect: ../../Management/Assurance/Reviews/Ledger-Runbook/index.md
+assurance_category: review-governance
+governance_context:
+  - ADR-0019-D7
+domain: Management
+purpose: Implement the sign-off package assembly procedure before HIL approval
+---
+
 # Runbook: review-ledger MCP Server
 
 **Task:** TC-026  

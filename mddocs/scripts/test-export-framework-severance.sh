@@ -31,6 +31,11 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 EXPORT_SCRIPT="$SCRIPT_DIR/export-framework.sh"
 
+# export-framework.sh's normalize_target_plane ALWAYS appends the `.01`
+# management-plane suffix to --target. Pre-seeded target state and assertions
+# must therefore operate on the effective <target>.01 path.
+eff() { printf '%s\n' "${1%/}.01"; }
+
 WORKDIR=""
 KEEP=0
 
@@ -96,7 +101,14 @@ if [ -z "$FW_URL" ]; then
   FW_URL="https://example-framework-host.invalid/group/AgenticCore.git"
 fi
 # Derive an SSH-form equivalent for test (ii): git@host:group/repo.git
-FW_HOST_PATH="$(printf '%s' "$FW_URL" | sed -E 's#^https?://([^@/]+@)?##; s#\.git$##')"
+# Normalize FW_URL to a bare "host/path" in BOTH https:// and SSH-shorthand
+# (git@host:path) forms, so fixtures stay valid regardless of how the
+# framework's own origin is configured.
+FW_HOST_PATH="$(printf '%s' "$FW_URL" \
+  | sed -E 's#^[a-zA-Z][a-zA-Z0-9+.-]*://([^@/]+@)?##' \
+  | sed -E 's#^[^@/]+@##' \
+  | sed -E 's#^([^/:]+):#\1/#' \
+  | sed -E 's#\.git$##')"
 FW_HOST="${FW_HOST_PATH%%/*}"
 FW_PATH="${FW_HOST_PATH#*/}"
 FW_SSH="git@${FW_HOST}:${FW_PATH}.git"
@@ -124,10 +136,10 @@ FLOWA_DIR="$WORKDIR/flowA"
 flowa_rc=0
 bash "$EXPORT_SCRIPT" --target "$FLOWA_DIR" --slug ACME --yes > "$WORKDIR/flowA.out" 2>&1 || flowa_rc=$?
 if [ "$flowa_rc" -eq 0 ] \
-   && [ -f "$FLOWA_DIR/framework-version.txt" ] \
-   && [ -z "$(git -C "$FLOWA_DIR" remote 2>/dev/null)" ] \
-   && [ "$(git -C "$FLOWA_DIR" log --oneline | wc -l | tr -d ' ')" = "1" ] \
-   && grep -q '^ACME$' "$FLOWA_DIR/AGENT.md" 2>/dev/null; then
+   && [ -f "$(eff "$FLOWA_DIR")/framework-version.txt" ] \
+   && [ -z "$(git -C "$(eff "$FLOWA_DIR")" remote 2>/dev/null)" ] \
+   && [ "$(git -C "$(eff "$FLOWA_DIR")" log --oneline | wc -l | tr -d ' ')" = "1" ] \
+   && grep -q '^ACME$' "$(eff "$FLOWA_DIR")/AGENT.md" 2>/dev/null; then
   pass_case "Flow A: clean repo, framework-version.txt, slug, no remote, single commit"
 else
   fail_case "Flow A: clean repo, framework-version.txt, slug, no remote, single commit"
@@ -140,18 +152,18 @@ fi
 echo ""
 echo "-- Group 2: Flow B (clean customer tree) --"
 CUST_DIR="$WORKDIR/customer_clean"
-mkdir -p "$CUST_DIR/src"
-( cd "$CUST_DIR" && git init -q && echo "app" > src/app.py && echo "# readme" > README.md \
+mkdir -p "$(eff "$CUST_DIR")/src"
+( cd "$(eff "$CUST_DIR")" && git init -q && echo "app" > src/app.py && echo "# readme" > README.md \
   && git add -A && git commit -q -m "initial customer commit" )
 
 bash "$EXPORT_SCRIPT" --target "$CUST_DIR" --slug ACME --yes > "$WORKDIR/flowB.out" 2>&1
 rc=$?
 if [ "$rc" -eq 0 ] \
-   && [ -z "$(git -C "$CUST_DIR" remote 2>/dev/null)" ] \
-   && [ -z "$(git -C "$CUST_DIR" for-each-ref refs/remotes 2>/dev/null)" ] \
-   && [ -z "$(git -C "$CUST_DIR" fsck --unreachable 2>/dev/null)" ] \
-   && [ -f "$CUST_DIR/src/app.py" ] \
-   && [ -f "$CUST_DIR/framework-version.txt" ]; then
+   && [ -z "$(git -C "$(eff "$CUST_DIR")" remote 2>/dev/null)" ] \
+   && [ -z "$(git -C "$(eff "$CUST_DIR")" for-each-ref refs/remotes 2>/dev/null)" ] \
+   && [ -z "$(git -C "$(eff "$CUST_DIR")" fsck --unreachable 2>/dev/null)" ] \
+   && [ -f "$(eff "$CUST_DIR")/src/app.py" ] \
+   && [ -f "$(eff "$CUST_DIR")/framework-version.txt" ]; then
   pass_case "Flow B: no framework remote, no framework history/objects, customer files preserved"
 else
   fail_case "Flow B: no framework remote, no framework history/objects, customer files preserved"
@@ -306,17 +318,17 @@ expect_exit "(xii) SF-073 host+org-reaching insteadOf still survives severance -
 echo ""
 echo "-- Group 4: allowlist correctness (customer remote preserved, framework severed) --"
 ALLOW_DIR="$WORKDIR/allowlist"
-mkdir -p "$ALLOW_DIR"
-( cd "$ALLOW_DIR" && git init -q && echo c > c.txt && git add c.txt && git commit -q -m "customer commit" \
+mkdir -p "$(eff "$ALLOW_DIR")"
+( cd "$(eff "$ALLOW_DIR")" && git init -q && echo c > c.txt && git add c.txt && git commit -q -m "customer commit" \
   && git remote add origin "https://example.com/customer-org/customer-repo.git" \
   && git remote add framework-tmp "$FW_URL" )
 
 bash "$EXPORT_SCRIPT" --target "$ALLOW_DIR" --slug ACME --yes > "$WORKDIR/allowlist.out" 2>&1
 rc=$?
-remaining_remotes="$(git -C "$ALLOW_DIR" remote 2>/dev/null || true)"
+remaining_remotes="$(git -C "$(eff "$ALLOW_DIR")" remote 2>/dev/null || true)"
 if [ "$rc" -eq 0 ] \
    && [ "$remaining_remotes" = "origin" ] \
-   && [ "$(git -C "$ALLOW_DIR" remote get-url origin 2>/dev/null)" = "https://example.com/customer-org/customer-repo.git" ]; then
+   && [ "$(git -C "$(eff "$ALLOW_DIR")" remote get-url origin 2>/dev/null)" = "https://example.com/customer-org/customer-repo.git" ]; then
   pass_case "allowlist: customer 'origin' preserved, framework 'framework-tmp' severed"
 else
   fail_case "allowlist: customer 'origin' preserved, framework 'framework-tmp' severed"
@@ -330,17 +342,17 @@ fi
 echo ""
 echo "-- Group 5: D-7.2 dirty-tree guard --"
 DIRTY_DIR="$WORKDIR/dirty"
-mkdir -p "$DIRTY_DIR"
-( cd "$DIRTY_DIR" && git init -q && echo committed > a.txt && git add a.txt && git commit -q -m "initial" \
+mkdir -p "$(eff "$DIRTY_DIR")"
+( cd "$(eff "$DIRTY_DIR")" && git init -q && echo committed > a.txt && git add a.txt && git commit -q -m "initial" \
   && echo uncommitted >> a.txt && echo untracked > untracked.txt )
 
-before_files="$(find "$DIRTY_DIR" -type f | sort)"
-before_log="$(git -C "$DIRTY_DIR" log --oneline)"
+before_files="$(find "$(eff "$DIRTY_DIR")" -type f | sort)"
+before_log="$(git -C "$(eff "$DIRTY_DIR")" log --oneline)"
 
 expect_exit "dirty tree, no --force -> aborts (D-7.2)" 4 -- bash "$EXPORT_SCRIPT" --target "$DIRTY_DIR" --slug ACME --yes
 
-after_files="$(find "$DIRTY_DIR" -type f | sort)"
-after_log="$(git -C "$DIRTY_DIR" log --oneline)"
+after_files="$(find "$(eff "$DIRTY_DIR")" -type f | sort)"
+after_log="$(git -C "$(eff "$DIRTY_DIR")" log --oneline)"
 if [ "$before_files" = "$after_files" ] && [ "$before_log" = "$after_log" ]; then
   pass_case "dirty tree, no --force -> zero changes made"
 else
@@ -363,20 +375,20 @@ echo ""
 echo "-- Group 6: --dry-run zero side effects --"
 DRY_EMPTY="$WORKDIR/dry_empty"
 bash "$EXPORT_SCRIPT" --target "$DRY_EMPTY" --slug ACME --dry-run > "$WORKDIR/dry_empty.out" 2>&1
-if [ ! -e "$DRY_EMPTY" ]; then
+if [ ! -e "$(eff "$DRY_EMPTY")" ]; then
   pass_case "dry-run on empty target (Flow A) -> target not created"
 else
   fail_case "dry-run on empty target (Flow A) -> target not created"
 fi
 
 DRY_CUST="$WORKDIR/dry_customer"
-mkdir -p "$DRY_CUST"
-( cd "$DRY_CUST" && git init -q && echo c > c.txt && git add c.txt && git commit -q -m "customer commit" )
-before_files="$(find "$DRY_CUST" -type f | sort)"
-before_status="$(git -C "$DRY_CUST" status --porcelain)"
+mkdir -p "$(eff "$DRY_CUST")"
+( cd "$(eff "$DRY_CUST")" && git init -q && echo c > c.txt && git add c.txt && git commit -q -m "customer commit" )
+before_files="$(find "$(eff "$DRY_CUST")" -type f | sort)"
+before_status="$(git -C "$(eff "$DRY_CUST")" status --porcelain)"
 bash "$EXPORT_SCRIPT" --target "$DRY_CUST" --slug ACME --dry-run > "$WORKDIR/dry_customer.out" 2>&1
-after_files="$(find "$DRY_CUST" -type f | sort)"
-after_status="$(git -C "$DRY_CUST" status --porcelain)"
+after_files="$(find "$(eff "$DRY_CUST")" -type f | sort)"
+after_status="$(git -C "$(eff "$DRY_CUST")" status --porcelain)"
 if [ "$before_files" = "$after_files" ] && [ "$before_status" = "$after_status" ]; then
   pass_case "dry-run on clean customer tree (Flow B) -> zero side effects"
 else
@@ -397,13 +409,13 @@ expect_exit "target nested inside framework repo -> aborts (D-7.6)" 3 -- bash "$
 echo ""
 echo "-- Group 8: D-7.1 flow-detection ambiguity --"
 AMBIG_DIR="$WORKDIR/ambiguous"
-mkdir -p "$AMBIG_DIR"
-echo "not a git repo" > "$AMBIG_DIR/file.txt"
+mkdir -p "$(eff "$AMBIG_DIR")"
+echo "not a git repo" > "$(eff "$AMBIG_DIR")/file.txt"
 expect_exit "non-empty non-git target, no --flow -> ambiguous, aborts" 2 -- bash "$EXPORT_SCRIPT" --target "$AMBIG_DIR" --slug ACME --yes
 
 bash "$EXPORT_SCRIPT" --target "$AMBIG_DIR" --flow empty --slug ACME --yes > "$WORKDIR/ambig_explicit.out" 2>&1
 rc=$?
-if [ "$rc" -eq 0 ] && [ -f "$AMBIG_DIR/framework-version.txt" ]; then
+if [ "$rc" -eq 0 ] && [ -f "$(eff "$AMBIG_DIR")/framework-version.txt" ]; then
   pass_case "explicit --flow empty overrides ambiguity -> succeeds"
 else
   fail_case "explicit --flow empty overrides ambiguity -> succeeds"
@@ -424,19 +436,19 @@ echo ""
 echo "-- Group 9: TC-051 Flow B reconciliation (manifest-scoped staging + report) --"
 
 RECON_DIR="$WORKDIR/reconcile"
-mkdir -p "$RECON_DIR/custdir"
-( cd "$RECON_DIR" && git init -q \
+mkdir -p "$(eff "$RECON_DIR")/custdir"
+( cd "$(eff "$RECON_DIR")" && git init -q \
   && echo "customer tracked content" > custdir/tracked.txt \
   && git add -A && git commit -q -m "customer initial commit" \
   && echo "customer loose content" > "loose customer file.txt" \
   && mkdir -p node_modules && echo "dep" > node_modules/dep.js )
 
-RECON_GITIGNORE_BEFORE="$(cat "$RECON_DIR/.gitignore" 2>/dev/null || true)"
+RECON_GITIGNORE_BEFORE="$(cat "$(eff "$RECON_DIR")/.gitignore" 2>/dev/null || true)"
 
 bash "$EXPORT_SCRIPT" --target "$RECON_DIR" --slug ACME --force --yes > "$WORKDIR/reconcile.out" 2>&1
 recon_rc=$?
 
-REPORT_FILE="$RECON_DIR/.framework-rehome-report.txt"
+REPORT_FILE="$(eff "$RECON_DIR")/.framework-rehome-report.txt"
 
 # (9a) script succeeds and the report file exists
 if [ "$recon_rc" -eq 0 ] && [ -f "$REPORT_FILE" ]; then
@@ -448,7 +460,7 @@ fi
 
 # (9b) pre-existing customer file is NOT staged/committed into the
 # framework re-home commit — still untracked after the script runs.
-customer_status="$(git -C "$RECON_DIR" status --porcelain -- "loose customer file.txt" node_modules/dep.js 2>/dev/null || true)"
+customer_status="$(git -C "$(eff "$RECON_DIR")" status --porcelain -- "loose customer file.txt" node_modules/dep.js 2>/dev/null || true)"
 if printf '%s\n' "$customer_status" | grep -q '^?? "loose customer file.txt"$' \
    && printf '%s\n' "$customer_status" | grep -q '^?? node_modules/dep.js$'; then
   pass_case "TC-051 (9b): pre-existing customer files remain untracked, not staged into re-home commit"
@@ -458,7 +470,7 @@ else
 fi
 
 # (9c) the re-home commit itself does not contain the customer paths
-commit_files="$(git -C "$RECON_DIR" show --name-only --pretty=format: HEAD 2>/dev/null || true)"
+commit_files="$(git -C "$(eff "$RECON_DIR")" show --name-only --pretty=format: HEAD 2>/dev/null || true)"
 if ! printf '%s\n' "$commit_files" | grep -qx "loose customer file.txt" \
    && ! printf '%s\n' "$commit_files" | grep -qx "node_modules/dep.js"; then
   pass_case "TC-051 (9c): framework re-home commit does not contain customer paths"
@@ -490,7 +502,7 @@ fi
 # the framework's .gitignore over the target's, same as any other
 # manifest path — the assertion here is that no CUSTOMER-specific entry
 # was appended to it as a side effect of reconciliation).
-recon_gitignore_after="$(cat "$RECON_DIR/.gitignore" 2>/dev/null || true)"
+recon_gitignore_after="$(cat "$(eff "$RECON_DIR")/.gitignore" 2>/dev/null || true)"
 framework_gitignore="$(cat "$FRAMEWORK_ROOT/.gitignore" 2>/dev/null || true)"
 if [ "$recon_gitignore_after" = "$framework_gitignore" ] \
    && ! printf '%s\n' "$recon_gitignore_after" | grep -q "loose customer file"; then
@@ -511,25 +523,25 @@ fi
 # writes nothing (no report file, no staging, no commit) but still
 # reports the classification preview to stdout.
 RECON_DRY_DIR="$WORKDIR/reconcile_dryrun"
-mkdir -p "$RECON_DRY_DIR/custdir"
-( cd "$RECON_DRY_DIR" && git init -q \
+mkdir -p "$(eff "$RECON_DRY_DIR")/custdir"
+( cd "$(eff "$RECON_DRY_DIR")" && git init -q \
   && echo "customer tracked content" > custdir/tracked.txt \
   && git add -A && git commit -q -m "customer initial commit" \
   && echo "customer loose content" > loose_customer.txt )
 
-before_dry_files="$(find "$RECON_DRY_DIR" -type f | sort)"
-before_dry_log="$(git -C "$RECON_DRY_DIR" log --oneline)"
+before_dry_files="$(find "$(eff "$RECON_DRY_DIR")" -type f | sort)"
+before_dry_log="$(git -C "$(eff "$RECON_DRY_DIR")" log --oneline)"
 
 bash "$EXPORT_SCRIPT" --target "$RECON_DRY_DIR" --slug ACME --dry-run --force > "$WORKDIR/reconcile_dryrun.out" 2>&1
 dry_recon_rc=$?
 
-after_dry_files="$(find "$RECON_DRY_DIR" -type f | sort)"
-after_dry_log="$(git -C "$RECON_DRY_DIR" log --oneline)"
+after_dry_files="$(find "$(eff "$RECON_DRY_DIR")" -type f | sort)"
+after_dry_log="$(git -C "$(eff "$RECON_DRY_DIR")" log --oneline)"
 
 if [ "$dry_recon_rc" -eq 0 ] \
    && [ "$before_dry_files" = "$after_dry_files" ] \
    && [ "$before_dry_log" = "$after_dry_log" ] \
-   && [ ! -f "$RECON_DRY_DIR/.framework-rehome-report.txt" ]; then
+   && [ ! -f "$(eff "$RECON_DRY_DIR")/.framework-rehome-report.txt" ]; then
   pass_case "TC-051 (9g): --dry-run writes no report file, stages nothing, creates no commit"
 else
   fail_case "TC-051 (9g): --dry-run writes no report file, stages nothing, creates no commit"
@@ -555,8 +567,8 @@ fi
 # is not a vacuous assertion (WITHOUT -f, git refuses to stage an ignored
 # path at all).
 GITIGNORE_OVERRIDE_DIR="$WORKDIR/gitignore_override"
-mkdir -p "$GITIGNORE_OVERRIDE_DIR"
-( cd "$GITIGNORE_OVERRIDE_DIR" && git init -q \
+mkdir -p "$(eff "$GITIGNORE_OVERRIDE_DIR")"
+( cd "$(eff "$GITIGNORE_OVERRIDE_DIR")" && git init -q \
   && printf '*.txt\n' > .gitignore \
   && echo "seed" > tracked_seed.txt \
   && git add -f .gitignore tracked_seed.txt && git commit -q -m "customer initial commit with broad *.txt gitignore rule" )
@@ -565,9 +577,9 @@ mkdir -p "$GITIGNORE_OVERRIDE_DIR"
 # .gitignore rule matches — proves the rule really would have blocked
 # framework-version.txt (a .txt file) absent the -f override.
 gitignore_control_rc=0
-( cd "$GITIGNORE_OVERRIDE_DIR" && touch would-be-blocked.txt \
+( cd "$(eff "$GITIGNORE_OVERRIDE_DIR")" && touch would-be-blocked.txt \
   && git add would-be-blocked.txt ) > "$WORKDIR/gitignore_control.out" 2>&1 || gitignore_control_rc=$?
-rm -f "$GITIGNORE_OVERRIDE_DIR/would-be-blocked.txt"
+rm -f "$(eff "$GITIGNORE_OVERRIDE_DIR")/would-be-blocked.txt"
 if [ "$gitignore_control_rc" -ne 0 ] && grep -q "ignored by one of your .gitignore files" "$WORKDIR/gitignore_control.out"; then
   pass_case "TC-051 (9i-control): customer's *.txt gitignore rule genuinely blocks staging without -f"
 else
@@ -577,7 +589,7 @@ fi
 
 bash "$EXPORT_SCRIPT" --target "$GITIGNORE_OVERRIDE_DIR" --slug ACME --yes > "$WORKDIR/gitignore_override.out" 2>&1
 gitignore_override_rc=$?
-gitignore_override_commit_files="$(git -C "$GITIGNORE_OVERRIDE_DIR" show --name-only --pretty=format: HEAD 2>/dev/null || true)"
+gitignore_override_commit_files="$(git -C "$(eff "$GITIGNORE_OVERRIDE_DIR")" show --name-only --pretty=format: HEAD 2>/dev/null || true)"
 if [ "$gitignore_override_rc" -eq 0 ] \
    && printf '%s\n' "$gitignore_override_commit_files" | grep -qx "framework-version.txt"; then
   pass_case "TC-051 (9i): git add -f stages a framework path despite a matching customer .gitignore rule"
@@ -825,14 +837,14 @@ assert_adopter_confidentiality() {
 }
 
 # (10a) Flow A export (Group 1's FLOWA_DIR) is adopter-clean.
-if [ -d "$FLOWA_DIR" ] && assert_adopter_confidentiality "$FLOWA_DIR" "Flow A"; then
+if [ -d "$(eff "$FLOWA_DIR")" ] && assert_adopter_confidentiality "$(eff "$FLOWA_DIR")" "Flow A"; then
   pass_case "SF-125 (10a): Flow A export contains no framework-identity/ticket/finding markers in scoped files"
 else
   fail_case "SF-125 (10a): Flow A export contains no framework-identity/ticket/finding markers in scoped files"
 fi
 
 # (10b) Flow B export (Group 2's CUST_DIR) is adopter-clean.
-if [ -d "$CUST_DIR" ] && assert_adopter_confidentiality "$CUST_DIR" "Flow B"; then
+if [ -d "$(eff "$CUST_DIR")" ] && assert_adopter_confidentiality "$(eff "$CUST_DIR")" "Flow B"; then
   pass_case "SF-125 (10b): Flow B export contains no framework-identity/ticket/finding markers in scoped files"
 else
   fail_case "SF-125 (10b): Flow B export contains no framework-identity/ticket/finding markers in scoped files"

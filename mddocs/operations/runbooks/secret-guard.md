@@ -1,3 +1,17 @@
+---
+document_type: runbook
+status: active
+lifecycle: active
+primary: true
+redirect: ../../Management/Security/Guardrails/Secret-Management/index.md
+security_category: guardrail
+governance_context:
+  - ADR-0016
+  - ADR-0018
+domain: Management
+purpose: Block commands that expand or print credential values in plaintext
+---
+
 # Runbook: secret-guard Hook
 
 ## Overview

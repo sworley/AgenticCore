@@ -19,4 +19,4 @@ primary: true
 |---|---|---|---|
 | [ADR-0029](ADR-0029-documentation-taxonomy-adoption.md) | Documentation and Knowledge Taxonomy Adoption | accepted | 2026-11-12 |
 
-→ [Historical ADR index](../../adr/)
+→ [Historical ADR index](../../../adr/)

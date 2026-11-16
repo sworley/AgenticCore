@@ -98,11 +98,11 @@ echo ""
 # regression that shipped as the TC-079/v1.6.0 defect).
 #
 # We run adopt.sh from a sub-directory of $WORKDIR and pass a RELATIVE
-# --target path (./my-project.01 — the exact README form). Steps 6-7 must
-# run and report real status, not "No such file or directory".
+# --target path (./my-project — the exact README form; adopt.sh appends .01).
+# Steps 6-7 must run and report real status, not "No such file or directory".
 #
-# --skip-agent-config because opencode.json needs a live AI toolchain
-# Code install and we're not testing that here.
+# --tool none (the adopt.sh default) skips generating a runtime adapter, so
+# we don't need a live AI toolchain/codex install for this e2e.
 #
 # --yes skips the TC-085 confirmation prompt (we test that separately).
 # ---------------------------------------------------------------------------
@@ -113,14 +113,14 @@ if [ "$SKIP_E2E" -eq 0 ]; then
   # a relative path from there.
   G1_PARENT="$WORKDIR/g1_parent"
   mkdir -p "$G1_PARENT"
-  G1_RELATIVE_TARGET="./my-project.01"
+  G1_RELATIVE_TARGET="./my-project"
   G1_ABS_TARGET="$G1_PARENT/my-project.01"
 
   # Run from inside G1_PARENT so the relative path is valid
   ( cd "$G1_PARENT" && bash "$ADOPT_SCRIPT" \
       --target "$G1_RELATIVE_TARGET" \
       --slug TEST \
-      --skip-agent-config \
+      --tool none \
       --yes \
     ) > "$WORKDIR/g1_adopt.out" 2>&1 || true
 
@@ -162,12 +162,13 @@ if [ "$SKIP_E2E" -eq 0 ]; then
   echo ""
   echo "-- Group 2: TC-084 — adopt.sh with ABSOLUTE --target (no regression) --"
 
-  G2_ABS_TARGET="$WORKDIR/g2_absolute_target.01"
+  G2_BASE="$WORKDIR/g2_absolute_target"
+  G2_ABS_TARGET="$G2_BASE.01"
 
   bash "$ADOPT_SCRIPT" \
-    --target "$G2_ABS_TARGET" \
+    --target "$G2_BASE" \
     --slug TESTABS \
-    --skip-agent-config \
+    --tool none \
     --yes \
     > "$WORKDIR/g2_adopt.out" 2>&1 || true
 

@@ -1,0 +1,14 @@
+id: SH-0023
+title: Adopt target handling regression test
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Testing
+process: adoption-regression
+owner: release-engineer
+allowed_in_adopter_repos: false
+related:
+  paths:
+    - setup/adopt.sh
+    - setup/adopt.md

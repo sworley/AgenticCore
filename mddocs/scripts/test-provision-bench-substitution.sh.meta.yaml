@@ -1,0 +1,14 @@
+id: SH-0025
+title: Bench provisioning substitution test
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Testing
+process: bench-provisioning-regression
+owner: ops-engineer
+allowed_in_adopter_repos: false
+related:
+  paths:
+    - provision-bench.sh
+    - operations/provision-bench.md

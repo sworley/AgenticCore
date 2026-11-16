@@ -1,0 +1,13 @@
+id: SH-0017
+title: Toolchain end-state verifier
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Architecture
+process: toolchain-verify
+owner: infra-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - verify-toolchain.md

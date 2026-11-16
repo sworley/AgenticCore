@@ -1,3 +1,14 @@
+---
+id: REF-0001
+document_type: reference
+status: active
+lifecycle: active
+domain: Management
+category: Operations
+process: runtime-config
+owner: lead-engineer
+---
+
 # init-opencode-settings
 
 opencode reads the committed `opencode.json` directly — no machine-local

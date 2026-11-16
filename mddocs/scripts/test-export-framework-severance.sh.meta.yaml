@@ -1,0 +1,14 @@
+id: SH-0024
+title: Export severance regression test
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Testing
+process: severance-regression
+owner: security-engineer
+allowed_in_adopter_repos: false
+related:
+  paths:
+    - export-framework.sh
+    - ../adr/adr-0015-framework-distribution-adoption-model.md

@@ -1,3 +1,22 @@
+---
+id: SH-0011-doc
+document_type: script-docs
+status: active
+lifecycle: active
+title: Adopter onboarding wrapper (script docs)
+domain: Management
+category: Adoption
+process: adoption-onboarding
+owner: release-engineer
+allowed_in_adopter_repos: false
+related:
+  paths:
+    - adopt.sh
+    - ../export-framework.sh
+    - ../../reference.architecture/bootstrap-new-project.md
+    - ../test-adopt-target-handling.sh
+---
+
 # adopt.sh
 
 <a href="adopt.sh" download>Download adopt.sh</a> · bash · [Runbook](../../reference.architecture/bootstrap-new-project.md)

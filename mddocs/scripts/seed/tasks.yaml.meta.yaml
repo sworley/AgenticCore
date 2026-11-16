@@ -1,0 +1,14 @@
+id: SH-0027
+title: Task queue seed data
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Governance
+process: task-queue
+owner: lead-engineer
+allowed_in_adopter_repos: false
+related:
+  paths:
+    - ../../../tasks.yaml
+    - ../../backlog.md

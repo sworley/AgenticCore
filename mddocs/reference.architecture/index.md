@@ -11,6 +11,7 @@ for the AgenticCore framework.
 | [Session Close Checklist](session-close-checklist.md) | Steps to run before ending a session |
 | [Provision Worker Bench](provision-worker-bench.md) | Provision a `.02`+ ephemeral worktree |
 | [Bootstrap New Project](bootstrap-new-project.md) | Use this framework for a new project |
+| [Adopt a Project Context](adopt-project-context.md) | Seed an existing project's docs into `projects/<context>/` (Q5) |
 | [Task Queue Operations](task-queue-operations.md) | Working with `tasks.yaml` |
 | [Bench Registry](bench-registry.md) | Track and manage open benches |
 | [Agent Authoring Workflow](agent-authoring-workflow.md) | Create or modify agent definitions |

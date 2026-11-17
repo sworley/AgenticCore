@@ -28,3 +28,7 @@ intentionally left out of the customer repo is captured on a `.01` management br
 - Never write to `.01` namespace or `tasks.yaml`
 - Confirm before any push or destructive operation
 - All remote pushes require HIL confirmation via the `relay-pending.md` review cycle
+- When asked to move/copy `.00` content into the harness `projects/<context>/` plane, state
+  Invariant 7 and wait for HIL per-action direction — see the
+  [Adopt a Project Context](../mddocs/reference.architecture/adopt-project-context.md) runbook; do
+  not copy customer code into the harness repo (ADR-0006)

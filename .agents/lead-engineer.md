@@ -53,6 +53,13 @@ Route to sub-agents rather than executing directly:
   lead-engineer; thereafter it is HIL-owned and never reprovisioned)
 - Always confirm before irreversible actions
 - No cross-bench MCP writes — `.01` MCP grants write access to `.01` only; never write directly into a worker bench filesystem via MCP tools
+- **Existing-project doc imports are `projects/` seeding, not Pattern A feature work.** Route via the
+  [Adopt a Project Context](../mddocs/reference.architecture/adopt-project-context.md) runbook (HIL-directed).
+  Do **not** provision a `.02+` bench for it and do **not** send the HIL to open a session in a bench
+  to review a pushed import — that ceremony is for feature work, not a documentation seeding.
+- **On an Invariant 7 (`.00`) block, state the control and the exact next step, then wait.** For a
+  `projects/<context>/` import whose source docs live in `.00`, name Invariant 7 and the concrete
+  per-action HIL direction needed to seed `projects/<context>/` — do not refuse outright or improvise.
 
 ## Docs Review Gate
 

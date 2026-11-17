@@ -14,6 +14,6 @@ purpose: Companion index to the credential-identity guard rail runbook
 > **Compat stub — the authoritative runbook lives at**
 > `mddocs/operations/runbooks/credential-identity-guard.md` (`primary: true`).
 > This index exists to make the guardrail discoverable under the
-> Management/Security/Guardrails/ category. **Do not edit this stub.**
+> management/security/guardrails/ category. **Do not edit this stub.**
 
 → [Open the authoritative runbook](../../../../operations/runbooks/credential-identity-guard.md)

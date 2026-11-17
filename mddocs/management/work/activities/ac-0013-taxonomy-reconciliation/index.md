@@ -76,20 +76,20 @@ Legend: **C** = clean fit, **A** = ambiguity / decision required, **M** = mismat
 | Current path | Proposed destination | Fit | Notes |
 |---|---|---|---|
 | `mddocs/operations/runbooks/bench-recovery.md` | `operations/runbooks/bench-recovery/` | C | Clear runbook; moves cleanly into the Operations category. |
-| `mddocs/operations/runbooks/build-publish-mddocs.md` | `operations/runbooks/Build-Publish-MdBook/` | C | Technical runbook; clean fit. |
+| `mddocs/operations/runbooks/build-publish-mddocs.md` | `operations/runbooks/build-publish-mdbook/` | C | Technical runbook; clean fit. |
 | `mddocs/operations/runbooks/credential-identity-guard.md` | `security/guardrails/credential-identity/` | **A** | **Cross-domain:** this is a runbook (Operations) that enforces a security policy. Proposal's P10 says existing authority prevails; the placement is ambiguous until the security/operations boundary is decided. Strong argument for `security/guardrails/` because the artefact *is* a guardrail specification, not just an operational how-to. |
-| `mddocs/operations/runbooks/secret-guard.md` | `security/guardrails/Secret-management/` | **A** | Same cross-domain tension as credential-identity-guard. |
-| `mddocs/operations/runbooks/hook-rollback.md` | `operations/runbooks/Hook-Rollback/` | C | Operational procedure; no security-governance ambiguity. |
-| `mddocs/operations/runbooks/setup-mddoc.md` | `operations/runbooks/Setup-Mddocs/` | C | Pure operational setup procedure. |
+| `mddocs/operations/runbooks/secret-guard.md` | `security/guardrails/secret-management/` | **A** | Same cross-domain tension as credential-identity-guard. |
+| `mddocs/operations/runbooks/hook-rollback.md` | `operations/runbooks/hook-rollback/` | C | Operational procedure; no security-governance ambiguity. |
+| `mddocs/operations/runbooks/setup-mddoc.md` | `operations/runbooks/setup-mddocs/` | C | Pure operational setup procedure. |
 | `mddocs/operations/runbooks/sync-*.md` (3 files) | `operations/runbooks/` | C | Sync runbooks are operational procedure. |
-| `mddocs/operations/runbooks/git-sync-runbook.md` | `operations/runbooks/Git-Sync/` | C | |
-| `mddocs/operations/runbooks/session-continuity.md` | `operations/procedures/Session-management/` | C | |
+| `mddocs/operations/runbooks/git-sync-runbook.md` | `operations/runbooks/git-sync/` | C | |
+| `mddocs/operations/runbooks/session-continuity.md` | `operations/procedures/session-management/` | C | |
 | `mddocs/operations/runbooks/session-reasoning-log.md` | `operations/procedures/session-logging/` | C | |
 | `mddocs/operations/runbooks/configure-agents.md` | `agentic/procedures/configure-agents/` | **A** | Cross-domain: configuring agents is operational, but it is also agent-definition governance. Either placement is defensible; whichever wins, the cross-reference must exist. |
-| `mddocs/operations/runbooks/check-links-runbook.md` | `operations/runbooks/Quality-Checks/` | C | |
-| `mddocs/operations/runbooks/rotate-git-pat.md` | `security/procedures/Credential-Rotation/` | **A** | Cross-domain: credential rotation is a security procedure that happens operationally. |
-| `mddocs/operations/runbooks/ai-doc-session-commit-discipline.md` | `governance/procedures/Commit-Discipline/` | **A** | This document defines process discipline for how AI agents commit — it is governance, not a runbook. Current placement in `operations/` is the current naming artefact. |
-| `mddocs/operations/runbooks/agent-session-tracking.md` | `operations/observability/Session-Tracking/` | C | |
+| `mddocs/operations/runbooks/check-links-runbook.md` | `operations/runbooks/quality-checks/` | C | |
+| `mddocs/operations/runbooks/rotate-git-pat.md` | `security/procedures/credential-rotation/` | **A** | Cross-domain: credential rotation is a security procedure that happens operationally. |
+| `mddocs/operations/runbooks/ai-doc-session-commit-discipline.md` | `governance/procedures/commit-discipline/` | **A** | This document defines process discipline for how AI agents commit — it is governance, not a runbook. Current placement in `operations/` is the current naming artefact. |
+| `mddocs/operations/runbooks/agent-session-tracking.md` | `operations/observability/session-tracking/` | C | |
 | `mddocs/operations/runbooks/agent-authoring-workflow.md` | `agentic/procedures/authoring-workflow/` | **A** | Cross-domain: references ADR-0027; the workflow is agentic but the governance context is strong. |
 | `mddocs/operations/runbooks/review-ledger-runbook.md` | `assurance/reviews/ledger-runbook/` | **A** | This is a review/assurance procedure, not operations. Its current name ("runbook") reflects current flat structure. |
 | `mddocs/operations/index.md` | `operations/index.md` | C | |
@@ -109,9 +109,9 @@ Legend: **C** = clean fit, **A** = ambiguity / decision required, **M** = mismat
 
 | Current path | Proposed destination | Fit | Notes |
 |---|---|---|---|
-| `mddocs/onboarding/agent-roster.md` | `agentic/roles/Roster/` | C | Document about agent roles; direct mapping. |
+| `mddocs/onboarding/agent-roster.md` | `agentic/roles/roster/` | C | Document about agent roles; direct mapping. |
 | `mddocs/reference.architecture/agent-authoring-workflow.md` | `agentic/procedures/authoring-workflow/` | **A** | See cross-domain note above; this document sits at the boundary of `agentic/` and `architecture/patterns/`. |
-| `mddocs/reference.architecture/shared-context.md` | `agentic/context/Shared-context/` | C | Documents the shared context pattern for agent teams; clear `agentic/` placement. |
+| `mddocs/reference.architecture/shared-context.md` | `agentic/context/shared-context/` | C | Documents the shared context pattern for agent teams; clear `agentic/` placement. |
 | `mddocs/onboarding/bench-model.md` | `agentic/context/bench-model/` | C | Bench model is the core agentic execution topology. |
 | `mddocs/onboarding/agentic-workflow-overview.md` | `agentic/overview/` | C | Narrative overview of the agentic workflow; direct mapping. |
 
@@ -122,10 +122,10 @@ Legend: **C** = clean fit, **A** = ambiguity / decision required, **M** = mismat
 | `mddocs/mcp/mcp-rag-docs/server.py` | *Stays in place*; referenced from `architecture/interfaces/mcp-rag-docs/` | C | Native implementation code stays where it is (proposal P10 / out-of-scope boundary). A governance doc in `architecture/interfaces/mcp-rag-docs/` describes it; the .py is a referenced asset, not a moved one. |
 | `mddocs/mcp/mcp-rag-docs/README.md` | `architecture/interfaces/mcp-rag-docs/README.md` | C | The README is the interface documentation — this is the kind of doc that moves. |
 | `mddocs/reference.architecture/tooling-contract.md` | `architecture/interfaces/tooling-contract/` | C | Explicitly about the adapter interface; clean fit. |
-| `mddocs/reference.architecture/configure-mcp.md` | `architecture/interfaces/MCP-configuration/` | C | Interface configuration; direct mapping. |
+| `mddocs/reference.architecture/configure-mcp.md` | `architecture/interfaces/mcp-configuration/` | C | Interface configuration; direct mapping. |
 | `mddocs/reference.architecture/bench-registry.md` | `architecture/system/bench-registry/` | C | Describes a harness subsystem; clean fit. |
 | `mddocs/reference.architecture/provision-worker-bench.md` | `architecture/system/bench-provisioning/` | **A** | Cross-domain: describes how benches are provisioned (system design) but also *operational mechanics*. Both `architecture/` and `operations/` are defensible. |
-| `mddocs/reference.architecture/bootstrap-new-project.md` | `reference/adoption/Bootstrap/` | **A** | This is an adopter-facing walkthrough, not internal architecture. Its current placement in `reference.architecture/` reflects the current flat structure, not its purpose. |
+| `mddocs/reference.architecture/bootstrap-new-project.md` | `reference/adoption/bootstrap/` | **A** | This is an adopter-facing walkthrough, not internal architecture. Its current placement in `reference.architecture/` reflects the current flat structure, not its purpose. |
 | `mddocs/reference.architecture/release-process.md` | `delivery/procedures/release-cut/` | C | Operational procedure governing the release cut; `delivery/` is the clearer home. |
 | `mddocs/mcp/mcp-rag-docs/cve-scan` | `security/trust-boundaries/` (supporting asset) | C | See Security section above. |
 
@@ -136,7 +136,7 @@ Legend: **C** = clean fit, **A** = ambiguity / decision required, **M** = mismat
 | `mddocs/release-notes/v0.6.0.md` | `delivery/releases/v0.6.0.md` | C | Time-bound release record; clean fit. |
 | `mddocs/release-notes/v0.7.0.md` | `delivery/releases/v0.7.0.md` | C | |
 | `mddocs/release-notes/UNRELEASED.md` | `delivery/releases/UNRELEASED.md` | C | |
-| `mddocs/reference.architecture/release-notes-template.md` | `delivery/Resources/Release-Notes-Template/` | C | |
+| `mddocs/reference.architecture/release-notes-template.md` | `delivery/resources/release-notes-template/` | C | |
 
 ### 4.7 Reference (Adoption and Orientation)
 
@@ -144,7 +144,7 @@ Legend: **C** = clean fit, **A** = ambiguity / decision required, **M** = mismat
 |---|---|---|---|
 | `mddocs/onboarding/getting-started.md` | `reference/adoption/getting-started/` | C | Adopter-facing content; directly maps. |
 | `mddocs/onboarding/repository-structure.md` | `reference/adoption/repository-structure/` | C | |
-| `mddocs/reference.architecture/adopter-reconciliation.md` | `reference/adoption/Reconciliation/` | C | |
+| `mddocs/reference.architecture/adopter-reconciliation.md` | `reference/adoption/reconciliation/` | C | |
 | `mddocs/faq/orientation.md` | `reference/adoption/orientation/` | C | |
 | `mddocs/examples/ticket-lifecycle.md` | `governance/procedures/ticket-lifecycle/` | **A** | This is a governance/ticketing walkthrough, not an adoption reference. Its `examples/` placement is current-structure artefactual. |
 
@@ -153,8 +153,8 @@ Legend: **C** = clean fit, **A** = ambiguity / decision required, **M** = mismat
 | Current path | Proposed destination | Fit | Notes |
 |---|---|---|---|
 | `mddocs/examples/release-process.md` | `delivery/procedures/release-walkthrough/` or `operations/procedures/release-cut/` | **A** | See architecture/release-process.md note — both the spec and the walkthrough target the same operational concept but at different levels of detail. They should live near each other. |
-| `mddocs/examples/bench-session-walkthrough.md` | `operations/procedures/Bench-Session-Walkthrough/` | C | Operational walkthrough; clean fit. |
-| `mddocs/examples/adr-decision-process.md` | `governance/procedures/ADR-Walkthrough/` | C | Governance walkthrough; clean fit. |
+| `mddocs/examples/bench-session-walkthrough.md` | `operations/procedures/bench-session-walkthrough/` | C | Operational walkthrough; clean fit. |
+| `mddocs/examples/adr-decision-process.md` | `governance/procedures/adr-walkthrough/` | C | Governance walkthrough; clean fit. |
 | `mddocs/examples/index.md` | `reference/examples/index.md` | C | |
 
 ### 4.9 FAQs — Purpose-First Classification
@@ -164,7 +164,7 @@ Legend: **C** = clean fit, **A** = ambiguity / decision required, **M** = mismat
 | `mddocs/faq/docs-build.md` | `operations/procedures/docs-build/` | C | Procedural Q&A about building docs. |
 | `mddocs/faq/git-sync-hosts.md` | `operations/procedures/git-sync-hosts/` | C | |
 | `mddocs/faq/web-access-guardrails.md` | `security/trust-boundaries/web-access/` | C | See Security section above. |
-| `mddocs/faq/workspace-management.md` | `operations/procedures/Workspace-management/` | C | |
+| `mddocs/faq/workspace-management.md` | `operations/procedures/workspace-management/` | C | |
 | `mddocs/faq/index.md` | `reference/q&a/index.md` | C | FAQ is a Q&A format; lives in reference/ as a format bucket. |
 | `mddocs/faq/_template.md` | `reference/q&a/_template.md` | C | |
 

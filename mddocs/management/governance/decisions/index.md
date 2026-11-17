@@ -22,5 +22,6 @@ primary: true
 | [ADR-0030](ADR-0030-adr-forward-only-coexistence.md) | Forward-Only ADR Adoption and Historical Coexistence | accepted | 2026-11-16 |
 | [ADR-0031](ADR-0031-project-contexts-ctx-identifiers.md) | Project Contexts and CTX Identifiers | accepted | 2026-11-17 |
 | [ADR-0032](ADR-0032-classification-metadata-id-contracts.md) | Classification Metadata and Standard ID Contracts | accepted | 2026-11-17 |
+| [ADR-0033](ADR-0033-project-context-adoption-q5-seeding.md) | Project Context Adoption / Q5 Seeding | proposed | 2026-11-17 |
 
 → [Historical ADR index](../../../adr/)

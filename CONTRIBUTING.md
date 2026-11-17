@@ -88,9 +88,38 @@ to a task in `tasks.yaml`, use its `AC-NNNN` id in the branch name.
 
 ## Commit Discipline
 
-- Commit after each discrete unit of work — do not accumulate unrelated changes.
-- Use a concise summary line, then a body explaining the why.
-- Reference the task and, where applicable, the governing ADR.
+- **One change per commit.** Commit after each discrete unit of work; do not
+  accumulate unrelated changes. Each commit is independently reviewable and
+  revertible, and is GPG-signed (see Ground Rules).
+- **Traceable message.** Use a concise summary line, then a body explaining the
+  *why*. Reference the governing task (`[AC-NNNN]`) and, where applicable, the
+  governing ADR (`ADR-XXXX`). The commit message is the durable, human-readable
+  link from the change to its ticket/decision.
+- **History is provenance.** The git log is the authoritative historical and
+  provenance record for the management layer. Never rewrite, squash, or
+  force-push shared branch history; use `git log` / `git show` to inspect prior
+  versions. Review happens change-by-change so the record stays legible.
+
+## Management-Layer Scope & Guardrails
+
+This discipline governs the **management layer**: AgenticCore itself (the
+framework/harness — `.01` + `.02+` Pattern A) and the management layer of any
+project that adopts AgenticCore as a project support tool (the `.01`
+`lead-engineer`, the enforcer for the team). Guardrails are why the harness
+exists: the management layer exists to enforce them, not to relax them.
+
+It does **not** govern how the HIL `.00` session interacts with the project it
+supports — project code, project slugs, API access, or CLI/SDK development.
+Each adoption is different and will reasonably require different standards
+depending on the contract requirements, the customer, the environment, the
+activity, or the standards we choose to establish. That `.00` surface stays
+naturally flexible.
+
+**Caution on harness implications:** flexibility in `.00` is expected, but a
+management-layer change must never compromise the harness's guardrails or
+integrity. Where a framework improvement is needed, follow the same traced,
+reviewed lifecycle and capture behavioral changes in an ADR so the decision and
+its rationale persist.
 
 ## Pull Requests
 

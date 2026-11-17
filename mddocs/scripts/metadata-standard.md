@@ -11,7 +11,7 @@ owner: lead-engineer
 related:
   paths:
     - ../management/governance/decisions/ADR-0029-documentation-taxonomy-adoption.md
-    - ../management/work/activities/act-dkt-0002-taxonomy-reconciliation/index.md
+    - ../management/work/activities/ac-0013-taxonomy-reconciliation/index.md
 ---
 
 # Script Metadata Standard
@@ -24,7 +24,7 @@ contract. Operating rule: **annotate now, restructure later.** Physical
 relocation is governed by a future migration ADR, not by this standard.
 
 **Authority.** This is the operational standard; `ADR-0029` is the governing
-decision and `ACT-DKT-0002` is the reconciliation evidence.
+decision and `AC-0013` is the reconciliation evidence.
 
 ---
 
@@ -69,7 +69,7 @@ same field contract as frontmatter. The companion is clean single-document YAML
 | `owner` | yes | agent role from `.agents/_meta.yaml` |
 | `allowed_in_adopter_repos` | yes | `true` \| `false` (default `false`) |
 | `enforces` | no | `ADR-XXXX` — only for governance-enforcement scripts |
-| `source_activity` | no | `ACT-XXXX` — only for project-activity scripts |
+| `source_ticket` | no | `AC-XXXX` — only for project-activity scripts |
 | `source_context` | no | `<context>` — only for project-activity scripts |
 | `migrated_from` | no | path — only when `lifecycle: shared` |
 | `related.paths` | no | relative paths to docs it is documented by or governs |
@@ -85,7 +85,7 @@ class; the class drives the distinctive fields.
 |---|---|---|---|
 | **1. Harness-owned tooling** | `Management` | `false` | — |
 | **2. Harness-provided general-use** | `Management` | `true` | logically available to projects |
-| **3. Project-activity script** | `Projects/<context>` | `false` | `source_activity`, `source_context`, `lifecycle: activity-scoped` or `shared` |
+| **3. Project-activity script** | `Projects/<context>` | `false` | `source_ticket`, `source_context`, `lifecycle: activity-scoped` or `shared` |
 | **4. Governance enforcement** | governed by mandating ADR | `false` | `enforces: ADR-XXXX` as primary identity |
 
 A project-activity script that graduates to general use becomes `lifecycle: shared`
@@ -192,4 +192,4 @@ what ships into an adopter repo is `export-framework.sh`'s
 ## 9. References
 
 - **ADR-0029** — `mddocs/management/governance/decisions/ADR-0029-documentation-taxonomy-adoption.md` (governing decision; D4).
-- **ACT-DKT-0002** — `mddocs/management/work/activities/act-dkt-0002-taxonomy-reconciliation/index.md` (reconciliation evidence).
+- **AC-0013** — `mddocs/management/work/activities/ac-0013-taxonomy-reconciliation/index.md` (reconciliation evidence).

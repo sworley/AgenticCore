@@ -36,14 +36,14 @@ This means:
 
 ### Sub-decisions
 
-Adopt the proposed documentation and knowledge taxonomy (`PROPOSAL-DKT-0001`, v0.4) as the governance framework for all current and future `mddocs/` artefacts, with the following resolved sub-decisions:
+Adopt the proposed documentation and knowledge taxonomy (the Documentation Knowledge Taxonomy proposal, v0.4) as the governance framework for all current and future `mddocs/` artefacts, with the following resolved sub-decisions:
 
 | Decision | Resolution |
 |---|---|
 | D1 — ADR migration scope | Forward-only. New ADRs use the new structure from approval onward. Existing 28 ADRs remain in `mddocs/adr/` as the canonical historical record. No physical migration is planned (see ADR-0030). |
 | D2 — ADR canonicity during transition | Directed coexistence. Both `mddocs/adr/index.md` and `mddocs/management/governance/decisions/index.md` are live, each using the metadata contract with `primary: true/false` and `redirect`. ADR numbering is a flat global sequence independent of physical location. |
 | D3 — Cross-domain resolution | No automatic primary-destination rule. Each cross-domain artefact is reviewed case-by-case. Resolution rationale is recorded in the activity file before the location is committed. The `primary: true/false` pattern (from D2) is the general-purpose resolution tool. |
-| D4 — Script classification | Annotate-first, restructure-later. All executables and sidecars receive frontmatter (or `.meta.yaml` companion) encoding `domain`, `category`, `process`, `owner`, `lifecycle`, and where applicable `enforces: ADR-XXXX`, `allowed_in_adopter_repos`, `source_activity`, `migrated_from`. Physical restructuring to `management/tools/` or `projects/<context>/tools/` happens only under a future decision, if ever warranted. |
+| D4 — Script classification | Annotate-first, restructure-later. All executables and sidecars receive frontmatter (or `.meta.yaml` companion) encoding `domain`, `category`, `process`, `owner`, `lifecycle`, and where applicable `enforces: ADR-XXXX`, `allowed_in_adopter_repos`, `source_ticket`, `migrated_from`. Physical restructuring to `management/tools/` or `projects/<context>/tools/` happens only under a future decision, if ever warranted. |
 | D5 — `AGENTICCORE_SPEC.md` | Directed coexistence. Stays at `mddocs/AGENTICCORE_SPEC.md` as `primary: true`. Companion stub at `mddocs/management/architecture/system/AgenticCore-Spec.md` as `primary: false` with `redirect`. No physical move. |
 | D6 — Seed backlog | Directed coexistence. `mddocs/backlog.md` (live, `lifecycle: active`, `primary: true`) and `mddocs/scripts/seed/mddocs/backlog.md` (template, `lifecycle: template`, `primary: false`) carry mutual `redirect` frontmatter. Distinct lifecycles; distinct roles. |
 | D7 — Guardrail runbooks | Directed coexistence. `credential-identity-guard.md` and `secret-guard.md` stay at current paths as `primary: true`. Frontmatter adds `security_category: guardrail` and `governance_context` to make their security purpose machine-readable. No physical move. |
@@ -55,7 +55,7 @@ Adopt the proposed documentation and knowledge taxonomy (`PROPOSAL-DKT-0001`, v0
 
 **Positive:**
 - Every `mddocs/` artefact has a machine-readable metadata contract from the point of adoption. Agents and tools can discover and classify content by purpose and lifecycle, not by path convention.
-- The reconciliation exercise (see `ACT-DKT-0002`) confirmed that the proposed structure absorbs the current 150-file corpus with no structural contradictions and no requirement to move files at adoption.
+- The reconciliation exercise (see `AC-0013`) confirmed that the proposed structure absorbs the current 150-file corpus with no structural contradictions and no requirement to move files at adoption.
 - All eight decision points resolved. No outstanding structural objections remain.
 - The D1/D2 pattern (adopt metadata now, defer physical restructuring) is a repeatable template for future corpus changes. Adoption risk is minimized; rollback is a metadata change only.
 - Governance enforcement scripts (git hooks, pre-commit gates) gain a standard `enforces: ADR-XXXX` field, making the policy-to-implementation chain traceable without reading file content.
@@ -73,10 +73,10 @@ Adopt the proposed documentation and knowledge taxonomy (`PROPOSAL-DKT-0001`, v0
 
 ## Implementation Notes
 
-**Supporting evidence:** `ACT-DKT-0002` (Taxonomy Reconciliation — `mddocs/management/work/activities/act-dkt-0002-taxonomy-reconciliation/index.md`) contains the full artefact inventory, reconciliation table, cross-domain tension analysis, and the rationale for each of the eight sub-decisions.
+**Supporting evidence:** `AC-0013` (Taxonomy Reconciliation — `mddocs/management/work/activities/ac-0013-taxonomy-reconciliation/index.md`) contains the full artefact inventory, reconciliation table, cross-domain tension analysis, and the rationale for each of the eight sub-decisions.
 
 **Immediate actions upon HIL approval (this ADR):**
-1. Establish `mddocs/management/work/activities/ACT-DKT-0002` as an approved management-plane activity record.
+1. Establish `mddocs/management/work/activities/ac-0013-taxonomy-reconciliation` as an approved management-plane activity record tied to ticket AC-0013.
 2. Begin the one-time frontmatter annotation pass for all executables and sidecars (D4). Assign `id`, `document_type`, `domain`, `category`, `owner`, `lifecycle`, and `related.paths`. Use `.meta.yaml` companion files for `.sh` and `.py` executables.
 3. Add `primary`, `redirect`, and domain-specific fields (`security_category`, `assurance_category`, `process`) to the seven artefact frontmatter sets identified in D5, D6, D7, and D8.
 4. Create companion stubs at `management/architecture/system/AgenticCore-Spec.md`, `management/security/guardrails/credential-identity/`, `management/security/guardrails/secret-management/`, and `management/assurance/reviews/ledger-runbook/` as `primary: false` with `redirect` back to the live files.

@@ -1,5 +1,5 @@
 ---
-id: ACT-DKT-0002
+source_ticket: AC-0013
 title: Taxonomy Reconciliation — Current mddocs/ Inventory vs. Proposed Management Tree
 document_type: analysis
 status: approved
@@ -11,27 +11,25 @@ intended_audience:
   - lead-engineer
   - docs-engineer
   - human-approver
-activity_of: ACT-DKT-0001
 purpose: Reconcile every existing mddocs/ artefact against the proposed taxonomy structure; identify clean mappings, structural gaps, and decision points required before HIL submission.
 lifecycle: approved
 approved_by: HIL
 adopted_date: 2026-11-12
 related:
   paths:
-    - "../ACT-DKT-0001-taxonomy-proposal/v4"
     - "../../../../adr/adr-0026-release-branch-curation-model.md"
     - "../../../../adr/adr-0015-framework-distribution-adoption-model.md"
 ---
 
-# ACT-DKT-0002: Taxonomy Reconciliation
+# AC-0013: Taxonomy Reconciliation
 
-> **Status:** Draft — not circulated for review. Input into the HIL submission package for PROPOSAL-DKT-0001.
+> **Status:** Draft — not circulated for review. Input into the HIL submission package for the Documentation Knowledge Taxonomy proposal (superseded by ADR-0029).
 
 ## 1. Purpose
 
 This activity reconciles the complete current `mddocs/` inventory against the proposed `management/` tree and reports where the structure absorbs existing artefacts cleanly, where it does not, and what decisions must be resolved before the proposal can advance to HIL approval.
 
-The reconciliation is scoped strictly to the proposal in `ACT-DKT-0001`. Issues around future knowledge-management tooling (Obsidian, graph-backed memory) are noted only as downstream considerations and do not drive this analysis.
+The reconciliation is scoped strictly to the Documentation Knowledge Taxonomy proposal (superseded by ADR-0029). Issues around future knowledge-management tooling (Obsidian, graph-backed memory) are noted only as downstream considerations and do not drive this analysis.
 
 ## 2. Methodology
 
@@ -178,13 +176,13 @@ Scripts are not a documentation taxonomy problem to be solved by directory place
 |---|---|---|---|
 | **Harness-owned tooling** | `mddocs/scripts/*.sh` (18), `*.py` (3) | `management/tools/` (future) | `domain: Management`, `allowed_in_adopter_repos: false` |
 | **Harness-provided general-use** | Same as above; classified by purpose | `management/tools/` (future); referenced from `projects/` | `domain: Management`, `allowed_in_adopter_repos: true` |
-| **Project-activity script** | Created during `projects/<context>/activities/` work | `projects/<context>/tools/` or shared pool (future) | `domain: projects/<context>`, `source_activity: ACT-XXXX`, `source_context: <context>`, `lifecycle: activity-scoped` or `shared` |
+| **Project-activity script** | Created during `projects/<context>/activities/` work | `projects/<context>/tools/` or shared pool (future) | `domain: projects/<context>`, `source_ticket: AC-XXXX`, `source_context: <context>`, `lifecycle: activity-scoped` or `shared` |
 | **Governance enforcement** | Git hooks, pre-commit gates | Governed by the ADR that mandates them | `enforces: ADR-XXXX`; primary identity is the policy artefact, not a tool category |
 | **Script documentation sidecars** (26 `.md` files) | Alongside each executable | Move with their artefact's primary domain | Inherit domain from parent artefact; `document_type: script-docs` |
 | **MCP runtime code** | `mddocs/mcp/mcp-rag-docs/server.py` | *Stays in place* — executable implementation | Documented by companion `README.md`; primary governed by ADR (ADR-0002) |
 | **Seed / data files** | `mddocs/scripts/seed/tasks.yaml`, `seed/mddocs/backlog.md` | `mddocs/scripts/seed/` (data), `management/work/backlog.md` (live canonical) | Seed data is regenerable; live backlog is a governance artefact (D6) |
 
-**Shared pool mechanics:** A project-activity script with `lifecycle: shared` is physically relocated to `projects/tools/` (or `management/tools/shared/`) under a migration ADR. Its frontmatter records `migrated_from: projects/<context>/activities/ACT-XXXX/<path>` and `source_activity: ACT-XXXX`. The shared pool's index tracks origin and provenance. This is a metadata state change, not a new file creation.
+**Shared pool mechanics:** A project-activity script with `lifecycle: shared` is physically relocated to `projects/tools/` (or `management/tools/shared/`) under a migration ADR. Its frontmatter records `migrated_from: projects/<context>/activities/AC-XXXX/<path>` and `source_ticket: AC-XXXX`. The shared pool's index tracks origin and provenance. This is a metadata state change, not a new file creation.
 
 **Executive governance scripts** (git hooks, pre-commit gates, CI enforcement): These are not tools. They are executable governance artefacts. Their frontmatter contract uses `enforces: ADR-XXXX` as the primary identity field. Physical placement is governed by the enforcement scope (harness-local, per-branch, etc.) as defined in the mandating ADR. The taxonomy does not relocate enforcement scripts; it documents them.
 
@@ -260,7 +258,7 @@ primary: true
 
 **Decision:** No automatic primary-destination rule is codified in the taxonomy. Each cross-domain artefact is reviewed individually by the team. The `primary: true/false` pattern established for index files (see D2) is available as a general-purpose resolution tool for any taxonomy split that arises.
 
-**Process:** Cross-domain artefacts are flagged in activity records (this document, ACT-DKT-0002) and resolved in HIL review sessions before the proposed location is committed to `dev`. Resolution decision and rationale are recorded in the activity file alongside the artefact's mapping row.
+**Process:** Cross-domain artefacts are flagged in activity records (this document, AC-0013) and resolved in HIL review sessions before the proposed location is committed to `dev`. Resolution decision and rationale are recorded in the activity file alongside the artefact's mapping row.
 
 ---
 
@@ -276,9 +274,9 @@ Three classes of script require distinct frontmatter:
 |---|---|---|---|
 | **Harness-owned tooling** | `provision-bench.sh`, `adopt.sh`, `setup-mddoc.sh`, `sync-agents.sh` | `Management` | Owned by harness; operational infrastructure |
 | **Harness-provided general-use** | `git-sync.sh`, `check-env.sh` | `Management` (primary), referenced from `projects/` | `allowed_in_adopter_repos: true`; logically available to projects without being project-owned |
-| **Project-activity script** | Any script created in the course of `projects/<context>/activities/ACT-XXXX/` work | `projects/<context>` | `source_activity`, `source_context`, `lifecycle: activity-scoped`; may graduate to a shared pool |
+| **Project-activity script** | Any script created in the course of `projects/<context>/activities/AC-XXXX/` work | `projects/<context>` | `source_ticket`, `source_context`, `lifecycle: activity-scoped`; may graduate to a shared pool |
 
-**Shared pool:** When a project-activity script proves generally useful, it migrates to a shared `projects/tools/` area (or `management/tools/shared/`). The migration is governed by a metadata `lifecycle` state change — `activity-scoped` → `shared` — with `migrated_from: projects/<context>/activities/ACT-XXXX/<path>` recorded in frontmatter. The shared pool's own index tracks origin and provenance.
+**Shared pool:** When a project-activity script proves generally useful, it migrates to a shared `projects/tools/` area (or `management/tools/shared/`). The migration is governed by a metadata `lifecycle` state change — `activity-scoped` → `shared` — with `migrated_from: projects/<context>/activities/AC-XXXX/<path>` recorded in frontmatter. The shared pool's own index tracks origin and provenance.
 
 **Governance enforcement scripts** (e.g., git hooks, pre-commit gates) are a distinct class. They are not "tools for humans to run." Their primary identity comes from the governance artefact they enforce (`enforces: ADR-0022`), not from a tool or operations category. Frontmatter reflects this with an `enforces` field rather than (or in addition to) a `category` field. Physical placement of enforcement scripts is governed by the ADR that mandates them, not by the documentation taxonomy.
 
@@ -286,7 +284,7 @@ Three classes of script require distinct frontmatter:
 
 ```yaml
 ---
-id: SH-<IDENTIFIER>          # Stable script ID (parallel to ADR-XXXX / ACT-XXXX)
+id: SH-<IDENTIFIER>          # Stable script ID (parallel to ADR-XXXX / AC-XXXX)
 title: <human-readable name>
 document_type: script
 status: active
@@ -297,7 +295,7 @@ process: bench-provisioning  # which workflow it participates in
 owner: lead-engineer
 allowed_in_adopter_repos: false   # true for harness-provided general-use
 enforces: ADR-0022              # only for governance enforcement scripts
-source_activity: ACT-XXXX      # only for project-activity scripts; empty if Management-owned
+source_ticket: AC-XXXX      # only for project-activity scripts; empty if Management-owned
 migrated_from:                 # populated if lifecycle=shared; empty otherwise
 related:
   paths:

@@ -43,8 +43,8 @@ Each adopted context is a directory under `projects/<context>/`:
 | `activities/` | Self-contained units of work (`<activity-id>-<slug>/`) |
 | `artifacts/` | Durable, purpose-based packages (`<purpose>/<slug>/`) |
 | `decisions/` | Project-scoped decisions, as authorized |
-| `Evidence/` | Retained assurance records |
-| `References/` | Links and references — not copied authorities |
+| `evidence/` | Retained assurance records |
+| `references/` | Links and references — not copied authorities |
 
 ## Stand-up rules (context metadata)
 

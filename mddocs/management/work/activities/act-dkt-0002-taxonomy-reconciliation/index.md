@@ -167,8 +167,8 @@ Legend: **C** = clean fit, **A** = ambiguity / decision required, **M** = mismat
 | `mddocs/faq/git-sync-hosts.md` | `operations/procedures/git-sync-hosts/` | C | |
 | `mddocs/faq/web-access-guardrails.md` | `security/trust-boundaries/web-access/` | C | See Security section above. |
 | `mddocs/faq/workspace-management.md` | `operations/procedures/Workspace-management/` | C | |
-| `mddocs/faq/index.md` | `reference/qQ&A/a/index.md` | C | FAQ is a Q&A format; lives in reference/ as a format bucket. |
-| `mddocs/faq/_template.md` | `reference/qQ&A/a/_template.md` | C | |
+| `mddocs/faq/index.md` | `reference/q&a/index.md` | C | FAQ is a Q&A format; lives in reference/ as a format bucket. |
+| `mddocs/faq/_template.md` | `reference/q&a/_template.md` | C | |
 
 ### 4.10 Scripts — Three-Domain Classification
 

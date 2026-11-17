@@ -309,7 +309,7 @@ tasks:
     title: "HIL submission: adopt documentation and knowledge taxonomy (ADR-0029)"
     description: |
       Formalize the adoption of the proposed documentation and knowledge taxonomy
-      (PROPOSAL-DKT-0001 v0.4) as the governance framework for all current and
+      (the Documentation Knowledge Taxonomy proposal v0.4) as the governance framework for all current and
       future mddocs/ artefacts.
 
       Governing principle: the taxonomy covers documentation and metadata
@@ -321,7 +321,7 @@ tasks:
 
       Deliverable: management-plane ADR-0029 with all eight sub-decisions resolved
       (D1–D8), submitted to HIL for approval. Supporting evidence is recorded in
-      ACT-DKT-0002 (taxonomy reconciliation).
+      AC-0013 (taxonomy reconciliation).
 
       Scope of this ticket: approve the taxonomy adoption decision and the
       frontmatter annotation contract. Physical directory restructuring, ADR
@@ -329,7 +329,7 @@ tasks:
       future migration ADR work, not prerequisites for this approval.
     acceptance_criteria:
       - "ADR-0029 drafted with all 8 sub-decisions (D1–D8) resolved and recorded"
-      - "ACT-DKT-0002 reconciliation exists as supporting evidence"
+      - "AC-0013 reconciliation exists as supporting evidence"
       - "HIL APPROVED on ADR-0029"
     adr: [ADR-0029]
     priority: P1
@@ -385,7 +385,7 @@ tasks:
         owner:     <agent role>
         allowed_in_adopter_repos: false | true   (default: false)
         enforces:  ADR-XXXX   (only for governance enforcement scripts; omit otherwise)
-        source_activity: ACT-XXXX   (only for project-activity scripts; omit for Management-owned)
+        source_ticket: AC-XXXX   (only for project-activity scripts; omit for Management-owned)
         source_context: <context>   (only for project-activity scripts; omit for Management-owned)
         migrated_from: <path>       (only when lifecycle=shared; omit otherwise)
         related.paths: [<relative paths to docs this script is documented by or governs>]
@@ -399,7 +399,7 @@ tasks:
       1. Harness-owned tooling — domain: Management, allowed_in_adopter_repos: false
       2. Harness-provided general-use — domain: Management, allowed_in_adopter_repos: true
          (adopt.sh, provision-bench.sh, git-sync.sh as exemplars)
-      3. Project-activity script — domain: Projects/<context>, source_activity and
+      3. Project-activity script — domain: Projects/<context>, source_ticket and
          source_context populated; currently no instances exist; annotate as
          domain: Management with a NOTE that these will be classified when
          Projects/<context> activity begins
@@ -411,7 +411,7 @@ tasks:
       - Creation of Management/Tools/ or Projects/Tools/ directories
       - Changes to mddocs/scripts/seed/ provisioning templates (handled separately if needed)
 
-      Source document for all decisions: ACT-DKT-0002 section 4.10 and D4.
+      Source document for all decisions: AC-0013 section 4.10 and D4.
       Approval authority: this ticket requires lead-engineer sign-off before
       commit, per ADR-0019 HIL gates.
     acceptance_criteria:
@@ -421,7 +421,7 @@ tasks:
       - "Harness-provided general-use scripts (adopt.sh, provision-bench.sh, git-sync.sh) annotated with allowed_in_adopter_repos: true"
       - "lead-engineer review and sign-off recorded before commit"
       - "No files relocated; no scripts renamed; no provisioning templates modified"
-      - "ADR-0029 D4 frontmatter contract verified against ACT-DKT-0002 reference positions"
+      - "ADR-0029 D4 frontmatter contract verified against AC-0013 reference positions"
     adr: [ADR-0029]
     priority: P1
     size: L

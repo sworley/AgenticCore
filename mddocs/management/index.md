@@ -22,7 +22,7 @@ purpose: Harness management plane
 | [Assurance](assurance/reviews/ledger-runbook/index.md) | Reviews, audits, evidence | ✓ |
 | [Governance](governance/decisions/index.md) | ADRs, standards, policies, exceptions | ✓ |
 | [Security](security/guardrails/credential-identity/index.md) | Trust boundaries, guardrails, access | ✓ |
-| [Work](work/activities/act-dkt-0002-taxonomy-reconciliation/index.md) | Time-bounded harness improvement work | ✓ |
+| [Work](work/activities/ac-0013-taxonomy-reconciliation/index.md) | Time-bounded harness improvement work | ✓ |
 
 ## Rules
 

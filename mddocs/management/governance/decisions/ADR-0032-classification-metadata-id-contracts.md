@@ -1,7 +1,7 @@
 # ADR-0032: Classification Metadata and Standard ID Contracts
 
 **Date:** 2026-11-17
-**Status:** proposed
+**Status:** accepted
 **Supersedes:** —
 **Superseded by:** —
 

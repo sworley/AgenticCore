@@ -1,7 +1,7 @@
 # ADR-0031: Project Contexts and CTX Identifiers
 
 **Date:** 2026-11-17
-**Status:** proposed
+**Status:** accepted
 **Supersedes:** —
 **Superseded by:** —
 

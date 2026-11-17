@@ -1,5 +1,5 @@
 id: SH-0022
-title: ADR summary auto-update hook
+title: Active ADR index auto-update hook
 document_type: script
 status: active
 lifecycle: active

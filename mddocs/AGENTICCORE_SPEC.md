@@ -245,8 +245,12 @@ Additional ADRs are added as the harness evolves.
 
 #### ADR Index
 
-ADR-####-short-title.md files live in `mddocs/adr/`. The index file `mddocs/adr/index.md`
-is the authoritative registry and is updated whenever an ADR changes status.
+ADR-####-short-title.md files live in `mddocs/management/governance/decisions/`
+(ADR-0029 onward, forward-only) or `mddocs/adr/` (historical ADR-0000–0028,
+the canonical historical record). The active index
+`mddocs/management/governance/decisions/index.md` is `primary: true` and the
+authoritative registry for new ADRs; `mddocs/adr/index.md` is
+`primary: false, lifecycle: superseded` and redirects to it (ADR-0029 D1/D2; ADR-0030).
 
 ```markdown
 | ID | Title | Status | Date |

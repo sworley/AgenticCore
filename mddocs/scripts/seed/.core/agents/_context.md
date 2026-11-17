@@ -166,7 +166,8 @@ changes go through `.agents/<name>.md` + `_meta.yaml`, then run `sync-agents.sh`
 | `.opencode/plugins/` | opencode plugins (TypeScript) |
 | `.core/agents/` | Shared agent context (this directory) |
 | `mddocs/` | Documentation hub (mdbook site) |
-| `mddocs/adr/` | Architecture Decision Records |
+| `mddocs/adr/` | Historical Architecture Decision Records (ADR-0000–0028) |
+| `mddocs/management/governance/decisions/` | Active ADR index + new decisions (forward-only, ADR-0029/0030) |
 | `mddocs/operations/runbooks/` | Operational runbooks |
 | `mddocs/scripts/` | Automation scripts |
 | `mddocs/SUMMARY.md` | mdbook table of contents |

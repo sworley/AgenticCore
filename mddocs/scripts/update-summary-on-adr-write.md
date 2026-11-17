@@ -3,7 +3,7 @@ id: SH-0022-doc
 document_type: script-docs
 status: active
 lifecycle: active
-title: ADR summary auto-update hook (script docs)
+title: Active ADR index auto-update hook (script docs)
 domain: Management
 category: Governance
 process: adr-docs-maintenance

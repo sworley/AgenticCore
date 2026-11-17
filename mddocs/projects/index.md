@@ -67,6 +67,24 @@ The harness repository is the **management layer**: it versions the framework's
 own knowledge and tooling, plus the documentation the harness owns **about** a
 context. It does **not** hold the customer's work product.
 
+### Plane boundary — which plane owns what?
+
+The three places content can live are not interchangeable. Decide the plane
+first, before moving anything:
+
+| Content | Plane | Why |
+|---|---|---|
+| Customer source code & customer-owned tools | `.00` (customer repo, gitignored by `.01`) | ADR-0006 hard boundary; never copied into the harness repo |
+| Harness-owned documentation **about** a context | `projects/<context>/` | ADR-0031; reference the customer repo, never copy it |
+| Harness internals (framework, governance, runbooks, ADRs) | `management/` | The harness's own knowledge |
+
+> **Bringing in existing project data?** Use the
+> [Adopt a Project Context](../reference.architecture/adopt-project-context.md)
+> runbook. It is a HIL-directed, low-ceremony seeding operation — **not** a
+> Pattern A feature task. If the source docs live in `.00`, an agent must state
+> Invariant 7 and wait for HIL per-action direction rather than blocking or
+> improvising.
+
 **Belongs in the harness Git repo (tracked, versioned):**
 
 - Management-plane documentation and governance artifacts — ADRs, policies,

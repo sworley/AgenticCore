@@ -75,6 +75,7 @@
   - [Session Close Checklist](reference.architecture/session-close-checklist.md)
   - [Provision Worker Bench](reference.architecture/provision-worker-bench.md)
   - [Bootstrap New Project](reference.architecture/bootstrap-new-project.md)
+  - [Adopt a Project Context](reference.architecture/adopt-project-context.md)
   - [Tooling Contract](reference.architecture/tooling-contract.md)
   - [Task Queue Operations](reference.architecture/task-queue-operations.md)
   - [Bench Registry](reference.architecture/bench-registry.md)

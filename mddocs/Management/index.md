@@ -30,4 +30,5 @@ purpose: Harness management plane
   ticket/HIL workflow for structural changes; project-scoped agents cannot
   create or modify management objects merely because paths are visible.
 - **Metadata is authority.** Taxonomy frontmatter governs artefact identity;
-  physical relocation is deferred to a future migration ADR (ADR-0029 D1/D2).
+  physical location is fixed by the forward-only coexistence model (ADR-0030);
+  any relocation would be a separate decision.

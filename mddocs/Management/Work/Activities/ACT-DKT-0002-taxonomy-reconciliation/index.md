@@ -68,10 +68,10 @@ Legend: **C** = clean fit, **A** = ambiguity / decision required, **M** = mismat
 | Current path | Proposed destination | Fit | Notes |
 |---|---|---|---|
 | `mddocs/adr/adr-0000-template.md` | `Governance/Decisions/Templates/adr-template.md` | C | Existing ADR template maps directly; proposal's frontmatter contract needs validation against this template. |
-| `mddocs/adr/adr-0001` through `adr-0028` | `Governance/Decisions/<adr-id>/index.md` | **A** | Each ADR becomes a self-contained package folder. Proposal explicitly defers ADR migration to a separate ADR — this table is evidence for that migration plan. The existing `adr/` flat path is the canonical path until the migration ADR is approved. |
-| `mddocs/adr/index.md` | `Governance/Decisions/index.md` | C | Direct mapping; index moves with the ADR set upon migration. |
+| `mddocs/adr/adr-0001` through `adr-0028` | `Governance/Decisions/<adr-id>/index.md` | **A** | Resolved in ADR-0030 (forward-only): the existing `adr/` flat path remains the canonical historical record, not a destination for a move. This table is evidence for the ADR-0030 placement decision. |
+| `mddocs/adr/index.md` | `Governance/Decisions/index.md` | C | Direct mapping; the active index lives at the new location and the historical index remains at `mddocs/adr/` (ADR-0030). |
 
-**Decision point:** Will ADR migration be a one-time archival move (preserving Git history via `git mv`) or a forward-only split (new ADRs use new structure; historical ones remain)? This affects the scope of the migration ADR.
+**Resolved (ADR-0030):** forward-only split. New ADRs use the new `Management/Governance/Decisions/` structure; the historical 28 remain in `mddocs/adr/` as the canonical historical record. No physical migration is planned.
 
 ### 4.2 Operations
 
@@ -220,9 +220,9 @@ These must be resolved — either in the ADR or in the migration plan — before
 
 ### D1 — ADR Migration Scope ✅ HIL-approved: Option B (forward-only)
 
-**Decision:** New ADRs use the new `Management/Governance/Decisions/` structure from the point of approval onward. The existing 28 ADRs in `mddocs/adr/` remain in their current path as the canonical historical record. A separate, future migration ADR governs the eventual physical move.
+**Decision:** New ADRs use the new `Management/Governance/Decisions/` structure from the point of approval onward. The existing 28 ADRs in `mddocs/adr/` remain in their current path as the canonical historical record; no physical move is planned (ADR-0030).
 
-**Rationale:** Minimizes adoption scope; allows soak time with the taxonomy in production use before incurring migration risk; consistent with the process requirement that ADR migration itself requires its own ADR.
+**Rationale:** Minimizes adoption scope; allows soak time with the taxonomy in production use; consistent with ADR-0030, which records that no migration is planned and any future relocation would require a new ADR.
 
 ---
 
@@ -252,7 +252,7 @@ redirect: ../../adr/
 primary: true
 ```
 
-**Cutover trigger:** A future migration ADR (created through the standard HIL process) defines the `git mv` operations. When approved, execution is a mechanical commit: physical paths change, logical sequence does not. Both index files remain valid throughout; the historical redirect is retired after validation.
+**Resolution (ADR-0030):** no cutover/migration is planned. Both index files coexist persistently under the forward-only model; the historical index stays `primary: false` with `redirect`.
 
 ---
 
@@ -412,9 +412,9 @@ These items from the initial analysis have been resolved by the decisions above:
 
 These require further investigation but are **not blockers** to HIL approval of the taxonomy. They are follow-on work to be scoped when the time is right:
 
-**Q1 — Existing ADR path references.** ADR-0026 and other existing ADRs may contain filesystem path references that break under the proposed structure. This must be audited as part of the migration ADR (D1), not as a prerequisite.
+**Q1 — Existing ADR path references.** ADR-0026 and other existing ADRs may contain filesystem path references. Under ADR-0030 (no physical migration), those paths do not change, so no relocation audit is required.
 
-**Q2 — Link integrity baseline.** How many internal links in the current `mddocs/` corpus reference paths that would change under the new structure? A link-check audit is a prerequisite for the execution plan, not for taxonomy approval.
+**Q2 — Link integrity baseline.** How many internal links reference paths that would change under physical relocation. Since ADR-0030 plans no relocation, these paths are unchanged and no link-rewrite audit is required.
 
 **Q5 — Projects/ context seeding.** No `Projects/<context>/` directories exist today. The first adopted customer context will seed the first project tree. The proposal's Projects/ structure is first exercised in production only when an adopted project is live, which is outside the current scope.
 
@@ -431,6 +431,6 @@ The taxonomy does **not** introduce any contradictions with the existing ADR set
 
 These are not blockers to taxonomy approval; they are follow-on work to be scoped when the time is right:
 
-- **ADR migration ADR** (triggered by D1): the actual `git mv` operations, link audits, and build-config updates for moving the 28 existing ADRs into the new structure.
-- **Link integrity audit** (flagged in Q2): all internal links in the corpus must be re-validated after any ADR migration, regardless of how it is done.
+- **ADR placement** — resolved in ADR-0030: forward-only + historical coexistence; no physical migration is planned.
+- **Link integrity** — unaffected: ADR-0030 plans no relocation, so ADR-linked paths are unchanged.
 - **Projects/ context seeding** (deferred): no current `Projects/<context>/` directories exist. The first adopted customer context will seed the first project tree, at which point the proposal's Projects/ structure is first exercised in production.

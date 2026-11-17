@@ -1,7 +1,7 @@
 # ADR-0033: Project Context Adoption / Q5 Seeding
 
 **Date:** 2026-11-17
-**Status:** proposed
+**Status:** accepted
 **Supersedes:** —
 **Superseded by:** —
 

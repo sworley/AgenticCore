@@ -59,12 +59,12 @@
 
 # Documentation Planes
 
-- [Management Plane](Management/index.md)
-  - [Architecture · System](Management/Architecture/System/AgenticCore-Spec.md)
-  - [Assurance · Reviews](Management/Assurance/Reviews/Ledger-Runbook/index.md)
-  - [Governance · Decisions](Management/Governance/Decisions/index.md)
-  - [Security · Guardrails](Management/Security/Guardrails/Credential-Identity/index.md)
-- [Projects Plane](Projects/index.md)
+- [Management Plane](management/index.md)
+  - [Architecture · System](management/architecture/system/AgenticCore-Spec.md)
+  - [Assurance · Reviews](management/assurance/reviews/ledger-runbook/index.md)
+  - [Governance · Decisions](management/governance/decisions/index.md)
+  - [Security · Guardrails](management/security/guardrails/credential-identity/index.md)
+- [Projects Plane](projects/index.md)
 
 ---
 

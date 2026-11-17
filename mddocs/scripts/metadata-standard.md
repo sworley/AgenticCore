@@ -10,8 +10,8 @@ process: script-metadata
 owner: lead-engineer
 related:
   paths:
-    - ../Management/Governance/Decisions/ADR-0029-documentation-taxonomy-adoption.md
-    - ../Management/Work/Activities/ACT-DKT-0002-taxonomy-reconciliation/index.md
+    - ../management/governance/decisions/ADR-0029-documentation-taxonomy-adoption.md
+    - ../management/work/activities/act-dkt-0002-taxonomy-reconciliation/index.md
 ---
 
 # Script Metadata Standard
@@ -191,5 +191,5 @@ what ships into an adopter repo is `export-framework.sh`'s
 
 ## 9. References
 
-- **ADR-0029** — `mddocs/Management/Governance/Decisions/ADR-0029-documentation-taxonomy-adoption.md` (governing decision; D4).
-- **ACT-DKT-0002** — `mddocs/Management/Work/Activities/ACT-DKT-0002-taxonomy-reconciliation/index.md` (reconciliation evidence).
+- **ADR-0029** — `mddocs/management/governance/decisions/ADR-0029-documentation-taxonomy-adoption.md` (governing decision; D4).
+- **ACT-DKT-0002** — `mddocs/management/work/activities/act-dkt-0002-taxonomy-reconciliation/index.md` (reconciliation evidence).

@@ -12,7 +12,7 @@ purpose: Companion redirect to the authoritative harness specification
 
 > **Compat stub — the authoritative copy lives at `mddocs/AGENTICCORE_SPEC.md`**
 > (`primary: true`). This page exists to make the harness specification
-> discoverable under the Management/Architecture/System/ taxonomy category.
+> discoverable under the management/architecture/system/ taxonomy category.
 > **Do not edit this stub; edit the canonical file.**
 
 → [Open the authoritative AgenticCore Specification](../../../AGENTICCORE_SPEC.md)

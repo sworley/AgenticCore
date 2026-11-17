@@ -12,7 +12,7 @@ ADR-0029 (accepted 2026-11-12) adopted the documentation and knowledge taxonomy
 and resolved ADR placement as **D1 (forward-only)** and **D2 (directed
 coexistence)**:
 
-- **D1:** new ADRs use `mddocs/Management/Governance/Decisions/` from approval
+- **D1:** new ADRs use `mddocs/management/governance/decisions/` from approval
   onward; the existing 28 ADRs remain in `mddocs/adr/`.
 - **D2:** both index files are live, with the new index `primary: true` and the
   historical index `primary: false, lifecycle: superseded` carrying a `redirect`.
@@ -24,11 +24,11 @@ historical ADRs will be physically relocated.
 
 1. **No physical migration.** The existing 28 ADRs remain at
    `mddocs/adr/adr-NNNN-<slug>.md` indefinitely as the canonical historical
-   record. They are **not** moved to `Management/Governance/Decisions/`.
+   record. They are **not** moved to `management/governance/decisions/`.
 2. **Forward-only.** Every new ADR from ADR-0029 onward is placed in
-   `mddocs/Management/Governance/Decisions/`.
+   `mddocs/management/governance/decisions/`.
 3. **Coexistence with primary/redirect.** Both index paths remain live:
-   `Management/Governance/Decisions/index.md` is `primary: true` (active);
+   `management/governance/decisions/index.md` is `primary: true` (active);
    `mddocs/adr/index.md` is `primary: false, lifecycle: superseded` and
    `redirect`s to the active index.
 4. **Flat global sequence.** ADR numbering is a single flat sequence
@@ -56,7 +56,7 @@ historical ADRs will be physically relocated.
 
 ## Implementation Notes
 
-- Active index: `Management/Governance/Decisions/index.md` lists ADRs from
+- Active index: `management/governance/decisions/index.md` lists ADRs from
   ADR-0029 onward.
 - Historical index: `mddocs/adr/index.md` retains the ADR-0000…0028 set with
   `redirect`.

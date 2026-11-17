@@ -3,7 +3,7 @@ document_type: index
 status: superseded-by-taxonomy
 lifecycle: superseded
 records: ADR-0000 through ADR-0028
-redirect: ../Management/Governance/Decisions/
+redirect: ../management/governance/decisions/
 primary: false
 ---
 

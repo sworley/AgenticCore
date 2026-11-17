@@ -14,6 +14,6 @@ purpose: Companion index to the secret-guard runbook
 > **Compat stub — the authoritative runbook lives at**
 > `mddocs/operations/runbooks/secret-guard.md` (`primary: true`).
 > This index exists to make the guardrail discoverable under the
-> Management/Security/Guardrails/ category. **Do not edit this stub.**
+> management/security/guardrails/ category. **Do not edit this stub.**
 
 → [Open the authoritative runbook](../../../../operations/runbooks/secret-guard.md)

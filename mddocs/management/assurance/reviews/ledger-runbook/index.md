@@ -14,6 +14,6 @@ purpose: Companion index to the review-ledger runbook
 > **Compat stub — the authoritative runbook lives at**
 > `mddocs/operations/runbooks/review-ledger-runbook.md` (`primary: true`).
 > This index exists to make the review/assurance procedure discoverable under
-> the Management/Assurance/Reviews/ category. **Do not edit this stub.**
+> the management/assurance/reviews/ category. **Do not edit this stub.**
 
 → [Open the authoritative runbook](../../../../operations/runbooks/review-ledger-runbook.md)

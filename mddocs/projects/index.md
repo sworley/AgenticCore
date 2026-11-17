@@ -9,10 +9,10 @@ purpose: Portfolio plane — durable documentation about adopted work contexts
 
 # Projects Plane
 
-> **Plane purpose.** `Projects/` holds documentation **about** work performed by
+> **Plane purpose.** `projects/` holds documentation **about** work performed by
 > independently adopted contexts — customer engineering, COE, AI Accelerator,
 > investigations, and activities that may not involve software development. It
-> is the second plane of the ADR-0029 two-plane taxonomy (`Management/` is the
+> is the second plane of the ADR-0029 two-plane taxonomy (`management/` is the
 > first).
 
 ## Working model
@@ -35,14 +35,14 @@ process.
 
 ## Context grammar
 
-Each adopted context is a directory under `Projects/<context>/`:
+Each adopted context is a directory under `projects/<context>/`:
 
 | Sub-tree | Purpose |
 |---|---|
 | `index.md` | **Required.** Project identity and navigation |
-| `Activities/` | Self-contained units of work (`<activity-id>-<slug>/`) |
-| `Artifacts/` | Durable, purpose-based packages (`<purpose>/<slug>/`) |
-| `Decisions/` | Project-scoped decisions, as authorized |
+| `activities/` | Self-contained units of work (`<activity-id>-<slug>/`) |
+| `artifacts/` | Durable, purpose-based packages (`<purpose>/<slug>/`) |
+| `decisions/` | Project-scoped decisions, as authorized |
 | `Evidence/` | Retained assurance records |
 | `References/` | Links and references — not copied authorities |
 
@@ -71,7 +71,7 @@ context. It does **not** hold the customer's work product.
 
 - Management-plane documentation and governance artifacts — ADRs, policies,
   standards, architecture, security, assurance, work activities.
-- Harness-owned project documentation **about** a context — `Projects/<context>/`
+- Harness-owned project documentation **about** a context — `projects/<context>/`
   indexes, activity records, durable artifacts, project decisions, evidence,
   and references.
 - Harness tooling and executables (scripts, hooks, enforcement) and their
@@ -97,9 +97,9 @@ context. It does **not** hold the customer's work product.
 
 ## Boundaries
 
-- **No speculative empty folders.** Create `Projects/<slug>/index.md` only when a
+- **No speculative empty folders.** Create `projects/<slug>/index.md` only when a
   real context is adopted (ADR-0029 future action **Q5**). Never pre-create empty
-  `Activities/`, `Artifacts/`, etc.
+  `activities/`, `artifacts/`, etc.
 - **Context before classification (P2).** A context may be a software project,
   customer engagement, COE, AI Accelerator, research initiative, or other
   independently managed effort.
@@ -109,5 +109,5 @@ context. It does **not** hold the customer's work product.
 
 ## Current contexts
 
-_None yet._ The first `Projects/<slug>/` directory is created when the first
+_None yet._ The first `projects/<slug>/` directory is created when the first
 adopted context is live (ADR-0029 Q5).

@@ -9,20 +9,20 @@ purpose: Harness management plane
 
 # Management Plane
 
-> **Plane purpose.** `Management/` documents **AgenticCore itself** — the
+> **Plane purpose.** `management/` documents **AgenticCore itself** — the
 > harness's architecture, governance, security posture, operations, and
 > adoption. It does not document customer work performed by adopted project
-> benches (that is the `Projects/` plane).
+> benches (that is the `projects/` plane).
 
 ## Categories
 
 | Category | Scope | Present |
 |---|---|---|
-| [Architecture](Architecture/System/AgenticCore-Spec.md) | Harness design, planes, integration | ✓ |
-| [Assurance](Assurance/Reviews/Ledger-Runbook/index.md) | Reviews, audits, evidence | ✓ |
-| [Governance](Governance/Decisions/index.md) | ADRs, standards, policies, exceptions | ✓ |
-| [Security](Security/Guardrails/Credential-Identity/index.md) | Trust boundaries, guardrails, access | ✓ |
-| [Work](Work/Activities/ACT-DKT-0002-taxonomy-reconciliation/index.md) | Time-bounded harness improvement work | ✓ |
+| [Architecture](architecture/system/AgenticCore-Spec.md) | Harness design, planes, integration | ✓ |
+| [Assurance](assurance/reviews/ledger-runbook/index.md) | Reviews, audits, evidence | ✓ |
+| [Governance](governance/decisions/index.md) | ADRs, standards, policies, exceptions | ✓ |
+| [Security](security/guardrails/credential-identity/index.md) | Trust boundaries, guardrails, access | ✓ |
+| [Work](work/activities/act-dkt-0002-taxonomy-reconciliation/index.md) | Time-bounded harness improvement work | ✓ |
 
 ## Rules
 

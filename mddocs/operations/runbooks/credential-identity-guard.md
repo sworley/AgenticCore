@@ -3,7 +3,7 @@ document_type: runbook
 status: active
 lifecycle: active
 primary: true
-redirect: ../../Management/Security/Guardrails/Credential-Identity/index.md
+redirect: ../../management/security/guardrails/credential-identity/index.md
 security_category: guardrail
 governance_context:
   - ADR-0016

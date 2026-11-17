@@ -3,7 +3,7 @@ document_type: runbook
 status: active
 lifecycle: active
 primary: true
-redirect: ../../Management/Assurance/Reviews/Ledger-Runbook/index.md
+redirect: ../../management/assurance/reviews/ledger-runbook/index.md
 assurance_category: review-governance
 governance_context:
   - ADR-0019-D7

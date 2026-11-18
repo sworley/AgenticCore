@@ -30,7 +30,7 @@ decision and `AC-0013` is the reconciliation evidence.
 
 ## 1. Stable identifiers (IDs)
 
-IDs are **stable and immutable once published** — independent of title or path
+IDs are **stable and immutable once published** - independent of title or path
 (principle P4). Do not reuse or renumber an ID; reassignment is a deliberate
 reclassification (see §7).
 
@@ -68,10 +68,10 @@ same field contract as frontmatter. The companion is clean single-document YAML
 | `process` | yes | workflow slug it participates in |
 | `owner` | yes | agent role from `.agents/_meta.yaml` |
 | `allowed_in_adopter_repos` | yes | `true` \| `false` (default `false`) |
-| `enforces` | no | `ADR-XXXX` — only for governance-enforcement scripts |
-| `source_ticket` | no | `AC-XXXX` — only for project-activity scripts |
-| `source_context` | no | `<context>` — only for project-activity scripts |
-| `migrated_from` | no | path — only when `lifecycle: shared` |
+| `enforces` | no | `ADR-XXXX` - only for governance-enforcement scripts |
+| `source_ticket` | no | `AC-XXXX` - only for project-activity scripts |
+| `source_context` | no | `<context>` - only for project-activity scripts |
+| `migrated_from` | no | path - only when `lifecycle: shared` |
 | `related.paths` | no | relative paths to docs it is documented by or governs |
 
 ---
@@ -83,7 +83,7 @@ class; the class drives the distinctive fields.
 
 | Class | `domain` | `allowed_in_adopter_repos` | Distinctive fields |
 |---|---|---|---|
-| **1. Harness-owned tooling** | `Management` | `false` | — |
+| **1. Harness-owned tooling** | `Management` | `false` | - |
 | **2. Harness-provided general-use** | `Management` | `true` | logically available to projects |
 | **3. Project-activity script** | `Projects/<context>` | `false` | `source_ticket`, `source_context`, `lifecycle: activity-scoped` or `shared` |
 | **4. Governance enforcement** | governed by mandating ADR | `false` | `enforces: ADR-XXXX` as primary identity |
@@ -98,14 +98,14 @@ not a new file.
 
 - `true`: harness-provided, supported for use in an adopted workspace (ships as
   part of the adoption surface).
-- `false`: not part of the shipped, supported adoption surface — harness
+- `false`: not part of the shipped, supported adoption surface - harness
   orchestration, internal state, or a one-shot bootstrap not meant to be re-run
   from inside an adopted workspace.
 
 **Important:** this is a **descriptive governance/documentation contract**, not
 an access control or permission. It never forbids use. The *physical* gate for
 what ships into an adopter repo is `export-framework.sh`'s
-`FRAMEWORK_EXCLUDE_PATTERNS` — this flag does **not** currently drive shipping.
+`FRAMEWORK_EXCLUDE_PATTERNS` - this flag does **not** currently drive shipping.
 
 ---
 
@@ -139,15 +139,19 @@ what ships into an adopter repo is `export-framework.sh`'s
 3. Add a `.meta.yaml` companion (or frontmatter if natively supported).
 4. Add an `SDX`/index entry if it belongs to a script group.
 5. Reference it from the relevant runbook / `SUMMARY.md` if applicable.
+6. Run `python3 mddocs/scripts/reconcile-metadata-registry.py --check` (SH-0028) to
+   confirm the registry table (§8) matches the new metadata.
 
-### Reclassify a script (D3 — case-by-case)
+### Reclassify a script (D3 - case-by-case)
 1. Identify the change (class, `owner`, `category`, `allowed_in_adopter_repos`,
    `enforces`, `process`, etc.).
 2. Edit the artifact's `.meta.yaml` / frontmatter on a branch.
 3. Record the change and rationale (in the ticket/activity or a changelog).
-4. Review and merge to `dev`. **No new ADR required** for a single
-   reclassification — classification is adjustable data, not schema (see §9).
-5. A change to the **schema/contract** itself (field set, enums, class set, or
+4. Run `python3 mddocs/scripts/reconcile-metadata-registry.py --check` (SH-0028) to
+   confirm the registry table (§8) reflects the reclassification.
+5. Review and merge to `dev`. **No new ADR required** for a single
+   reclassification - classification is adjustable data, not schema (see §9).
+6. A change to the **schema/contract** itself (field set, enums, class set, or
    the meaning of a field) requires an **ADR amendment** to `ADR-0029`.
 
 ---
@@ -156,40 +160,43 @@ what ships into an adopter repo is `export-framework.sh`'s
 
 | ID | Executable | Class | Owner | `allowed_in_adopter_repos` | `enforces` |
 |---|---|---|---|---|---|
-| SH-0001 | `bench-status.sh` | 1 | ops-engineer | false | — |
-| SH-0002 | `provision-bench.sh` | 2 | ops-engineer | true | — |
-| SH-0003 | `check-env.sh` | 2 | ops-engineer | true | — |
-| SH-0004 | `check-links.sh` | 2 | docs-engineer | true | — |
-| SH-0005 | `check-worktree-hygiene.sh` | 1 | ops-engineer | false | — |
-| SH-0006 | `git-sync.sh` | 2 | ops-engineer | true | — |
+| SH-0001 | `bench-status.sh` | 1 | ops-engineer | false | - |
+| SH-0002 | `provision-bench.sh` | 2 | ops-engineer | true | - |
+| SH-0003 | `check-env.sh` | 2 | ops-engineer | true | - |
+| SH-0004 | `check-links.sh` | 2 | docs-engineer | true | - |
+| SH-0005 | `check-worktree-hygiene.sh` | 1 | ops-engineer | false | - |
+| SH-0006 | `git-sync.sh` | 2 | ops-engineer | true | - |
 | SH-0007 | `export-framework.sh` | 4 | release-engineer | false | ADR-0015 |
-| SH-0008 | `read-audit-log.sh` | 1 | security-engineer | false | — |
-| SH-0009 | `statusline-command.sh` | 1 | orchestrator | false | — |
-| SH-0010 | `sync-agent-config.sh` | 1 | lead-engineer | false | — |
-| SH-0011 | `setup/adopt.sh` | 1 | release-engineer | false | — |
-| SH-0012 | `setup/model-distribution.sh` | 2 | lead-engineer | true | — |
-| SH-0013 | `setup/phase2-dev-toolchain.sh` | 1 | infra-engineer | false | — |
-| SH-0014 | `setup/python-env.sh` | 2 | ops-engineer | true | — |
-| SH-0015 | `setup/tool-adapter.sh` | 2 | lead-engineer | true | — |
-| SH-0016 | `setup/toolchain.sh` | 2 | infra-engineer | true | — |
-| SH-0017 | `setup/verify-toolchain.sh` | 2 | infra-engineer | true | — |
-| SH-0018 | `mcp-tests/run-all.sh` | 1 | ops-engineer | false | — |
-| SH-0019 | `mcp-tests/test-mcp-filesystem.sh` | 1 | ops-engineer | false | — |
-| SH-0020 | `mcp-tests/test-mcp-git.sh` | 1 | ops-engineer | false | — |
-| SH-0021 | `mcp-tests/test-mcp-rag-docs.py` | 1 | ops-engineer | false | — |
-| SH-0022 | `update-summary-on-adr-write.py` | 1 | docs-engineer | false | — |
-| SH-0023 | `test-adopt-target-handling.sh` | 1 | release-engineer | false | — |
-| SH-0024 | `test-export-framework-severance.sh` | 1 | security-engineer | false | — |
-| SH-0025 | `test-provision-bench-substitution.sh` | 1 | ops-engineer | false | — |
-| SH-0026 | `seed/bench-registry.yaml` | 1 | ops-engineer | false | — |
-| SH-0027 | `seed/tasks.yaml` | 1 | lead-engineer | false | — |
+| SH-0008 | `read-audit-log.sh` | 1 | security-engineer | false | - |
+| SH-0009 | `statusline-command.sh` | 1 | orchestrator | false | - |
+| SH-0010 | `sync-agent-config.sh` | 1 | lead-engineer | false | - |
+| SH-0011 | `setup/adopt.sh` | 1 | release-engineer | false | - |
+| SH-0012 | `setup/model-distribution.sh` | 2 | lead-engineer | true | - |
+| SH-0013 | `setup/phase2-dev-toolchain.sh` | 1 | infra-engineer | false | - |
+| SH-0014 | `setup/python-env.sh` | 2 | ops-engineer | true | - |
+| SH-0015 | `setup/tool-adapter.sh` | 2 | lead-engineer | true | - |
+| SH-0016 | `setup/toolchain.sh` | 2 | infra-engineer | true | - |
+| SH-0017 | `setup/verify-toolchain.sh` | 2 | infra-engineer | true | - |
+| SH-0018 | `mcp-tests/run-all.sh` | 1 | ops-engineer | false | - |
+| SH-0019 | `mcp-tests/test-mcp-filesystem.sh` | 1 | ops-engineer | false | - |
+| SH-0020 | `mcp-tests/test-mcp-git.sh` | 1 | ops-engineer | false | - |
+| SH-0021 | `mcp-tests/test-mcp-rag-docs.py` | 1 | ops-engineer | false | - |
+| SH-0022 | `update-summary-on-adr-write.py` | 1 | docs-engineer | false | - |
+| SH-0023 | `test-adopt-target-handling.sh` | 1 | release-engineer | false | - |
+| SH-0024 | `test-export-framework-severance.sh` | 1 | security-engineer | false | - |
+| SH-0025 | `test-provision-bench-substitution.sh` | 1 | ops-engineer | false | - |
+| SH-0026 | `seed/bench-registry.yaml` | 1 | ops-engineer | false | - |
+| SH-0027 | `seed/tasks.yaml` | 1 | lead-engineer | false | - |
+| SH-0028 | `reconcile-metadata-registry.py` | 1 | docs-engineer | false | - |
 
 > Note: the generated per-file `.meta.yaml` metadata is authoritative over this
-> table. Reconcile the table here whenever a classification changes.
+> table. Reconcile the table here whenever a classification changes - or run
+> `mddocs/scripts/reconcile-metadata-registry.py --check` (SH-0028) to verify this
+> table matches the `.meta.yaml` metadata and report any drift.
 
 ---
 
 ## 9. References
 
-- **ADR-0029** — `mddocs/management/governance/decisions/ADR-0029-documentation-taxonomy-adoption.md` (governing decision; D4).
-- **AC-0013** — `mddocs/management/work/activities/ac-0013-taxonomy-reconciliation/index.md` (reconciliation evidence).
+- **ADR-0029** - `mddocs/management/governance/decisions/ADR-0029-documentation-taxonomy-adoption.md` (governing decision; D4).
+- **AC-0013** - `mddocs/management/work/activities/ac-0013-taxonomy-reconciliation/index.md` (reconciliation evidence).

@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+"""Inspect staged paths and blobs only; never print matched content.
+
+Generalized from AgenticTeam.v0.3/.githooks/pre-commit, reviewed 2026-10-20.
+Python avoids shell word splitting and scans bytes without text conversion.
+"""
+import re
+import subprocess
+import sys
+
+
+SEEDS = {
+    b'.codex-home/AGENTS.md',
+    b'.codex-home/config.toml',
+    b'.codex-home/rules/template.rules',
+}
+BLOCKED_ROOTS = {
+    b'.codex', b'.mcp', b'workspace', b'.scratch', b'.tmp', b'.archive',
+    b'.codex-backups', b'.poc-backups', b'.venv',
+}
+DIRECTORY_MARKERS = {
+    b'.scratch/.gitkeep', b'.tmp/.gitkeep', b'.archive/.gitkeep',
+}
+PATTERNS = (
+    re.compile(rb'(?:AKIA|ASIA)[0-9A-Z]{16}'),
+    re.compile(rb'-----BEGIN (?:[A-Z0-9 ]+ )?PRIVATE KEY-----'),
+    re.compile(rb'Authorization:[ \t]*Bearer[ \t]+[A-Za-z0-9._~-]{12,}', re.I),
+    re.compile(rb'''\b(?:password|passwd|secret|token)["']?[ \t]*[:=][ \t]*["']?[A-Za-z0-9/+=._~-]{16,}''', re.I),
+)
+
+
+def git(*args):
+    return subprocess.run(
+        ['git', *args], check=True, stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    ).stdout
+
+
+def blocked_path(path):
+    parts = path.split(b'/')
+    name = parts[-1]
+    if parts[0] == b'.codex-home':
+        return path not in SEEDS
+    if parts[0] in BLOCKED_ROOTS:
+        return path not in DIRECTORY_MARKERS
+    if path == b'mddocs/book' or path.startswith(b'mddocs/book/'):
+        return True
+    if any(p in {b'secrets', b'credentials', b'node_modules', b'__pycache__'} for p in parts):
+        return True
+    example = name in {b'example.env', b'.env.example'} or name.endswith(b'.example.env')
+    if name == b'.envrc' or ((name == b'.env' or name.startswith(b'.env.')) and not example):
+        return True
+    return name.endswith((b'.pem', b'.key', b'.log', b'.pid', b'.sock', b'.pyc'))
+
+
+def main():
+    failures = 0
+    try:
+        changed = git('diff', '--no-ext-diff', '--no-textconv', '--cached',
+                      '--name-only', '-z', '--diff-filter=ACMRT').split(b'\0')
+        entries = {}
+        for entry in git('ls-files', '--stage', '-z').split(b'\0'):
+            if entry:
+                metadata, path = entry.split(b'\t', 1)
+                mode, oid, stage = metadata.split()
+                if stage != b'0':
+                    raise ValueError('unmerged index')
+                entries[path] = (mode, oid)
+        for path in filter(None, changed):
+            mode, oid = entries[path]
+            # Symlinks and gitlinks can refer outside the reviewed file set.
+            if blocked_path(path) or mode not in {b'100644', b'100755'}:
+                reason = 'protected path or non-regular index entry'
+            else:
+                content = git('cat-file', 'blob', oid.decode('ascii'))
+                reason = 'possible credential or private key' if any(
+                    pattern.search(content) for pattern in PATTERNS
+                ) else None
+            if reason:
+                # repr escapes newlines/control characters; never emit content.
+                print(f'pre-commit: {reason}: {path!r}', file=sys.stderr)
+                failures += 1
+    except (subprocess.CalledProcessError, ValueError, KeyError, OSError):
+        print('pre-commit: unable to inspect index; blocked.', file=sys.stderr)
+        return 1
+    if failures:
+        print(f'pre-commit: blocked {failures} staged file(s).', file=sys.stderr)
+    return int(bool(failures))
+
+
+if __name__ == '__main__':
+    sys.exit(main())

@@ -1,0 +1,3 @@
+# Compatibility entry point for the verified CPython 3.13.15/Linux x86_64 test set.
+# Install with required hashes and wheels only in an approved local environment.
+-r ../python/requirements/test-linux-x86_64-cpython313.lock

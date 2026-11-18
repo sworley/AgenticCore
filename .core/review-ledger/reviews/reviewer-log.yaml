@@ -1,0 +1,6 @@
+- run_id: RR-2026-11-17-01
+  commit_reviewed: "25343c0"
+  verdict: approved_with_notes
+  finding_ids: []
+  agent: docs-reviewer
+  timestamp: 2026-11-17T17:00:00Z

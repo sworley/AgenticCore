@@ -438,9 +438,19 @@ tasks:
     size: L
     labels: [governance, taxonomy, docs, scripts]
     agent: baseline-steward
-    status: awaiting_review
+    status: accepted
     branch: "dev"
     bench: .01
     blocked_by: []
     created: "2026-11-12"
-    updated: "2026-11-12"
+    updated: "2026-11-18"
+    completed_at: "2026-11-18"
+    review:
+      docs-reviewer:
+        verdict: approved_with_notes
+        run: RR-2026-11-17-01
+        note: "5 findings/notes recorded then resolved; no open findings"
+      security-reviewer:
+        verdict: clean
+        run: SR-2026-11-18-01
+        note: "Branch touches .core/hooks/*.py + adopt.sh classification; sweep verified cosmetic, no secrets, no authz hole"

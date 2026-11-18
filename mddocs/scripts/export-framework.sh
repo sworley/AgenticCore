@@ -1053,6 +1053,14 @@ FRAMEWORK_EXCLUDE_PATTERNS=(
   # empty scaffold by seed_adopter_state() below - see
   # mddocs/scripts/seed/mddocs/backlog.md.
   "mddocs/backlog.md"
+  # AC-0014 (Stage 1) - one-shot bootstrap tools must never ship into an
+  # adopted tree: a downstream adopter could otherwise re-run adopt.sh to
+  # re-adopt an already-adopted environment, or re-home via export-framework.sh.
+  # Both are `allowed_in_adopter_repos: false` (class 1 bootstrap). Excluded
+  # wholesale with NO seed (an adopter has no reason to receive them); the
+  # broader metadata-driven exclusion (AC-0014 Stage 2) is a separate follow-up.
+  "mddocs/scripts/setup/adopt.sh"
+  "mddocs/scripts/export-framework.sh"
 )
 
 # _copy_framework_content_raw - the actual tar-based extraction, with no

@@ -54,10 +54,10 @@ Full history: `git log --oneline origin/dev..HEAD` (also AC-0013 commits `fbe154
 - typos / `bash -n` / `py_compile` / YAML — clean
 
 ## Open items / follow-ups
-1. **`feat/taxonomy-adoption → dev` integration PR — CREATED.** Branch is ready
-   (all AC-0013/AC-0014 work committed, reviewed, validated). HIL-gated;
-   `main` merge-only per ADR-0004. Awaiting HIL review/merge, then release cutover.
-2. **Release cutover (`dev → main`)** — after the PR merges, via the release process.
+1. **`feat/taxonomy-adoption → dev` integration PR — MERGED (#24, `f7aa58e`).**
+   AC-0013 + AC-0014 + pyyaml fix are now on `dev`. Local checkout still on
+   `feat/taxonomy-adoption`; next work should happen on `dev`.
+2. **Release cutover (`dev → main`)** — the next step, via the release process.
 3. **Projects-space / previous-art import (DEFERRED)** — the `projects/<context>/`
    (CTX-) plane and Q5 seed runbook exist and are wired into mdBook, but
    `Current contexts` is `_None yet_`. No real context adopted yet. When a real
@@ -74,9 +74,8 @@ Full history: `git log --oneline origin/dev..HEAD` (also AC-0013 commits `fbe154
      classification + HIL direction before any work.*
 
 ## Next steps (in order)
-1. HIL review/merge of `feat/taxonomy-adoption → dev` PR (created; HIL-gated).
-2. Then `dev → main` release cutover via the release process.
-3. (Deferred) Projects-space migration when a real context is adopted (Q5).
+1. `dev → main` release cutover via the release process (PR #24 landed on `dev`).
+2. (Deferred) Projects-space migration when a real context is adopted (Q5).
 
 ## Notes
 - GPG signing needs the key passphrase cached (pinentry; unlock with

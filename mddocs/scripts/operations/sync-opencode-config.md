@@ -8,7 +8,7 @@ domain: Management
 category: Agentic
 process: agent-config-sync
 owner: lead-engineer
-allowed_in_adopter_repos: false
+allowed_in_adopter_repos: true
 related:
   paths:
     - ../sync-agent-config.sh

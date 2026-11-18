@@ -1055,24 +1055,39 @@ FRAMEWORK_EXCLUDE_PATTERNS=(
   "mddocs/backlog.md"
 )
 
-# AC-0014 (Stage 2) - metadata-driven shipping. Any artifact whose .meta.yaml
-# declares `allowed_in_adopter_repos: false` is not part of the supported
-# adoption surface and must not ship into an adopter repo (metadata-standard
-# section 3/4, and the ADR-0015 D-9 governing decision). Computed at SOURCE TIME so
-# the same authoritative FRAMEWORK_EXCLUDE_PATTERNS array drives the tar copy,
-# the manifest walk, and the test harness (which sources this array directly).
-# An artifact's own executable (path minus `.meta.yaml`) and its `.meta.yaml`
-# companion are both excluded; `allowed_in_adopter_repos: true` artifacts are
-# untouched and ship.
+# AC-0014 (Stage 2) - metadata-driven shipping, fail-closed. An artifact is part
+# of the supported adoption surface and ships ONLY when it explicitly declares
+# `allowed_in_adopter_repos: true`. A missing, malformed, or any non-`true` value
+# (including `false`) is not-in-surface and is excluded from the adopter tree
+# (metadata-standard section 3/4, ADR-0015 D-9). This closes the fail-open gap
+# (AC-0014 W1): the gate no longer relies on matching a `false` literal, so a
+# future artifact that omits or mistypes the flag is excluded rather than
+# silently shipped. Computed at SOURCE TIME so the same authoritative
+# FRAMEWORK_EXCLUDE_PATTERNS array drives the tar copy, the manifest walk, and
+# the test harness (which sources this array directly).
 _append_metadata_excludes() {
   local meta rel exec
+  # W1 (fail-closed) for executable companions: exclude the executable (path
+  # minus `.meta.yaml`) + its `.meta.yaml` unless the flag is explicitly 'true'.
   while IFS= read -r -d '' meta; do
-    if grep -q '^allowed_in_adopter_repos: *false' "$meta" 2>/dev/null; then
+    if ! grep -q '^[[:space:]]*allowed_in_adopter_repos:[[:space:]]*true[[:space:]]*$' "$meta" 2>/dev/null; then
       rel="${meta#"$FRAMEWORK_ROOT"/}"
       exec="${rel%.meta.yaml}"
       FRAMEWORK_EXCLUDE_PATTERNS+=("$exec" "$rel")
     fi
   done < <(find "$FRAMEWORK_ROOT/mddocs/scripts" -name '*.meta.yaml' -print0 2>/dev/null)
+  # W2 (honor .md script-doc frontmatter): exclude a script-doc whose declared
+  # flag is not 'true', so documentation for a non-shipping tool (e.g.
+  # setup/adopt.md) never reaches the adopter tree. Only files that declare the
+  # flag are gated; .md files without it are unaffected.
+  local md
+  while IFS= read -r -d '' md; do
+    if grep -q '^[[:space:]]*allowed_in_adopter_repos:' "$md" 2>/dev/null && \
+       ! grep -q '^[[:space:]]*allowed_in_adopter_repos:[[:space:]]*true[[:space:]]*$' "$md" 2>/dev/null; then
+      rel="${md#"$FRAMEWORK_ROOT"/}"
+      FRAMEWORK_EXCLUDE_PATTERNS+=("$rel")
+    fi
+  done < <(find "$FRAMEWORK_ROOT/mddocs/scripts" -name '*.md' -print0 2>/dev/null)
 }
 _append_metadata_excludes
 

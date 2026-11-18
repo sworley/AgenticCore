@@ -8,7 +8,7 @@ domain: Management
 category: Governance
 process: metadata-registry-maintenance
 owner: docs-engineer
-allowed_in_adopter_repos: false
+allowed_in_adopter_repos: true
 related:
   paths:
     - reconcile-metadata-registry.py

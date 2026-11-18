@@ -8,7 +8,7 @@ domain: Management
 category: Testing
 process: mcp-smoke-test
 owner: ops-engineer
-allowed_in_adopter_repos: false
+allowed_in_adopter_repos: true
 related:
   paths:
     - run-all.sh

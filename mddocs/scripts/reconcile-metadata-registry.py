@@ -2,14 +2,18 @@
 """
 Metadata Registry Reconcile / Report.
 
-Scans every `*.meta.yaml` companion under `mddocs/scripts/` (SH executable IDs)
-and the frontmatter classification IDs (SDX/REF/STD/SEED) across `mddocs/`, and
-compares them against the registry tables (section 8 for SH, section 8.1 for
-classification IDs) in `mddocs/scripts/metadata-standard.md`.
+Scans every `*.meta.yaml` companion under `mddocs/scripts/` (SH executable IDs),
+every SH `.md` script-doc sidecar under `mddocs/scripts/`, and the frontmatter
+classification IDs (SDX/REF/STD/SEED) across `mddocs/`, and compares them
+against the registry tables (section 8 for SH, section 8.1 for classification
+IDs) in `mddocs/scripts/metadata-standard.md`.
 
 The per-artifact metadata (`.meta.yaml` / frontmatter) is authoritative. This
 tool reports any drift between the authoritative metadata and the static registry
-tables, so they are kept accurate rather than silently drifting.
+tables, so they are kept accurate rather than silently drifting. It also checks
+that each SH script-doc's `allowed_in_adopter_repos` matches its authoritative
+`.meta.yaml` (AC-0014 W3), so a reclassification cannot leave the shipped doc
+sidecar stale in the opposite direction.
 
 Usage (from the repository root, or anywhere):
     python3 mddocs/scripts/reconcile-metadata-registry.py            # print report
@@ -171,6 +175,27 @@ def scan_classification_ids():
     return ids
 
 
+def scan_sh_script_docs():
+    """Scan .md SH script-doc sidecars under mddocs/scripts/ for their
+    `allowed_in_adopter_repos` flag, keyed by SH id, so each doc sidecar can be
+    checked against the authoritative `.meta.yaml` (AC-0014 W3 - catches
+    post-reclassification doc/flag drift that the shipping gate would otherwise
+    leave inconsistent)."""
+    docs = {}
+    for md_path in sorted(SCRIPTS_DIR.rglob("*.md")):
+        meta = parse_frontmatter(md_path)
+        doc_id = str(meta.get("id", "")).strip()
+        m = re.fullmatch(r"(SH-\d+)-doc", doc_id)
+        if not m:
+            continue
+        sh_id = m.group(1)
+        docs[sh_id] = {
+            "path": md_path.relative_to(SCRIPTS_DIR).as_posix(),
+            "allowed": to_bool(meta.get("allowed_in_adopter_repos")),
+        }
+    return docs
+
+
 def parse_classification_table():
     """Parse the section 8.1 classification-ID markdown table."""
     table = {}
@@ -195,6 +220,7 @@ def main():
     check_only = "--check" in sys.argv[1:]
     sh_canonical = scan_canonical()
     sh_table = parse_registry_table()
+    sh_docs = scan_sh_script_docs()
     cls_canonical = scan_classification_ids()
     cls_table = parse_classification_table()
 
@@ -226,6 +252,24 @@ def main():
                 f"[ORPHAN IN SECTION 8] {sh_id} `{sh_table[sh_id]['exec']}` in the table but no .meta.yaml"
             )
 
+    # --- SH script-doc sidecar reconciliation (AC-0014 W3) ---
+    # Each SH script-doc's `allowed_in_adopter_repos` must match the
+    # authoritative `.meta.yaml` for the same SH id, so a reclassification
+    # cannot leave the shipped doc sidecar stale in the opposite direction.
+    for sh_id in sorted(sh_docs):
+        d = sh_docs[sh_id]
+        if sh_id not in sh_canonical:
+            drift.append(
+                f"[ORPHAN DOC] {sh_id} script-doc `{d['path']}` but no matching .meta.yaml"
+            )
+            continue
+        canon = sh_canonical[sh_id]["allowed"]
+        if canon != d["allowed"]:
+            drift.append(
+                f"[MISMATCH] {sh_id} script-doc allowed_in_adopter_repos: doc={d['allowed']!r} "
+                f"vs .meta.yaml={canon!r} (`{d['path']}`)"
+            )
+
     # --- Classification ID (SDX/REF/STD/SEED) reconciliation ---
     for cid in sorted(cls_canonical):
         row = cls_canonical[cid]
@@ -253,6 +297,7 @@ def main():
     # ---- report ----
     print("== Metadata Registry Reconcile ==")
     print(f"Scanned {len(sh_canonical)} .meta.yaml companion(s) under mddocs/scripts/")
+    print(f"Scanned {len(sh_docs)} SH script-doc sidecar(s) under mddocs/scripts/")
     print(f"Scanned {len(cls_canonical)} classification ID(s) (SDX/REF/STD/SEED) in mddocs/ frontmatter")
     print(f"Registry rows: SH section 8 = {len(sh_table)}; classification section 8.1 = {len(cls_table)}")
     print()

@@ -367,10 +367,18 @@ tasks:
       - .py (2): mcp-tests/test-mcp-rag-docs.py, update-summary-on-adr-write.py
       - .yaml (2): seed/bench-registry.yaml, seed/tasks.yaml
 
-      **Script documentation sidecars (26 files)** under:
-      scripts/hooks-index.md, scripts/mcp-tests/*.md (5),
-      scripts/operations/*.md (7), scripts/seed/*.md (2),
-      scripts/setup/*.md (8), scripts/*.md (3)
+      **Script `.md` files under mddocs/scripts/ (27 total):**
+      - **script-docs sidecars (19)** — document a single executable:
+        mcp-tests/{run-all, test-mcp-filesystem, test-mcp-git, test-mcp-rag-docs},
+        operations/{bench-status, check-env, check-links, check-worktree-hygiene,
+        git-sync, provision-bench, read-audit-log, sync-opencode-config},
+        setup/{adopt, phase2-dev-toolchain, python-env, toolchain, verify-toolchain},
+        statusline-command, update-summary-on-adr-write
+      - **index / standard / reference / seed docs (8)** — NOT script-docs:
+        hooks-index.md (SDX-002), mcp-tests/README.md (SDX-001),
+        operations/index.md (SDX-003), setup/index.md (SDX-004),
+        metadata-standard.md (STD-0001), setup/init-opencode-settings.md (REF-0001),
+        seed/.core/agents/_context.md (SEED-CONTEXT), seed/mddocs/backlog.md (SEED-BACKLOG)
 
       **Classification contract per ADR-0029 D4:**
 
@@ -398,7 +406,9 @@ tasks:
 
       1. Harness-owned tooling — domain: Management, allowed_in_adopter_repos: false
       2. Harness-provided general-use — domain: Management, allowed_in_adopter_repos: true
-         (adopt.sh, provision-bench.sh, git-sync.sh as exemplars)
+         (provision-bench.sh, git-sync.sh as exemplars). adopt.sh is NOT class 2 — it is a
+         class 1 bootstrap (allowed_in_adopter_repos: false) and must never ship into an
+         adopted environment.
       3. Project-activity script — domain: Projects/<context>, source_ticket and
          source_context populated; currently no instances exist; annotate as
          domain: Management with a NOTE that these will be classified when
@@ -416,9 +426,10 @@ tasks:
       commit, per ADR-0019 HIL gates.
     acceptance_criteria:
       - "All 27 executables annotated — .meta.yaml companion on .sh/.py/.yaml executables; frontmatter where natively supported"
-      - "All 26 sidecar .md files annotated with document_type: script-docs and inheriting domain from parent artefact"
+      - "All 19 executable-documentation sidecars annotated with document_type: script-docs and inheriting domain from parent artefact (the remaining 8 mddocs/scripts/ .md files are index/standard/reference/seed docs: SDX-001–004, STD-0001, REF-0001, SEED-CONTEXT, SEED-BACKLOG)"
       - "Governance enforcement scripts identified and annotated with enforces: ADR-XXXX"
-      - "Harness-provided general-use scripts (adopt.sh, provision-bench.sh, git-sync.sh) annotated with allowed_in_adopter_repos: true"
+      - "Harness-provided general-use scripts (provision-bench.sh, git-sync.sh) annotated with allowed_in_adopter_repos: true"
+      - "adopt.sh annotated with allowed_in_adopter_repos: false (class 1 bootstrap). It must NOT ship into an adopted environment: a downstream adopter could otherwise re-run adopt.sh to adopt the already-adopted environment. The class-2 exemplar list accordingly drops adopt.sh."
       - "lead-engineer review and sign-off recorded before commit"
       - "No files relocated; no scripts renamed; no provisioning templates modified"
       - "ADR-0029 D4 frontmatter contract verified against AC-0013 reference positions"

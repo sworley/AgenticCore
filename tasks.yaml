@@ -485,9 +485,19 @@ tasks:
     size: M
     labels: [governance, taxonomy, security, scripts]
     agent: baseline-steward
-    status: branch_ready
+    status: accepted
     branch: "feat/taxonomy-adoption"
     bench: .01
     blocked_by: []
     created: "2026-11-18"
     updated: "2026-11-18"
+    completed_at: "2026-11-18"
+    review:
+      docs-reviewer:
+        verdict: approved_with_notes
+        run: RR-2026-11-18-01
+        note: "ADR-0034 stub properly covered via decisions index; no blocking findings"
+      security-reviewer:
+        verdict: approved_with_notes
+        run: SR-2026-11-18-02
+        note: "Baseline/Tier 1; gate injection-safe, D-7 untouched, surface only narrowed. Non-blocking notes W1 (fail-open default), W2 (gate .md frontmatter scope), W3 (stale .md doc frontmatter) - none blocking"

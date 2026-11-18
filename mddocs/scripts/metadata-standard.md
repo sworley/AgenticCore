@@ -105,7 +105,11 @@ not a new file.
 **Important:** this is a **descriptive governance/documentation contract**, not
 an access control or permission. It never forbids use. The *physical* gate for
 what ships into an adopter repo is `export-framework.sh`'s
-`FRAMEWORK_EXCLUDE_PATTERNS` - this flag does **not** currently drive shipping.
+`FRAMEWORK_EXCLUDE_PATTERNS`. The flag does **not** drive shipping generically;
+however, the one-shot bootstrap tools `setup/adopt.sh` and `export-framework.sh`
+are excluded from the adopter tree (AC-0014 Stage 1) so an adopter cannot
+re-run adopt / re-home. Wiring the flag to drive shipping generically is
+AC-0014 Stage 2.
 
 ---
 

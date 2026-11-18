@@ -454,3 +454,39 @@ tasks:
         verdict: clean
         run: SR-2026-11-18-01
         note: "Branch touches .core/hooks/*.py + adopt.sh classification; sweep verified cosmetic, no secrets, no authz hole"
+
+  - id: AC-0014
+    title: "Wire allowed_in_adopter_repos to export-framework.sh shipping (bootstrap exclusion)"
+    description: |
+      The `allowed_in_adopter_repos` metadata flag (metadata-standard §4) documents
+      which scripts ship as the supported adoption surface, but it is descriptive
+      only - `export-framework.sh`'s `FRAMEWORK_EXCLUDE_PATTERNS` ignores it, so
+      `allowed_in_adopter_repos: false` artifacts still ship to adopters.
+
+      Stage 1 (done): exclude the one-shot bootstrap tools `setup/adopt.sh` and
+      `export-framework.sh` from the adopter tree (a downstream adopter could
+      otherwise re-run adopt.sh to re-adopt an adopted environment, or re-home
+      via export-framework.sh).
+
+      Stage 2 (pending): make the flag authoritative - `export-framework.sh`
+      computes exclusions from `.meta.yaml` for every `allowed_in_adopter_repos:
+      false` artifact; re-review each of the 19 false flags; add an ADR-0015
+      amendment + manifest/severance test coverage (the test harness already
+      sources `FRAMEWORK_EXCLUDE_PATTERNS`, so new excludes are asserted
+      automatically).
+    acceptance_criteria:
+      - "setup/adopt.sh and export-framework.sh are absent from an exported adopter tree"
+      - "test-export-framework-severance.sh and test-adopt-target-handling.sh pass"
+      - "D-7 confidentiality controls intact; --dry-run manifests reflect the excludes"
+      - "metadata-standard §4 documents that the flag does not yet drive shipping generically (Stage 2 pending)"
+    adr: [ADR-0015]
+    priority: P2
+    size: M
+    labels: [governance, taxonomy, security, scripts]
+    agent: baseline-steward
+    status: in_progress
+    branch: "feat/taxonomy-adoption"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-18"
+    updated: "2026-11-18"

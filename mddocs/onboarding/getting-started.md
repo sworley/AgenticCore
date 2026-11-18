@@ -4,22 +4,22 @@ This guide starts with one question, because the two answers lead to completely
 different setup procedures: **are you adopting the framework into your own project,
 or contributing to the framework itself?**
 
-> **New to AgenticCore?** Get oriented in one place first — the
+> **New to AgenticCore?** Get oriented in one place first - the
 > [Visual Overview](visual-overview.md) shows the bench hierarchy, personas,
 > workflows, and agent roster at a glance. Then come back to the routing question
 > below.
 
 ## Which Are You?
 
-Answer this before running any command below — the two paths diverge immediately,
+Answer this before running any command below - the two paths diverge immediately,
 and the first contributor setup step is `git clone` of the framework repository,
 which is **not** what an adopter should do.
 
-- **Adopting** — you want to bring AgenticCore into your own (or a customer's)
+- **Adopting** - you want to bring AgenticCore into your own (or a customer's)
   project. You will never hold a role in the framework's own git history, and you
   never clone the framework repository directly for this purpose. Go to
   [Adopting the Framework](#adopting-the-framework) below.
-- **Contributing** — you want to work on the AgenticCore framework itself: fix a
+- **Contributing** - you want to work on the AgenticCore framework itself: fix a
   bug, add a feature, write documentation, or otherwise change framework source and
   submit it back through the framework's own `dev` branch. Go to
   [Contributing to the Framework](#contributing-to-the-framework) below.
@@ -37,9 +37,9 @@ The agent definitions and `opencode.json` use **placeholder model IDs**
 [ADR-0021](../adr/adr-0021-per-agent-model-tiering.md). Set your real models before
 running the agent team:
 
-- **Default model** — in `opencode.json`, set `"model"` to your provider/model (e.g.
+- **Default model** - in `opencode.json`, set `"model"` to your provider/model (e.g.
   `anthropic/claude-sonnet-5-5`).
-- **Per-agent tiers** — specialists reference `provider/model-opus-4-8` (high-reasoning),
+- **Per-agent tiers** - specialists reference `provider/model-opus-4-8` (high-reasoning),
   `provider/model-sonnet-5` (general), and `provider/model-haiku-4-5` (mechanical).
   Replace these with your own provider/models to match the ADR-0021 tiering, as
   documented in the [Agent Roster](agent-roster.md).
@@ -53,30 +53,30 @@ is built from `.agents/_meta.yaml`, the single source of truth for these tiers.
 
 **Do not `git clone` the framework repository for this.** Adoption uses a dedicated
 script, `export-framework.sh`, that exports a versioned release into your target
-directory and **severs** any connection back to the framework's git history —
+directory and **severs** any connection back to the framework's git history -
 your resulting project has no framework remote, no upstream reference, and no
 framework commit history reachable from it. See
 [ADR-0015](../adr/adr-0015-framework-distribution-adoption-model.md) D-1/D-3 for the
 full model.
 
-The full procedure — including prerequisites, the exact commands, validation steps,
-and a manual fallback — lives in
+The full procedure - including prerequisites, the exact commands, validation steps,
+and a manual fallback - lives in
 [Bootstrap New Project](../reference.architecture/bootstrap-new-project.md). This
 section only helps you self-identify which of the two adoption flows applies to you
 before you go there.
 
 ### Which adoption flow do I need?
 
-The flow is determined entirely by **the state of your target directory** — not by
+The flow is determined entirely by **the state of your target directory** - not by
 whether you have used AgenticCore before.
 
 | Flow | Target directory state | Typical case |
 |---|---|---|
-| **A — empty-dir init** ("greenfield") | Empty, or does not exist yet | Starting a brand-new project with no existing code |
-| **B — re-home** ("brownfield") | An existing git repository that already contains customer code | Adding the framework to a codebase that already exists — **including the first time you adopt the framework into it** |
+| **A - empty-dir init** ("greenfield") | Empty, or does not exist yet | Starting a brand-new project with no existing code |
+| **B - re-home** ("brownfield") | An existing git repository that already contains customer code | Adding the framework to a codebase that already exists - **including the first time you adopt the framework into it** |
 
 The names "greenfield" and "brownfield" refer only to whether **customer code
-already exists in the target directory** — they do **not** refer to whether the
+already exists in the target directory** - they do **not** refer to whether the
 framework was previously deployed there. A first-time adoption into an existing
 customer repository is Flow B (re-home), even though the framework itself has never
 touched that directory before.
@@ -86,7 +86,7 @@ Once you know your flow, go to
 full procedure and run `mddocs/scripts/export-framework.sh` as documented there.
 
 > This page does not cover which branch you should work on inside your adopted
-> project after export — that is determined by your own project's branch strategy,
+> project after export - that is determined by your own project's branch strategy,
 > not by this guide.
 
 ---
@@ -96,21 +96,21 @@ full procedure and run `mddocs/scripts/export-framework.sh` as documented there.
 The rest of this page walks you through setting up your local environment and
 making your first contribution to the AgenticCore framework itself.
 
-### Write Access — What You Can and Cannot Push
+### Write Access - What You Can and Cannot Push
 
 If you are new to the framework, read this before you clone anything.
 
 - **You clone the framework repository read-only by default.** Write access to
-  `main` is gated server-side to the Maintainer role — a newcomer's clone cannot push
+  `main` is gated server-side to the Maintainer role - a newcomer's clone cannot push
   or merge to `main` regardless of local Git configuration.
 - **How you contribute:** at the Developer role (or below), you work through the
-  normal [PROCESS.md](../../PROCESS.md) task/branch/review flow — branch from `dev`,
+  normal [PROCESS.md](../../PROCESS.md) task/branch/review flow - branch from `dev`,
   open a merge request, pass the review gates, and land on `dev`. You never target
   `main` directly; `dev` → `main` happens only at a release cutover with explicit HIL
   acceptance.
 - **Full model:** see
   [ADR-0025](../adr/adr-0025-framework-write-protection-model.md) for the complete
-  layered write-protection decision — adoption posture, server-side branch
+  layered write-protection decision - adoption posture, server-side branch
   protection, and role-management guardrails.
 
 ### Prerequisites
@@ -159,7 +159,7 @@ echo $GIT_TOKEN    # should print your PAT (redact this after checking)
 
 #### 3. Configure the agent runtime (opencode)
 
-opencode reads the committed `opencode.json` directly — no separate generation
+opencode reads the committed `opencode.json` directly - no separate generation
 step is required. MCP servers are configured inline in `opencode.json`, and the
 agent definitions are regenerated from the canonical `.agents/` source.
 
@@ -171,7 +171,7 @@ bash mddocs/scripts/setup/tool-adapter.sh --tool opencode
 ```
 
 > **Note:** For machine-specific overrides (e.g. an alternate MCP config or
-> local runtime settings), add them to the gitignored `opencode.json.local` —
+> local runtime settings), add them to the gitignored `opencode.json.local` -
 > opencode deep-merges it over the committed `opencode.json`.
 
 #### 4. Verify MCP configuration
@@ -235,7 +235,7 @@ The lead-engineer agent will:
 
 ## Next Steps
 
-- [Visual Overview](visual-overview.md) — the system at a glance
-- [Repository Structure](repository-structure.md) — understand the layout
-- [Agentic Workflow Overview](agentic-workflow-overview.md) — understand how work flows
-- [Bench Model](bench-model.md) — understand the namespace hierarchy
+- [Visual Overview](visual-overview.md) - the system at a glance
+- [Repository Structure](repository-structure.md) - understand the layout
+- [Agentic Workflow Overview](agentic-workflow-overview.md) - understand how work flows
+- [Bench Model](bench-model.md) - understand the namespace hierarchy

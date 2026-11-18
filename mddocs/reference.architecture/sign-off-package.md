@@ -18,7 +18,7 @@ redirect.
 
 ## Procedure
 
-### Step 1 — Summarize the diff
+### Step 1 - Summarize the diff
 
 ```sh
 git diff main...HEAD --stat
@@ -27,7 +27,7 @@ git diff main...HEAD
 
 Capture: which files changed, line counts, nature of changes (new file, edit, delete).
 
-### Step 2 — Collect reviewer verdicts
+### Step 2 - Collect reviewer verdicts
 
 List each reviewer invoked for this task. For each:
 - Agent name (security-reviewer, docs-reviewer, code-reviewer)
@@ -38,7 +38,7 @@ List each reviewer invoked for this task. For each:
 If any reviewer returned `BLOCKED`, the sign-off package must not be presented to the HIL
 until remediation is complete and a follow-up verdict has been obtained.
 
-### Step 3 — Surface open findings
+### Step 3 - Surface open findings
 
 Query both review ledger paths:
 
@@ -49,10 +49,10 @@ review-ledger-reviews:  list_findings(status=open)
 
 Present: finding ID, severity, file, one-line description, age in days.
 
-Flag any finding older than 7 days as an **escalation item** — present these first and
+Flag any finding older than 7 days as an **escalation item** - present these first and
 explicitly, before the full findings list.
 
-### Step 4 — State blocking items
+### Step 4 - State blocking items
 
 List any items that would prevent merge:
 - Open `BLOCKED` verdicts not yet remediated
@@ -62,12 +62,12 @@ List any items that would prevent merge:
 
 If there are no blocking items, state: `Blocking items: none`.
 
-### Step 5 — Present to HIL
+### Step 5 - Present to HIL
 
 Format the package as follows:
 
 ```
-## Sign-Off Package — <task-id>: <title>
+## Sign-Off Package - <task-id>: <title>
 
 ### Diff Summary
 <files changed, line counts, nature of changes>
@@ -81,10 +81,10 @@ Format the package as follows:
 
 ### Open Findings
 **Escalations (>7 days old):**
-- SF-NNN [warning, 12 days]: <file> — <description>
+- SF-NNN [warning, 12 days]: <file> - <description>
 
 **All open findings:**
-- SF-NNN [note, 3 days]: <file> — <description>
+- SF-NNN [note, 3 days]: <file> - <description>
 
 ### Blocking Items
 <none | list>

@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """
-session-logger.py — Append-only session reasoning log.
+session-logger.py - Append-only session reasoning log.
 
 Handles three hook events:
-  UserPromptSubmit — captures user intent (the NLU layer)
-  PostToolUse      — captures significant agent actions (Agent, Workflow, Bash, Edit, Write)
-  Stop             — marks end of each session turn
+  UserPromptSubmit - captures user intent (the NLU layer)
+  PostToolUse      - captures significant agent actions (Agent, Workflow, Bash, Edit, Write)
+  Stop             - marks end of each session turn
 
 Output: _scratch/sessions/YYYY-MM-DD_<session_id[:8]>.log
 
 WHY THIS EXISTS:
   The runtime.auto-compact and context-window compression preserve outcome (what
-  changed) but discard reasoning — WHY decisions were made, what alternatives were
+  changed) but discard reasoning - WHY decisions were made, what alternatives were
   rejected, what the user's intent was. That NLU layer is what allows a new session
   to understand rather than just re-execute.
 
@@ -24,7 +24,7 @@ AGENT vs WORKFLOW:
   Workflow tool calls appear as: WORKFLOW: <name or script excerpt>
 
   Note: agents spawned INSIDE a workflow (via agent() calls in the script) are NOT
-  captured here — they run inside the workflow runtime and never pass through the
+  captured here - they run inside the workflow runtime and never pass through the
   main session's hook layer. A workflow that spawns 50 subagents will show as a
   single WORKFLOW entry. Only top-level Agent tool calls from the main session appear
   individually.
@@ -42,7 +42,7 @@ _HOOK_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _HOOK_DIR.parent.parent
 LOG_DIR = _REPO_ROOT / "_scratch" / "sessions"
 
-# Tools that carry reasoning signal — everything else is noise (Read, LSP, mcp__filesystem__, etc.)
+# Tools that carry reasoning signal - everything else is noise (Read, LSP, mcp__filesystem__, etc.)
 SIGNAL_TOOLS = {"Agent", "Workflow", "Bash", "Edit", "Write", "NotebookEdit"}
 
 # UUID pattern fragment reused across several entries below
@@ -73,7 +73,7 @@ _SECRET_PATTERNS = [
      r'\1[REDACTED]'),
     (re.compile(r'(VM_ADMIN_PASSWORD\s*=\s*)\S+', re.IGNORECASE),
      r'\1[REDACTED]'),
-    # GIT_TOKEN — bare and quoted key=value forms
+    # GIT_TOKEN - bare and quoted key=value forms
     (re.compile(r'(GIT_TOKEN\s*=\s*)\S+', re.IGNORECASE),
      r'\1[REDACTED]'),
     # Git PAT literal tokens (mirrors secret-scan glpat pattern)
@@ -226,7 +226,7 @@ def _handle_post_tool_use(data: dict, log_path: Path) -> None:
 
 def _handle_stop(data: dict, log_path: Path) -> None:
     if log_path.exists():
-        _append(log_path, f"[{_ts()}] STOP — turn end")
+        _append(log_path, f"[{_ts()}] STOP - turn end")
         _append(log_path, "")
 
 

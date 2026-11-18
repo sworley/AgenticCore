@@ -9,9 +9,9 @@
 Use this runbook when a AI toolchain hook is misbehaving, blocking valid commands,
 or needs to be rolled back after a rule change. Covers three scenarios:
 
-1. **Emergency disable** — unhook a script for the current session without touching git
-2. **Revert a rule change** — restore a hook script to a prior state via a forward commit
-3. **Validate before committing** — confirm blocked and safe cases behave as expected
+1. **Emergency disable** - unhook a script for the current session without touching git
+2. **Revert a rule change** - restore a hook script to a prior state via a forward commit
+3. **Validate before committing** - confirm blocked and safe cases behave as expected
 
 For the general hook change strategy (per-hook circuit breakers, env var overrides,
 staged rollout), see [ADR-0010: Hook Rollback Strategy](../../adr/adr-0010-hook-rollback-strategy.md).
@@ -34,21 +34,21 @@ staged rollout), see [ADR-0010: Hook Rollback Strategy](../../adr/adr-0010-hook-
 | `read-scope-guard.py` | `PreToolUse` | `Read` | 2 (block-with-reason JSON) |
 | `secret-scan-output.py` | `PostToolUse` | `Bash`, `Read`, MCP filesystem | 0 (warns only) |
 | `egress-audit-log.py` | `PostToolUse` | `Bash`, `WebFetch`, `WebSearch` | 0 (logs only) |
-| `check-hook-wiring.py` | `PostToolUse` | — | 0 (warns only) |
+| `check-hook-wiring.py` | `PostToolUse` | - | 0 (warns only) |
 
 `PreToolUse` hooks that exit 1 block the tool call. `read-scope-guard.py` exits 2
-(block-with-reason JSON) — the harness consumes the JSON body and surfaces the reason
-string to the agent rather than silently blocking. `PostToolUse` hooks always exit 0 —
+(block-with-reason JSON) - the harness consumes the JSON body and surfaces the reason
+string to the agent rather than silently blocking. `PostToolUse` hooks always exit 0 -
 they warn but never block.
 
 ---
 
-## Scenario 1 — Emergency Disable (current session only)
+## Scenario 1 - Emergency Disable (current session only)
 
 Use this when a hook is blocking a command you need to run immediately and you do not
 want to touch git.
 
-### Option A — Circuit breaker (preferred, no restart required)
+### Option A - Circuit breaker (preferred, no restart required)
 
 For hooks that support a circuit breaker env var, set it in the current session and
 retry the command:
@@ -57,20 +57,20 @@ retry the command:
 |------|------------------------|
 | `secret-guard.py` | `export AGENT_SECRET_GUARD_DISABLED=1` |
 | `read-scope-guard.py` | `export AGENT_READ_SCOPE_GUARD_DISABLED=1` |
-| `package-install-guard.py` | none — unconditional by design (see [ADR-0010](../../adr/adr-0010-hook-rollback-strategy.md)) |
+| `package-install-guard.py` | none - unconditional by design (see [ADR-0010](../../adr/adr-0010-hook-rollback-strategy.md)) |
 
-The env var takes effect immediately — no session restart needed. It does not persist
+The env var takes effect immediately - no session restart needed. It does not persist
 across sessions unless exported in `.envrc`. Clear it when done: `unset AGENT_SECRET_GUARD_DISABLED`.
 
-`package-install-guard.py` has no circuit breaker by design — it is unconditional.
+`package-install-guard.py` has no circuit breaker by design - it is unconditional.
 See [ADR-0010](../../adr/adr-0010-hook-rollback-strategy.md) for rationale.
 
-### Option B — Edit settings.local.json (fallback, requires restart)
+### Option B - Edit settings.local.json (fallback, requires restart)
 
 Use this when the hook does not have a circuit breaker, or when the circuit breaker
 does not resolve the issue.
 
-**Step 1.** Open `.agentic/settings.local.json` in an editor (not the template — the
+**Step 1.** Open `.agentic/settings.local.json` in an editor (not the template - the
 live file):
 
 ```bash
@@ -78,7 +78,7 @@ $EDITOR .agentic/settings.local.json
 ```
 
 **Step 2.** Find the hook entry under `PreToolUse` (or the relevant event) and remove
-the command object for the offending script. Example — to disable `secret-guard.py`:
+the command object for the offending script. Example - to disable `secret-guard.py`:
 
 ```json
 // Before
@@ -111,10 +111,10 @@ This re-enables all hooks.
 
 ---
 
-## Scenario 2 — Revert a Hook Script Change
+## Scenario 2 - Revert a Hook Script Change
 
 Use this when a committed rule change introduced a regression and you need to restore
-the script to a prior state. Always use a forward commit — never rewrite history.
+the script to a prior state. Always use a forward commit - never rewrite history.
 
 **Step 1.** Identify the last known-good commit for the script:
 
@@ -134,15 +134,15 @@ git checkout <commit-sha> -- .agentic/hooks/<script-name>.py
 
 ```bash
 git add .agentic/hooks/<script-name>.py
-git commit -m "fix(AC-NNNN): revert <script-name>.py to <commit-sha> — <reason>"
+git commit -m "fix(AC-NNNN): revert <script-name>.py to <commit-sha> - <reason>"
 ```
 
 ---
 
-## Scenario 3 — Validate Before Committing
+## Scenario 3 - Validate Before Committing
 
 Test any hook script change by feeding synthetic tool input directly to the script.
-The hook reads a JSON object from stdin — the same structure AI toolchain sends at runtime.
+The hook reads a JSON object from stdin - the same structure AI toolchain sends at runtime.
 
 ### Testing a PreToolUse hook
 
@@ -219,6 +219,6 @@ git checkout HEAD -- .agentic/hooks/<script-name>.py
 
 ## Related
 
-- [secret-guard Hook](secret-guard.md) — per-rule documentation, safe alternatives, and update guide
+- [secret-guard Hook](secret-guard.md) - per-rule documentation, safe alternatives, and update guide
 - [ADR-: Agentic Agent Enforcement Posture](../../adr/adr-0022-git-pre-commit-permission-order-check.md)
-- [ADR-0010: Hook Rollback Strategy](../../adr/adr-0010-hook-rollback-strategy.md) — circuit breakers, env var naming convention, staged rollout, companion script
+- [ADR-0010: Hook Rollback Strategy](../../adr/adr-0010-hook-rollback-strategy.md) - circuit breakers, env var naming convention, staged rollout, companion script

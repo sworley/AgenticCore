@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-secret-scan-output.py — PostToolUse hook for Read, Bash, and MCP filesystem tools.
+secret-scan-output.py - PostToolUse hook for Read, Bash, and MCP filesystem tools.
 
 Scans tool output for sensitive patterns and warns to stderr before the agent
-acts on the content. Does not block access — always exits 0 (informational only).
+acts on the content. Does not block access - always exits 0 (informational only).
 
 The agent must not echo detected values back to the user, include them in
 conversation text, write them into documentation, or commit them to any repository.
@@ -73,7 +73,7 @@ for pattern, label in PATTERNS:
 if findings:
     labels = ", ".join(findings)
     print(
-        f"[secret-scan-output] WARNING — sensitive content detected in tool output: {labels}.\n"
+        f"[secret-scan-output] WARNING - sensitive content detected in tool output: {labels}.\n"
         f"  Do NOT echo these values back to the user, include them in conversation text,\n"
         f"  write them into documentation, or commit them to any repository.\n"
         f"  Reference resources by name or logical identifier only.",

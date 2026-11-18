@@ -18,7 +18,7 @@ baseline). Ownership is split:
   surface for every gate G-1..G-8).
 - **release-engineer** executes the tactical git mechanics (cut prep branch,
   cherry-pick/merge curated commits, create/push the tag, cut the release branch, update
-  README as-built) **under** baseline-steward's tasking — `HIL → baseline-steward →
+  README as-built) **under** baseline-steward's tasking - `HIL → baseline-steward →
   release-engineer`.
 
 Adopter-project releases use the same mechanics but are owned by the `lead-engineer` and
@@ -32,11 +32,11 @@ On a branch-protected host (e.g. GitHub with PR-only `main`/`dev`, signed commit
 required `verify` CI check), the git writes below are performed via **pull requests**, not
 direct pushes. The gates are unchanged; the PR merge is the mechanism:
 
-- **G-5** — push `release/vX.Y.Z-prep` and open a PR → `main`; merge on HIL LGTM + CI green.
-- **G-7** — push the `release/vX.Y.Z` branch and open a PR → `main`.
-- **G-8** — update the README as-built on a branch and open a PR → `main`.
-- **Release close** — mark the scoped tickets `released` (terminal, ADR-0026), then catch
-  `dev` up by opening a PR `main → dev` (`--no-ff`, never rebase — `main` is append-only per
+- **G-5** - push `release/vX.Y.Z-prep` and open a PR → `main`; merge on HIL LGTM + CI green.
+- **G-7** - push the `release/vX.Y.Z` branch and open a PR → `main`.
+- **G-8** - update the README as-built on a branch and open a PR → `main`.
+- **Release close** - mark the scoped tickets `released` (terminal, ADR-0026), then catch
+  `dev` up by opening a PR `main → dev` (`--no-ff`, never rebase - `main` is append-only per
   ADR-0004). Verify: `git merge-base --is-ancestor main dev`.
 
 **First release bootstrap.** Before the first release under this model there are no tags,
@@ -47,7 +47,7 @@ git tag -a vX.Y.Z -m "baseline: vX.Y.Z" <current-main-sha>
 git push origin vX.Y.Z
 ```
 
-**Before merging `main` into a catch-up branch, `git pull origin main` first** — using a
+**Before merging `main` into a catch-up branch, `git pull origin main` first** - using a
 stale local `main` leaves `dev` behind the as-built baseline. Verify the catch-up with
 `git merge-base --is-ancestor main dev` after the PR is merged.
 
@@ -83,7 +83,7 @@ covers a subsequent gate.
 
 ## Procedure
 
-### Step 1 — Propose version (G-1)
+### Step 1 - Propose version (G-1)
 
 Collect evidence for the version bump:
 ```sh
@@ -95,11 +95,11 @@ grep -l "Status: accepted" mddocs/adr/*.md
 ```
 
 Present to baseline-steward and HIL:
-> "Proposed: vX.Y.Z — reason: [MAJOR/MINOR/PATCH justification]. Last release: vA.B.C."
+> "Proposed: vX.Y.Z - reason: [MAJOR/MINOR/PATCH justification]. Last release: vA.B.C."
 
 Wait for explicit HIL confirmation of the version number before proceeding.
 
-### Step 2 — Create release prep branch (G-2)
+### Step 2 - Create release prep branch (G-2)
 
 ```sh
 git checkout main
@@ -112,12 +112,12 @@ mechanics; a precondition check chooses between them:
 
 1. **Precondition check:** enumerate `git log origin/main..dev --oneline` and confirm
    whether every commit maps to a release-selected (complete/closed) ticket.
-2. **All-selected path** — every commit on `dev` since the last release belongs to a
+2. **All-selected path** - every commit on `dev` since the last release belongs to a
    release-selected ticket:
    ```sh
    git merge --no-ff dev
    ```
-3. **Mixed path** — `dev` holds any unselected/in-development commits: cherry-pick only
+3. **Mixed path** - `dev` holds any unselected/in-development commits: cherry-pick only
    the selected tickets' commit ranges (use `-m 1` for `--no-ff` merge commits):
    ```sh
    git cherry-pick <ticket-commit>..<ticket-commit>
@@ -125,22 +125,22 @@ mechanics; a precondition check chooses between them:
    git cherry-pick -m 1 <merge-commit-sha>
    ```
 
-See [ADR-0026](../adr/adr-0026-release-branch-curation-model.md) and its Addendum —
+See [ADR-0026](../adr/adr-0026-release-branch-curation-model.md) and its Addendum -
 2026-08-21 for the full discriminator rationale.
 
-### Step 3 — Write release notes (G-3)
+### Step 3 - Write release notes (G-3)
 
 Create `mddocs/release-notes/vX.Y.Z.md` using the template at
 `mddocs/reference.architecture/release-notes-template.md`.
 
 Sources to consolidate:
-- `git log <last-tag>..HEAD --oneline` — all commits in scope
-- `tasks.yaml` — all `merged` tickets since last release. Only release-**selected**
+- `git log <last-tag>..HEAD --oneline` - all commits in scope
+- `tasks.yaml` - all `merged` tickets since last release. Only release-**selected**
   (complete/closed) tickets are in scope for the release, consistent with the curation
   model; the mechanic used to land them on prep (merge vs. cherry-pick) is chosen per the
   Step 2 discriminator and does not change what is in scope here.
-- `mddocs/adr/` — all ADRs with `Status: accepted` since last release
-- `.core/work/session-state-*.md` — session notes for context
+- `mddocs/adr/` - all ADRs with `Status: accepted` since last release
+- `.core/work/session-state-*.md` - session notes for context
 
 **Security gate before proceeding:**
 Request security-reviewer pass on all release artifacts:
@@ -152,7 +152,7 @@ Do not proceed until `SECURITY REVIEW VERDICT: APPROVED` is received.
 the security-reviewer pass. If any `Required` items are security fixes, include the
 migration notes in the security-reviewer scope.
 
-### Step 3.5 — Adopter impact classification
+### Step 3.5 - Adopter impact classification
 
 Complete before Step 3's security-reviewer pass. Classify each change as one of:
 
@@ -181,7 +181,7 @@ migration notes are written for every `Required` item.
 See [Adopter Reconciliation Model](adopter-reconciliation.md) for the full
 propagation policy.
 
-### Step 4 — Commit release notes
+### Step 4 - Commit release notes
 
 ```sh
 git add mddocs/release-notes/vX.Y.Z.md
@@ -190,12 +190,12 @@ git commit -m "docs: release notes for vX.Y.Z [AC-NNNN]"
 
 Present staged diff to baseline-steward. Relay to `.01` for HIL surface.
 
-### Step 5 — HIL review of release notes (G-4)
+### Step 5 - HIL review of release notes (G-4)
 
 Wait for HIL LGTM on the release notes content specifically.
-This gate covers the notes only — not the merge.
+This gate covers the notes only - not the merge.
 
-### Step 6 — Merge prep branch to main (G-5)
+### Step 6 - Merge prep branch to main (G-5)
 
 Confirm with HIL: *"Ready to merge release/vX.Y.Z-prep to main. Branch: release/vX.Y.Z-prep. Confirm?"*
 
@@ -207,7 +207,7 @@ git merge --no-ff release/vX.Y.Z-prep \
 git push origin main
 ```
 
-### Step 7 — Create and push annotated tag (G-6)
+### Step 7 - Create and push annotated tag (G-6)
 
 Confirm with HIL: *"Ready to tag vX.Y.Z from main at SHA [sha]. Confirm?"*
 
@@ -217,7 +217,7 @@ git tag -a vX.Y.Z -m "release: vX.Y.Z"
 git push origin vX.Y.Z
 ```
 
-### Step 8 — Cut release branch (G-7)
+### Step 8 - Cut release branch (G-7)
 
 Confirm with HIL: *"Ready to cut release/vX.Y.Z from tag vX.Y.Z. Confirm?"*
 
@@ -228,9 +228,9 @@ git push origin release/vX.Y.Z
 git checkout main
 ```
 
-### Step 9 — Update README as-built (G-8)
+### Step 9 - Update README as-built (G-8)
 
-Update `README.md` as-built table — mark prior release `superseded`, add new entry.
+Update `README.md` as-built table - mark prior release `superseded`, add new entry.
 
 Commit:
 ```sh
@@ -241,12 +241,12 @@ git push origin main
 
 Confirm with HIL before push.
 
-### Step 10 — Relay completion
+### Step 10 - Relay completion
 
 Write relay note to `.core/work/relay-pending.md`:
 
 ```markdown
-## Relay pending — YYYY-MM-DD
+## Relay pending - YYYY-MM-DD
 
 **Destination:** .01 / baseline-steward
 **Request:** Mark release ticket AC-NNNN as released
@@ -267,7 +267,7 @@ git push origin main
 
 If any gate fails after merge to `main`:
 
-1. Do not delete the tag — tags are immutable records
+1. Do not delete the tag - tags are immutable records
 2. Create a new patch release (vX.Y.Z+1) with the fix
 3. Document the issue in the next release notes under "Known Issues"
 

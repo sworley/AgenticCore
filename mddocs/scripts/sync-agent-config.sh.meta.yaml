@@ -1,0 +1,14 @@
+id: SH-0010
+title: AGENT.md config synchronizer
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Agentic
+process: agent-config-sync
+owner: lead-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - operations/sync-opencode-config.md
+    - ../operations/runbooks/sync-opencode-config.md

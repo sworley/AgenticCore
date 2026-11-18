@@ -1,0 +1,14 @@
+id: SH-0014
+title: Project-local Python virtualenv provider
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Operations
+process: python-env-provision
+owner: ops-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - python-env.md
+    - ../../reference.architecture/bootstrap-new-project.md

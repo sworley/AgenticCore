@@ -1,3 +1,20 @@
+---
+id: SH-0010-doc
+document_type: script-docs
+status: active
+lifecycle: active
+title: AGENT.md config synchronizer (script docs)
+domain: Management
+category: Agentic
+process: agent-config-sync
+owner: lead-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - ../sync-agent-config.sh
+    - ../../operations/runbooks/sync-opencode-config.md
+---
+
 # sync-agent-config.sh
 
 Sync AGENT.md files between the `_config/` repo archive and on-disk parent-directory

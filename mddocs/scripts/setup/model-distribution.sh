@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# model-distribution.sh — tailor / review the per-agent LLM model distribution.
+# model-distribution.sh - tailor / review the per-agent LLM model distribution.
 #
 # AgenticCore is tool-agnostic; this script maps a per-agent MODEL TIER profile
 # (.agents/model-profile.yaml) onto the generated opencode agents so you can
@@ -166,7 +166,7 @@ fi
 # --apply: write model: into .opencode/agents/*.md from the profile
 # ---------------------------------------------------------------------------
 if [ "$MODE" = "apply" ]; then
-  [ -f "$PROFILE" ] || { warn "no .agents/model-profile.yaml — nothing to apply."; exit 0; }
+  [ -f "$PROFILE" ] || { warn "no .agents/model-profile.yaml - nothing to apply."; exit 0; }
   if [ "$DRY_RUN" -eq 1 ]; then
     echo "  [dry-run] would apply model distribution to $AGENTS_DIR/*.md"
     exit 0

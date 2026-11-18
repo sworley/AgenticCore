@@ -11,11 +11,11 @@ affects the namespace layout.
 The agent namespace is the set of directories that define, generate, and share the
 agents used by the runtime. It has three layers:
 
-1. **Canonical source** — `.agents/` is the single source of truth for agent
+1. **Canonical source** - `.agents/` is the single source of truth for agent
    definitions, plus the shared agent context.
-2. **Generated tool-specific directories** — `.opencode/agents/` (and equivalents for
+2. **Generated tool-specific directories** - `.opencode/agents/` (and equivalents for
    other runtimes) are produced from the canonical source and must never be hand-edited.
-3. **Shared context** — `.core/agents/_context.md` carries the context that every agent
+3. **Shared context** - `.core/agents/_context.md` carries the context that every agent
    inherits.
 
 ## Namespace Layout
@@ -24,19 +24,19 @@ agents used by the runtime. It has three layers:
 |---|---|
 | `.agents/` | Canonical agent definitions (`_meta.yaml`, `<name>.md`) |
 | `.agents/sync-agents.sh` | Generates tool-specific files from `.agents/` |
-| `.opencode/agents/` | OpenCode agents — auto-generated, do not hand-edit |
+| `.opencode/agents/` | OpenCode agents - auto-generated, do not hand-edit |
 | `.core/agents/_context.md` | Shared context inherited by all agents |
 | `_config/` | AGENT.md recovery archive (see the sync runbook) |
 
 ## Procedure
 
-### Step 1 — Sync the canonical source to tool directories
+### Step 1 - Sync the canonical source to tool directories
 
 ```sh
 bash .agents/sync-agents.sh
 ```
 
-### Step 2 — Review the generated files
+### Step 2 - Review the generated files
 
 ```sh
 git diff .opencode/agents/
@@ -45,12 +45,12 @@ git diff .opencode/agents/
 Confirm frontmatter (description, mode, permission) is correct and the generated
 files carry the AUTO-GENERATED comment.
 
-### Step 3 — Configure MCP servers
+### Step 3 - Configure MCP servers
 
 Wire the MCP servers the agents rely on. See
 [Configure MCP Servers](../../reference.architecture/configure-mcp.md).
 
-### Step 4 — Stage and commit
+### Step 4 - Stage and commit
 
 ```sh
 git add .agents/ .opencode/agents/

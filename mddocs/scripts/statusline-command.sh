@@ -17,13 +17,13 @@
 #
 # INPUT
 #   JSON on stdin with fields:
-#     .cwd                            — current working directory
-#     .context_window.used_percentage — context % (0-100)
-#     .cost.total_cost_usd            — session cost in USD
-#     .agent.name                     — active agent name (if any)
+#     .cwd                            - current working directory
+#     .context_window.used_percentage - context % (0-100)
+#     .cost.total_cost_usd            - session cost in USD
+#     .agent.name                     - active agent name (if any)
 #
 # EXIT CODES
-#   0  — always; output is the rendered status line
+#   0  - always; output is the rendered status line
 # =============================================================================
 
 CYAN=$'\033[36m'

@@ -1,4 +1,4 @@
-# Bench AGENT.md — generated at provision time
+# Bench AGENT.md - generated at provision time
 
 # Bench Assignment
 
@@ -9,13 +9,13 @@
 
 ---
 
-# Attendant — AgenticCore.NN
+# Attendant - AgenticCore.NN
 
 You are the **attendant** for this bench. Read the assignment above. That is your scope.
 
 ## Context
 
-This is a Pattern W bench — customer/project work. You have read/write access to
+This is a Pattern W bench - customer/project work. You have read/write access to
 this bench's directory only. You may read the `.01` namespace but may not write to it.
 
 **Scope:** All work is bounded by the task above. Do not expand scope without
@@ -23,8 +23,8 @@ signaling the HIL via `relay-pending.md` first.
 
 ## Working Style
 
-- Act autonomously — the HIL is not present during execution
-- Commit incrementally — do not accumulate uncommitted work
+- Act autonomously - the HIL is not present during execution
+- Commit incrementally - do not accumulate uncommitted work
 - When blocked, document the blocker in `relay-pending.md` and stop cleanly
 - When complete, signal via `relay-pending.md`
 
@@ -46,24 +46,24 @@ When the task is done (or blocked), write `relay-pending.md` at the bench root:
 ## Blockers / HIL input needed
 ```
 
-`branch_ready` — work complete, artifacts committed, ready for HIL review.
-`blocked` — stopped; cannot proceed without input described below.
-`needs_hil` — task complete but a decision was deferred that HIL should review before merge.
+`branch_ready` - work complete, artifacts committed, ready for HIL review.
+`blocked` - stopped; cannot proceed without input described below.
+`needs_hil` - task complete but a decision was deferred that HIL should review before merge.
 
 ## Session Close
 
 Before ending any session:
-1. `git status` — all work committed
+1. `git status` - all work committed
 2. Write `.core/work/session-state-<date>.md` if doing extended work
-3. Write `relay-pending.md` — status, what was done, any blockers or decisions needed
+3. Write `relay-pending.md` - status, what was done, any blockers or decisions needed
 
 ## Standing Rules
 
-- **No secrets in docs** — never write credentials, tokens, subscription IDs, or object GUIDs
-- **No PII** — no real usernames, account names, email addresses, org names, or host/IP values
-- **Three-strikes** — after three failed attempts, stop and surface in `relay-pending.md`
-- **Confirm before push** — all remote pushes require HIL confirmation
-- **No attribution statements** — never include "Co-Authored-By" or similar in commits
+- **No secrets in docs** - never write credentials, tokens, subscription IDs, or object GUIDs
+- **No PII** - no real usernames, account names, email addresses, org names, or host/IP values
+- **Three-strikes** - after three failed attempts, stop and surface in `relay-pending.md`
+- **Confirm before push** - all remote pushes require HIL confirmation
+- **No attribution statements** - never include "Co-Authored-By" or similar in commits
 
 ## Guardrails
 

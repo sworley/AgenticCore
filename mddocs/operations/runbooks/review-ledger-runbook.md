@@ -1,3 +1,16 @@
+---
+document_type: runbook
+status: active
+lifecycle: active
+primary: true
+redirect: ../../management/assurance/reviews/ledger-runbook/index.md
+assurance_category: review-governance
+governance_context:
+  - ADR-0019-D7
+domain: Management
+purpose: Implement the sign-off package assembly procedure before HIL approval
+---
+
 # Runbook: review-ledger MCP Server
 
 **Task:** TC-026  
@@ -80,7 +93,7 @@ are relative to the repository root:
 
 ---
 
-## Access Model — Which Tools Go in Which Agent Configs
+## Access Model - Which Tools Go in Which Agent Configs
 
 ### All agents with ledger access (both instances)
 
@@ -186,7 +199,7 @@ Do not edit these files manually; use the MCP tools.
 ```yaml
 finding_id: SF-001
 proposed_status: mitigated
-rationale: "fixed in commit abc1234 — patch applied"
+rationale: "fixed in commit abc1234 - patch applied"
 requested_at: 2026-07-14T18:00Z
 requested_by: security-reviewer
 ```
@@ -237,5 +250,5 @@ remove it manually with `rm .core/review-ledger/security/pending-sf-NNN.yaml`.
 **ID collision risk:** IDs are assigned by reading the current maximum at write time.
 Under heavy concurrent load, two simultaneous `log_finding` calls could theoretically
 read the same maximum before either writes. The `fcntl` lock reduces but does not
-eliminate this window — writes are serialized but reads are not. In practice, reviewer
+eliminate this window - writes are serialized but reads are not. In practice, reviewer
 runs are not high-frequency and this is not a production concern.

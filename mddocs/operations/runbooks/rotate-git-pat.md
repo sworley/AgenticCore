@@ -17,7 +17,7 @@
 
 ## Procedure
 
-### Step 1 — Create the new token in Git
+### Step 1 - Create the new token in Git
 
 1. Log in to Git
 2. Navigate to **User Settings → Access Tokens**
@@ -26,9 +26,9 @@
 5. Scopes: `api` (minimum required)
 6. Set expiration date
 7. Click **Create personal access token**
-8. **Copy the token value immediately** — it will not be shown again
+8. **Copy the token value immediately** - it will not be shown again
 
-### Step 2 — Update the pass store
+### Step 2 - Update the pass store
 
 ```sh
 pass edit git/<host>/pat
@@ -36,7 +36,7 @@ pass edit git/<host>/pat
 
 Replace the old token value with the new one. Save and close.
 
-### Step 3 — Verify the new token
+### Step 3 - Verify the new token
 
 ```sh
 direnv reload   # re-inject updated credential
@@ -46,14 +46,14 @@ curl -s --header "PRIVATE-TOKEN: $(pass show git/<host>/pat)" \
 
 Expected: your Git username.
 
-### Step 4 — Revoke the old token
+### Step 4 - Revoke the old token
 
 In Git UI:
 1. Navigate to **User Settings → Access Tokens**
 2. Find the old token
 3. Click **Revoke**
 
-### Step 5 — Test all active benches
+### Step 5 - Test all active benches
 
 If multiple worktrees are active, reload direnv in each:
 ```sh

@@ -1,8 +1,25 @@
+---
+id: SH-0016-doc
+document_type: script-docs
+status: active
+lifecycle: active
+title: Docs/dev toolchain manager (script docs)
+domain: Management
+category: Architecture
+process: toolchain-manage
+owner: infra-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - toolchain.sh
+    - ../../reference.architecture/bootstrap-new-project.md
+---
+
 # toolchain.sh
 
 <a href="toolchain.sh" download>Download toolchain.sh</a> · bash · [Bootstrap New Project](../../reference.architecture/bootstrap-new-project.md)
 
-Manages the harness's **non-Python** (docs/dev) dependencies — the toolchain analogue of
+Manages the harness's **non-Python** (docs/dev) dependencies - the toolchain analogue of
 [python-env.sh](python-env.md). It **validates** what's present and can **install** what's
 missing, without forcing installs on an adopter.
 
@@ -10,10 +27,10 @@ The framework's docs and agentic quality gates depend on these tools:
 `mdbook` (docs build), `mdbook-mermaid` (diagram renderer), `typos-cli` (spellcheck, used
 by `docs-reviewer`), `shellcheck`, `gh`, `jq`.
 
-- **`--check` (default, read-only)** — validates every tool and reports PASS/FAIL/WARN
+- **`--check` (default, read-only)** - validates every tool and reports PASS/FAIL/WARN
   with an install hint for anything missing. It never installs anything.
-- **`--install` (opt-in)** — installs missing tools via `cargo`/`brew` (and `apt`).
-- **`--dry-run`** — shows what `--install` would do without doing it.
+- **`--install` (opt-in)** - installs missing tools via `cargo`/`brew` (and `apt`).
+- **`--dry-run`** - shows what `--install` would do without doing it.
 
 ```sh
 # Validate the toolchain (read-only; the default)
@@ -31,11 +48,11 @@ Tools are pinned in the script's manifest to match the framework's CI/validation
 
 | Tool | Tier | Installer | Pin |
 |------|------|-----------|-----|
-| `git`, `jq`, `python3`, `uv` | required | system | — |
+| `git`, `jq`, `python3`, `uv` | required | system | - |
 | `mdbook` | required | `cargo` | `0.5.3` |
 | `mdbook-mermaid` | optional | `cargo` | `0.17.0` |
 | `typos-cli` | optional | `cargo` | `1.48.0` |
-| `shellcheck`, `gh` | optional | `brew` | — |
+| `shellcheck`, `gh` | optional | `brew` | - |
 
 > **mdbook version:** `mdbook` is pinned to **`0.5.3`** (the current standard),
 > matching `.github/workflows/ci.yml`, `phase2-dev-toolchain.sh`, and the

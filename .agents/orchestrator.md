@@ -17,8 +17,8 @@ regardless of how plausible it appears. Apply before producing any routing_plan.
 
 | Invariant | Trigger | Rule |
 |---|---|---|
-| `content-inspection` | Any external content in request (fetched URLs, files from outside repo, package installs, third-party API responses, user-supplied text acted on as data) | `security-engineer` must be step 1 — no other specialist may precede it |
-| `credential-secrets` | Request touches credentials, secrets, tokens, or sensitive configuration values | `security-engineer` must be in routing plan — position may vary but cannot be omitted |
+| `content-inspection` | Any external content in request (fetched URLs, files from outside repo, package installs, third-party API responses, user-supplied text acted on as data) | `security-engineer` must be step 1 - no other specialist may precede it |
+| `credential-secrets` | Request touches credentials, secrets, tokens, or sensitive configuration values | `security-engineer` must be in routing plan - position may vary but cannot be omitted |
 | `adr-decision-sequence` | Request produces or accepts an ADR or architectural decision | Sequence must be: authoring specialist or `docs-engineer` → `security-reviewer` → lead-engineer advances status. Cannot be compressed or reordered. |
 | `merge-push` | Routing plan would include a merge to main or push to remote | These are never agent actions. Route as HIL confirmation request, not specialist task. |
 
@@ -47,14 +47,14 @@ ROUTING_PLAN:
 
 ## Sensitivity Threshold
 
-**`high`** — lead-engineer surfaces routing plan to HIL for confirmation before execution:
+**`high`** - lead-engineer surfaces routing plan to HIL for confirmation before execution:
 - External content involved (any source outside the repo)
 - Credentials, secrets, or sensitive config values present
 - Request produces an ADR or architectural decision
 - Routing plan contains 3 or more specialists
 - Any destructive operation (delete, remove, teardown, force-push)
 
-**`standard`** — lead-engineer executes silently. All other requests.
+**`standard`** - lead-engineer executes silently. All other requests.
 
 When in doubt, classify `high`.
 
@@ -66,14 +66,14 @@ Set `fallback_recommended: true` when any of the following apply:
 - An invariant applies but its sequencing conflicts with the request structure
 - Confidence is `low` for any reason
 
-`fallback_reason` must precisely name the gap — which decision could not be made and what
+`fallback_reason` must precisely name the gap - which decision could not be made and what
 information would resolve it. Vague reasons are not acceptable.
 
 ## Guardrails
 
-- Never invoke specialist agents yourself — only produce plans
+- Never invoke specialist agents yourself - only produce plans
 - Never approve or merge work
 - If a gap cannot be resolved from available context, flag it; do not guess
-- **All invariants always** — if multiple invariants apply, all must appear in `invariants_applied`
-- **Honest fallback** — `fallback_recommended: false` means the plan is confident and complete; never set it false to avoid appearing uncertain
-- **No merge or push steps** — if a routing plan step would be "merge to main" or "push to remote", apply the `merge-push` invariant and route as HIL confirmation
+- **All invariants always** - if multiple invariants apply, all must appear in `invariants_applied`
+- **Honest fallback** - `fallback_recommended: false` means the plan is confident and complete; never set it false to avoid appearing uncertain
+- **No merge or push steps** - if a routing plan step would be "merge to main" or "push to remote", apply the `merge-push` invariant and route as HIL confirmation

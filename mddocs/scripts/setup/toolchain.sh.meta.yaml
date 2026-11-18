@@ -1,0 +1,14 @@
+id: SH-0016
+title: Docs/dev toolchain manager
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Architecture
+process: toolchain-manage
+owner: infra-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - toolchain.md
+    - ../../reference.architecture/bootstrap-new-project.md

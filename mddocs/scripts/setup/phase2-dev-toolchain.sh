@@ -5,17 +5,17 @@
 # PURPOSE
 #   Installs and verifies the Phase 2 docs and developer toolchain for an
 #   AgenticCore development environment on macOS (Apple Silicon M1+).
-#   Safe to re-run — all steps are idempotent.
+#   Safe to re-run - all steps are idempotent.
 #
 # WHAT IT INSTALLS
-#   mdbook, mdbook-mermaid   — docs site builder (via cargo)
-#   typos-cli                — spell checker for source files (via cargo)
-#   shellcheck               — shell script linter (via brew)
-#   gh                       — GitHub/Git CLI (via brew)
-#   jq                       — JSON processor (via brew)
+#   mdbook, mdbook-mermaid   - docs site builder (via cargo)
+#   typos-cli                - spell checker for source files (via cargo)
+#   shellcheck               - shell script linter (via brew)
+#   gh                       - GitHub/Git CLI (via brew)
+#   jq                       - JSON processor (via brew)
 #
 # WHAT IT DOES NOT DO
-#   gh auth login            — interactive; run manually after this script
+#   gh auth login            - interactive; run manually after this script
 #
 # PREREQUISITES
 #   Homebrew installed at /opt/homebrew
@@ -25,8 +25,8 @@
 #   bash mddocs/scripts/setup/phase2-dev-toolchain.sh
 #
 # EXIT CODES
-#   0  — all tools installed successfully
-#   1  — a required prerequisite is missing or an install step failed
+#   0  - all tools installed successfully
+#   1  - a required prerequisite is missing or an install step failed
 #
 # NOTE
 #   chmod +x mddocs/scripts/setup/phase2-dev-toolchain.sh
@@ -49,7 +49,7 @@ warn()    { echo -e "${YELLOW}[WARN]${NC}  $*"; }
 fail()    { echo -e "${RED}[FAIL]${NC}  $*" >&2; exit 1; }
 
 require() {
-  command -v "$1" &>/dev/null || fail "Required tool not found: $1 — install it before running this script."
+  command -v "$1" &>/dev/null || fail "Required tool not found: $1 - install it before running this script."
 }
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -72,18 +72,18 @@ if [[ ":$PATH:" != *":$CARGO_BIN:"* ]]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Step 2.1 — mdbook + mdbook-mermaid + typos-cli (cargo)
+# Step 2.1 - mdbook + mdbook-mermaid + typos-cli (cargo)
 # ---------------------------------------------------------------------------
-info "Step 2.1 — Installing mdbook, mdbook-mermaid, and typos-cli via cargo..."
+info "Step 2.1 - Installing mdbook, mdbook-mermaid, and typos-cli via cargo..."
 cargo install mdbook --version 0.5.3
 cargo install mdbook-mermaid --version 0.17.0
 cargo install typos-cli --version 1.48.0
 ok "mdbook $(mdbook --version) | mdbook-mermaid $(mdbook-mermaid --version) | typos $(typos --version)"
 
 # ---------------------------------------------------------------------------
-# Step 2.2 — shellcheck, gh, jq (brew)
+# Step 2.2 - shellcheck, gh, jq (brew)
 # ---------------------------------------------------------------------------
-info "Step 2.2 — Installing shellcheck, gh, jq via brew..."
+info "Step 2.2 - Installing shellcheck, gh, jq via brew..."
 brew install shellcheck gh jq
 ok "shellcheck $(/opt/homebrew/bin/shellcheck --version | awk '/version/{print $2}' | head -1)"
 ok "gh $(/opt/homebrew/bin/gh --version | awk '{print $3}' | head -1)"

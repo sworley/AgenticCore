@@ -38,7 +38,7 @@ resolve dependencies into an isolated cache on first run.
 
 ---
 
-## Step 1 — Warm the dependency cache (first run only)
+## Step 1 - Warm the dependency cache (first run only)
 
 On the first invocation, `uv` downloads each server's dependencies. Subsequent
 session starts are fully offline.
@@ -54,7 +54,7 @@ sleep 15 && kill %1
 
 Wait for the startup lines on stderr before killing (e.g. the indexed-corpus line
 for `mcp-rag-docs`, and the resolved data-path line for `review-ledger`). If they do
-not appear within 30 seconds, the cache warm is still in progress — wait longer or
+not appear within 30 seconds, the cache warm is still in progress - wait longer or
 check network connectivity.
 
 **Verify the cache is warm (no downloading output):**
@@ -67,7 +67,7 @@ sleep 6 && kill %1
 
 ---
 
-## Step 2 — OpenCode: verify the MCP entries in opencode.json
+## Step 2 - OpenCode: verify the MCP entries in opencode.json
 
 The `opencode.json` at the repository root already contains all three MCP entries
 with relative paths. No edits are needed. Verify they are present:
@@ -79,7 +79,7 @@ python3 -c "import json; d=json.load(open('opencode.json')); print(list(d.get('m
 
 ---
 
-## Step 3 — Verify the servers at session start
+## Step 3 - Verify the servers at session start
 
 **OpenCode:** Start a session. Confirm the MCP servers are connected:
 
@@ -100,7 +100,7 @@ If a server does not appear, follow the diagnostic steps in
 
 ---
 
-## Step 4 — Run smoke tests (optional but recommended)
+## Step 4 - Run smoke tests (optional but recommended)
 
 ```bash
 uv run mddocs/scripts/mcp-tests/test-mcp-rag-docs.py
@@ -109,11 +109,11 @@ uv run mddocs/scripts/mcp-tests/test-mcp-rag-docs.py
 Expected output:
 
 ```
-[PASS] search_docs 'session open checklist' — N result(s)
-[PASS] search_docs 'agent bench model' — N result(s)
-[PASS] search_docs 'BM25 index rebuild' — N results (acceptable)
-[PASS] list_docs — N document(s) indexed
-[PASS] get_doc 'adr/adr-0001-bootstrap-architecture.md' — content non-empty
+[PASS] search_docs 'session open checklist' - N result(s)
+[PASS] search_docs 'agent bench model' - N result(s)
+[PASS] search_docs 'BM25 index rebuild' - N results (acceptable)
+[PASS] list_docs - N document(s) indexed
+[PASS] get_doc 'adr/adr-0001-bootstrap-architecture.md' - content non-empty
 
 rag-docs: 5/5 passed
 ```
@@ -135,9 +135,9 @@ To pick up mid-session edits: close and reopen the session.
 
 ## Related
 
-- [mcp-rag-docs Operations Reference](../mcp/mcp-rag-docs/README.md) — detailed diagnostics and version bump
-- [Review Ledger Runbook](../operations/runbooks/review-ledger-runbook.md) — review-ledger server details and tools
-- [MCP Servers Index](../mcp/index.md) — server inventory
-- [ADR-0002](../adr/adr-0002-mcp-rag-docs.md) — rag-docs design decisions
-- [ADR-0003](../adr/adr-0003-mcp-stdio-architecture.md) — stdio MCP architecture
-- [Provision Worker Bench](provision-worker-bench.md) — includes cache warm step
+- [mcp-rag-docs Operations Reference](../mcp/mcp-rag-docs/README.md) - detailed diagnostics and version bump
+- [Review Ledger Runbook](../operations/runbooks/review-ledger-runbook.md) - review-ledger server details and tools
+- [MCP Servers Index](../mcp/index.md) - server inventory
+- [ADR-0002](../adr/adr-0002-mcp-rag-docs.md) - rag-docs design decisions
+- [ADR-0003](../adr/adr-0003-mcp-stdio-architecture.md) - stdio MCP architecture
+- [Provision Worker Bench](provision-worker-bench.md) - includes cache warm step

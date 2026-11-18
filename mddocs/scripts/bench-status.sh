@@ -1,5 +1,5 @@
 #!/bin/sh
-# bench-status.sh — Show status of all git worktrees
+# bench-status.sh - Show status of all git worktrees
 #
 # Usage: ./scripts/bench-status.sh [--check] [--stale]
 #
@@ -13,7 +13,7 @@
 #
 # Also prints an advisory NOTICE (stdout, does not affect exit code) if no
 # `.00` HIL worktree is found among the enumerated worktrees, along with the
-# command to provision one. This is advisory only — the script never creates
+# command to provision one. This is advisory only - the script never creates
 # or modifies the `.00` worktree itself.
 #
 # Exit codes:
@@ -89,24 +89,27 @@ done < "$worktree_tmp"
 
 rm -f "$worktree_tmp"
 
-# .00 HIL worktree presence check — advisory only, never creates or modifies .00.
+# .00 HIL worktree presence check - advisory only, never creates or modifies .00.
 # Re-queries worktree list rather than reusing the table loop above for
-# simplicity/isolation — the table loop's temp file is scoped to that section.
+# simplicity/isolation - the table loop's temp file is scoped to that section.
 if ! git worktree list --porcelain | grep -qE '^worktree .*\.00$'; then
   echo ""
   echo "NOTICE: no .00 HIL worktree found."
   echo "  The .00 management plane is the HIL's personal workspace (Pattern H, branch"
   echo "  workspace/owner). A fresh workspace does not have it until it is provisioned."
-  echo "  On first startup the lead-engineer provisions it automatically — run:"
+  echo "  On first startup the lead-engineer provisions it automatically - run:"
   echo "    ./mddocs/scripts/provision-bench.sh --pattern h"
   echo "  Then register .00 in bench-registry.yaml with \`locked: true\` so the"
   echo "  worktree-teardown guardrail protects it from day one."
 fi
 
-# Stale bench detection — requires python3 and tasks.yaml
+# Stale bench detection - requires python3 and tasks.yaml
 if [ "$STALE_MODE" -eq 1 ]; then
-  # Prefer uv run (has pyyaml in the project env), fall back to bare python3
-  if command -v uv >/dev/null 2>&1; then
+  # Prefer the harness .venv (created at adopt time by adopt.sh -> python-env.sh,
+  # which installs pyyaml from requirements.txt), then uv run, then bare python3.
+  if [ -x ".venv/bin/python" ]; then
+    PY=".venv/bin/python"
+  elif command -v uv >/dev/null 2>&1; then
     PY="uv run python3"
   elif command -v python3 >/dev/null 2>&1; then
     PY="python3"
@@ -115,9 +118,9 @@ if [ "$STALE_MODE" -eq 1 ]; then
   fi
 
   if [ -z "$PY" ]; then
-    echo "WARN: python3 not found — skipping stale bench detection"
+    echo "WARN: python3 not found - skipping stale bench detection"
   elif [ ! -f "tasks.yaml" ]; then
-    echo "WARN: tasks.yaml not found — skipping stale bench detection"
+    echo "WARN: tasks.yaml not found - skipping stale bench detection"
   else
     echo ""
     stale_output=$(eval "$PY" - <<'PYEOF'
@@ -125,15 +128,18 @@ import subprocess, re, sys
 try:
     import yaml
 except ImportError:
-    print("WARN: pyyaml not installed — skipping stale bench detection")
+    print("WARN: pyyaml not installed - skipping stale bench detection")
     sys.exit(0)
 
 with open("tasks.yaml") as f:
-    tasks = yaml.safe_load(f) or []
+    doc = yaml.safe_load(f) or {}
+    # tasks.yaml is a mapping with a top-level `tasks:` list; unwrap it and
+    # tolerate a bare list for robustness.
+    tasks = doc.get("tasks", []) if isinstance(doc, dict) else doc
 
 terminal_ids = {
     t["id"] for t in tasks
-    if t.get("status") in ("merged", "cancelled")
+    if isinstance(t, dict) and t.get("status") in ("merged", "cancelled")
 }
 
 result = subprocess.run(
@@ -156,7 +162,7 @@ for line in result.stdout.splitlines():
         path = branch = None
 
 if stale:
-    print(f"STALE BENCHES — {len(stale)} bench(es) on completed/cancelled tasks:")
+    print(f"STALE BENCHES - {len(stale)} bench(es) on completed/cancelled tasks:")
     for p, b, tid in stale:
         print(f"  {tid}  {b}  ({p})")
     print("  Run session-close checklist to tear these down.")

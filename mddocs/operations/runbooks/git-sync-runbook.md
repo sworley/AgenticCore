@@ -1,4 +1,4 @@
-# Runbook: git-sync — Git Workspace Sync
+# Runbook: git-sync - Git Workspace Sync
 
 **Script:** `mddocs/scripts/git-sync.sh`
 **Purpose:** Clone or update every project in a Git group into the current
@@ -14,7 +14,7 @@ lead-engineer to populate and refresh bench worktrees.
 | `jq` | `brew install jq` |
 | `curl` | system |
 | `git` | system |
-| `pass` | `brew install pass` (optional — needed for profile-based token retrieval) |
+| `pass` | `brew install pass` (optional - needed for profile-based token retrieval) |
 | `zsh` | system |
 
 ---
@@ -28,7 +28,7 @@ Create `~/.config/git-sync/profiles` with one entry per Git instance:
 default    https://git.example.com   git/example.internal.com/pat  example-group
 ```
 
-Format: `<name> <url> <pass-path> <default-group>` — whitespace separated.
+Format: `<name> <url> <pass-path> <default-group>` - whitespace separated.
 Lines starting with `#` are comments.
 
 ---
@@ -47,7 +47,7 @@ Lines starting with `#` are comments.
 # Override group
 ./mddocs/scripts/git-sync.sh --profile default --group my-other-group
 
-# Dry run — shows what would change, no writes
+# Dry run - shows what would change, no writes
 ./mddocs/scripts/git-sync.sh --dry-run
 
 # Supply token directly (non-interactive scripts only)
@@ -74,7 +74,7 @@ GIT_SYNC_MODE=update ./mddocs/scripts/git-sync.sh
 
 ## Modes
 
-### `sync` — Clone or update from Git API
+### `sync` - Clone or update from Git API
 
 - Queries the Git API for all projects in the target group (paginated)
 - For each project:
@@ -83,21 +83,21 @@ GIT_SYNC_MODE=update ./mddocs/scripts/git-sync.sh
 - Checks out the default branch (main or master) after clone/pull
 - Requires a valid token with at least `read_api` scope
 
-### `update` — Local pull only
+### `update` - Local pull only
 
 - Traverses the current directory for `.git` repos (max depth 3)
 - Skips directories whose name starts with `.` (bench worktrees)
-- Runs `git pull` in each — no API calls, no token needed
+- Runs `git pull` in each - no API calls, no token needed
 - Use after a network-isolated session or to refresh without re-querying Git
 
 ---
 
 ## Security Notes
 
-- Tokens are retrieved via `pass` — never embedded in URLs or `.git/config`
+- Tokens are retrieved via `pass` - never embedded in URLs or `.git/config`
 - A temporary `GIT_ASKPASS` script is created in `/tmp` and deleted on exit
 - `GIT_SYNC_TOKEN` env var is available for CI use but should not be used
-  interactively — prefer `pass`
+  interactively - prefer `pass`
 - The token is never written to disk, logs, or git history
 
 ---
@@ -142,11 +142,11 @@ git commit -m "chore: gitignore synced namespace my-new-subgroup"
 - Run `gpg --card-status` to wake the agent
 
 **`Pull failed (local changes?)`**
-- The repo has uncommitted changes — resolve before re-running
+- The repo has uncommitted changes - resolve before re-running
 - Or use `--mode update` to skip repos with conflicts
 
 **Token retrieved but API returns 401**
-- Token may be expired — rotate via Git UI and update pass store
+- Token may be expired - rotate via Git UI and update pass store
 - See runbook: [Rotate Git PAT](rotate-git-pat.md)
 
 ---

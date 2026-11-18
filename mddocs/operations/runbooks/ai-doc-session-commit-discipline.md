@@ -29,7 +29,7 @@ Use this runbook whenever:
 - **Access:** Read/write access to the collection repository and its remote
 - **Tools:** `git` (any recent version)
 - **State:** Working tree is clean on `main`; no uncommitted changes
-- **Reference:** `PROCESS.md` (collection root) — read it before executing any step
+- **Reference:** `PROCESS.md` (collection root) - read it before executing any step
   in the merge sequence. It is the authoritative contract for agent workflow governance.
 
 ```bash
@@ -44,7 +44,7 @@ Expected: `nothing to commit, working tree clean` on the `main` branch.
 
 ## Steps
 
-### Phase 1 — Branch Creation
+### Phase 1 - Branch Creation
 
 **Who:** Agent (docs-engineer, ops-engineer, etc.) or the human initiating the task.
 
@@ -87,11 +87,11 @@ Expected: `nothing to commit, working tree clean` on the `main` branch.
 
 ---
 
-### Phase 2 — Work and Commit on the Branch
+### Phase 2 - Work and Commit on the Branch
 
 **Who:** Agent or human.
 
-4. Perform all work on the branch. Do not commit directly to `main` — this is an absolute
+4. Perform all work on the branch. Do not commit directly to `main` - this is an absolute
    prohibition defined in `PROCESS.md`.
 
 5. Stage and commit changes with a conventional commit message:
@@ -113,12 +113,12 @@ Expected: `nothing to commit, working tree clean` on the `main` branch.
 
 ---
 
-### Phase 3 — Security Inspection Gate (External Content Only)
+### Phase 3 - Security Inspection Gate (External Content Only)
 
 **Who:** lead-engineer, with security-engineer.
 
-7. If the work involved ingesting external content — fetched URLs, files from outside the
-   collection, user-supplied text treated as data, or third-party API responses — the
+7. If the work involved ingesting external content - fetched URLs, files from outside the
+   collection, user-supplied text treated as data, or third-party API responses - the
    security inspection gate is **mandatory** before any agent acts on that content.
 
    Protocol (from `PROCESS.md`):
@@ -135,14 +135,14 @@ Expected: `nothing to commit, working tree clean` on the `main` branch.
    | `BLOCK` | Content is unsafe | Halt pipeline; surface finding to user; discard content |
 
    A `REVIEW` or `BLOCK` verdict is never overridden by an agent. Only the user can clear
-   a `REVIEW`. A `BLOCK` cannot be cleared — the content is discarded.
+   a `REVIEW`. A `BLOCK` cannot be cleared - the content is discarded.
 
    For documentation-only sessions that do not ingest external content, this phase is a
    no-op.
 
 ---
 
-### Phase 4 — Human Review and Acceptance Gate
+### Phase 4 - Human Review and Acceptance Gate
 
 **Who:** Human (lead reviewer). Agents present; the human decides.
 
@@ -158,7 +158,7 @@ Expected: `nothing to commit, working tree clean` on the `main` branch.
 10. Work is **not complete** until the human provides an explicit acceptance signal
     (from `PROCESS.md`):
 
-    Acceptable signals: "lgtm", "This looks good to merge", "Approved — go ahead"
+    Acceptable signals: "lgtm", "This looks good to merge", "Approved - go ahead"
 
     Not acceptance: "Looks okay I guess", "Fine", _(no response)_
 
@@ -166,7 +166,7 @@ Expected: `nothing to commit, working tree clean` on the `main` branch.
 
 ---
 
-### Phase 5 — Merge Sequence
+### Phase 5 - Merge Sequence
 
 **Who:** lead-engineer, executed only after explicit human acceptance.
 
@@ -181,7 +181,7 @@ Expected: `nothing to commit, working tree clean` on the `main` branch.
 
     ```bash
     git merge --no-ff docs/TC-009-commit-discipline-runbook \
-      -m "Merge branch 'docs/TC-009-commit-discipline-runbook' — add commit discipline runbook"
+      -m "Merge branch 'docs/TC-009-commit-discipline-runbook' - add commit discipline runbook"
     ```
 
     Expected: a merge commit appears on `main` with the branch history intact.
@@ -253,10 +253,10 @@ git commit
 
 ## Related
 
-- `PROCESS.md` (collection root) — authoritative agent workflow contract; defines
+- `PROCESS.md` (collection root) - authoritative agent workflow contract; defines
   the human acceptance gate, security inspection gate, branch convention, and merge sequence
-- [Configure Agent Namespace](configure-agents.md) — namespace structure and MCP setup
-- [Agent Session Tracking](agent-session-tracking.md) — cross-session task continuity and audit log
-- `PROCESS.md` § *Security Gate* — full verdict table and escalation protocol
-- `PROCESS.md` § *Human Acceptance Gate* — acceptance signal examples and ambiguous response list
-- `tasks.yaml` (collection root) — task queue; update status to `merged` after landing
+- [Configure Agent Namespace](configure-agents.md) - namespace structure and MCP setup
+- [Agent Session Tracking](agent-session-tracking.md) - cross-session task continuity and audit log
+- `PROCESS.md` § *Security Gate* - full verdict table and escalation protocol
+- `PROCESS.md` § *Human Acceptance Gate* - acceptance signal examples and ambiguous response list
+- `tasks.yaml` (collection root) - task queue; update status to `merged` after landing

@@ -1,8 +1,18 @@
+---
+document_type: spec
+status: active
+lifecycle: active
+primary: true
+redirect: management/architecture/system/AgenticCore-Spec.md
+domain: Management
+purpose: Authoritative harness specification and governance anchor
+---
+
 # AgenticCore Specification
 
 **Version:** v0.4
 **License:** MIT
-**Status:** Draft — pending HIL review
+**Status:** Draft - pending HIL review
 
 ---
 
@@ -14,18 +24,18 @@ orchestrator.
 
 It is designed to be:
 
-- **Provider-agnostic** — AI coding toolchains — including opencode and adapter-compatible
-  tools — are pluggable adapters; swapping or adding them does not change agent logic.
-- **Self-hosted** — designed to run on a local Kubernetes cluster (`harness-cluster`), not dependent
+- **Provider-agnostic** - AI coding toolchains - including opencode and adapter-compatible
+  tools - are pluggable adapters; swapping or adding them does not change agent logic.
+- **Self-hosted** - designed to run on a local Kubernetes cluster (`harness-cluster`), not dependent
   on external AI services for its own control plane.
-- **Opensource-ready** — no customer data, no internal URLs, no hardcoded credentials,
+- **Opensource-ready** - no customer data, no internal URLs, no hardcoded credentials,
   no organization-specific metadata of any kind.
-- **Each agentic team starts in its own repo** — agents commit their own state, push
+- **Each agentic team starts in its own repo** - agents commit their own state, push
   artifacts, open PRs on each other. The collaboration surface between agents is the
   version control platform (Git hosting), not a bespoke message bus.
 
 AgenticCore provides the structural scaffolding. It does not provide the agents themselves
-— those are defined per project using the harness.
+- those are defined per project using the harness.
 
 ---
 
@@ -35,7 +45,7 @@ AgenticCore deliberately excludes the following from its scope:
 
 | Not in scope | Reason |
 |---|---|
-| LLM inference provider | Inference is a plug — addressed via ExternalName service, managed outside the harness |
+| LLM inference provider | Inference is a plug - addressed via ExternalName service, managed outside the harness |
 | CI/CD pipeline | General build/test/deploy is not an agent concern |
 | Git hosting hosting or administration | Git hosting is an optional integration point consumed by agents, not managed by the harness |
 | Identity provider / HBAC | Authentication and authorization are infrastructure concerns, not agent harness concerns |
@@ -50,7 +60,7 @@ AgenticCore deliberately excludes the following from its scope:
 
 | Abstraction | Definition |
 |---|---|
-| **ADR** | Architecture Decision Record. A forward-only, append-only record that documents a significant decision, its context, consequences, and implementation notes. ADRs are the provenance backbone — they connect tasks to the rules that govern them. |
+| **ADR** | Architecture Decision Record. A forward-only, append-only record that documents a significant decision, its context, consequences, and implementation notes. ADRs are the provenance backbone - they connect tasks to the rules that govern them. |
 | **Bench** | A named git worktree of the harness repo. Benches are the isolation boundary for agent sessions. |
 | **Agent** | A role definition consisting of a context file, a body (.md), metadata (_meta.yaml), and generated tool-specific output files. An agent has a purpose, a tool set, and HIL gate behavior. |
 | **Task** | A unit of work recorded in `tasks.yaml`. Tasks have a lifecycle, acceptance criteria, and an assigned agent. |
@@ -82,9 +92,9 @@ tier matching, not on ad-hoc decision making.
 
 | Tier | Path | Profile | Scheduling |
 |---|---|---|---|
-| 1 | C — Shared Runtime | Generalist, prompt-driven, fast response | Long-running Deployment |
-| 2 | B — Service Pool | Specialist, targeted tool set, known skills | Long-running Deployment, HPA-scalable |
-| 3 | A — Ephemeral Jobs | Custom sandbox, isolated, greenfield | K8s Job, created on demand, cleaned up after |
+| 1 | C - Shared Runtime | Generalist, prompt-driven, fast response | Long-running Deployment |
+| 2 | B - Service Pool | Specialist, targeted tool set, known skills | Long-running Deployment, HPA-scalable |
+| 3 | A - Ephemeral Jobs | Custom sandbox, isolated, greenfield | K8s Job, created on demand, cleaned up after |
 
 ### 4.2 Cluster Topology
 
@@ -115,9 +125,9 @@ tier matching, not on ad-hoc decision making.
 | Node | Role | K8s Scheduler |
 |---|---|---|
 | `harness-cluster` | Control plane + sole K8s worker + shared storage | Accepts all Tier 1/2/3 pods |
-| `inference-node-1` (GPU node #1) | Bare-metal vLLM head node — `<model-id>` node 1/2 | Tainted `NoSchedule` — inference only, outside K8s |
-| `inference-node-2` (GPU node #2) | Bare-metal vLLM worker — `<model-id>` node 2/2 | Tainted `NoSchedule` — inference only, outside K8s |
-| Operator workstation | Interactive dev seat, local orchestrator CLI | Outside K8s — API consumer only |
+| `inference-node-1` (GPU node #1) | Bare-metal vLLM head node - `<model-id>` node 1/2 | Tainted `NoSchedule` - inference only, outside K8s |
+| `inference-node-2` (GPU node #2) | Bare-metal vLLM worker - `<model-id>` node 2/2 | Tainted `NoSchedule` - inference only, outside K8s |
+| Operator workstation | Interactive dev seat, local orchestrator CLI | Outside K8s - API consumer only |
 
 Both inference nodes are 100% committed to the distributed vLLM instance. Stopping or
 interrupting vLLM breaks all AI routing across the network. Neither node has spare VRAM
@@ -128,7 +138,7 @@ fabric and is not routable through K8s CNI.
 
 ```
 <reference-archive>/
-└── <ref-archive>/     ← _ref/ — READ-ONLY, DO NOT MODIFY
+└── <ref-archive>/     ← _ref/ - READ-ONLY, DO NOT MODIFY
     ├── AgenticCore/            ← AGENTICCORE_SPEC.md lives here
     ├── agents/
     ├── .agents/
@@ -144,7 +154,7 @@ hard violation.
 ### 4.4 Architecture Decision Records (ADRs)
 
 ADRs are the load-bearing governance backbone of the harness. They are not optional
-documentation — they are the mechanism by which behavioral rules, guardrails, and
+documentation - they are the mechanism by which behavioral rules, guardrails, and
 architectural constraints acquire provenance, enforce continuity, and support continuous
 improvement.
 
@@ -194,23 +204,23 @@ Optional. Reference scripts, runbooks, config files that implement this decision
 
 ## Related
 
-- ADR-XXXX — related decision
-- `path/to/implementation/file` — artifact this ADR governs
+- ADR-XXXX - related decision
+- `path/to/implementation/file` - artifact this ADR governs
 ```
 
 #### ADR Lifecycle
 
 ```
-proposed   — under discussion; not yet binding on agent behavior
+proposed   - under discussion; not yet binding on agent behavior
   ↓ HIL accepts
-accepted   — active; in effect; governs tickets and agent behavior
+accepted   - active; in effect; governs tickets and agent behavior
   ↓ superseded by later ADR
-superseded — replaced; prior ADR text preserved; superseding ADR links to it
+superseded - replaced; prior ADR text preserved; superseding ADR links to it
   ↓ no longer applicable (rare)
-deprecated — removed from active consideration; reason recorded
+deprecated - removed from active consideration; reason recorded
 ```
 
-**Only HIL transitions status.** No agent — including lead-engineer — may move an ADR
+**Only HIL transitions status.** No agent - including lead-engineer - may move an ADR
 from `proposed` to `accepted`. Transition to `superseded` requires HIL approval and a
 linking superseding ADR.
 
@@ -235,8 +245,12 @@ Additional ADRs are added as the harness evolves.
 
 #### ADR Index
 
-ADR-####-short-title.md files live in `mddocs/adr/`. The index file `mddocs/adr/index.md`
-is the authoritative registry and is updated whenever an ADR changes status.
+ADR-####-short-title.md files live in `mddocs/management/governance/decisions/`
+(ADR-0029 onward, forward-only) or `mddocs/adr/` (historical ADR-0000–0028,
+the canonical historical record). The active index
+`mddocs/management/governance/decisions/index.md` is `primary: true` and the
+authoritative registry for new ADRs; `mddocs/adr/index.md` is
+`primary: false, lifecycle: superseded` and redirects to it (ADR-0029 D1/D2; ADR-0030).
 
 ```markdown
 | ID | Title | Status | Date |
@@ -256,7 +270,7 @@ sync script.
 
 ```
 AgenticCore/
-├── .agents/                      ← CANONICAL SOURCE — edit here only
+├── .agents/                      ← CANONICAL SOURCE - edit here only
 │   ├── _meta.yaml                ← Frontmatter mapping per tool
 │   ├── orchestrator.md           ← Agent body definitions
 │   ├── docs-engineer.md
@@ -265,7 +279,7 @@ AgenticCore/
 │
 ├── <toolchain>-agents/           ← AUTO-GENERATED by sync-agents.sh (toolchain-specific format)
 ├── .opencode/agents/             ← AUTO-GENERATED by sync-agents.sh (opencode format)
-├── .codex/agents/                ← PLACEHOLDER — adapter deferred to backlog
+├── .codex/agents/                ← PLACEHOLDER - adapter deferred to backlog
 │
 └── .agents/sync-agents.sh        ← Single writer for all generated output
 ```
@@ -274,8 +288,8 @@ AgenticCore/
 
 Each agent is defined by two files:
 
-- `_meta.yaml` — one YAML entry per agent, containing description and per-tool frontmatter
-- `<name>.md` — agent body in a vendor-neutral Markdown format
+- `_meta.yaml` - one YAML entry per agent, containing description and per-tool frontmatter
+- `<name>.md` - agent body in a vendor-neutral Markdown format
 
 Adding a new agent requires editing only these two files, then running `sync-agents.sh`.
 
@@ -285,8 +299,8 @@ Adding a new agent requires editing only these two files, then running `sync-age
 Usage: .agents/sync-agents.sh [--dry-run] [--clean] [<agent-name>]
 
 Output:
-  <toolchain>-agents/<name>.md — toolchain-specific agent format
-  .opencode/agents/<name>.md  — opencode agent format
+  <toolchain>-agents/<name>.md - toolchain-specific agent format
+  .opencode/agents/<name>.md  - opencode agent format
 
 Failure isolation:
   A failure in one tool's generation must not affect the others.
@@ -300,18 +314,18 @@ Policy distribution runs unconditionally:
 
 ```yaml
 <agent-name>:
-  description: "<one sentence — what the agent does and when to invoke it>"
+  description: "<one sentence - what the agent does and when to invoke it>"
   <tool>:
     name: <agent-name>
-    tools: [Read, Bash, ...]       # optional — omit for no restriction
+    tools: [Read, Bash, ...]       # optional - omit for no restriction
   opencode:
     mode: primary | subagent
-    model: <model-id>              # optional — omit for opencode.json default
+    model: <model-id>              # optional - omit for opencode.json default
     permission:                    # optional
       bash: ask | allow | deny
       edit: deny
   codex:
-    # TO BE DEFINED — adapter not yet implemented
+    # TO BE DEFINED - adapter not yet implemented
 ```
 
 ### Extending to a New Tool Runtime
@@ -345,7 +359,7 @@ AgenticCore/
 
 | Bench | Path | Role | Notes |
 |---|---|---|---|
-| `.00` | `AgenticCore.00` | Owner workspace | IDE work, R&D, scratch — never assign agent tasks here |
+| `.00` | `AgenticCore.00` | Owner workspace | IDE work, R&D, scratch - never assign agent tasks here |
 | `.01` | `AgenticCore.01` | Baseline-steward + Lead-engineer | Owns `main`, remote, task queue, bench lifecycle |
 | `.02`+ | `AgenticCore.02`, `.03` | Worker benches | Execute assigned tasks; do not merge, do not push |
 
@@ -401,7 +415,7 @@ consumed directly by any compatible AI coding toolchain.
     - "<criterion 1>"
     - "<criterion 2>"
 
-  adr: [ADR-XXXX]               # optional — ADR(s) authorizing this change; required if scope involves governed behavior
+  adr: [ADR-XXXX]               # optional - ADR(s) authorizing this change; required if scope involves governed behavior
   priority: P0 | P1 | P2 | P3
   size: XS | S | M | L | XL
   labels: [docs, security, feature, chore]
@@ -441,9 +455,9 @@ backlog
 
 **Rules:**
 - Only `.01` (lead-engineer) writes to `tasks.yaml`.
-- Agent task work never happens directly in `.01` — if a task requires building, running, or generating artifacts, assign it to a worker bench.
+- Agent task work never happens directly in `.01` - if a task requires building, running, or generating artifacts, assign it to a worker bench.
 - A task moves from `in_progress` to `branch_ready` only when the artifact is committed and pushed.
-- `accepted` requires explicit HIL approval — no agent may self-approve.
+- `accepted` requires explicit HIL approval - no agent may self-approve.
 
 ---
 
@@ -453,8 +467,8 @@ backlog
 
 | Role | Purpose | May modify files? |
 |---|---|---|
-| **Implementer** | Produces the artifact | Yes — writes and edits |
-| **Evaluator** | Reviews artifact quality before acceptance | No — verdict only |
+| **Implementer** | Produces the artifact | Yes - writes and edits |
+| **Evaluator** | Reviews artifact quality before acceptance | No - verdict only |
 
 This model applies to both documentation and security:
 
@@ -491,7 +505,7 @@ pass through the security gate and Invariant 2 before execution.
 
 ### No Self-Approval
 
-No agent — including `lead-engineer`, `baseline-steward`, and `orchestrator` — may move
+No agent - including `lead-engineer`, `baseline-steward`, and `orchestrator` - may move
 a task from `branch_ready` to `accepted`. Acceptance is an exclusively human action.
 
 ---
@@ -571,7 +585,7 @@ Git hosting's native push-mirror support makes this a single configuration chang
 | Concern | Owner | Relationship to AgenticCore |
 |---|---|---|
 | Git hosting (Git, PRs, issues, API) | Infrastructure team (optional integration) | Agents call Git hosting API; harness does not manage it |
-| storage / backup | Infrastructure team | Runtime state, large artifacts, backup — outside harness |
+| storage / backup | Infrastructure team | Runtime state, large artifacts, backup - outside harness |
 | K8s cluster (harness-cluster) | Infrastructure team | Harness runs on it; harness does not manage the cluster lifecycle |
 | Inference (vLLM on GPU node) | Infrastructure team | LLM endpoint accessed via ExternalName; harness does not manage it |
 | Secrets / credentials | Infrastructure team | Injected via environment or vault at deploy-time |
@@ -603,29 +617,29 @@ consumed via configuration, not managed by the harness.
 
 | Content | Action |
 |---|---|
-| `.agents/` layer (canonical source, `_meta.yaml`, `sync-agents.sh`) | Carry forward verbatim — pattern is correct |
+| `.agents/` layer (canonical source, `_meta.yaml`, `sync-agents.sh`) | Carry forward verbatim - pattern is correct |
 | `tasks.yaml` schema | Carry forward, sanitize task IDs and labels |
 | `PROCESS.md` role model | Carry forward, strip org-specific references |
-| Bench model (`.00`, `.01`, `.02+`) | Carry forward — SWE convention is universal |
-| HIL gate pattern (two-role implementer/evaluator) | Carry forward — universal value |
+| Bench model (`.00`, `.01`, `.02+`) | Carry forward - SWE convention is universal |
+| HIL gate pattern (two-role implementer/evaluator) | Carry forward - universal value |
 | Core ADRs (§4.4, eight from v0.4) | Carry forward verbatim with same IDs into `mddocs/adr/`; build new index |
 | `mddocs/` documentation structure | Carry forward pattern, rewrite content for opensource audience |
 | `<toolchain>-specific/` and `.opencode/agents/` | Regenerate from `.agents/` via `sync-agents.sh` |
-| `README.md` | Rewrite — remove customer-specific references |
-| `core-context.md` | Rewrite — remove org-specific standing rules |
-| `opencode.json` | Sanitize — remove internal model IDs, environment-specific URLs |
-| `_config/` | Review — keep credential-identity policy, remove org-specific content |
+| `README.md` | Rewrite - remove customer-specific references |
+| `core-context.md` | Rewrite - remove org-specific standing rules |
+| `opencode.json` | Sanitize - remove internal model IDs, environment-specific URLs |
+| `_config/` | Review - keep credential-identity policy, remove org-specific content |
 | `CHANGELOG.md`, `release-notes/` | Truncate to relevant public history or start fresh at v0.4 |
-| Customer-specific remote URLs | Remove entirely — replace with `<git-host>/<org>/<repo>` template in `adopt.sh` |
+| Customer-specific remote URLs | Remove entirely - replace with `<git-host>/<org>/<repo>` template in `adopt.sh` |
 | Cloud-provider-specific references | Remove entirely |
-| Customer project identifiers | Remove — replace with generic project naming |
+| Customer project identifiers | Remove - replace with generic project naming |
 | Customer-specific standing rules in `_config/` | Remove |
 | Non-core ADRs (the v0.4 reference archive's remaining ADR records) | Review individually; adopt if still relevant; drop if tied to removed content |
 
 ### Migration Discipline
 
 - All migration is done by **building forward from this spec**, not by editing v0.4 in place.
-- v0.4 `<ref-archive>/` is the `_ref/` archive — read-only, never modified.
+- v0.4 `<ref-archive>/` is the `_ref/` archive - read-only, never modified.
 - Each deliverable is a single commit. Task queue enforces atomicity per session.
 - No AI session attempts more than one deliverable.
 

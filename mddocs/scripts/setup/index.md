@@ -1,18 +1,26 @@
+---
+id: SDX-004
+document_type: index
+status: active
+lifecycle: active
+domain: Management
+---
+
 # Onboarding Scripts
 
 Scripts for bootstrapping and verifying the AgenticCore development environment.
 
 | Script | Reference | Purpose |
 |--------|-----------|---------|
-| [adopt.sh](adopt.md) | [Bootstrap New Project](../../reference.architecture/bootstrap-new-project.md) | Single-command adopter onboarding — wraps README Quick Start (Adopter) steps 3-7 (create target, run `export-framework.sh`, provision the Python env, validate, generate the agent adapter) |
-| [python-env.sh](python-env.md) | [Bootstrap New Project](../../reference.architecture/bootstrap-new-project.md) | Create the project-local `.venv`, install `requirements.txt`, validate the harness's Python deps (`mcp`, `yaml`, `fastmcp`) — and `--freeze` to regenerate the pinned snapshot |
+| [adopt.sh](adopt.md) | [Bootstrap New Project](../../reference.architecture/bootstrap-new-project.md) | Single-command adopter onboarding - wraps README Quick Start (Adopter) steps 3-7 (create target, run `export-framework.sh`, provision the Python env, validate, generate the agent adapter) |
+| [python-env.sh](python-env.md) | [Bootstrap New Project](../../reference.architecture/bootstrap-new-project.md) | Create the project-local `.venv`, install `requirements.txt`, validate the harness's Python deps (`mcp`, `yaml`, `fastmcp`) - and `--freeze` to regenerate the pinned snapshot |
 | [toolchain.sh](toolchain.md) | [Bootstrap New Project](../../reference.architecture/bootstrap-new-project.md) | Manage the non-Python docs/dev toolchain (validate + opt-in install: `mdbook`, `mdbook-mermaid`, `typos-cli`, `shellcheck`, `gh`, `jq`) |
-| `tool-adapter.sh` | [tooling-contract](../../reference.architecture/tooling-contract.md) | Generate/configure the agent-runtime adapter (opencode/codex) — regenerates `.opencode/agents/` and writes a start script |
+| `tool-adapter.sh` | [tooling-contract](../../reference.architecture/tooling-contract.md) | Generate/configure the agent-runtime adapter (opencode/codex) - regenerates `.opencode/agents/` and writes a start script |
 | `model-distribution.sh` | [tooling-contract](../../reference.architecture/tooling-contract.md) | Tailor/review the per-agent LLM model distribution (write `model:` into `.opencode/agents/*.md`) |
-| [phase2-dev-toolchain.sh](phase2-dev-toolchain.md) | — | Install the Phase 2 docs and developer toolchain (mdbook, typos, shellcheck, gh, jq) via cargo and brew |
-| [verify-toolchain.sh](verify-toolchain.md) | — | End-state verification — checks all required tools and reports PASS/WARN/FAIL |
+| [phase2-dev-toolchain.sh](phase2-dev-toolchain.md) | - | Install the Phase 2 docs and developer toolchain (mdbook, typos, shellcheck, gh, jq) via cargo and brew |
+| [verify-toolchain.sh](verify-toolchain.md) | - | End-state verification - checks all required tools and reports PASS/WARN/FAIL |
 
-Run from any directory — all scripts derive the collection root from their own location:
+Run from any directory - all scripts derive the collection root from their own location:
 
 ```bash
 # Provision the project-local Python virtualenv (create .venv, install, validate)
@@ -32,4 +40,4 @@ opencode reads the committed `opencode.json` directly, so no machine-local
 generation step is required. For machine-specific overrides, use the gitignored
 `opencode.json.local`.
 
-- [Getting Started](../../onboarding/getting-started.md) — full onboarding procedure for new users
+- [Getting Started](../../onboarding/getting-started.md) - full onboarding procedure for new users

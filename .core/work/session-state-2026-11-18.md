@@ -1,17 +1,19 @@
-# Session State — 2026-11-18 (taxonomy adoption / AC-0013 + AC-0014 + pyyaml fix; pre-dev-PR)
+# Session State — 2026-11-18 (taxonomy adoption / AC-0013 + AC-0014 + pyyaml fix; merged to dev, ready for next item)
 
 Per-session resume note (tracked). Read at session open to restore focus before
 checking `tasks.yaml`. See `.core/work/README.md` for the schema.
 
 ## Branch / position
 - Repo: `/home/sworley/files/sandbox/AgenticCore.v1.01/AgenticCore`
-- Branch: `feat/taxonomy-adoption` — **in sync** with `origin/feat/taxonomy-adoption` (HEAD `2128494`)
+- Branch: `feat/taxonomy-adoption` — **in sync** with `origin/feat/taxonomy-adoption` (HEAD `dcf2060`)
 - Working tree: clean; all AC-0013/AC-0014 commits GPG-signed (`[AC-0013]` / `[AC-0014]`)
-- Integration target: `dev` (next release); `main` is merge-only (ADR-0004)
+- **Taxonomy/shipping-gate work is MERGED to `dev`** (PR #24, `f7aa58e`); the
+  feature branch has been removed. New work starts **on `dev`**. `main` is
+  merge-only (ADR-0004).
 
-## Session outcome — branch is merge-ready; next gate is the `dev` integration PR
+## Session outcome — taxonomy adoption (AC-0013) + shipping gate (AC-0014) complete & on `dev`
 The taxonomy adoption (AC-0013) and the `allowed_in_adopter_repos` → `export-framework.sh`
-shipping-gate wiring (AC-0014) are complete and reviewed on the feature branch:
+shipping-gate wiring (AC-0014) are complete, reviewed, and merged to `dev`:
 
 - **AC-0013** — taxonomy adopted (ID namespaces retired; ADR-0029/0030/0031/0032/0033;
   reconcile tool SH-0028; no-em-dash rule).

@@ -1053,15 +1053,28 @@ FRAMEWORK_EXCLUDE_PATTERNS=(
   # empty scaffold by seed_adopter_state() below - see
   # mddocs/scripts/seed/mddocs/backlog.md.
   "mddocs/backlog.md"
-  # AC-0014 (Stage 1) - one-shot bootstrap tools must never ship into an
-  # adopted tree: a downstream adopter could otherwise re-run adopt.sh to
-  # re-adopt an already-adopted environment, or re-home via export-framework.sh.
-  # Both are `allowed_in_adopter_repos: false` (class 1 bootstrap). Excluded
-  # wholesale with NO seed (an adopter has no reason to receive them); the
-  # broader metadata-driven exclusion (AC-0014 Stage 2) is a separate follow-up.
-  "mddocs/scripts/setup/adopt.sh"
-  "mddocs/scripts/export-framework.sh"
 )
+
+# AC-0014 (Stage 2) - metadata-driven shipping. Any artifact whose .meta.yaml
+# declares `allowed_in_adopter_repos: false` is not part of the supported
+# adoption surface and must not ship into an adopter repo (metadata-standard
+# section 3/4, and the ADR-0034 governing decision). Computed at SOURCE TIME so
+# the same authoritative FRAMEWORK_EXCLUDE_PATTERNS array drives the tar copy,
+# the manifest walk, and the test harness (which sources this array directly).
+# An artifact's own executable (path minus `.meta.yaml`) and its `.meta.yaml`
+# companion are both excluded; `allowed_in_adopter_repos: true` artifacts are
+# untouched and ship.
+_append_metadata_excludes() {
+  local meta rel exec
+  while IFS= read -r -d '' meta; do
+    if grep -q '^allowed_in_adopter_repos: *false' "$meta" 2>/dev/null; then
+      rel="${meta#"$FRAMEWORK_ROOT"/}"
+      exec="${rel%.meta.yaml}"
+      FRAMEWORK_EXCLUDE_PATTERNS+=("$exec" "$rel")
+    fi
+  done < <(find "$FRAMEWORK_ROOT/mddocs/scripts" -name '*.meta.yaml' -print0 2>/dev/null)
+}
+_append_metadata_excludes
 
 # _copy_framework_content_raw - the actual tar-based extraction, with no
 # DRY_RUN gate. Only ever called against a THROWAWAY SCRATCH directory

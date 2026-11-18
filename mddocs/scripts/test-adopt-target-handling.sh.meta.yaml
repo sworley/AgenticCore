@@ -7,7 +7,7 @@ domain: Management
 category: Testing
 process: adoption-regression
 owner: release-engineer
-allowed_in_adopter_repos: false
+allowed_in_adopter_repos: true
 related:
   paths:
     - setup/adopt.sh

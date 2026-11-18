@@ -194,6 +194,23 @@ what ships into an adopter repo is `export-framework.sh`'s
 > `mddocs/scripts/reconcile-metadata-registry.py --check` (SH-0028) to verify this
 > table matches the `.meta.yaml` metadata and report any drift.
 
+### 8.1 Classification ID registry (index / reference / standard / seed)
+
+| Classification ID | document_type | domain | Path |
+|---|---|---|---|
+| SDX-001 | index | Management | `scripts/mcp-tests/README.md` |
+| SDX-002 | index | Management | `scripts/hooks-index.md` |
+| SDX-003 | index | Management | `scripts/operations/index.md` |
+| SDX-004 | index | Management | `scripts/setup/index.md` |
+| STD-0001 | standard | Management | `scripts/metadata-standard.md` |
+| REF-0001 | reference | Management | `scripts/setup/init-opencode-settings.md` |
+| SEED-CONTEXT | seed-template | Management | `scripts/seed/.core/agents/_context.md` |
+| SEED-BACKLOG | backlog | Management | `scripts/seed/mddocs/backlog.md` |
+
+> Note: as with section 8, the per-artifact frontmatter is authoritative over
+> this table. `mddocs/scripts/reconcile-metadata-registry.py --check` (SH-0028)
+> verifies both tables against the artifact metadata and reports any drift.
+
 ---
 
 ## 9. References

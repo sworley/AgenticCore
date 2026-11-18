@@ -19,6 +19,16 @@ related:
 
 <a href="reconcile-metadata-registry.py" download>Download reconcile-metadata-registry.py</a> · python3
 
+Scans every `*.meta.yaml` companion (SH executable IDs) and the `SDX`/`REF`/`STD`/`SEED`
+classification IDs in `mddocs/` frontmatter, derives each artifact's classification,
+and compares it against the registry tables (`metadata-standard.md` §8 for SH,
+§8.1 for classification IDs). The per-artifact metadata is authoritative; `--check`
+exits 1 on drift. Run from the repository root:
+
+```sh
+python3 mddocs/scripts/reconcile-metadata-registry.py --check
+```
+
 ```python
 {{#include reconcile-metadata-registry.py}}
 ```

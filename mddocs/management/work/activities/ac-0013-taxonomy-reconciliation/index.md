@@ -23,7 +23,7 @@ related:
 
 # AC-0013: Taxonomy Reconciliation
 
-> **Status:** Draft — not circulated for review. Input into the HIL submission package for the Documentation Knowledge Taxonomy proposal (superseded by ADR-0029).
+> **Status:** Approved (HIL, 2026-11-12). This reconciliation analysis informed ADR-0029 (Documentation and Knowledge Taxonomy adoption); the proposal it references is superseded by ADR-0029.
 
 ## 1. Purpose
 
@@ -236,7 +236,7 @@ document_type: index
 status: superseded-by-taxonomy
 lifecycle: superseded
 records: ADR-0000 through ADR-0028
-redirect: management/governance/decisions/
+redirect: ../management/governance/decisions/
 primary: false
 ```
 
@@ -246,7 +246,7 @@ document_type: index
 status: active
 lifecycle: active
 records: ADR-0029 onward
-redirect: ../../adr/
+redirect: ../../../adr/
 primary: true
 ```
 
@@ -359,7 +359,7 @@ document_type: runbook
 status: active
 lifecycle: active
 primary: true
-redirect: security/guardrails/credential-identity/
+redirect: ../../management/security/guardrails/credential-identity/
 security_category: guardrail
 governance_context:
   - ADR-0016
@@ -386,7 +386,7 @@ document_type: runbook
 status: active
 lifecycle: active
 primary: true
-redirect: assurance/reviews/ledger-runbook/
+redirect: ../../management/assurance/reviews/ledger-runbook/
 assurance_category: review-governance
 governance_context:
   - ADR-0019-D7

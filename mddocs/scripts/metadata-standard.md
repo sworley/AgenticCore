@@ -39,9 +39,9 @@ reclassification (see §7).
 | Executable (`.sh`/`.py`/`.yaml`) | `SH-NNNN` | `SH-0001` |
 | Script documentation sidecar | `<SH-NNNN>-doc` | `SH-0001-doc` |
 | Index / overview doc | `SDX-NNN` | `SDX-001` |
-| Reference doc | `REF-NNN` | `REF-0001` |
+| Reference doc | `REF-NNNN` | `REF-0001` |
 | Seed template | `SEED-<NAME>` | `SEED-BACKLOG` |
-| Standard doc | `STD-NNN` | `STD-0001` |
+| Standard doc | `STD-NNNN` | `STD-0001` |
 
 Allocation: take the next free number in the sequence for the kind. The
 registry in §8 is the navigation aid; each artifact's own `.meta.yaml` /
@@ -62,7 +62,7 @@ same field contract as frontmatter. The companion is clean single-document YAML
 | `title` | yes | human-readable |
 | `document_type` | yes | `script` |
 | `status` | yes | `active` \| `template` \| `superseded` \| `retired` |
-| `lifecycle` | yes | `active` \| `template` \| `shared` \| `superseded` \| `retired` |
+| `lifecycle` | yes | `active` \| `template` \| `shared` \| `activity-scoped` \| `superseded` \| `retired` |
 | `domain` | yes | `Management` \| `Projects/<context>` |
 | `category` | yes | `Operations` \| `Security` \| `Agentic` \| `Architecture` \| `Adoption` \| `Governance` \| `Testing` |
 | `process` | yes | workflow slug it participates in |

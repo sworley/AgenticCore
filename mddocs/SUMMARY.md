@@ -64,6 +64,7 @@
   - [Assurance · Reviews](management/assurance/reviews/ledger-runbook/index.md)
   - [Governance · Decisions](management/governance/decisions/index.md)
   - [Security · Guardrails](management/security/guardrails/credential-identity/index.md)
+  - [Security · Guardrails · Secret](management/security/guardrails/secret-management/index.md)
 - [Projects Plane](projects/index.md)
 
 ---

@@ -1,6 +1,6 @@
 [book]
 title = "AgenticCore"
-description = "Documentation for AgenticCore — an open-source harness for orchestrating tool-use AI agents in a team-based architecture."
+description = "Documentation for AgenticCore - an open-source harness for orchestrating tool-use AI agents in a team-based architecture."
 src = "."
 
 [output.html]

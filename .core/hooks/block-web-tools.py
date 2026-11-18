@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-block-web-tools.py — PreToolUse hook for WebFetch and WebSearch.
+block-web-tools.py - PreToolUse hook for WebFetch and WebSearch.
 
 Blocks all web tool calls unless TOOLCHAIN_WEB_ALLOWED=1 is set.
 Exit 1 = block the tool call.

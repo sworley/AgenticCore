@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # hook-class: git
 """
-pre-commit-credential-identity-check.py — git pre-commit hook.
+pre-commit-credential-identity-check.py - git pre-commit hook.
 
 Rejects any commit whose AUTHOR or COMMITTER identity (name or email) matches a
-credential pattern — most importantly a Git personal access token (`glpat-`),
+credential pattern - most importantly a Git personal access token (`glpat-`),
 plus a conservative set of other well-known token/secret shapes.
 
 Failure mode this guards against:
@@ -13,7 +13,7 @@ Failure mode this guards against:
   metadata. This repo confirmed a live instance (SF-096, surfaced during AP-056):
   a `glpat-` token was carried in historical commit author-email metadata by a
   malformed `user.email`. The token was later verified dead (expired, HTTP 401),
-  but commit identity metadata is immutable without a history rewrite — which
+  but commit identity metadata is immutable without a history rewrite - which
   ADR-0004 (main is append-only/merge-only) forbids. The only structural defense
   is to stop such an identity from ever reaching a commit in the first place.
   This hook is that forward-looking prevention (AP-068). It performs no history
@@ -21,7 +21,7 @@ Failure mode this guards against:
 
 Surface:
   A git-native pre-commit hook fires on every commit to this repo regardless of
-  which tool or CLI produced it — a human at a terminal, opencode's git usage, an
+  which tool or CLI produced it - a human at a terminal, opencode's git usage, an
   editor's git integration, or CI. That is the correct surface for a commit-time
   identity invariant, parallel to the AI toolchain PreToolUse hooks (see ADR-0022
   for the same rationale applied to the permission-order check).
@@ -29,13 +29,13 @@ Surface:
 Secrets hygiene (HARD REQUIREMENT):
   This hook NEVER echoes the matched credential value. The whole point is to avoid
   leaking the credential further. Error output names WHICH identity field matched
-  and the credential CLASS only — never the value, never a partial substring.
+  and the credential CLASS only - never the value, never a partial substring.
 
 Exit conventions:
   0 = neither author nor committer identity matches a credential pattern.
   1 = a credential pattern was found in author/committer name or email (commit
       blocked, redacted message on stderr); OR a git subprocess failed so the
-      identity could not be determined (fail closed — a git error must not become
+      identity could not be determined (fail closed - a git error must not become
       a bypass). A commit can still be forced past a genuine tooling failure with
       `--no-verify`.
 """
@@ -97,7 +97,7 @@ def scan_identity(ident):
 
     `ident` is a raw `git var` identity line of the form
     `Name <email> <unixtime> <tz>`. We scan the WHOLE line (name and email
-    together) — the name field is as capable of carrying a leaked token as the
+    together) - the name field is as capable of carrying a leaked token as the
     email field. Never returns or logs the matched value, only the class labels.
     """
     matched = set()
@@ -123,7 +123,7 @@ def main():
             file=sys.stderr,
         )
         print(
-            "  Blocking commit to fail safe — the identity check could not run. "
+            "  Blocking commit to fail safe - the identity check could not run. "
             "Resolve the git error, or bypass with --no-verify if you understand "
             "the risk.",
             file=sys.stderr,
@@ -140,7 +140,7 @@ def main():
     if violations:
         print(
             "[credential-identity-check] BLOCKED: commit author/committer identity "
-            "matches a credential pattern — rejected.",
+            "matches a credential pattern - rejected.",
             file=sys.stderr,
         )
         for role in sorted(violations):
@@ -151,7 +151,7 @@ def main():
                 file=sys.stderr,
             )
         print(
-            "  A credential must never be embedded in git identity metadata — commit "
+            "  A credential must never be embedded in git identity metadata - commit "
             "metadata is immutable without a history rewrite (forbidden by ADR-0004).",
             file=sys.stderr,
         )

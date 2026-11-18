@@ -9,11 +9,11 @@ source of truth.
 
 Each FAQ page follows the same shape:
 
-1. **Question** — the question as raised in session, verbatim or lightly paraphrased.
-2. **Answer** — a concise, accurate answer (aim for a few sentences to one short
+1. **Question** - the question as raised in session, verbatim or lightly paraphrased.
+2. **Answer** - a concise, accurate answer (aim for a few sentences to one short
    section).
-3. **Canonical reference(s)** — relative links to the authoritative doc(s).
-4. **Provenance** — the session and date the Q&A came from, so answers stay
+3. **Canonical reference(s)** - relative links to the authoritative doc(s).
+4. **Provenance** - the session and date the Q&A came from, so answers stay
    traceable.
 
 Create a page per recurring topic. Add the entry to this index and register the

@@ -2,7 +2,7 @@
 
 **Date:** 2026-06-08
 **Status:** proposed
-**Supersedes:** —
+**Supersedes:** -
 
 ## Prior Art
 
@@ -16,46 +16,46 @@ structure carried forward; EXAMPLE-specific persona references and instance deta
 
 The lead-engineer persona is reconstructed at every session open from AGENT.md and
 session memory. The current `.01/AGENT.md` is purely procedural: it defines what to do
-(own the queue, provision benches, coordinate) but does not define who the agent is —
+(own the queue, provision benches, coordinate) but does not define who the agent is -
 voice, communication style, relationship to the HIL, or how context is restored on a
 cold start.
 
 Four questions need resolution:
 
-1. **Q1 — Identity anchoring:** What language in AGENT.md reliably pins voice, role, and HIL relationship across session restarts?
-2. **Q2 — Session-open anchor phrase:** Should there be a canonical trigger phrase, and if so, what must the agent produce in response?
-3. **Q3 — Standing rules — AGENT.md vs. memory:** Which standing rules belong in AGENT.md directly?
-4. **Q4 — Agent team context:** Does a brief roster belong in `.01/AGENT.md`?
+1. **Q1 - Identity anchoring:** What language in AGENT.md reliably pins voice, role, and HIL relationship across session restarts?
+2. **Q2 - Session-open anchor phrase:** Should there be a canonical trigger phrase, and if so, what must the agent produce in response?
+3. **Q3 - Standing rules - AGENT.md vs. memory:** Which standing rules belong in AGENT.md directly?
+4. **Q4 - Agent team context:** Does a brief roster belong in `.01/AGENT.md`?
 
 ## Decision Drivers
 
 - Persona consistency across session restarts without relying on memory file load order
-- Terse, direct communication style is the established working norm — it must be explicit
+- Terse, direct communication style is the established working norm - it must be explicit
 - The HIL is owner and final decision-maker; this relationship must be unambiguous
 - Standing rules that affect every session must be in AGENT.md, not memory
 - The agent team roster changes infrequently; it should live where it is authoritative
 
 ## Considered Options
 
-### Q1 — Identity anchoring language
+### Q1 - Identity anchoring language
 
 - **Option A:** Add a named Identity and Working Style section to `.01/AGENT.md` with explicit voice, role, and HIL relationship statements
 - **Option B:** Rely on org-level AGENT.md and session memory to reconstruct persona
 - **Option C:** Add a minimal one-line role assertion at the top of `.01/AGENT.md`
 
-### Q2 — Session-open anchor phrase
+### Q2 - Session-open anchor phrase
 
 - **Option A:** Define a canonical phrase ("Lead-engineer, session open") with a specified response format: role confirmation + checklist + memory context restoration
-- **Option B:** No canonical phrase — rely on the session-open checklist and natural language
-- **Option C:** Canonical phrase only — define the phrase but leave the response format implicit
+- **Option B:** No canonical phrase - rely on the session-open checklist and natural language
+- **Option C:** Canonical phrase only - define the phrase but leave the response format implicit
 
-### Q3 — Standing rules placement
+### Q3 - Standing rules placement
 
 - **Option A:** Move all standing process rules from memory to AGENT.md
 - **Option B:** Keep standing rules in memory; add a note in AGENT.md to read memory before acting
-- **Option C:** Hybrid — rules that affect every session go in AGENT.md; task-specific rules stay in memory
+- **Option C:** Hybrid - rules that affect every session go in AGENT.md; task-specific rules stay in memory
 
-### Q4 — Agent team context
+### Q4 - Agent team context
 
 - **Option A:** Add a full team roster to `.01/AGENT.md`
 - **Option B:** Keep team context in org-level AGENT.md only
@@ -65,10 +65,10 @@ Four questions need resolution:
 
 | Question | Chosen Option |
 |---|---|
-| Q1 | Option A — dedicated Identity and Working Style section |
-| Q2 | Option A — canonical phrase with specified response format |
-| Q3 | Option C — hybrid: session-critical rules in AGENT.md; task/project state in memory |
-| Q4 | Option C — brief roster in `.01/AGENT.md` pointing to `.agentic/agents/` |
+| Q1 | Option A - dedicated Identity and Working Style section |
+| Q2 | Option A - canonical phrase with specified response format |
+| Q3 | Option C - hybrid: session-critical rules in AGENT.md; task/project state in memory |
+| Q4 | Option C - brief roster in `.01/AGENT.md` pointing to `.agentic/agents/` |
 
 **Q1 rationale:** A named section with explicit voice, role, and HIL relationship statements
 is directly loadable at session open. Relying on memory load order has produced the persona
@@ -84,7 +84,7 @@ load unconditionally. Task context, project state, and per-user observations bel
 team. A brief roster with pointers to canonical definitions gives the agent team awareness
 without duplicating authoritative definitions.
 
-### Rules classification — AGENT.md vs. memory
+### Rules classification - AGENT.md vs. memory
 
 Rules in AGENT.md (session-critical, must not be missed):
 - Review before push (stage + diff + explicit approval)

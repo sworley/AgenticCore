@@ -2,8 +2,8 @@
 
 **Date:** 2026-07-02
 **Status:** Accepted
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** -
+**Superseded by:** -
 
 ## Prior Art
 
@@ -19,11 +19,11 @@ and are not carried forward.
 
 Agentic sessions require credentials to reach external services (Git hosting
 platforms, APIs, package registries). A project may interact with more than
-one external service instance — for example, a management-plane Git and
-a customer-plane Git — and the correct credential to use depends on context,
+one external service instance - for example, a management-plane Git and
+a customer-plane Git - and the correct credential to use depends on context,
 not on the operator's memory.
 
-The naive approach — exporting all credentials at shell login — fails in
+The naive approach - exporting all credentials at shell login - fails in
 multi-instance environments: it is error-prone (wrong token for wrong
 instance), over-privileged (a session that only needs one token carries all
 of them), and brittle (the engineer must remember to re-export when switching
@@ -39,7 +39,7 @@ This ADR defines the pattern the framework uses to solve this cleanly.
   without operator intervention
 - Credentials must not be exported at login or persist beyond the scope where
   they are needed
-- Scripts and agents must be credential-context-agnostic — the same script
+- Scripts and agents must be credential-context-agnostic - the same script
   runs unchanged regardless of which service instance is active
 - Adding a new service instance must not require changes to existing scripts
   or agent definitions
@@ -76,7 +76,7 @@ All scripts and agents consume a single canonical variable pair:
 
 For non-Git hosting platforms, an equivalent pair is used (e.g.,
 `GITHUB_TOKEN` for GitHub). The consuming code is never aware of which
-instance is active — it reads the canonical variable name and the injection
+instance is active - it reads the canonical variable name and the injection
 mechanism ensures it contains the correct value.
 
 Per-context named variables (`PROJECT_GIT_TOKEN`, `CUSTOMER_GIT_HOST`,
@@ -84,7 +84,7 @@ etc.) are not used. See Alternatives Considered.
 
 ---
 
-### D-3: Injection scope — not at login
+### D-3: Injection scope - not at login
 
 Credentials are not exported at shell login. They are injected when the
 operator enters a directory under the project's workspace root and unset when
@@ -96,7 +96,7 @@ when and where they are needed.
 
 ---
 
-### D-4: Reference implementation — direnv
+### D-4: Reference implementation - direnv
 
 The reference implementation uses `direnv` with a single `.envrc` at the
 workspace root. The `.envrc` reads the git remote of the current directory
@@ -104,7 +104,7 @@ and injects the matching credential from the secret store. It unsets all
 credential variables when no recognized remote is found.
 
 Any mechanism that satisfies D-1, D-2, and D-3 is an acceptable implementation.
-`direnv` is not prescribed — adopters may use a shell function, a project
+`direnv` is not prescribed - adopters may use a shell function, a project
 `.env` loader, or an organizational secret injection tool, provided it:
 
 - Selects credentials based on git remote (not directory path)
@@ -128,7 +128,7 @@ injection layer exports `GIT_ASKPASS` (pointing at that helper) and
 token, and unsets both when leaving that scope.
 
 This makes any ad-hoc git invocation in the workspace authenticate
-automatically — `git push`, `git fetch`, `git ls-remote` — not only scripts
+automatically - `git push`, `git fetch`, `git ls-remote` - not only scripts
 that build their own credential plumbing. It preserves the D-2/D-3 guarantees:
 
 - **No stored secret.** The helper reads the environment variable the injection
@@ -161,7 +161,7 @@ export CUSTOMER_GIT_TOKEN="$(secret-store show customer/pat)"
 
 **Rejected because:**
 - Every script must be aware of which context it is operating in and choose
-  the correct variable pair — this couples tool logic to instance identity
+  the correct variable pair - this couples tool logic to instance identity
 - Adding a new instance multiplies variable pairs and requires updating every
   consumer
 - The mapping from "which instance am I on?" to "which variable do I read?"
@@ -200,12 +200,12 @@ Export all credentials in `~/.zshrc` or equivalent at shell startup.
 ## Consequences
 
 **Positive:**
-- Correct credential is always active for the current repo — no manual
+- Correct credential is always active for the current repo - no manual
   switching required
-- Credentials are unset when outside the workspace tree — no persistent
+- Credentials are unset when outside the workspace tree - no persistent
   over-privilege
 - Adding a new service instance requires one new case in the injection
-  mechanism and one new secret store entry — no script or agent changes
+  mechanism and one new secret store entry - no script or agent changes
 - The canonical variable pair (`GIT_TOKEN`, `GIT_HOST`) means any
   script written for one adopter project runs unchanged on another
 
@@ -220,6 +220,6 @@ Export all credentials in `~/.zshrc` or equivalent at shell startup.
 
 ## Related
 
-- [ADR-0016: Agentic Toolchain Secret Management](adr-0016-agentic-toolchain-secret-management.md) — policy that governs how credentials are stored and used; this ADR defines the injection mechanism
-- [ADR-0017: Outer Dependencies and Portability](adr-0017-outer-dependencies-and-portability.md) — credential injection tooling is an outer dependency
-- [ADR-0006: External Content Gate Scope](adr-0006-external-content-gate-scope.md) — capability gate variables follow the session-scope rule (D-3)
+- [ADR-0016: Agentic Toolchain Secret Management](adr-0016-agentic-toolchain-secret-management.md) - policy that governs how credentials are stored and used; this ADR defines the injection mechanism
+- [ADR-0017: Outer Dependencies and Portability](adr-0017-outer-dependencies-and-portability.md) - credential injection tooling is an outer dependency
+- [ADR-0006: External Content Gate Scope](adr-0006-external-content-gate-scope.md) - capability gate variables follow the session-scope rule (D-3)

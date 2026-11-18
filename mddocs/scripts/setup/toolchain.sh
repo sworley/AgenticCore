@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# toolchain.sh — Manage the docs/dev toolchain (validate + optional install).
+# toolchain.sh - Manage the docs/dev toolchain (validate + optional install).
 #
 # PURPOSE
 #   The harness's non-Python dependencies (mdbook, mdbook-mermaid, typos-cli,
 #   shellcheck, gh, jq) are resolved here. This is the toolchain analogue of
 #   python-env.sh: a single, generic entry point that validates what is present
 #   (and whether versions match the pinned standard), and can install/update
-#   what is missing or drifted — without forcing installs on an adopter.
+#   what is missing or drifted - without forcing installs on an adopter.
 #
 #   The framework does NOT blanket-install on an adopter's machine. The default
 #   mode (--check) only VALIDATES and reports status + an install hint;
@@ -29,9 +29,9 @@
 #   1  A required tool is missing or out of date (--check), or an install failed
 #
 # SEE ALSO
-#   python-env.sh   — the Python (.venv / requirements.txt) analogue
-#   verify-toolchain.sh / phase2-dev-toolchain.sh — legacy macOS-specific variants
-#   mddocs/reference.architecture/bootstrap-new-project.md  — where this is invoked
+#   python-env.sh   - the Python (.venv / requirements.txt) analogue
+#   verify-toolchain.sh / phase2-dev-toolchain.sh - legacy macOS-specific variants
+#   mddocs/reference.architecture/bootstrap-new-project.md  - where this is invoked
 
 set -euo pipefail
 
@@ -85,18 +85,18 @@ install_hint() {
     cargo) echo "cargo install $pkg ${4:+--version $4}" ;;
     brew)  echo "brew install $1" ;;
     apt)   echo "apt-get install $1" ;;
-    *)     echo "(system tool — install via your OS package manager)" ;;
+    *)     echo "(system tool - install via your OS package manager)" ;;
   esac
 }
 
-# get_version — print the semver token from a tool's `--version`, or empty.
+# get_version - print the semver token from a tool's `--version`, or empty.
 get_version() {
   local out
   out="$("$1" --version 2>/dev/null | head -1)"
   printf '%s' "$out" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1
 }
 
-# find_bin — resolve the binary across PATH and the common cargo bin dirs.
+# find_bin - resolve the binary across PATH and the common cargo bin dirs.
 find_bin() {
   local name="$1" installer="$2" bin
   bin="$(command -v "$name" 2>/dev/null || echo "")"
@@ -149,10 +149,10 @@ tool_status() {
   if [ -z "$bin" ]; then
     if [ "$tier" = "required" ]; then
       MISSING_REQ=$((MISSING_REQ+1))
-      log "  [MISSING] $name (required) — install: $(install_hint "$name" "$tier" "$installer" "$version" "$pkg")"
+      log "  [MISSING] $name (required) - install: $(install_hint "$name" "$tier" "$installer" "$version" "$pkg")"
     else
       OPT_MISSING=$((OPT_MISSING+1))
-      log "  [optional] $name — missing. Install: $(install_hint "$name" "$tier" "$installer" "$version" "$pkg")"
+      log "  [optional] $name - missing. Install: $(install_hint "$name" "$tier" "$installer" "$version" "$pkg")"
     fi
     return
   fi
@@ -162,10 +162,10 @@ tool_status() {
     if [ -n "$inst_ver" ] && [ "$inst_ver" != "$version" ]; then
       if [ "$tier" = "required" ]; then
         UPDATE_REQ=$((UPDATE_REQ+1))
-        log "  [UPDATE]  $name — installed $inst_ver, pinned $version. Update: $(install_hint "$name" "$tier" "$installer" "$version" "$pkg")"
+        log "  [UPDATE]  $name - installed $inst_ver, pinned $version. Update: $(install_hint "$name" "$tier" "$installer" "$version" "$pkg")"
       else
         OPT_UPDATE=$((OPT_UPDATE+1))
-        log "  [warn]    $name — installed $inst_ver, pinned $version (optional). Update: $(install_hint "$name" "$tier" "$installer" "$version" "$pkg")"
+        log "  [warn]    $name - installed $inst_ver, pinned $version (optional). Update: $(install_hint "$name" "$tier" "$installer" "$version" "$pkg")"
       fi
       return
     fi
@@ -182,12 +182,12 @@ do_install() {
   # Skip if present and (unpinned, or already at the pinned version).
   if [ -n "$bin" ]; then
     if [ -z "$version" ]; then
-      log "  [skip] $name — already present"
+      log "  [skip] $name - already present"
       return 0
     fi
     inst_ver="$(get_version "$bin")"
     if [ "$inst_ver" = "$version" ]; then
-      log "  [skip] $name — already $version"
+      log "  [skip] $name - already $version"
       return 0
     fi
   fi
@@ -200,7 +200,7 @@ do_install() {
     cargo) export PATH="$CARGO_BIN:$HOME/.cargo/bin:$PATH"; cargo install "$pkg" ${version:+--version "$version"} ;;
     brew)  brew install "$name" ;;
     apt)   sudo apt-get install -y "$name" ;;
-    *)     warn "$name — no managed installer; install manually" ;;
+    *)     warn "$name - no managed installer; install manually" ;;
   esac
 }
 
@@ -216,12 +216,12 @@ if [ "$DO_CHECK" -eq 1 ]; then
   echo "  ok: $OK_COUNT   update-required: $UPDATE_REQ   missing-required: $MISSING_REQ   optional-missing: $OPT_MISSING   optional-update: $OPT_UPDATE"
   if [ "$MISSING_REQ" -gt 0 ] || [ "$UPDATE_REQ" -gt 0 ]; then
     echo ""
-    warn "one or more REQUIRED tools are missing or out of date — resolve before proceeding (see hints above)"
+    warn "one or more REQUIRED tools are missing or out of date - resolve before proceeding (see hints above)"
     exit 1
   fi
   if [ "$OPT_MISSING" -gt 0 ] || [ "$OPT_UPDATE" -gt 0 ]; then
     echo ""
-    warn "optional tools missing or out of date (advisory) — no required dependency is affected"
+    warn "optional tools missing or out of date (advisory) - no required dependency is affected"
     exit 2
   fi
 fi

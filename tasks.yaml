@@ -1,4 +1,4 @@
-# tasks.yaml — AgenticCore Task Queue
+# tasks.yaml - AgenticCore Task Queue
 #
 # Single source of truth for all work in the harness. Maintained by
 # lead-engineer (`.01`). Only `.01` writes to this file. See
@@ -182,7 +182,7 @@ tasks:
       Bump the MCP SDK (mcp) to 1.30.0. Trivial requirements.txt pin change
       surfaced by dependabot. Verified compatible with fastmcp 3.4.2 + pyyaml
       (modules import cleanly). Part of the dependency/security review
-      (mcp, fastmcp, fastmcp-slim) — reviewed one at a time on dev.
+      (mcp, fastmcp, fastmcp-slim) - reviewed one at a time on dev.
     acceptance_criteria:
       - "requirements.txt pins mcp==1.30.0"
       - "mcp/fastmcp/yaml import cleanly"
@@ -315,7 +315,7 @@ tasks:
       Governing principle: the taxonomy covers documentation and metadata
       contracts. The metadata on a tool is the contractual record of its owner,
       its domain, and the governance it enforces or participates in. Physical
-      file location is downstream of both — it is an execution detail, not an
+      file location is downstream of both - it is an execution detail, not an
       authority. Artefacts are governed by their frontmatter contract, not by
       their directory path.
 
@@ -325,7 +325,7 @@ tasks:
 
       Scope of this ticket: approve the taxonomy adoption decision and the
       frontmatter annotation contract. Physical directory restructuring, ADR
-      migration, and script relocation are explicitly out of scope — they are
+      migration, and script relocation are explicitly out of scope - they are
       future migration ADR work, not prerequisites for this approval.
     acceptance_criteria:
       - "ADR-0029 drafted with all 8 sub-decisions (D1–D8) resolved and recorded"
@@ -351,7 +351,7 @@ tasks:
       D4. The adopted taxonomy governs documentation and metadata contracts;
       the metadata on a tool is the contractual record of its owner, its
       domain, and the governance it enforces or participates in. Physical
-      file location is downstream of both — this ticket adds the metadata,
+      file location is downstream of both - this ticket adds the metadata,
       it does not move files.
 
       Scope covers every file under mddocs/scripts/:
@@ -368,13 +368,13 @@ tasks:
       - .yaml (2): seed/bench-registry.yaml, seed/tasks.yaml
 
       **Script `.md` files under mddocs/scripts/ (27 total):**
-      - **script-docs sidecars (19)** — document a single executable:
+      - **script-docs sidecars (19)** - document a single executable:
         mcp-tests/{run-all, test-mcp-filesystem, test-mcp-git, test-mcp-rag-docs},
         operations/{bench-status, check-env, check-links, check-worktree-hygiene,
         git-sync, provision-bench, read-audit-log, sync-opencode-config},
         setup/{adopt, phase2-dev-toolchain, python-env, toolchain, verify-toolchain},
         statusline-command, update-summary-on-adr-write
-      - **index / standard / reference / seed docs (8)** — NOT script-docs:
+      - **index / standard / reference / seed docs (8)** - NOT script-docs:
         hooks-index.md (SDX-002), mcp-tests/README.md (SDX-001),
         operations/index.md (SDX-003), setup/index.md (SDX-004),
         metadata-standard.md (STD-0001), setup/init-opencode-settings.md (REF-0001),
@@ -404,16 +404,16 @@ tasks:
 
       **Four-class classification:**
 
-      1. Harness-owned tooling — domain: Management, allowed_in_adopter_repos: false
-      2. Harness-provided general-use — domain: Management, allowed_in_adopter_repos: true
-         (provision-bench.sh, git-sync.sh as exemplars). adopt.sh is NOT class 2 — it is a
+      1. Harness-owned tooling - domain: Management, allowed_in_adopter_repos: false
+      2. Harness-provided general-use - domain: Management, allowed_in_adopter_repos: true
+         (provision-bench.sh, git-sync.sh as exemplars). adopt.sh is NOT class 2 - it is a
          class 1 bootstrap (allowed_in_adopter_repos: false) and must never ship into an
          adopted environment.
-      3. Project-activity script — domain: Projects/<context>, source_ticket and
+      3. Project-activity script - domain: Projects/<context>, source_ticket and
          source_context populated; currently no instances exist; annotate as
          domain: Management with a NOTE that these will be classified when
          Projects/<context> activity begins
-      4. Governance enforcement — enforces: ADR-XXXX as primary identity field;
+      4. Governance enforcement - enforces: ADR-XXXX as primary identity field;
          placement governed by the mandating ADR, not the taxonomy
 
       **Out of scope:**
@@ -425,7 +425,7 @@ tasks:
       Approval authority: this ticket requires lead-engineer sign-off before
       commit, per ADR-0019 HIL gates.
     acceptance_criteria:
-      - "All 27 executables annotated — .meta.yaml companion on .sh/.py/.yaml executables; frontmatter where natively supported"
+      - "All 27 executables annotated - .meta.yaml companion on .sh/.py/.yaml executables; frontmatter where natively supported"
       - "All 19 executable-documentation sidecars annotated with document_type: script-docs and inheriting domain from parent artefact (the remaining 8 mddocs/scripts/ .md files are index/standard/reference/seed docs: SDX-001–004, STD-0001, REF-0001, SEED-CONTEXT, SEED-BACKLOG)"
       - "Governance enforcement scripts identified and annotated with enforces: ADR-XXXX"
       - "Harness-provided general-use scripts (provision-bench.sh, git-sync.sh) annotated with allowed_in_adopter_repos: true"

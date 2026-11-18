@@ -6,7 +6,7 @@ Versioning follows semantic versioning: `MAJOR.MINOR.PATCH` (see
 Release history starts with the open-source baseline; see `mddocs/release-notes/` for
 published notes.
 
-## [v0.7.0] — 2026-11-09
+## [v0.7.0] - 2026-11-09
 
 Maintenance/consistency release.
 
@@ -16,7 +16,7 @@ Maintenance/consistency release.
 - Release-process hardening (repository-specific mechanics + operational notes).
 - See `mddocs/release-notes/v0.7.0.md` for the full release notes.
 
-## [v0.6.0] — 2026-11-08
+## [v0.6.0] - 2026-11-08
 
 First release under the formalized release/baseline process.
 
@@ -27,7 +27,7 @@ First release under the formalized release/baseline process.
 - Docs/governance: `CONTRIBUTING.md` two-ways-to-contribute; onboarding/visual clarity.
 - See `mddocs/release-notes/v0.6.0.md` for the full release notes.
 
-## [v0.5.0] — 2026-11-01
+## [v0.5.0] - 2026-11-01
 
 Initial open-source baseline (starting point for the formal release process).
 

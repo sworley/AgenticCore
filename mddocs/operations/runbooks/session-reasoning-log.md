@@ -1,7 +1,7 @@
 # Session Reasoning Log
 
-Automatic capture of the natural-language reasoning layer — why decisions were made,
-what alternatives were rejected, and what the user intended — into an append-only on-disk
+Automatic capture of the natural-language reasoning layer - why decisions were made,
+what alternatives were rejected, and what the user intended - into an append-only on-disk
 log that survives context compaction and session boundaries.
 
 ---
@@ -9,7 +9,7 @@ log that survives context compaction and session boundaries.
 ## The Problem
 
 AI toolchain's auto-compact and context-window compression preserve *outcome* (what
-changed, captured in git commits and memory notes) but discard *reasoning* — the
+changed, captured in git commits and memory notes) but discard *reasoning* - the
 conversational NLU layer. That layer is what allows a follow-on session to understand
 rather than just re-execute. Without it, a new session must reconstruct intent from
 artifacts alone, which leads to:
@@ -26,7 +26,7 @@ A single hook script (`session-logger.py`) wires into three AI toolchain hook ev
 
 | Event | What is captured |
 |-------|-----------------|
-| `UserPromptSubmit` | Every user message — the intent and framing layer |
+| `UserPromptSubmit` | Every user message - the intent and framing layer |
 | `PostToolUse` | Significant agent actions (Agent, Workflow, Bash, Edit, Write) |
 | `Stop` | Turn boundary marker |
 
@@ -51,12 +51,12 @@ Output is a plain-text append-only log at `_scratch/sessions/YYYY-MM-DD_<session
 [14:00:18Z] WORKFLOW: image-validate
   note: agents spawned inside this workflow are not individually logged
 
-[14:01:02Z] STOP — turn end
+[14:01:02Z] STOP - turn end
 ```
 
 ---
 
-## Agent vs Workflow — The Key Distinction
+## Agent vs Workflow - The Key Distinction
 
 **`Agent` tool calls** (top-level, from the main session) are logged individually:
 ```
@@ -87,9 +87,9 @@ If the reasoning behind individual workflow subagent calls matters, either:
 By design, the hook filters out tool calls that are infrastructure noise rather than
 reasoning signal:
 
-- `Read`, `LSP`, `mcp__filesystem__*`, `mcp__git__*` — lookups and queries
-- `AskUserQuestion`, `EnterPlanMode`, `ExitPlanMode`, `TaskCreate`, `TaskUpdate` — scaffolding
-- `WebFetch`, `WebSearch` — research operations (these are logged separately by `egress-audit-log.py`)
+- `Read`, `LSP`, `mcp__filesystem__*`, `mcp__git__*` - lookups and queries
+- `AskUserQuestion`, `EnterPlanMode`, `ExitPlanMode`, `TaskCreate`, `TaskUpdate` - scaffolding
+- `WebFetch`, `WebSearch` - research operations (these are logged separately by `egress-audit-log.py`)
 
 This keeps the log readable and focused on decisions, not on every file the session
 opened.
@@ -160,7 +160,7 @@ you to re-read the full conversation history. Use it to:
 
 ## Hook Registration
 
-The hook is registered in `.agentic/settings.local.json` (gitignored — machine-local).
+The hook is registered in `.agentic/settings.local.json` (gitignored - machine-local).
 The template at `.agentic/settings.local.json.template` includes the blocks so they
 survive a settings rebuild:
 

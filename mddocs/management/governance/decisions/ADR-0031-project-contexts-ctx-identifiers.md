@@ -2,20 +2,20 @@
 
 **Date:** 2026-11-17
 **Status:** accepted
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** -
+**Superseded by:** -
 
 ## Context
 
 The documentation and knowledge taxonomy (ADR-0029) defines a two-plane
-`mddocs/` structure — `management/` (the harness itself) and `projects/`
+`mddocs/` structure - `management/` (the harness itself) and `projects/`
 (durable documentation about adopted work contexts). The management plane is
 implemented; the projects plane was defined as an **additive capability** with
 no speculative context directories created (ADR-0029 future action Q5).
 
 This ADR records the decision for what a **project context** is, how it is
-identified, and its required structure, so the first adopted context — and every
-one after it — is governed by a stable contract rather than ad hoc convention.
+identified, and its required structure, so the first adopted context - and every
+one after it - is governed by a stable contract rather than ad hoc convention.
 It also resolves the `CTX-` identifier as a taxonomy-local identity, distinct
 from the governance IDs `ADR-` and `AC-`.
 

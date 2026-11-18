@@ -34,4 +34,4 @@ See the [Set Up mddoc](../operations/runbooks/setup-mddoc.md) runbook and
 
 ## Provenance
 
-- **Session:** 2026-11-02 — "mermaid rendering / docs build" Q&A.
+- **Session:** 2026-11-02 - "mermaid rendering / docs build" Q&A.

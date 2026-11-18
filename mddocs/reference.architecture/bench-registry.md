@@ -17,7 +17,7 @@ benches:
     status: active        # active | idle | torn_down | locked
     locked: false         # if true, worktree remove requires explicit HIL justification
     created: YYYY-MM-DD
-    notes: "HIL workspace — never tear down"
+    notes: "HIL workspace - never tear down"
 
   - id: ".01"
     pattern: A
@@ -26,7 +26,7 @@ benches:
     status: active
     locked: true
     created: YYYY-MM-DD
-    notes: "Lead-engineer — never tear down"
+    notes: "Lead-engineer - never tear down"
 ```
 
 ## Status Values
@@ -43,7 +43,7 @@ benches:
 - `.00` and `.01` are always `locked: true`
 - Never run `git worktree remove` on a bench with `locked: true` without written HIL instruction in the current conversation
 - Update status to `torn_down` immediately after `git worktree remove`
-- Keep historical entries — do not delete torn-down entries
+- Keep historical entries - do not delete torn-down entries
 
 ## Operations
 
@@ -71,7 +71,7 @@ bench_id = sys.argv[1]
 for b in data.get('benches', []):
     if b['id'] == bench_id:
         if b.get('locked'):
-            print(f'BLOCKED: {bench_id} is locked — requires explicit HIL instruction')
+            print(f'BLOCKED: {bench_id} is locked - requires explicit HIL instruction')
             sys.exit(1)
         print(f'OK: {bench_id} is not locked')
 " ".02"

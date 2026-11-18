@@ -9,14 +9,14 @@
 Use this runbook when a bench's session context has been wiped, the bench worktree path
 no longer exists, or the bench needs to be fully reprovisioned from scratch. The bench
 registry (`bench-registry.yaml` in the collection root) and `tasks.yaml` are the recovery
-specifications — they record bench assignments, roles, and task state.
+specifications - they record bench assignments, roles, and task state.
 
 This runbook covers four scenarios:
 
-- **Scenario A** — session context was cleared but the worktree filesystem is intact
-- **Scenario B** — both session context and the worktree were lost; full reprovision needed
-- **Scenario C** — untracked files regenerating after deletion (active session write loop)
-- **Scenario D** — dirty bench with merge conflicts or diverged branch
+- **Scenario A** - session context was cleared but the worktree filesystem is intact
+- **Scenario B** - both session context and the worktree were lost; full reprovision needed
+- **Scenario C** - untracked files regenerating after deletion (active session write loop)
+- **Scenario D** - dirty bench with merge conflicts or diverged branch
 
 ---
 
@@ -30,13 +30,13 @@ This runbook covers four scenarios:
 
 ---
 
-## Scenario A — Session Context Cleared, Filesystem Intact
+## Scenario A - Session Context Cleared, Filesystem Intact
 
 The worktree directory exists but session memory for the bench is gone.
 
 ### Steps
 
-**1 — Identify the bench**
+**1 - Identify the bench**
 
 ```bash
 # From inside the bench worktree
@@ -44,7 +44,7 @@ git rev-parse --show-toplevel   # confirms the bench path
 git branch --show-current       # confirms the branch
 ```
 
-**2 — Re-register the ours merge driver**
+**2 - Re-register the ours merge driver**
 
 The `merge.ours.driver` registration lives in `.git/config` and is lost when a new
 worktree is created. Re-register before resuming work:
@@ -56,7 +56,7 @@ git config merge.ours.driver true
 Without this, `.gitattributes` `merge=ours` entries are inactive and bench merges can
 clobber `.01`'s files.
 
-**3 — Restore settings from template**
+**3 - Restore settings from template**
 
 ```bash
 # From the bench worktree
@@ -66,12 +66,12 @@ BENCH_ABS="$(git rev-parse --show-toplevel)"
 sed -i '' "s|{{BENCH_DIR}}|${BENCH_ABS}|g" .mcp.json
 ```
 
-**4 — Update bench registry in .01**
+**4 - Update bench registry in .01**
 
 Open a lead-engineer session in `.01` and confirm the bench entry in `bench-registry.yaml`
 reflects the current role, branch, and assigned tasks.
 
-**5 — Open a fresh session**
+**5 - Open a fresh session**
 
 ```bash
 opencode
@@ -81,13 +81,13 @@ Verify the session picks up the correct project context.
 
 ---
 
-## Scenario B — Full Reprovision (Worktree Lost)
+## Scenario B - Full Reprovision (Worktree Lost)
 
 Both the worktree and session context are gone. Reprovision from `.01`.
 
 ### Steps
 
-**1 — Ensure .01 is clean and on main**
+**1 - Ensure .01 is clean and on main**
 
 ```bash
 # From <program>.01
@@ -95,7 +95,7 @@ git checkout main && git pull origin main
 git status   # must be clean
 ```
 
-**2 — Confirm the bench number**
+**2 - Confirm the bench number**
 
 ```bash
 git worktree list
@@ -103,7 +103,7 @@ git worktree list
 
 Choose the next available `NN` (e.g., `.02`, `.03`) not currently in use.
 
-**3 — Create the worktree**
+**3 - Create the worktree**
 
 ```bash
 # NN = next available bench number
@@ -113,7 +113,7 @@ git -C <program>.01 worktree add \
     -b feat/AC-NNNN-<slug>
 ```
 
-**4 — Bootstrap worker files**
+**4 - Bootstrap worker files**
 
 ```bash
 # From the new bench worktree
@@ -129,23 +129,23 @@ If `provision-bench.sh` is present, use it instead:
 bash mddocs/scripts/provision-bench.sh --bench <program>.NN
 ```
 
-**5 — Re-register the merge driver**
+**5 - Re-register the merge driver**
 
 ```bash
 git config merge.ours.driver true
 ```
 
-**6 — Update tasks.yaml in .01**
+**6 - Update tasks.yaml in .01**
 
 Open a lead-engineer session in `.01` and update any in-progress tasks that were
 assigned to the lost bench. Either re-assign them to the new bench number or reset
 them to `ready` if they need to restart.
 
-**7 — Update bench-registry.yaml in .01**
+**7 - Update bench-registry.yaml in .01**
 
 Add or update the entry for the new bench number, recording role, branch, and tasks.
 
-**8 — Verify**
+**8 - Verify**
 
 ```bash
 git worktree list
@@ -154,7 +154,7 @@ opencode   # open a session and verify MCP servers connect
 
 ---
 
-## Scenario C — Untracked Files Regenerating After Deletion
+## Scenario C - Untracked Files Regenerating After Deletion
 
 Untracked files in a bench worktree are deleted but reappear moments later with a
 single-line stub header (e.g. `# Runbook: Some Title`).
@@ -162,7 +162,7 @@ single-line stub header (e.g. `# Runbook: Some Title`).
 ### Symptoms
 
 - `rm <file>` reports success but the file reappears within seconds
-- The regenerated file contains only a 1-line stub header — not real content
+- The regenerated file contains only a 1-line stub header - not real content
 - The file was never committed on any branch (`git ls-files` returns nothing)
 - `git log --all -- <path>` shows no history
 
@@ -171,17 +171,17 @@ single-line stub header (e.g. `# Runbook: Some Title`).
 An active session in the same bench is mid-loop and recreating the file via Write tool
 calls. The session wrote the stub as a placeholder, was interrupted or the file was
 deleted externally, and continues recreating it on each tool call. The file is not
-coming from git — it has no tracked state.
+coming from git - it has no tracked state.
 
 ### Resolution
 
-1. **Stop the active bench session** — close or interrupt the opencode session running
+1. **Stop the active bench session** - close or interrupt the opencode session running
    in the affected bench (Ctrl+C or close the window)
-2. **Delete the files** — with the session stopped, `rm` will stick:
+2. **Delete the files** - with the session stopped, `rm` will stick:
    ```bash
    rm /absolute/path/to/bench/stubfile.md
    ```
-3. **Verify** — confirm the file is gone and does not regenerate after 30 seconds
+3. **Verify** - confirm the file is gone and does not regenerate after 30 seconds
 
 If stopping the session is not possible, worktree teardown and recreate is the definitive
 fix. Since the files were never committed, a clean worktree will not contain them. See
@@ -194,13 +194,13 @@ switches.
 
 ---
 
-## Scenario D — Dirty Bench (Merge Conflicts or Diverged Branch)
+## Scenario D - Dirty Bench (Merge Conflicts or Diverged Branch)
 
 The bench branch has diverged from main or has merge conflicts blocking progress.
 
 ### Steps
 
-**1 — Assess the state**
+**1 - Assess the state**
 
 ```bash
 git status
@@ -208,13 +208,13 @@ git log --oneline main..HEAD    # commits ahead of main
 git log --oneline HEAD..main    # commits on main not in branch
 ```
 
-**2 — Save work-in-progress**
+**2 - Save work-in-progress**
 
 ```bash
 git stash push -m "WIP before recovery $(date +%Y-%m-%d)"
 ```
 
-**3 — Rebase or reset**
+**3 - Rebase or reset**
 
 If the branch can be rebased cleanly:
 ```bash
@@ -230,13 +230,13 @@ git branch -D feat/AC-NNNN-<slug>
 git checkout -b feat/AC-NNNN-<slug>
 ```
 
-**4 — Restore stashed work if needed**
+**4 - Restore stashed work if needed**
 
 ```bash
 git stash pop
 ```
 
-**5 — Update tasks.yaml** to reflect the branch reset if applicable.
+**5 - Update tasks.yaml** to reflect the branch reset if applicable.
 
 ---
 
@@ -249,7 +249,7 @@ git worktree list
 # Confirm branch is on the expected feature branch
 git branch --show-current
 
-# Confirm .mcp.json is present (gitignored — must exist on disk)
+# Confirm .mcp.json is present (gitignored - must exist on disk)
 test -f .mcp.json && echo "present" || echo "MISSING"
 
 # Confirm merge driver is registered
@@ -278,8 +278,8 @@ If the reprovision is incorrect:
 ## Related
 
 - [ADR-: AI toolchain Config Versioning and Bench Manifest](../../adr/adr-0011-lead-engineer-identity-anchoring.md)
-- [Provision Worker Bench](../../reference.architecture/provision-worker-bench.md) — first-time bench creation
-- [Configure Agent Namespace](configure-agents.md) — agent namespace setup
-- [Bench Registry](../../reference.architecture/bench-registry.md) — bench tracking and registration
-- `bench-registry.yaml` (collection root) — live bench state
-- `tasks.yaml` (collection root) — task queue and bench assignments
+- [Provision Worker Bench](../../reference.architecture/provision-worker-bench.md) - first-time bench creation
+- [Configure Agent Namespace](configure-agents.md) - agent namespace setup
+- [Bench Registry](../../reference.architecture/bench-registry.md) - bench tracking and registration
+- `bench-registry.yaml` (collection root) - live bench state
+- `tasks.yaml` (collection root) - task queue and bench assignments

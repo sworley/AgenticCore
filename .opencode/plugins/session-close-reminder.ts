@@ -29,7 +29,7 @@ export default Plugin.define({
           );
         }
       } catch {
-        // non-fatal — never interrupt agent work
+        // non-fatal - never interrupt agent work
       }
     });
   },

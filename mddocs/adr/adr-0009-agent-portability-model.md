@@ -1,12 +1,12 @@
-# ADR-0009: Agent-Agnostic Portability Model — Invariants, Bench Context, Agent Projection, and Multi-Vendor Onboarding
+# ADR-0009: Agent-Agnostic Portability Model - Invariants, Bench Context, Agent Projection, and Multi-Vendor Onboarding
 
 **Date:** 2026-05-27
 **Status:** proposed
-**Supersedes:** —
+**Supersedes:** -
 
 ## Prior Art
 
-EXAMPLE-ADR-0024 (Agent-Agnostic Portability Model — Invariants, Bench Context, Agent
+EXAMPLE-ADR-0024 (Agent-Agnostic Portability Model - Invariants, Bench Context, Agent
 Projection, and Multi-Vendor Onboarding, 2026-05-27). Portability invariants, bench
 context model, and projection pattern carried forward; EXAMPLE tool references generalized.
 
@@ -25,7 +25,7 @@ surfaced:
 3. `_meta.yaml` / `sync-agents.sh` is the correct single-source projection pattern
    but is undocumented as architecture
 4. The absolute prohibitions live in multiple files with no canonical single statement
-5. Bench identity lives in `~/.agentic/projects/<hash>/memory/bench-manifest.md` — a
+5. Bench identity lives in `~/.agentic/projects/<hash>/memory/bench-manifest.md` - a
    path no non-AI toolchain tool can discover
 
 All five gaps have the same root cause: the architecture conflates rules-as-content
@@ -39,20 +39,20 @@ with rules-as-delivery-mechanism.
 
 The workspace path model encodes the SCM tooling in the filesystem path but deliberately
 does not encode the agentic tooling. The bench model, plane separation, task queue, and
-human acceptance gate are all defined in terms of git primitives and file conventions —
+human acceptance gate are all defined in terms of git primitives and file conventions -
 not in terms of any vendor's API.
 
-### Problem 1 — `_context.md` has no schema
+### Problem 1 - `_context.md` has no schema
 
 `_context.md` is the designated shared context document but has no defined sections, no
 required fields, and no machine-readable structure.
 
-### Problem 2 — Rules content is coupled to AI toolchain cascade delivery
+### Problem 2 - Rules content is coupled to AI toolchain cascade delivery
 
 The behavioral rules governing agents exist in AGENT.md files loaded via the AI toolchain
 filesystem cascade. A third tool may not support this mechanism.
 
-### Problem 3 — `_meta.yaml` / projection pattern is undocumented
+### Problem 3 - `_meta.yaml` / projection pattern is undocumented
 
 The collection uses a single-source agent projection pattern:
 ```
@@ -60,21 +60,21 @@ The collection uses a single-source agent projection pattern:
 ```
 This is the correct extension point but has never been documented as an architectural decision.
 
-### Problem 4 — No single canonical invariants document
+### Problem 4 - No single canonical invariants document
 
 The absolute prohibitions are spread across PROCESS.md, agent definitions, and AGENT.md
 files. An agent that reads only its own definition file is missing the broader prohibitions.
 
-### Problem 5 — Bench identity is not discoverable by non-AI toolchain tools
+### Problem 5 - Bench identity is not discoverable by non-AI toolchain tools
 
-`bench-manifest.md` is under `~/.agentic/` — a AI toolchain-specific path no other tool
+`bench-manifest.md` is under `~/.agentic/` - a AI toolchain-specific path no other tool
 would know to read.
 
 ---
 
 ## Decisions
 
-### D-1 — `_context.md` Required Section Schema
+### D-1 - `_context.md` Required Section Schema
 
 `_context.md` files must contain the following sections in order, with a schema version comment:
 
@@ -94,7 +94,7 @@ would know to read.
 | `## Active Work` | Current sprint focus, in-progress tasks | No |
 | `## Open Items` | Known gaps, deferred work, pending decisions | No |
 
-### D-2 — Rules / Delivery Separation: `invariants.md`
+### D-2 - Rules / Delivery Separation: `invariants.md`
 
 A canonical invariants document is created at `.core/invariants.md`. It contains the
 complete set of absolute prohibitions that apply to every agent regardless of role, bench
@@ -103,13 +103,13 @@ pattern, or tool vendor.
 Every agent definition file includes a reference line:
 
 ```
-Absolute prohibitions: read `.core/invariants.md` — these rules override all other instructions.
+Absolute prohibitions: read `.core/invariants.md` - these rules override all other instructions.
 ```
 
 **This is the non-negotiable gate for new tool onboarding.** If a tool has no file
 injection mechanism, onboarding is blocked until one is found.
 
-### D-3 — `_meta.yaml` Projection Pattern: Documented Extension Point
+### D-3 - `_meta.yaml` Projection Pattern: Documented Extension Point
 
 The extension procedure for adding a new tool:
 
@@ -121,7 +121,7 @@ The extension procedure for adding a new tool:
 The per-tool generated files are **outputs** of `_meta.yaml`. They must never be
 hand-edited.
 
-### D-4 — Canonical Invariants: `.core/invariants.md` Content
+### D-4 - Canonical Invariants: `.core/invariants.md` Content
 
 The canonical absolute prohibitions:
 
@@ -136,7 +136,7 @@ The canonical absolute prohibitions:
 9. Never install, configure, modify, or remove git hooks in any external repository without explicit written approval.
 10. Never embed credentials in git remote URLs.
 
-### D-5 — Bench Identity: `bench-context.md` in Worktree Root
+### D-5 - Bench Identity: `bench-context.md` in Worktree Root
 
 Extend bench provisioning to generate `<worktree-root>/bench-context.md` alongside
 the existing memory-dir manifest. Content:
@@ -149,7 +149,7 @@ the existing memory-dir manifest. Content:
 |---|---|
 | Bench ID | NN |
 | Role | lead \| worker |
-| Assigned tasks | AC-NNNN, … (or —) |
+| Assigned tasks | AC-NNNN, … (or -) |
 | Created | ISO-8601 date |
 
 ## Constraints
@@ -171,11 +171,11 @@ the existing memory-dir manifest. Content:
 
 **Negative / Trade-offs:**
 - `bench-context.md` must be kept in sync with bench registry if assignments change
-- `invariants.md` must be loaded by new tools — onboarding blocked if no mechanism exists
+- `invariants.md` must be loaded by new tools - onboarding blocked if no mechanism exists
 - `sync-agents.sh` becomes more complex as tool count grows
 
 **Neutral:**
-- The `_context.md` schema has no automated validator yet — compliance is by convention until a lint step is added
+- The `_context.md` schema has no automated validator yet - compliance is by convention until a lint step is added
 
 ## Lessons Learned
 
@@ -184,7 +184,7 @@ whether the extension point exists before the third tool arrives.
 
 ## Related
 
-- AI toolchain Profile Inheritance (modeled by this ADR — see the [ADR Index](index.md), "Profile/Context Inheritance Across Projects")
+- AI toolchain Profile Inheritance (modeled by this ADR - see the [ADR Index](index.md), "Profile/Context Inheritance Across Projects")
 - [ADR-: AI toolchain Config Versioning and Bench Manifest](adr-0011-lead-engineer-identity-anchoring.md)
 - [ADR-0006: External Content Gate Scope](adr-0006-external-content-gate-scope.md)
 - [ADR-0007: Bench Scope Isolation](adr-0007-bench-scope-isolation.md)

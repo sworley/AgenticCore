@@ -1,12 +1,12 @@
-# ADR-0007: Agent Bench Scope Isolation — Current Controls, Bash Tool Gap, and Options
+# ADR-0007: Agent Bench Scope Isolation - Current Controls, Bash Tool Gap, and Options
 
 **Date:** 2026-05-19
 **Status:** proposed
-**Supersedes:** —
+**Supersedes:** -
 
 ## Prior Art
 
-EXAMPLE-ADR-0021 (Agent Bench Scope Isolation — Current Controls, Bash Tool Gap, and
+EXAMPLE-ADR-0021 (Agent Bench Scope Isolation - Current Controls, Bash Tool Gap, and
 Options, 2026-05-19). Bench isolation controls, Bash tool gap analysis, and options
 taxonomy carried forward; EXAMPLE-specific bench naming replaced with generic placeholders.
 
@@ -21,7 +21,7 @@ the task queue, and remote push rights; `.02`+ are worker benches executing assi
 tasks.
 
 An agent session opened in `.02` should logically be confined to `.02`. In practice,
-three enforcement layers exist — but they do not all cover the same tools.
+three enforcement layers exist - but they do not all cover the same tools.
 
 ## Current Controls
 
@@ -55,19 +55,19 @@ is the AI toolchain UI permission prompt.
 
 ## Considered Options
 
-### Option 1 — Bash scope guard hook (`bench-scope-guard.py`)
+### Option 1 - Bash scope guard hook (`bench-scope-guard.py`)
 
 New PreToolUse hook on `Bash`. Uses `git rev-parse --show-toplevel` to determine the
 bench root, then scans the command string for absolute paths that fall under the program
 namespace but outside the current bench. Blocks on match; allows system paths, user home,
 and `~/.agentic/`.
 
-### Option 2 — `permissions.deny` additions
+### Option 2 - `permissions.deny` additions
 
 Add explicit deny entries to `settings.local.json.template` for each protected bench path.
 No new code; uses the built-in deny mechanism. Must enumerate each protected path by name.
 
-### Option 3 — Accept UI permission prompt as sufficient gate
+### Option 3 - Accept UI permission prompt as sufficient gate
 
 No technical change. Document the gap in this ADR and in the bench AGENT.md convention.
 Owner is the gate; the permission prompt already fires for out-of-scope Bash reads.
@@ -92,12 +92,12 @@ active, and bench AGENT.md files instruct agents not to access sibling bench dir
 - Either option adds hook execution overhead to every Bash call
 
 **Neutral:**
-- Decision is reversible — adding a hook later requires no architectural change
+- Decision is reversible - adding a hook later requires no architectural change
 
 ## Lessons Learned
 
 An agent in a worker bench can construct absolute paths into sibling bench directories
-that are functionally identical to the path it should use. The gap is not exotic — it
+that are functionally identical to the path it should use. The gap is not exotic - it
 occurs naturally when an agent has seen a cross-bench path in session context. The Read
 guard handles the `Read` tool correctly; the same protection does not automatically
 extend to Bash.

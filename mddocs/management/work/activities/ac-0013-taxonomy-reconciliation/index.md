@@ -1,6 +1,6 @@
 ---
 source_ticket: AC-0013
-title: Taxonomy Reconciliation — Current mddocs/ Inventory vs. Proposed Management Tree
+title: Taxonomy Reconciliation - Current mddocs/ Inventory vs. Proposed Management Tree
 document_type: analysis
 status: approved
 version: "0.1"
@@ -88,7 +88,7 @@ Legend: **C** = clean fit, **A** = ambiguity / decision required, **M** = mismat
 | `mddocs/operations/runbooks/configure-agents.md` | `agentic/procedures/configure-agents/` | **A** | Cross-domain: configuring agents is operational, but it is also agent-definition governance. Either placement is defensible; whichever wins, the cross-reference must exist. |
 | `mddocs/operations/runbooks/check-links-runbook.md` | `operations/runbooks/quality-checks/` | C | |
 | `mddocs/operations/runbooks/rotate-git-pat.md` | `security/procedures/credential-rotation/` | **A** | Cross-domain: credential rotation is a security procedure that happens operationally. |
-| `mddocs/operations/runbooks/ai-doc-session-commit-discipline.md` | `governance/procedures/commit-discipline/` | **A** | This document defines process discipline for how AI agents commit — it is governance, not a runbook. Current placement in `operations/` is the current naming artefact. |
+| `mddocs/operations/runbooks/ai-doc-session-commit-discipline.md` | `governance/procedures/commit-discipline/` | **A** | This document defines process discipline for how AI agents commit - it is governance, not a runbook. Current placement in `operations/` is the current naming artefact. |
 | `mddocs/operations/runbooks/agent-session-tracking.md` | `operations/observability/session-tracking/` | C | |
 | `mddocs/operations/runbooks/agent-authoring-workflow.md` | `agentic/procedures/authoring-workflow/` | **A** | Cross-domain: references ADR-0027; the workflow is agentic but the governance context is strong. |
 | `mddocs/operations/runbooks/review-ledger-runbook.md` | `assurance/reviews/ledger-runbook/` | **A** | This is a review/assurance procedure, not operations. Its current name ("runbook") reflects current flat structure. |
@@ -120,7 +120,7 @@ Legend: **C** = clean fit, **A** = ambiguity / decision required, **M** = mismat
 | Current path | Proposed destination | Fit | Notes |
 |---|---|---|---|
 | `mddocs/mcp/mcp-rag-docs/server.py` | *Stays in place*; referenced from `architecture/interfaces/mcp-rag-docs/` | C | Native implementation code stays where it is (proposal P10 / out-of-scope boundary). A governance doc in `architecture/interfaces/mcp-rag-docs/` describes it; the .py is a referenced asset, not a moved one. |
-| `mddocs/mcp/mcp-rag-docs/README.md` | `architecture/interfaces/mcp-rag-docs/README.md` | C | The README is the interface documentation — this is the kind of doc that moves. |
+| `mddocs/mcp/mcp-rag-docs/README.md` | `architecture/interfaces/mcp-rag-docs/README.md` | C | The README is the interface documentation - this is the kind of doc that moves. |
 | `mddocs/reference.architecture/tooling-contract.md` | `architecture/interfaces/tooling-contract/` | C | Explicitly about the adapter interface; clean fit. |
 | `mddocs/reference.architecture/configure-mcp.md` | `architecture/interfaces/mcp-configuration/` | C | Interface configuration; direct mapping. |
 | `mddocs/reference.architecture/bench-registry.md` | `architecture/system/bench-registry/` | C | Describes a harness subsystem; clean fit. |
@@ -152,12 +152,12 @@ Legend: **C** = clean fit, **A** = ambiguity / decision required, **M** = mismat
 
 | Current path | Proposed destination | Fit | Notes |
 |---|---|---|---|
-| `mddocs/examples/release-process.md` | `delivery/procedures/release-walkthrough/` or `operations/procedures/release-cut/` | **A** | See architecture/release-process.md note — both the spec and the walkthrough target the same operational concept but at different levels of detail. They should live near each other. |
+| `mddocs/examples/release-process.md` | `delivery/procedures/release-walkthrough/` or `operations/procedures/release-cut/` | **A** | See architecture/release-process.md note - both the spec and the walkthrough target the same operational concept but at different levels of detail. They should live near each other. |
 | `mddocs/examples/bench-session-walkthrough.md` | `operations/procedures/bench-session-walkthrough/` | C | Operational walkthrough; clean fit. |
 | `mddocs/examples/adr-decision-process.md` | `governance/procedures/adr-walkthrough/` | C | Governance walkthrough; clean fit. |
 | `mddocs/examples/index.md` | `reference/examples/index.md` | C | |
 
-### 4.9 FAQs — Purpose-First Classification
+### 4.9 FAQs - Purpose-First Classification
 
 | Current path | Proposed destination | Fit | Notes |
 |---|---|---|---|
@@ -168,7 +168,7 @@ Legend: **C** = clean fit, **A** = ambiguity / decision required, **M** = mismat
 | `mddocs/faq/index.md` | `reference/q&a/index.md` | C | FAQ is a Q&A format; lives in reference/ as a format bucket. |
 | `mddocs/faq/_template.md` | `reference/q&a/_template.md` | C | |
 
-### 4.10 Scripts — Three-Domain Classification
+### 4.10 Scripts - Three-Domain Classification
 
 Scripts are not a documentation taxonomy problem to be solved by directory placement. They are governance artefacts whose ownership, domain, and lifecycle are encoded in metadata. Physical restructuring is deferred to a future migration ADR (D4 approved: annotate now, restructure later).
 
@@ -179,7 +179,7 @@ Scripts are not a documentation taxonomy problem to be solved by directory place
 | **Project-activity script** | Created during `projects/<context>/activities/` work | `projects/<context>/tools/` or shared pool (future) | `domain: projects/<context>`, `source_ticket: AC-XXXX`, `source_context: <context>`, `lifecycle: activity-scoped` or `shared` |
 | **Governance enforcement** | Git hooks, pre-commit gates | Governed by the ADR that mandates them | `enforces: ADR-XXXX`; primary identity is the policy artefact, not a tool category |
 | **Script documentation sidecars** (26 `.md` files) | Alongside each executable | Move with their artefact's primary domain | Inherit domain from parent artefact; `document_type: script-docs` |
-| **MCP runtime code** | `mddocs/mcp/mcp-rag-docs/server.py` | *Stays in place* — executable implementation | Documented by companion `README.md`; primary governed by ADR (ADR-0002) |
+| **MCP runtime code** | `mddocs/mcp/mcp-rag-docs/server.py` | *Stays in place* - executable implementation | Documented by companion `README.md`; primary governed by ADR (ADR-0002) |
 | **Seed / data files** | `mddocs/scripts/seed/tasks.yaml`, `seed/mddocs/backlog.md` | `mddocs/scripts/seed/` (data), `management/work/backlog.md` (live canonical) | Seed data is regenerable; live backlog is a governance artefact (D6) |
 
 **Shared pool mechanics:** A project-activity script with `lifecycle: shared` is physically relocated to `projects/tools/` (or `management/tools/shared/`) under a migration ADR. Its frontmatter records `migrated_from: projects/<context>/activities/AC-XXXX/<path>` and `source_ticket: AC-XXXX`. The shared pool's index tracks origin and provenance. This is a metadata state change, not a new file creation.
@@ -214,9 +214,9 @@ The reconciliation surfaced a recurring cross-domain pattern: several artifacts 
 
 ## 6. Decision Points for HIL Submission
 
-These must be resolved — either in the ADR or in the migration plan — before the taxonomy is approved for implementation.
+These must be resolved - either in the ADR or in the migration plan - before the taxonomy is approved for implementation.
 
-### D1 — ADR Migration Scope ✅ HIL-approved: Option B (forward-only)
+### D1 - ADR Migration Scope ✅ HIL-approved: Option B (forward-only)
 
 **Decision:** New ADRs use the new `management/governance/decisions/` structure from the point of approval onward. The existing 28 ADRs in `mddocs/adr/` remain in their current path as the canonical historical record; no physical move is planned (ADR-0030).
 
@@ -224,7 +224,7 @@ These must be resolved — either in the ADR or in the migration plan — before
 
 ---
 
-### D2 — ADR Canonicity During Transition ✅ HIL-approved: Directed Coexistence
+### D2 - ADR Canonicity During Transition ✅ HIL-approved: Directed Coexistence
 
 **Decision:** Both index files are live simultaneously, each using the proposal's frontmatter contract as machine-readable metadata about its scope. ADR numbering is a flat global sequence (ADR-0000 … ADR-NNNN) independent of physical location. Numbering does not restart or change at migration time.
 
@@ -254,7 +254,7 @@ primary: true
 
 ---
 
-### D3 — Cross-Domain Resolution Rule ✅ HIL-approved: Case-by-case, reviewed together
+### D3 - Cross-Domain Resolution Rule ✅ HIL-approved: Case-by-case, reviewed together
 
 **Decision:** No automatic primary-destination rule is codified in the taxonomy. Each cross-domain artefact is reviewed individually by the team. The `primary: true/false` pattern established for index files (see D2) is available as a general-purpose resolution tool for any taxonomy split that arises.
 
@@ -262,7 +262,7 @@ primary: true
 
 ---
 
-### D4 — Script Classification: Annotate First, Restructure Later ✅ HIL-approved
+### D4 - Script Classification: Annotate First, Restructure Later ✅ HIL-approved
 
 **Decision:** No bulk relocation script at adoption time. A one-time frontmatter annotation pass across all executables (`.sh`, `.py`, `.yaml`) and documentation sidecars (`.md`) is performed as the classification exercise. Physical restructuring to a `tools/` location happens under a future migration ADR, after the taxonomy has soak time and the annotation contract is validated in practice.
 
@@ -276,7 +276,7 @@ Three classes of script require distinct frontmatter:
 | **Harness-provided general-use** | `git-sync.sh`, `check-env.sh` | `Management` (primary), referenced from `projects/` | `allowed_in_adopter_repos: true`; logically available to projects without being project-owned |
 | **Project-activity script** | Any script created in the course of `projects/<context>/activities/AC-XXXX/` work | `projects/<context>` | `source_ticket`, `source_context`, `lifecycle: activity-scoped`; may graduate to a shared pool |
 
-**Shared pool:** When a project-activity script proves generally useful, it migrates to a shared `projects/tools/` area (or `management/tools/shared/`). The migration is governed by a metadata `lifecycle` state change — `activity-scoped` → `shared` — with `migrated_from: projects/<context>/activities/AC-XXXX/<path>` recorded in frontmatter. The shared pool's own index tracks origin and provenance.
+**Shared pool:** When a project-activity script proves generally useful, it migrates to a shared `projects/tools/` area (or `management/tools/shared/`). The migration is governed by a metadata `lifecycle` state change - `activity-scoped` → `shared` - with `migrated_from: projects/<context>/activities/AC-XXXX/<path>` recorded in frontmatter. The shared pool's own index tracks origin and provenance.
 
 **Governance enforcement scripts** (e.g., git hooks, pre-commit gates) are a distinct class. They are not "tools for humans to run." Their primary identity comes from the governance artefact they enforce (`enforces: ADR-0022`), not from a tool or operations category. Frontmatter reflects this with an `enforces` field rather than (or in addition to) a `category` field. Physical placement of enforcement scripts is governed by the ADR that mandates them, not by the documentation taxonomy.
 
@@ -307,23 +307,23 @@ For executable files (`.sh`, `.py`) that cannot carry YAML frontmatter natively,
 
 #### Why annotate-first, restructure-later
 
-The classification decisions don't change whether you move files today or next quarter. Annotation work is the same in either case. Moving files first and annotating later means the work is done twice if the taxonomy or the physical layout shifts. Frontmatter on the artefact survives any physical restructure — it is not dependent on a directory tree being authoritative.
+The classification decisions don't change whether you move files today or next quarter. Annotation work is the same in either case. Moving files first and annotating later means the work is done twice if the taxonomy or the physical layout shifts. Frontmatter on the artefact survives any physical restructure - it is not dependent on a directory tree being authoritative.
 
 The soak-time argument from D1 applies here as well: annotate, use the metadata contract in practice, observe where the three classes (harness-owned, harness-provided, project-activity) create friction or ambiguity, then define the physical `tools/` layout with evidence rather than prediction.
 
 ---
 
-### D5 — `AGENTICCORE_SPEC.md` Authoritative Location ✅ HIL-approved: Directed Coexistence
+### D5 - `AGENTICCORE_SPEC.md` Authoritative Location ✅ HIL-approved: Directed Coexistence
 
 **Decision:** No physical relocation at adoption time. The file remains at `mddocs/AGENTICCORE_SPEC.md` as the `primary: true` authoritative location. A companion stub is created at `mddocs/management/architecture/system/AgenticCore-Spec.md` registered as `primary: false` with `redirect` back to the root. Both files carry frontmatter per the proposal's metadata contract. The `mddocs/index.md` root navigation continues to reference it. Any future physical move is governed by a separate migration ADR and retains the same frontmatter contract.
 
-**Rationale:** The spec's root location reflects its status as a governance anchor for the entire harness — not a content-type artefact to be filed by purpose. The dual-frontmatter approach makes its authoritative location machine-readable, provides discoverability through the `management/architecture/system/` category, and is fully reversible without any file move. This is the D1/D2 pattern applied to a single governance anchor file.
+**Rationale:** The spec's root location reflects its status as a governance anchor for the entire harness - not a content-type artefact to be filed by purpose. The dual-frontmatter approach makes its authoritative location machine-readable, provides discoverability through the `management/architecture/system/` category, and is fully reversible without any file move. This is the D1/D2 pattern applied to a single governance anchor file.
 
 ---
 
-### D6 — Seed Backlog Duplication ✅ HIL-approved: Directed Coexistence
+### D6 - Seed Backlog Duplication ✅ HIL-approved: Directed Coexistence
 
-**Decision:** The live canonical backlog remains at `mddocs/backlog.md` (already populated, referenced by the provisioning template's `_context.md`). The seed template at `mddocs/scripts/seed/mddocs/backlog.md` stays where it is — provisioning scripts depend on it and it cannot move. Both files carry frontmatter per the D5 dual-frontmatter-with-redirect pattern:
+**Decision:** The live canonical backlog remains at `mddocs/backlog.md` (already populated, referenced by the provisioning template's `_context.md`). The seed template at `mddocs/scripts/seed/mddocs/backlog.md` stays where it is - provisioning scripts depend on it and it cannot move. Both files carry frontmatter per the D5 dual-frontmatter-with-redirect pattern:
 
 `mddocs/backlog.md` (live canonical):
 ```yaml
@@ -343,13 +343,13 @@ primary: false
 redirect: ../../../backlog.md
 ```
 
-The two files share the same `document_type` and metadata contract but have distinct lifecycles (`active` vs `template`). Any agent discovering either file can find the live view via `redirect`. The seed template's `__SLUG__` placeholder is preserved — it is not a duplication problem, it is the template contract.
+The two files share the same `document_type` and metadata contract but have distinct lifecycles (`active` vs `template`). Any agent discovering either file can find the live view via `redirect`. The seed template's `__SLUG__` placeholder is preserved - it is not a duplication problem, it is the template contract.
 
 **Rationale:** Seed data is parameterized and regenerable by design; the live backlog is the management artefact that mirrors `tasks.yaml`. Merging them would conflate two different lifecycles and break provisioning. The dual-frontmatter approach makes the distinction machine-readable without requiring two different `document_type` values or any physical relocation.
 
 ---
 
-### D7 — `credential-identity-guard.md` and `secret-guard.md` ✅ HIL-approved: Directed Coexistence
+### D7 - `credential-identity-guard.md` and `secret-guard.md` ✅ HIL-approved: Directed Coexistence
 
 **Decision:** No physical relocation. Both files remain at their current locations under `mddocs/operations/runbooks/` as the `primary: true` locations. Their security purpose is encoded in frontmatter so they are discoverable in the `security/` category via metadata query, without disrupting the operational workflow that reads them from their current paths.
 
@@ -376,7 +376,7 @@ Companion stubs at `mddocs/management/security/guardrails/credential-identity/` 
 
 ---
 
-### D8 — `review-ledger-runbook.md` ✅ HIL-approved: Directed Coexistence
+### D8 - `review-ledger-runbook.md` ✅ HIL-approved: Directed Coexistence
 
 **Decision:** No physical relocation. The file remains at `mddocs/operations/runbooks/review-ledger-runbook.md` as the `primary: true` location. Its assurance purpose is registered in frontmatter so it is discoverable in the `assurance/` category via metadata query, without disrupting the operational workflow that reads it from its current path.
 
@@ -396,7 +396,7 @@ domain: Management
 
 A companion stub at `mddocs/management/assurance/reviews/ledger-runbook/` can be created as `primary: false` with `redirect` back to the runbook path if discoverability through the assurance/ category tree is needed before physical relocation.
 
-**Rationale:** Consistent with D7's scope-minimization principle. The artefact's current name "runbook" reflects the flat structure, not its purpose — but the metadata contract resolves that without moving the file. Its assurance role is now machine-readable. Relocation can be revisited when there is a specific operational need for the assurance/ physical path.
+**Rationale:** Consistent with D7's scope-minimization principle. The artefact's current name "runbook" reflects the flat structure, not its purpose - but the metadata contract resolves that without moving the file. Its assurance role is now machine-readable. Relocation can be revisited when there is a specific operational need for the assurance/ physical path.
 
 ## 7. Resolved Open Questions
 
@@ -410,18 +410,18 @@ These items from the initial analysis have been resolved by the decisions above:
 
 These require further investigation but are **not blockers** to HIL approval of the taxonomy. They are follow-on work to be scoped when the time is right:
 
-**Q1 — Existing ADR path references.** ADR-0026 and other existing ADRs may contain filesystem path references. Under ADR-0030 (no physical migration), those paths do not change, so no relocation audit is required.
+**Q1 - Existing ADR path references.** ADR-0026 and other existing ADRs may contain filesystem path references. Under ADR-0030 (no physical migration), those paths do not change, so no relocation audit is required.
 
-**Q2 — Link integrity baseline.** How many internal links reference paths that would change under physical relocation. Since ADR-0030 plans no relocation, these paths are unchanged and no link-rewrite audit is required.
+**Q2 - Link integrity baseline.** How many internal links reference paths that would change under physical relocation. Since ADR-0030 plans no relocation, these paths are unchanged and no link-rewrite audit is required.
 
-**Q5 — projects/ context seeding.** No `projects/<context>/` directories exist today. The first adopted customer context will seed the first project tree. The proposal's projects/ structure is first exercised in production only when an adopted project is live, which is outside the current scope.
+**Q5 - projects/ context seeding.** No `projects/<context>/` directories exist today. The first adopted customer context will seed the first project tree. The proposal's projects/ structure is first exercised in production only when an adopted project is live, which is outside the current scope.
 
 ## 9. Overall Assessment
 
 The proposed taxonomy **absorbs the current `mddocs/` corpus cleanly** for the majority of artefacts. The clean-fit rate is approximately 70–75% of the inventory; the remaining 25–30% falls into two buckets:
 
-1. **Cross-domain artefacts** (operations that are also security, agentic that are also architecture) — ~8–10 files, all resolved in D3 through case-by-case review with recorded rationale.
-2. **Structural classification problems** (sidecar scripts, seed data, ADR migration mechanics) — all resolved: scripts annotated by domain (D4), three-domain classification enum approved (harness-owned / harness-provided / project-activity / governance-enforcement), seed backlog directed coexistence approved (D6), ADR migration deferred (D1), shared pool lifecycle pattern approved.
+1. **Cross-domain artefacts** (operations that are also security, agentic that are also architecture) - ~8–10 files, all resolved in D3 through case-by-case review with recorded rationale.
+2. **Structural classification problems** (sidecar scripts, seed data, ADR migration mechanics) - all resolved: scripts annotated by domain (D4), three-domain classification enum approved (harness-owned / harness-provided / project-activity / governance-enforcement), seed backlog directed coexistence approved (D6), ADR migration deferred (D1), shared pool lifecycle pattern approved.
 
 The taxonomy does **not** introduce any contradictions with the existing ADR set. All eight decision points have been resolved and are recorded in this document. No outstanding structural objections remain.
 
@@ -429,6 +429,6 @@ The taxonomy does **not** introduce any contradictions with the existing ADR set
 
 These are not blockers to taxonomy approval; they are follow-on work to be scoped when the time is right:
 
-- **ADR placement** — resolved in ADR-0030: forward-only + historical coexistence; no physical migration is planned.
-- **Link integrity** — unaffected: ADR-0030 plans no relocation, so ADR-linked paths are unchanged.
+- **ADR placement** - resolved in ADR-0030: forward-only + historical coexistence; no physical migration is planned.
+- **Link integrity** - unaffected: ADR-0030 plans no relocation, so ADR-linked paths are unchanged.
 - **projects/ context seeding** (deferred): no current `projects/<context>/` directories exist. The first adopted customer context will seed the first project tree, at which point the proposal's projects/ structure is first exercised in production.

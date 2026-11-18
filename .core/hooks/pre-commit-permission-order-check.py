@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # hook-class: git
 """
-pre-commit-permission-order-check.py — git pre-commit hook.
+pre-commit-permission-order-check.py - git pre-commit hook.
 
 When `opencode.json` or `opencode.json.template` is among the staged files,
 verifies that the catch-all glob `"*"` is the FIRST key in every permission
@@ -10,15 +10,15 @@ object whose keys are glob patterns (e.g. `permission.bash`).
 Failure mode this guards against:
   opencode evaluates permission rules with last-match-wins semantics. A catch-all
   `"*"` key that is not declared first silently overrides every more-specific rule
-  declared before it — the broad rule wins because it matches last. This repo
+  declared before it - the broad rule wins because it matches last. This repo
   confirmed a live instance of that ordering bug (AP-036); this hook prevents a
   regression from reaching a commit produced by any tool or CLI.
 
 Exit conventions:
   0 = git succeeded and reported no staged opencode config, or catch-all is
       first in every glob object.
-  1 = a permission object has keys but `"*"` is not first — commit blocked; OR a
-      git subprocess failed so staged state could not be determined — commit
+  1 = a permission object has keys but `"*"` is not first - commit blocked; OR a
+      git subprocess failed so staged state could not be determined - commit
       blocked to fail safe. The offending file / error is named on stderr.
 
 Robustness:
@@ -30,7 +30,7 @@ Robustness:
   This hook fails CLOSED on git errors. If `git diff --cached` cannot enumerate
   staged files, or `git show :<path>` cannot read a known-staged target's index
   content, the commit is blocked with a non-zero exit rather than silently
-  allowed — a git error must not become a bypass of the ordering check. A commit
+  allowed - a git error must not become a bypass of the ordering check. A commit
   can still be forced past a genuine tooling failure with `--no-verify`.
 """
 
@@ -59,7 +59,7 @@ class GitError(Exception):
 def staged_files():
     """Return the list of staged file paths (added/copied/modified/renamed/type-changed).
 
-    Raises GitError if `git diff --cached` cannot be run or exits non-zero — a git
+    Raises GitError if `git diff --cached` cannot be run or exits non-zero - a git
     failure here means we cannot determine what is staged, so the caller must fail
     closed rather than assume nothing is staged. `--diff-filter=ACMRT` includes
     renames (R) and type-changes (T) so a pure rename into a target name is still
@@ -153,7 +153,7 @@ def check_file(path):
         first_key = next(iter(obj.keys()))
         if first_key != "*":
             violations.append(
-                f"{path}: permission object `{obj_path}` — catch-all \"*\" is not the "
+                f"{path}: permission object `{obj_path}` - catch-all \"*\" is not the "
                 f"first key (first key is \"{first_key}\"). Under last-match-wins, a "
                 f"non-first \"*\" overrides every rule before it."
             )
@@ -170,7 +170,7 @@ def main():
             file=sys.stderr,
         )
         print(
-            "  Blocking commit to fail safe — the ordering check could not run. "
+            "  Blocking commit to fail safe - the ordering check could not run. "
             "Resolve the git error, or bypass with --no-verify if you understand "
             "the risk.",
             file=sys.stderr,

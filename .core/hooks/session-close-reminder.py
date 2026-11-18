@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-session-close-reminder.py — Stop hook.
+session-close-reminder.py - Stop hook.
 
 Fires at the end of every agent turn. Checks all git worktrees for uncommitted
 changes and emits a warning when any are found. Also checks the dotfiles bare
@@ -54,7 +54,7 @@ def check_dotfiles():
 
     Returns the count of uncommitted changes (int), or None if ~/.dotfiles does
     not exist, the check times out, or the command fails (silently skipped in
-    all such cases). File paths are never returned — only the count — to avoid
+    all such cases). File paths are never returned - only the count - to avoid
     leaking sensitive home-directory filenames into hook output.
     """
     home = os.path.expanduser("~")
@@ -111,7 +111,7 @@ def main():
         sys.exit(0)
 
     if dirty:
-        print("[session-close-reminder] WARNING — uncommitted changes detected:", file=sys.stderr)
+        print("[session-close-reminder] WARNING - uncommitted changes detected:", file=sys.stderr)
         for wt, status in dirty:
             print(f"  {wt}:", file=sys.stderr)
             for line in status.splitlines():
@@ -122,20 +122,20 @@ def main():
 
     if scratch_nonempty:
         print(file=sys.stderr)
-        print("[session-close-reminder] WARNING — non-empty _scratch/ detected:", file=sys.stderr)
+        print("[session-close-reminder] WARNING - non-empty _scratch/ detected:", file=sys.stderr)
         for wt, items in scratch_nonempty:
             print(f"  {wt}/_scratch/:", file=sys.stderr)
             for item in items:
                 print(f"    {item}", file=sys.stderr)
-        print("[session-close-reminder] Review _scratch/ contents — delete or promote before closing.", file=sys.stderr)
+        print("[session-close-reminder] Review _scratch/ contents - delete or promote before closing.", file=sys.stderr)
 
     if dotfiles_count:
         print(file=sys.stderr)
-        print(f"[session-close-reminder] WARNING — dotfiles repo has {dotfiles_count} uncommitted change(s) — run: dot status", file=sys.stderr)
+        print(f"[session-close-reminder] WARNING - dotfiles repo has {dotfiles_count} uncommitted change(s) - run: dot status", file=sys.stderr)
         print("[session-close-reminder] Run: dot add <file> && dot commit -m 'chore: <description>'", file=sys.stderr)
         print("  See: mddocs/operations/runbooks/dotfiles-management.md", file=sys.stderr)
 
-    sys.exit(0)  # informational only — never block
+    sys.exit(0)  # informational only - never block
 
 
 if __name__ == "__main__":

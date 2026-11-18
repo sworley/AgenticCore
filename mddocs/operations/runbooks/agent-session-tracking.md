@@ -6,7 +6,7 @@
 
 ## Overview
 
-AI toolchain sub-agents are stateless — each spawned agent starts with no memory of prior
+AI toolchain sub-agents are stateless - each spawned agent starts with no memory of prior
 work. Session tracking bridges that gap by combining four layers of persistence:
 
 | Layer | Mechanism | Survives Session? | Location |
@@ -16,7 +16,7 @@ work. Session tracking bridges that gap by combining four layers of persistence:
 | Cross-session task continuity | Session state file | Yes | `.agentic/session-state.md` |
 | Agent invocation audit | Append-only log | Yes | `.agentic/agent-audit.log` |
 
-This runbook documents the manual procedures for each layer — how to read, write, and
+This runbook documents the manual procedures for each layer - how to read, write, and
 recover from each when automation is unavailable.
 
 ---
@@ -25,11 +25,11 @@ recover from each when automation is unavailable.
 
 - Access to the collection root
 - Read/write access to `.agentic/` within the collection root
-- No special tools required — all manual steps use standard text editing and `date` / `echo`
+- No special tools required - all manual steps use standard text editing and `date` / `echo`
 
 ---
 
-## Layer 1 — Long-Term Memory (`~/.agentic/projects/<hashed-project-path>/memory/`)
+## Layer 1 - Long-Term Memory (`~/.agentic/projects/<hashed-project-path>/memory/`)
 
 ### What it is
 
@@ -75,7 +75,7 @@ the context you need.
    ```
 3. Add a pointer line to `MEMORY.md`:
    ```markdown
-   - `[Title](filename.md)` — one-line hook (under 150 chars)
+   - `[Title](filename.md)` - one-line hook (under 150 chars)
    ```
 
 ### When to write manually
@@ -86,7 +86,7 @@ the context you need.
 
 ---
 
-## Layer 2 — In-Session Task Coordination (TaskCreate/TaskList)
+## Layer 2 - In-Session Task Coordination (TaskCreate/TaskList)
 
 ### What it is
 
@@ -100,10 +100,10 @@ Maintain a scratch list in any text editor during the session. The format that m
 TaskCreate/TaskUpdate is:
 
 ```
-[ ] Task subject — description (owner: <agent>)
-[>] Task subject — currently in progress
-[x] Task subject — completed
-[!] Task subject — blocked by: <reason>
+[ ] Task subject - description (owner: <agent>)
+[>] Task subject - currently in progress
+[x] Task subject - completed
+[!] Task subject - blocked by: <reason>
 ```
 
 ### Recovering task state after session loss
@@ -114,7 +114,7 @@ outstanding tasks at the time the last session ended. Recreate them manually or 
 
 ---
 
-## Layer 3 — Cross-Session Task Continuity (`.agentic/session-state.md`)
+## Layer 3 - Cross-Session Task Continuity (`.agentic/session-state.md`)
 
 ### What it is
 
@@ -134,8 +134,8 @@ outstanding tasks. Read at the start of the next session to restore context.
 Last updated: 2026-04-23T14:30:00Z
 
 ## Outstanding Tasks
-- [ ] Provision worker bench — next step: run provision-bench.sh (owner: ops-engineer)
-- [ ] Update runbook — in progress (owner: docs-engineer)
+- [ ] Provision worker bench - next step: run provision-bench.sh (owner: ops-engineer)
+- [ ] Update runbook - in progress (owner: docs-engineer)
 
 ## Completed This Session
 - [x] Write ADR draft
@@ -180,7 +180,7 @@ Expected: `Last updated:` line within the last working session.
 
 ---
 
-## Layer 4 — Agent Invocation Audit (`.agentic/agent-audit.log`)
+## Layer 4 - Agent Invocation Audit (`.agentic/agent-audit.log`)
 
 ### What it is
 
@@ -240,7 +240,7 @@ To understand what happened in a previous session when `session-state.md` is inc
 1. Find the session's date range in the log.
 2. Identify all agents invoked and their task subjects.
 3. Cross-reference failed/blocked entries with the outstanding tasks in `session-state.md`.
-4. Use the task subjects to locate any files created or modified — check `git log` for
+4. Use the task subjects to locate any files created or modified - check `git log` for
    commits made in the same time window.
 
 ---
@@ -250,7 +250,7 @@ To understand what happened in a previous session when `session-state.md` is inc
 Use this when AI toolchain is unavailable and you need to understand and continue the
 last agentic session's work manually.
 
-### Step 1 — Read session state
+### Step 1 - Read session state
 
 ```bash
 cat .agentic/session-state.md
@@ -258,7 +258,7 @@ cat .agentic/session-state.md
 
 Note: outstanding tasks, last active work.
 
-### Step 2 — Read the audit log
+### Step 2 - Read the audit log
 
 ```bash
 grep "$(date -u +%Y-%m-%d)" .agentic/agent-audit.log
@@ -268,19 +268,19 @@ grep "$(date -u -v-1d +%Y-%m-%d)" .agentic/agent-audit.log   # macOS
 
 Note: any failed or blocked entries that need attention.
 
-### Step 3 — Check memory for project context
+### Step 3 - Check memory for project context
 
 ```bash
 cat ~/.agentic/projects/<hashed-project-path>/memory/MEMORY.md
 # Read the project_*.md files for active epics
 ```
 
-### Step 4 — Identify the manual commands
+### Step 4 - Identify the manual commands
 
 For each outstanding task, find the relevant runbook in `mddocs/operations/runbooks/`
 or `mddocs/reference.architecture/`.
 
-### Step 5 — Execute manually and update the log
+### Step 5 - Execute manually and update the log
 
 After completing manual work, append to the audit log:
 
@@ -324,7 +324,7 @@ _(none)_
 _(reset manually)_
 EOF
 
-# Audit log is never reset — it is the permanent record
+# Audit log is never reset - it is the permanent record
 # If log is corrupted, move it aside and create a fresh one
 mv .agentic/agent-audit.log .agentic/agent-audit.log.bak
 echo "## agent-audit.log" > .agentic/agent-audit.log
@@ -335,8 +335,8 @@ echo "## Format: ISO timestamp | agent | task subject | status | task ID" >> .ag
 
 ## Related
 
-- `.agentic/agents/lead-engineer.md` — session tracking instructions for the orchestrator
-- `.agentic/session-state.md` — live session state file
-- `.agentic/agent-audit.log` — agent invocation audit log
-- `~/.agentic/projects/<hashed-project-path>/memory/MEMORY.md` — long-term memory index
-- [Session Continuity](session-continuity.md) — commit-early-commit-often Stop hook and end-of-focus memory write practices
+- `.agentic/agents/lead-engineer.md` - session tracking instructions for the orchestrator
+- `.agentic/session-state.md` - live session state file
+- `.agentic/agent-audit.log` - agent invocation audit log
+- `~/.agentic/projects/<hashed-project-path>/memory/MEMORY.md` - long-term memory index
+- [Session Continuity](session-continuity.md) - commit-early-commit-often Stop hook and end-of-focus memory write practices

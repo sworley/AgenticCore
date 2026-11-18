@@ -9,7 +9,7 @@ orientation before diving into [Getting Started](getting-started.md) or the
 
 ## 1. The Bench Hierarchy & Namespace
 
-A **project-space** is identified and staged first. It is **not** a git repository —
+A **project-space** is identified and staged first. It is **not** a git repository -
 it is the start of a structure. When it adopts the AgenticCore harness it becomes
 `<project-space>.01`, which is **git-initialized** and becomes the **management repo**
 for the project. The lead-engineer owns this space and is accountable for upholding the
@@ -19,25 +19,25 @@ governance of the entire space.
 plane): customer repos are cloned into `.00` and **gitignored by `.01`** (ADR-0006 hard
 boundary), so customer code never enters management history. Because a git worktree only
 materializes **tracked** files, `.02+` worktrees carry only management/framework content
-(Pattern A) — they scale well and never see customer code.
+(Pattern A) - they scale well and never see customer code.
 
 ### 1a. Hierarchy & Ownership
 
 ```mermaid
 flowchart TD
-    P["project-space<br/>(staged — not a git repo)"] -->|"adopts harness → git init"| ONE
+    P["project-space<br/>(staged - not a git repo)"] -->|"adopts harness → git init"| ONE
 
-    HIL["HIL — project owner"] --> ONE
+    HIL["HIL - project owner"] --> ONE
     HIL -->|"customer work in .00"| ZERO
 
-    ONE["project-space.01 — management repo<br/>lead-engineer — whole-space owner"]
+    ONE["project-space.01 - management repo<br/>lead-engineer - whole-space owner"]
 
-    ZERO["project-space.00 — customer / HIL plane<br/>customer repos cloned + gitignored by .01<br/>attendant · hil-assistant"]
+    ZERO["project-space.00 - customer / HIL plane<br/>customer repos cloned + gitignored by .01<br/>attendant · hil-assistant"]
 
-    ONE -->|"provisions (HIL request)"| A2["workbench .02+ — Pattern A<br/>management / framework<br/>led by lead-engineer"]
+    ONE -->|"provisions (HIL request)"| A2["workbench .02+ - Pattern A<br/>management / framework<br/>led by lead-engineer"]
     A2 --> SA[its subagents]
 
-    ONE --> BS[baseline-steward — framework baseline · bundle · build]
+    ONE --> BS[baseline-steward - framework baseline · bundle · build]
 ```
 
 ### 1b. Authority & Communication
@@ -45,12 +45,12 @@ flowchart TD
 ```mermaid
 flowchart LR
     HIL[HIL] <-->|"approvals · relay"| L01[lead-engineer .01]
-    L01 <-->|"task · status"| L02[lead-engineer — Pattern A .02+]
+    L01 <-->|"task · status"| L02[lead-engineer - Pattern A .02+]
     L02 <--> SUB[subagents .02+]
     L01 <--> S01[subagents .01]
-    L01 <-->|"task · status (HIL request)"| ATT[attendant — customer plane .00]
+    L01 <-->|"task · status (HIL request)"| ATT[attendant - customer plane .00]
     ATT <--> ASUB[agents in the .00 customer plane]
-    HIL <-->|"Pattern W — open · relaxed"| ATT
+    HIL <-->|"Pattern W - open · relaxed"| ATT
 ```
 
 ### Namespace Summary
@@ -69,24 +69,24 @@ See [Bench Model](bench-model.md) for the canonical detail.
 
 ```mermaid
 flowchart LR
-    subgraph A[Pattern A — management layer]
+    subgraph A[Pattern A - management layer]
         LA[lead-engineer] --> TA[.01 + .02+ agentic team]
     end
 
-    subgraph W[Pattern W — customer / project, in .00]
+    subgraph W[Pattern W - customer / project, in .00]
         AW[attendant] --> TW[customer repos cloned in .00 · relaxed]
     end
 
-    subgraph H[Pattern H — client / HIL plane, in .00]
+    subgraph H[Pattern H - client / HIL plane, in .00]
         AH[attendant · hil-assistant] --> TH[.00 workspace]
     end
 ```
 
 | Pattern | Focus | Namespace | Led / Facilitating | Notes |
 |---|---|---|---|---|
-| Pattern A | Management layer | `.01` + `.02+` | `lead-engineer` | Framework, harness, guardrails — the core of AgenticCore |
+| Pattern A | Management layer | `.01` + `.02+` | `lead-engineer` | Framework, harness, guardrails - the core of AgenticCore |
 | Pattern W | Customer / project | `.00` | `attendant` | Customer repos cloned into `.00`, gitignored by `.01`; relaxed model |
-| Pattern H | Client / HIL plane | `.00` | `attendant` / `hil-assistant` | HIL plane — oversight, coordination |
+| Pattern H | Client / HIL plane | `.00` | `attendant` / `hil-assistant` | HIL plane - oversight, coordination |
 
 Customer/project work (Pattern W) happens in the long-standing `.00` worktree: customer
 repos are cloned there and gitignored by `.01`, so fresh `.02+` worktrees (Pattern A)
@@ -119,9 +119,9 @@ flowchart TD
 
 Key HIL gates:
 
-- **Review** — nothing merges to `dev` or `main` or pushes to remote without an
+- **Review** - nothing merges to `dev` or `main` or pushes to remote without an
   explicit `lgtm`.
-- **Teardown** — a worker bench is removed only with HIL authorization.
+- **Teardown** - a worker bench is removed only with HIL authorization.
 - Any stage can be `cancelled`; `ready` and `accepted` are user-only transitions.
 
 See [Task Queue Operations](../reference.architecture/task-queue-operations.md) and
@@ -137,9 +137,9 @@ the `.00` customer/HIL plane (Pattern W `attendant` + Pattern H `hil-assistant`)
 
 | Agent | Layer | Mode | Invoked By | Scope |
 |---|---|---|---|---|
-| `lead-engineer` | `.01` | primary | HIL (session open) | Whole-space owner & facilitator — governance, task queue, bench lifecycle |
+| `lead-engineer` | `.01` | primary | HIL (session open) | Whole-space owner & facilitator - governance, task queue, bench lifecycle |
 | `lead-engineer` | `.02`+ (Pattern A) | primary | `.01` lead-engineer | Agentic team lead for a management-layer workbench/worktree; completes the assigned task |
-| `attendant` | `.00` (Pattern W) | primary | HIL | Facilitates customer/project work in the `.00` plane — relaxed, open to HIL; customer repos cloned here & gitignored by `.01` |
+| `attendant` | `.00` (Pattern W) | primary | HIL | Facilitates customer/project work in the `.00` plane - relaxed, open to HIL; customer repos cloned here & gitignored by `.01` |
 | `hil-assistant` | `.00` (Pattern H) | primary | HIL | HIL's personal collaborator in the `.00` workspace |
 | `baseline-steward` | framework | subagent | `.01` lead-engineer | Bundles, builds, and baselines the core framework/harness |
 | `orchestrator` | subagent | subagent | lead-engineer (`.01`) | Routing / subagent dispatch |

@@ -6,7 +6,7 @@ hooks, plugins, and security-relevant configuration.
 ## Responsibilities
 
 - Implement and maintain agent hooks and plugins
-- Content inspection gate — scan all external content before consumption
+- Content inspection gate - scan all external content before consumption
 - Credential and secret scanning in tool output
 - Security runbooks in `mddocs/reference.architecture/`
 
@@ -34,15 +34,15 @@ cd mddocs/mcp/mcp-rag-docs
 DEPS=$(sed -n '/^# dependencies = \[/,/^# \]/p' server.py | grep -oE '"[^"]+"' | tr -d '"')
 printf '%s\n' $DEPS | uv run --python 3.12 --with pip-audit -- pip-audit --desc auto -r /dev/stdin 2>&1
 ```
-- Extracts pinned deps from the PEP 723 inline script block — stays in sync automatically
+- Extracts pinned deps from the PEP 723 inline script block - stays in sync automatically
   when versions change.
 - Report only if vulnerabilities are found. Silent = clean.
 - On finding: one-line summary per CVE to lead-engineer for planning.
-- After any scan (clean or finding): update `cve-scan.txt` — refresh the
+- After any scan (clean or finding): update `cve-scan.txt` - refresh the
   `# Last scanned: YYYY-MM-DD` header and commit.
 
 ## Guardrails
 
 - Never echo credentials
-- Block findings are non-negotiable — no override
+- Block findings are non-negotiable - no override
 - All security-relevant changes require a security-reviewer pass before merge

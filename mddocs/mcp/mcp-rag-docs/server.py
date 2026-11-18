@@ -5,7 +5,7 @@
 # ]
 # ///
 """
-mcp-rag-docs — BM25 search MCP server for the mddocs/ corpus.
+mcp-rag-docs - BM25 search MCP server for the mddocs/ corpus.
 
 Transport: stdio. Framework: FastMCP.
 Launch via: uv run mddocs/mcp/mcp-rag-docs/server.py --docs-root mddocs
@@ -54,12 +54,12 @@ class SearchResult:
 
 
 # ---------------------------------------------------------------------------
-# BM25Okapi — inline, stdlib only
+# BM25Okapi - inline, stdlib only
 # ---------------------------------------------------------------------------
 
 class BM25Okapi:
     """
-    BM25Okapi scoring — standard library only, no numpy.
+    BM25Okapi scoring - standard library only, no numpy.
 
     Parameters match the rank-bm25 defaults: k1=1.5, b=0.75, epsilon=0.25.
     """
@@ -130,7 +130,7 @@ class BM25Okapi:
 # ---------------------------------------------------------------------------
 
 def _tokenize(text: str) -> list[str]:
-    """Lowercase word tokenizer — good enough for BM25 over markdown."""
+    """Lowercase word tokenizer - good enough for BM25 over markdown."""
     return re.findall(r"[a-z0-9_\-]+", text.lower())
 
 

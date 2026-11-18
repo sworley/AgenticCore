@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Sync AGENT.md files between _config/ (repo archive) and on-disk parent-dir locations.
 #
-# Idempotent: yes — copies only when content differs; --check never modifies files.
+# Idempotent: yes - copies only when content differs; --check never modifies files.
 #
-# NOT idempotent: none — all modes are safe to run multiple times.
+# NOT idempotent: none - all modes are safe to run multiple times.
 #
 # Usage:
 #   sync-agent-config.sh --deploy   # _config/ → parent dirs  (repo → filesystem)
@@ -69,7 +69,7 @@ process_pair() {
     fi
   else
     if [[ -f "$dst" ]] && diff -q "$src" "$dst" > /dev/null 2>&1; then
-      echo "SKIP     $(basename "$src") — already in sync"
+      echo "SKIP     $(basename "$src") - already in sync"
       skipped=$((skipped + 1))
     else
       mkdir -p "$(dirname "$dst")"
@@ -92,7 +92,7 @@ process_pair() {
 echo ""
 if [[ "$mode" == "--check" ]]; then
   if [[ $drift -gt 0 ]]; then
-    echo "RESULT: $drift file(s) out of sync — run with --deploy or --collect to resolve"
+    echo "RESULT: $drift file(s) out of sync - run with --deploy or --collect to resolve"
     exit 1
   else
     echo "RESULT: all files in sync"

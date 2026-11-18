@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# tool-adapter.sh — Generate/configure the agent-runtime adapter for an adopted
+# tool-adapter.sh - Generate/configure the agent-runtime adapter for an adopted
 # AgenticCore project.
 #
 # The AgenticCore harness is TOOL-AGNOSTIC: roles, process gates, bench model,
@@ -79,7 +79,7 @@ dry() {
   return 0
 }
 
-# strip_opencode_placeholder_models — remove the placeholder `model` key from
+# strip_opencode_placeholder_models - remove the placeholder `model` key from
 # each generated agent's frontmatter so opencode uses the user's configured
 # default model (global config or `-m`) instead of an unresolvable 'provider/*'
 # placeholder, which would stop the session cold.
@@ -111,7 +111,7 @@ case "$TOOL" in
     log "==> tool-adapter: --tool none (bring your own tool)"
     log ""
     log "The AgenticCore harness is tool-agnostic; no adapter was generated."
-    log "The committed 'opencode.json' is a REFERENCE adapter — optional, and it may"
+    log "The committed 'opencode.json' is a REFERENCE adapter - optional, and it may"
     log "be removed or replaced if you use a different runtime."
     log ""
     log "To pick a runtime adapter at adoption time, re-run adopt.sh with --tool, or"
@@ -125,12 +125,12 @@ case "$TOOL" in
 
   opencode)
     if [ ! -f "$REPO_ROOT/opencode.json" ]; then
-      warn "opencode.json not found in $REPO_ROOT — the opencode adapter needs it."
+      warn "opencode.json not found in $REPO_ROOT - the opencode adapter needs it."
       [ "$DRY_RUN" -eq 1 ] && { dry "would update opencode adapter"; exit 0; }
       exit 2
     fi
     if [ ! -x "$SYNC" ]; then
-      warn "sync-agents.sh not found/executable at $SYNC — opencode agents not regenerated."
+      warn "sync-agents.sh not found/executable at $SYNC - opencode agents not regenerated."
       [ "$DRY_RUN" -eq 1 ] && { dry "would regenerate .opencode/agents/"; exit 0; }
       exit 2
     fi
@@ -144,7 +144,7 @@ case "$TOOL" in
     if [ "$DRY_RUN" -ne 1 ]; then
       cat > "$REPO_ROOT/start-opencode.sh" << 'EOF'
 #!/usr/bin/env bash
-# start-opencode.sh — launch opencode in this project with its local config.
+# start-opencode.sh - launch opencode in this project with its local config.
 # cd'ing here isolates the directory so opencode picks up ./opencode.json;
 # your global ~/.config/opencode still applies (deep-merged).
 set -euo pipefail
@@ -171,7 +171,7 @@ EOF
     if [ "$DRY_RUN" -ne 1 ]; then
       mkdir -p "$CODEX_DIR"
       cat > "$CODEX_DIR/README.md" << 'EOF'
-# .codex — Codex CLI adapter (reference)
+# .codex - Codex CLI adapter (reference)
 
 Codex CLI is a supported AgenticCore runtime adapter. The harness contract is
 tool-neutral; this directory is a starting point you refine for your Codex version.
@@ -203,7 +203,7 @@ EOF
     if [ "$DRY_RUN" -ne 1 ]; then
       cat > "$REPO_ROOT/start-codex.sh" << 'EOF'
 #!/usr/bin/env bash
-# start-codex.sh — launch codex in this project with its local context.
+# start-codex.sh - launch codex in this project with its local context.
 # cd'ing here isolates the directory; your global codex config still applies.
 set -euo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

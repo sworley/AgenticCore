@@ -17,7 +17,7 @@ agent directories (`.opencode/agents/`).
 
 ## Procedure
 
-### Step 1 — Preview changes (dry run)
+### Step 1 - Preview changes (dry run)
 
 ```sh
 .agents/sync-agents.sh --dry-run
@@ -25,13 +25,13 @@ agent directories (`.opencode/agents/`).
 
 Review the output to confirm the expected files will be written.
 
-### Step 2 — Run the sync
+### Step 2 - Run the sync
 
 ```sh
 .agents/sync-agents.sh
 ```
 
-### Step 3 — Review generated files
+### Step 3 - Review generated files
 
 ```sh
 git diff .opencode/agents/
@@ -39,7 +39,7 @@ git diff .opencode/agents/
 
 Confirm the diffs match your intent.
 
-### Step 4 — Stage and commit
+### Step 4 - Stage and commit
 
 ```sh
 git add .agents/ .opencode/agents/

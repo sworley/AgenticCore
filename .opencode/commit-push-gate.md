@@ -4,11 +4,11 @@
 
 ## Required before any commit
 
-1. Present a summary of all staged changes — what files, what changed, and why.
+1. Present a summary of all staged changes - what files, what changed, and why.
 2. Wait for an explicit acceptance signal from the HIL in the current conversation.
 
 Acceptance examples: "lgtm", "commit it", "go ahead", "yes".
-Ambiguous responses ("ok", "sure", "fine") are not acceptance — ask for clarification.
+Ambiguous responses ("ok", "sure", "fine") are not acceptance - ask for clarification.
 
 ## Required before any push
 

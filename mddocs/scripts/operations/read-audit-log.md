@@ -8,7 +8,7 @@ domain: Management
 category: Security
 process: egress-audit-review
 owner: security-engineer
-allowed_in_adopter_repos: false
+allowed_in_adopter_repos: true
 related:
   paths:
     - ../read-audit-log.sh

@@ -8,7 +8,7 @@ domain: Management
 category: Operations
 process: bench-status
 owner: ops-engineer
-allowed_in_adopter_repos: false
+allowed_in_adopter_repos: true
 related:
   paths:
     - ../bench-status.sh

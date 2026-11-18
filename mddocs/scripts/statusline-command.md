@@ -8,7 +8,7 @@ domain: Management
 category: Agentic
 process: session-statusline
 owner: orchestrator
-allowed_in_adopter_repos: false
+allowed_in_adopter_repos: true
 related:
   paths:
     - statusline-command.sh

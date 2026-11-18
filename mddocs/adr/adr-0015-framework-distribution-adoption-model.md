@@ -444,13 +444,17 @@ Stage 1 excluded the one-shot bootstrap tools (`setup/adopt.sh`,
 
 **Decision.**
 
-- **The flag is authoritative.** `export-framework.sh` excludes from the
-  adopter tree every artifact whose `.meta.yaml` declares
-  `allowed_in_adopter_repos: false`. The supported adoption surface is the
-  `true` set (metadata-standard section 3/4). This is the shipping mechanism for
-  the D-1/D-7 adoption surface and the D-8 discipline-inheritance boundary; it
-  does not weaken any D-7 confidentiality control (remote severance, history/
-  refs/object scrub).
+- **The flag is authoritative and fail-closed.** `export-framework.sh` excludes
+  from the adopter tree every artifact that does not explicitly declare
+  `allowed_in_adopter_repos: true` (AC-0014 W1) - a missing, malformed, or any
+  non-`true` value is treated as not in the supported surface and excluded. The
+  supported adoption surface is the `true` set (metadata-standard section 3/4).
+  This is the shipping mechanism for the D-1/D-7 adoption surface and the D-8
+  discipline-inheritance boundary; it does not weaken any D-7 confidentiality
+  control (remote severance, history/refs/object scrub).
+- **`.md` script-docs honored.** The gate also respects the flag declared in
+  `.md` script-doc frontmatter (AC-0014 W2), so documentation for a non-shipping
+  tool (e.g. `setup/adopt.md`) never reaches the adopter tree.
 - **Reclassification (15 -> class 2 / `true`).** The following are part of the
   shipped, supported surface: `bench-status.sh`, `check-worktree-hygiene.sh`,
   `read-audit-log.sh`, `statusline-command.sh`, `sync-agent-config.sh`,
@@ -462,10 +466,11 @@ Stage 1 excluded the one-shot bootstrap tools (`setup/adopt.sh`,
   These were previously `false` but are referenced by shipped agent definitions
   and runbooks (e.g. `lead-engineer.md` runs `bench-status.sh --stale` at
   session open), so excluding them would ship a surface whose instructions
-  reference missing tools.
+  reference missing tools. Their `.md` script-doc frontmatter was synchronized to
+  `true` accordingly (AC-0014 W3).
 - **Keep `false` (excluded / not shipped):** the one-shot bootstrap tools
-  `setup/adopt.sh` and `export-framework.sh`, and the seed data
-  `seed/tasks.yaml` / `seed/bench-registry.yaml`. The bootstrap tools are
+  `setup/adopt.sh` and `export-framework.sh` (and `setup/adopt.md`), and the seed
+  data `seed/tasks.yaml` / `seed/bench-registry.yaml`. The bootstrap tools are
   excluded so a downstream adopter cannot re-run `adopt.sh` to re-adopt an
   already-adopted environment, or re-home via `export-framework.sh`.
 

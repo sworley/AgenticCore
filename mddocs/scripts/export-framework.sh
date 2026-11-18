@@ -1058,7 +1058,7 @@ FRAMEWORK_EXCLUDE_PATTERNS=(
 # AC-0014 (Stage 2) - metadata-driven shipping. Any artifact whose .meta.yaml
 # declares `allowed_in_adopter_repos: false` is not part of the supported
 # adoption surface and must not ship into an adopter repo (metadata-standard
-# section 3/4, and the ADR-0034 governing decision). Computed at SOURCE TIME so
+# section 3/4, and the ADR-0015 D-9 governing decision). Computed at SOURCE TIME so
 # the same authoritative FRAMEWORK_EXCLUDE_PATTERNS array drives the tar copy,
 # the manifest walk, and the test harness (which sources this array directly).
 # An artifact's own executable (path minus `.meta.yaml`) and its `.meta.yaml`

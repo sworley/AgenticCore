@@ -54,10 +54,11 @@ Full history: `git log --oneline origin/dev..HEAD` (also AC-0013 commits `fbe154
 - typos / `bash -n` / `py_compile` / YAML — clean
 
 ## Open items / follow-ups
-1. **`feat/taxonomy-adoption → dev` integration PR — MERGED (#24, `f7aa58e`).**
-   AC-0013 + AC-0014 + pyyaml fix are now on `dev`. Local checkout still on
-   `feat/taxonomy-adoption`; next work should happen on `dev`.
-2. **Release cutover (`dev → main`)** — the next step, via the release process.
+1. **`feat/taxonomy-adoption → dev` — MERGED (#24, `f7aa58e`); branch removed.**
+   AC-0013 + AC-0014 + pyyaml fix are one more set of changes on `dev`. Local
+   checkout is on `feat/taxonomy-adoption`; new work starts on `dev`.
+2. **Ready for a new item on `dev`** — taxonomy/shipping-gate work is complete.
+   Community release (with release notes) is a separate, later step, not now.
 3. **Projects-space / previous-art import (DEFERRED)** — the `projects/<context>/`
    (CTX-) plane and Q5 seed runbook exist and are wired into mdBook, but
    `Current contexts` is `_None yet_`. No real context adopted yet. When a real
@@ -74,8 +75,9 @@ Full history: `git log --oneline origin/dev..HEAD` (also AC-0013 commits `fbe154
      classification + HIL direction before any work.*
 
 ## Next steps (in order)
-1. `dev → main` release cutover via the release process (PR #24 landed on `dev`).
+1. Pick up the next item on `dev` (taxonomy/shipping-gate work is complete).
 2. (Deferred) Projects-space migration when a real context is adopted (Q5).
+3. (Later) Community release including release notes, when it's time.
 
 ## Notes
 - GPG signing needs the key passphrase cached (pinentry; unlock with

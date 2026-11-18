@@ -20,7 +20,7 @@ TASK: Write .git-ci.yml for mdBook build and Git Pages publish
 
 Agent confirms orientation to HIL:
 
-> "On bench `.02`, branch `feat/TC-002-add-ci-pipeline`. Task is TC-002 —
+> "On bench `.02`, branch `feat/TC-002-add-ci-pipeline`. Task is TC-002 -
 > add the CI pipeline for mdBook Pages. Starting with a read of `mddocs/book.toml`
 > to understand the build configuration."
 
@@ -86,16 +86,16 @@ git commit -m "feat: add Git CI pipeline for mdBook Pages [TC-002]"
 
 Before ending, the agent runs the session-close steps:
 
-**Step 1 — Verify bench is clean:**
+**Step 1 - Verify bench is clean:**
 ```sh
 git status
 # → nothing to commit, working tree clean
 ```
 
-**Step 2 — Write relay note** (since work is complete and branch-ready):
+**Step 2 - Write relay note** (since work is complete and branch-ready):
 
 ```markdown
-## Relay pending — 2026-06-23
+## Relay pending - 2026-06-23
 
 **Destination:** .01 / lead-engineer
 **Task:** TC-002
@@ -111,18 +111,18 @@ git add .core/work/relay-pending.md
 git commit -m "chore: relay TC-002 branch-ready signal [TC-002]"
 ```
 
-**Step 3 — Confirm to HIL:**
+**Step 3 - Confirm to HIL:**
 
-> "Bench `.02` is clean. Relay note written for lead-engineer. Work is complete —
+> "Bench `.02` is clean. Relay note written for lead-engineer. Work is complete -
 > `.git-ci.yml` committed at `a3f9c12`. Nothing left in this session."
 
 ---
 
 ## Key Points
 
-- Agent reads context before writing — `book.toml`, the runbook, `.gitignore`
+- Agent reads context before writing - `book.toml`, the runbook, `.gitignore`
 - Agent proposes structure and waits for HIL confirmation before writing
 - Agent presents diff summary and waits for explicit LGTM before committing
-- Relay note is committed as its own commit — it's a trackable artifact
+- Relay note is committed as its own commit - it's a trackable artifact
 - Bench is verified clean before the session ends
-- The agent never pushes — that's the lead-engineer's job after HIL review
+- The agent never pushes - that's the lead-engineer's job after HIL review

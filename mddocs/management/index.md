@@ -9,7 +9,7 @@ purpose: Harness management plane
 
 # Management Plane
 
-> **Plane purpose.** `management/` documents **AgenticCore itself** — the
+> **Plane purpose.** `management/` documents **AgenticCore itself** - the
 > harness's architecture, governance, security posture, operations, and
 > adoption. It does not document customer work performed by adopted project
 > benches (that is the `projects/` plane).

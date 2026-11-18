@@ -11,7 +11,7 @@ purpose: Companion index to the credential-identity guard rail runbook
 
 # Credential-Identity Guard (companion index)
 
-> **Compat stub — the authoritative runbook lives at**
+> **Compat stub - the authoritative runbook lives at**
 > `mddocs/operations/runbooks/credential-identity-guard.md` (`primary: true`).
 > This index exists to make the guardrail discoverable under the
 > management/security/guardrails/ category. **Do not edit this stub.**

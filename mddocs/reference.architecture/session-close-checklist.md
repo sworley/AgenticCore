@@ -9,7 +9,7 @@
 
 ## Procedure
 
-### Step 1 — Verify all benches are clean
+### Step 1 - Verify all benches are clean
 
 ```sh
 ./mddocs/scripts/check-worktree-hygiene.sh
@@ -26,9 +26,9 @@ git worktree list --porcelain | grep "worktree" | awk '{print $2}' | \
 
 **All benches must be clean before proceeding.**
 
-### Step 2 — Land bench artifacts to dev (for benches being torn down)
+### Step 2 - Land bench artifacts to dev (for benches being torn down)
 
-`dev` is the integration + durability surface (ADR-0026) — bench artifacts land
+`dev` is the integration + durability surface (ADR-0026) - bench artifacts land
 there, not on `main`. `main` is touched only at a curated release cutover.
 
 For each bench being decommissioned this session:
@@ -44,7 +44,7 @@ git add -A
 git commit -m "docs: land session artifacts from <branch> [AC-NNNN]"
 ```
 
-### Step 3 — Update running release notes draft
+### Step 3 - Update running release notes draft
 
 Append notable changes this session to `.core/work/next-release-notes.md` (create if absent).
 Use plain bullet entries grouped by tier:
@@ -59,30 +59,30 @@ Use plain bullet entries grouped by tier:
 
 Significant = new agent, new invariant, changed guardrail, new ADR.
 Routine = doc fix, runbook update, checklist addition, gap closure.
-Patch = typo, broken link, formatting — include only if worth noting.
+Patch = typo, broken link, formatting - include only if worth noting.
 
-### Step 4 — Update tasks.yaml
+### Step 4 - Update tasks.yaml
 
 - Mark completed tasks as `merged` or `closed`
 - Update `updated` fields
 - Add `completed_at` for finished tasks
 
-### Step 5 — Sweep open out-of-scope reviewer notes
+### Step 5 - Sweep open out-of-scope reviewer notes
 
 Review open note-severity findings in the review and security ledgers. Each note
 either:
-- becomes a backlog ticket in `tasks.yaml` — the finding cites the new ticket's
+- becomes a backlog ticket in `tasks.yaml` - the finding cites the new ticket's
   AC-ID, and the ticket cites the finding's SF-/RF-ID (cross-referenced both ways), or
 - is consciously accepted (rationale recorded on the finding).
 
 Do not let out-of-scope reviewer observations leak past session close unresolved.
 
-### Step 6 — Write session memory note
+### Step 6 - Write session memory note
 
 Create `.core/work/session-state-$(date +%Y-%m-%d).md` if it doesn't exist:
 
 ```markdown
-# Session State — YYYY-MM-DD
+# Session State - YYYY-MM-DD
 
 **Branch:** dev
 **Active tasks:** AC-NNNN (status)
@@ -97,7 +97,7 @@ git add .core/work/session-state-$(date +%Y-%m-%d).md tasks.yaml
 git commit -m "chore: session close state [YYYY-MM-DD]"
 ```
 
-### Step 7 — Push to remote
+### Step 7 - Push to remote
 
 ```sh
 git push origin dev
@@ -105,7 +105,7 @@ git push origin dev
 
 Requires HIL explicit approval before running.
 
-### Step 8 — Clean build artifacts
+### Step 8 - Clean build artifacts
 
 ```sh
 rm -rf mddocs/book/

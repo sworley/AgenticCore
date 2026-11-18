@@ -6,14 +6,14 @@
 #   End-state verification for an AgenticCore development environment.
 #   Checks every tool required for docs authoring, scripting, MCP server
 #   operation, and agent workflow. Reports PASS / WARN / FAIL for each item
-#   and prints a summary at the end. Does not install anything — read-only.
+#   and prints a summary at the end. Does not install anything - read-only.
 #
 # USAGE
 #   bash mddocs/scripts/setup/verify-toolchain.sh
 #
 # EXIT CODES
-#   0  — all required tools present (warnings do not cause non-zero exit)
-#   1  — one or more required tools are missing
+#   0  - all required tools present (warnings do not cause non-zero exit)
+#   1  - one or more required tools are missing
 #
 # NOTE
 #   chmod +x mddocs/scripts/setup/verify-toolchain.sh
@@ -41,29 +41,29 @@ check_cmd() {
   local bin
   bin=$(command -v "$cmd" 2>/dev/null || echo "")
   if [[ -z "$bin" ]]; then
-    fail "$label — not found (command: $cmd)"
+    fail "$label - not found (command: $cmd)"
   else
     local ver
     ver=$("$bin" $version_flag 2>&1 | head -1) || ver="(version check failed)"
-    pass "$label — $ver"
+    pass "$label - $ver"
   fi
 }
 
 check_file() {
   local label="$1"; local path="$2"
   if [[ -f "$path" ]]; then
-    pass "$label — $path"
+    pass "$label - $path"
   else
-    fail "$label — not found: $path"
+    fail "$label - not found: $path"
   fi
 }
 
 check_dir() {
   local label="$1"; local path="$2"
   if [[ -d "$path" ]]; then
-    pass "$label — $path"
+    pass "$label - $path"
   else
-    fail "$label — directory not found: $path"
+    fail "$label - directory not found: $path"
   fi
 }
 
@@ -95,38 +95,38 @@ check_cmd   "gh"                      gh              "--version"
 
 GH_AUTH=$(gh auth status 2>&1 | grep "Logged in to" || echo "")
 if [[ -n "$GH_AUTH" ]]; then
-  pass "gh — $GH_AUTH"
+  pass "gh - $GH_AUTH"
 else
-  warn "gh — not authenticated (run: gh auth login)"
+  warn "gh - not authenticated (run: gh auth login)"
 fi
 
 # ---------------------------------------------------------------------------
 echo -e "\n${BOLD}=== MCP Server Dependencies ===${NC}"
 # ---------------------------------------------------------------------------
-# rust-mcp-filesystem and mcp-git — installed via cargo
+# rust-mcp-filesystem and mcp-git - installed via cargo
 bin_fs="$CARGO_BIN/rust-mcp-filesystem"
 if [[ -x "$bin_fs" ]]; then
-  pass "rust-mcp-filesystem — $("$bin_fs" --version 2>&1 | head -1)"
+  pass "rust-mcp-filesystem - $("$bin_fs" --version 2>&1 | head -1)"
 else
-  fail "rust-mcp-filesystem — not found at $bin_fs (run: cargo install rust-mcp-filesystem)"
+  fail "rust-mcp-filesystem - not found at $bin_fs (run: cargo install rust-mcp-filesystem)"
 fi
 
 bin_git="$CARGO_BIN/mcp-git"
 if [[ -x "$bin_git" ]]; then
-  pass "mcp-git — $("$bin_git" --version 2>&1 | head -1)"
+  pass "mcp-git - $("$bin_git" --version 2>&1 | head -1)"
 else
-  fail "mcp-git — not found at $bin_git (run: cargo install mcp-git)"
+  fail "mcp-git - not found at $bin_git (run: cargo install mcp-git)"
 fi
 
-# uv — required for mcp-rag-docs Python server
+# uv - required for mcp-rag-docs Python server
 UV_BIN="$HOME/.local/share/uv/bin/uv"
 if [[ -x "$UV_BIN" ]]; then
-  pass "uv — $("$UV_BIN" --version 2>&1 | head -1)"
+  pass "uv - $("$UV_BIN" --version 2>&1 | head -1)"
 else
-  fail "uv — not found at $UV_BIN (see: https://docs.astral.sh/uv/getting-started/installation/)"
+  fail "uv - not found at $UV_BIN (see: https://docs.astral.sh/uv/getting-started/installation/)"
 fi
 
-# python3 — required for hooks and MCP scripts
+# python3 - required for hooks and MCP scripts
 check_cmd   "python3"                 python3         "--version"
 
 # ---------------------------------------------------------------------------
@@ -138,9 +138,9 @@ check_file  ".mcp.json"                            "$REPO_ROOT/.mcp.json"
 
 # Cargo bin in PATH
 if [[ ":$PATH:" == *":$CARGO_BIN:"* ]]; then
-  pass "Cargo bin in PATH — $CARGO_BIN"
+  pass "Cargo bin in PATH - $CARGO_BIN"
 else
-  fail "Cargo bin NOT in PATH — add: export PATH=\"\$HOME/.local/share/cargo/bin:\$PATH\" to ~/.zshrc"
+  fail "Cargo bin NOT in PATH - add: export PATH=\"\$HOME/.local/share/cargo/bin:\$PATH\" to ~/.zshrc"
 fi
 
 # ---------------------------------------------------------------------------

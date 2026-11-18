@@ -2,10 +2,10 @@
 
 **Date:** 2026-07-02
 **Status:** Accepted
-**Supersedes:** —
-**Superseded by:** —
-**Amended:** 2026-08-17 (D-7 — two adoption flows; TC-050 field feedback); 2026-08-20
-(D-8 — discipline-inheritance boundary; TC-063 field feedback)
+**Supersedes:** -
+**Superseded by:** -
+**Amended:** 2026-08-17 (D-7 - two adoption flows; TC-050 field feedback); 2026-08-20
+(D-8 - discipline-inheritance boundary; TC-063 field feedback)
 
 ---
 
@@ -30,22 +30,22 @@ Governance), which defers its onboarding procedure here.
 
 - A new project operator must be able to get a working AC-governed environment
   with a minimal and well-documented onboarding procedure
-- An adopter project must have its own independent Git identity from day one —
+- An adopter project must have its own independent Git identity from day one -
   AC commits and history must not be present in adopter repos
 - Framework improvements released in AC must be reachable by adopters on their
   own cadence without requiring a live upstream connection
 - The distribution model must not assume a specific Git hosting platform
 - Hard requirements must be minimal and explicitly documented; everything else
   is adopter's choice
-- AC is committed to compounding value from all sources — adopters, other
-  agentic teams, and innovations not yet anticipated — and the ecosystem model
+- AC is committed to compounding value from all sources - adopters, other
+  agentic teams, and innovations not yet anticipated - and the ecosystem model
   must support bidirectional knowledge flow between AC and adopters
 
 ---
 
 ## Options Considered
 
-### Option A — Clone and re-remote
+### Option A - Clone and re-remote
 Operator clones AC, replaces the `origin` remote, pushes as a new repo. AC
 added back as `upstream` for future pulls.
 - Lineage in Git: preserved (AC history present in adopter repo)
@@ -54,7 +54,7 @@ added back as `upstream` for future pulls.
   boundaries between framework development and customer environments make
   shared history a liability
 
-### Option B — Fork (platform-native)
+### Option B - Fork (platform-native)
 Operator forks AC via hosting platform. Platform tracks the fork relationship.
 - Lineage in Git: preserved and platform-tracked
 - Update path: platform-native sync
@@ -62,7 +62,7 @@ Operator forks AC via hosting platform. Platform tracks the fork relationship.
   forks are not natively supported; fork model does not fit the versioned
   baseline pattern government programs require
 
-### Option C — Template repository
+### Option C - Template repository
 AC published as a Git template. Operator creates a new repo from the template.
 - Lineage in Git: severed at creation
 - Update path: manual diff and patch only
@@ -70,10 +70,10 @@ AC published as a Git template. Operator creates a new repo from the template.
   model in which AC continuously improves from adopter contributions and
   adopters pull from AC releases. Template dispensers cannot compound value.
 
-### Option D — Export and new Git init ✓ Selected
+### Option D - Export and new Git init ✓ Selected
 A script exports AC release content to a target directory and runs `git init`.
 No AC remote or history is present in the new repo.
-- Lineage in Git: completely severed — adopter repo starts clean
+- Lineage in Git: completely severed - adopter repo starts clean
 - Update path: adopter pulls a future AC release export at their own cadence
 - Selected: cleanest adopter identity; no classification boundary concerns;
   fits versioned baseline discipline; slug initialized by the export script
@@ -83,7 +83,7 @@ No AC remote or history is present in the new repo.
 
 ## Decisions
 
-### D-1: Distribution model — export and git init
+### D-1: Distribution model - export and git init
 
 AgenticCore is distributed as versioned release exports. An adopter
 initializes a new project by running `export-framework.sh` against a specific
@@ -110,7 +110,7 @@ things the framework mandates. Everything else is the adopter's choice.
 | Requirement | Rationale |
 |---|---|
 | **Git** | Commit discipline, branch naming, ADR ticket linkage, and all agentic session hygiene depend on Git as the authoritative source of record |
-| **AI toolchain and/or OpenCode, configured to a AI toolchain-compatible API** | AC is an agentic product framework — the AI agent interface is the operating layer the entire framework is built on. EXAMPLE-ORG Model Runtime API is the reference implementation; any AI toolchain-compatible endpoint is acceptable |
+| **AI toolchain and/or OpenCode, configured to a AI toolchain-compatible API** | AC is an agentic product framework - the AI agent interface is the operating layer the entire framework is built on. EXAMPLE-ORG Model Runtime API is the reference implementation; any AI toolchain-compatible endpoint is acceptable |
 
 Adopter's choice (not prescribed by the framework):
 - Operating system and hardware
@@ -121,7 +121,7 @@ Adopter's choice (not prescribed by the framework):
 
 ---
 
-### D-3: Upstream connection — optional, versioned baseline
+### D-3: Upstream connection - optional, versioned baseline
 
 An adopter that wants to track AC improvements may add AC as a named remote
 (`ap-upstream`) and pull selectively. This is supported but not required.
@@ -129,7 +129,7 @@ An adopter that wants to track AC improvements may add AC as a named remote
 The default and recommended stance is **versioned baseline**: the adopter
 records which AC release they initialized from, and upgrades by running the
 export script against a newer AC release at a time of their choosing. Upgrade
-decisions are owned by the adopter — there is no automatic or pressured update
+decisions are owned by the adopter - there is no automatic or pressured update
 mechanism.
 
 This fits the configuration management discipline common in government programs:
@@ -148,13 +148,13 @@ lifting to the framework, the promotion path is:
    using the cross-project citation format defined in ADR-0014 D-6
 2. AC baseline-steward reviews the submission and assigns a disposition:
    new ADR, runbook addition, script, or decline with rationale
-3. If accepted, the pattern enters AC's normal development lifecycle — bench,
+3. If accepted, the pattern enters AC's normal development lifecycle - bench,
    review, release
 
 There is no automation. Promotion is a judgment-driven, HIL-gated decision
 documented as an AC ticket. AC is committed to compounding value from all
 sources, including adopters, partner teams, and innovations not yet anticipated
-at framework authoring time. The promotion gate is intentionally lightweight —
+at framework authoring time. The promotion gate is intentionally lightweight -
 the bar is "does this improve the framework for future adopters?" not
 "did it originate here?"
 
@@ -163,7 +163,7 @@ the bar is "does this improve the framework for future adopters?" not
 ### D-5: Slug initialization
 
 The adopter's project slug (ADR-0014 D-1) is declared during `export-framework.sh`
-execution — not retroactively. The script prompts for the slug before writing
+execution - not retroactively. The script prompts for the slug before writing
 any files, validates it is non-empty uppercase ASCII, and writes it to all three
 required locations (`AGENT.md`, `tasks.yaml`, `PROCESS.md`) in the initial
 commit.
@@ -184,11 +184,11 @@ maturation path is:
 
 A pattern is ready for promotion when all three criteria are met:
 
-1. The portable shape is clear — the requirement can be stated without reference
+1. The portable shape is clear - the requirement can be stated without reference
    to the originating project, customer, or environment
-2. Customer-specific content has been fully stripped — no project namespaces,
+2. Customer-specific content has been fully stripped - no project namespaces,
    environment identifiers, or customer structures remain in the proposed artifact
-3. Guardrails are understood from experience — failure modes have been observed
+3. Guardrails are understood from experience - failure modes have been observed
    and constraints are known, not hypothesized
 
 Patterns that have not cleared all three criteria remain in the adopter's
@@ -205,7 +205,7 @@ patterns from each have different promotion profiles:
 | HIL / project layer | `.00` | Bench patterns, delegation models, scaling mechanisms | HIL has hit a real operational limit; the solution has been exercised, not just designed |
 
 **The abstraction step is the gate.** The adopter's steward performs the
-abstraction — not the HIL directly, and not the AC baseline-steward. The
+abstraction - not the HIL directly, and not the AC baseline-steward. The
 steward strips project-specific content, identifies the portable shape, and
 writes the AC task description from generic requirements. The AC
 baseline-steward evaluates the abstraction, not the raw project artifact.
@@ -214,17 +214,17 @@ references intact) is not a valid promotion submission.
 
 **First-adopter precedent.** The originating project is the first adopter and
 the primary source of early pattern submissions. Pattern W (attendant
-bench-lead) is the first submission expected via this path — the requirement
+bench-lead) is the first submission expected via this path - the requirement
 became clear only after the HIL/project scaling limit was reached in practice,
 confirming that the maturation path above is the correct model, not a shortcut
 around it.
 
 ---
 
-### D-7: Two adoption flows — empty-dir init and re-home-into-existing-tree
+### D-7: Two adoption flows - empty-dir init and re-home-into-existing-tree
 
 **Status of this decision:** Amendment (2026-08-17), sourced from TC-050 field
-feedback — the first fresh v1.1.0 deployment into a real customer codebase.
+feedback - the first fresh v1.1.0 deployment into a real customer codebase.
 
 D-1 specified a single adoption flow: export release content to a target
 directory and run `git init`. Field use revealed a second, equally valid flow
@@ -236,12 +236,12 @@ remove the empty subdirectory, and sever the framework remote). This amendment
 ratifies **both** flows as first-class and specifies `export-framework.sh` to
 support each.
 
-**Flow A — empty-dir init (the D-1 flow).**
+**Flow A - empty-dir init (the D-1 flow).**
 The target directory is empty or does not yet exist. The script copies release
 content, runs `git init`, and produces a clean new repository. This is the
 greenfield adoption path.
 
-**Flow B — re-home into an existing customer tree.**
+**Flow B - re-home into an existing customer tree.**
 The target directory already contains a customer codebase under its own git
 history. The script overlays framework files into that tree, reconciles ignore
 rules for pre-existing customer content (deferred to TC-051), and severs any
@@ -258,13 +258,13 @@ hosted under (the project has been hosted as both `AgenticCore` and, after a
 Git rename, `AgenticCore`; identity is by repository, not by name
 string).
 
-**D-7.1 — Flow selection.**
+**D-7.1 - Flow selection.**
 `export-framework.sh` detects the target-directory state (empty vs. existing git
 repository) and selects the flow, or accepts an explicit `--flow empty|rehome`
 argument. When detection is ambiguous, the script stops and requires the operator
 to declare the flow explicitly rather than guessing.
 
-**D-7.2 — Re-home safety interlock (fail-safe).**
+**D-7.2 - Re-home safety interlock (fail-safe).**
 Flow B refuses to run against a customer tree that is not a clean git working
 tree. If the target has uncommitted changes or untracked files that the overlay
 could clobber, the script aborts with a clear message and makes no changes. An
@@ -279,12 +279,12 @@ and nothing else.** It does not, and no flag may, weaken the D-7.3 severance
 assertion or the D-7.5 history-scrub verification. Those are non-overridable
 controls (see D-7.3, D-7.5).
 
-**D-7.3 — Remote-severance is a verified, allowlist-based hard assertion.**
+**D-7.3 - Remote-severance is a verified, allowlist-based hard assertion.**
 Severing the framework remote is a confidentiality control, not a convenience
 step (D-1; TC-050). Severance is verified by an **allowlist** post-condition, not
 by the absence of a name substring: after severance the adopter repository's
 remote set must be **empty**, or exactly the adopter's own explicitly declared
-remotes — never any remote that resolves to the framework repository. The script
+remotes - never any remote that resolves to the framework repository. The script
 **aborts loudly and exits non-zero**, printing the offending configuration, if
 the post-condition does not hold.
 
@@ -302,26 +302,26 @@ then verifies the absence of:
 Verification is by **resolved push target**, not by literal URL string match, so
 a rewrite rule or mirror URL that resolves to the framework is caught. Rationale:
 a substring/denylist check fails silently against SSH remotes, `insteadOf`
-rewrites, mirror URLs, and `pushDefault`/`pushRemote` redirection — and silent
+rewrites, mirror URLs, and `pushDefault`/`pushRemote` redirection - and silent
 failure is the worst outcome for the control that closes the customer-code
 pollution risk TC-050 was filed to close. A control that is assumed, or matched
 by name, rather than verified by resolved target, is not a control. This
 assertion is **non-overridable by `--force` or any other flag.**
 
-**D-7.4 — Idempotence and dry-run.**
+**D-7.4 - Idempotence and dry-run.**
 The script supports a `--dry-run` mode that reports the flow it would take, the
 files it would move or copy, and the configuration it would sever, without
-modifying anything. `--dry-run` guarantees **zero side effects** — no config
+modifying anything. `--dry-run` guarantees **zero side effects** - no config
 writes, no ref updates, no file moves, no object changes. Re-running the script
 against an already-initialized adopter repo is a no-op that reports the existing
 baseline rather than re-exporting.
 
 The D-7.3 severance assertion and the D-7.5 history-scrub verification run on
-**every** invocation — including the idempotent no-op path and `--dry-run` (in
-report-only form) — so a framework remote or ref re-introduced after initial
+**every** invocation - including the idempotent no-op path and `--dry-run` (in
+report-only form) - so a framework remote or ref re-introduced after initial
 adoption is surfaced rather than silently tolerated.
 
-**D-7.5 — Framework history, refs, and objects must be scrubbed and verified.**
+**D-7.5 - Framework history, refs, and objects must be scrubbed and verified.**
 Flow B introduces framework objects into the adopter tree via the clone step
 (the framework is cloned, then its files are moved into the customer root).
 Removing a named remote does **not** remove fetched objects, `refs/remotes/*`,
@@ -338,7 +338,7 @@ none remain. The script **asserts** the post-condition holds and aborts if
 framework refs or objects are still reachable. This verification is
 non-overridable.
 
-**D-7.6 — Target-identity guard.**
+**D-7.6 - Target-identity guard.**
 Independent of the dirty-tree check, the script confirms the target is the
 intended adopter tree and refuses to operate on the framework repository itself
 or on a nested/parent framework worktree. Self-targeting a framework tree aborts
@@ -353,14 +353,14 @@ adopter performs the same confidentiality checks the script enforces.
 
 ---
 
-### D-8: Discipline-inheritance boundary — what adopters inherit vs. what is framework-release-specific
+### D-8: Discipline-inheritance boundary - what adopters inherit vs. what is framework-release-specific
 
 **Status of this decision:** Amendment (2026-08-20), sourced from TC-063 field
 feedback (finding FF-2): the exported baseline presumed framework-release
 dev-staging onto adopters. The exported artifact shipped baseline-steward's
 `dev`-as-integration-surface, curated-release git discipline (ADR-0026) as if
 every adopter project must run its own work that way. ADR-0026 already states
-adopters inherit none of that discipline — but before TC-063 that was an intent
+adopters inherit none of that discipline - but before TC-063 that was an intent
 statement contradicted by what actually shipped. D-8 closes the gap between the
 stated intent and the exported artifact.
 
@@ -369,17 +369,17 @@ elsewhere in this ADR and in the framework's governance model:
 
 - Guardrails and boundary protection (namespace isolation, bench lifecycle,
   worktree teardown authorization)
-- The ADR / decision-record practice — adopters write their own ADRs following
+- The ADR / decision-record practice - adopters write their own ADRs following
   the same template and status lifecycle
-- Git commit discipline — review-before-push, no secrets, no attribution
+- Git commit discipline - review-before-push, no secrets, no attribution
   statements, meaningful commit messages
-- AC-ticket tracking — adopters run their own ticket queue in `tasks.yaml`
+- AC-ticket tracking - adopters run their own ticket queue in `tasks.yaml`
   under their own slug
-- The review gates — security-reviewer and docs-reviewer passes before
+- The review gates - security-reviewer and docs-reviewer passes before
   `branch_ready`
-- The LGTM acceptance gate — HIL confirmation before merge, every time
+- The LGTM acceptance gate - HIL confirmation before merge, every time
 - **`main` append-only and merge-only** ([ADR-0004](adr-0004-main-branch-protection.md))
-  — no direct commits, no force-push, no history rewrite on `main`, roll-forward
+  - no direct commits, no force-push, no history rewrite on `main`, roll-forward
   only. This is sound universal git discipline independent of how any given
   project stages its pre-release work, and adopters inherit it as-is.
 
@@ -388,12 +388,12 @@ integration-and-durability-surface staging model and the curated cherry-pick
 release model ([ADR-0026](adr-0026-release-branch-curation-model.md)) are
 **not** part of the exported baseline's prescription for the adopter's own
 project. That model exists so **this framework** can ship curated
-AgenticCore releases — cutting `release/vX.Y.Z-prep` from `main`,
+AgenticCore releases - cutting `release/vX.Y.Z-prep` from `main`,
 cherry-picking only complete/closed tickets from `dev`, and merging back. It is
 a framework-release mechanism, not a general project-management prescription.
-An adopter chooses their own branch strategy for their own project — a single
+An adopter chooses their own branch strategy for their own project - a single
 `main`-only flow, a trunk-based flow, a different git-flow variant, or the
-ADR-0026 pattern itself if they judge it useful — but the framework does not
+ADR-0026 pattern itself if they judge it useful - but the framework does not
 prescribe it and does not ship agent instructions presuming it.
 
 **Direction of flow.** The adopted codebase git-flows toward the adopter's
@@ -411,28 +411,28 @@ principle to the adopter's choice of branch strategy at the management layer.
 scoped" consequence: "Adopters inherit none of this. The `dev`-staging /
 release-curation discipline is a framework-development workflow, not an
 adoption requirement." Before TC-063, that statement was contradicted by the
-exported artifact — the baseline shipped `baseline-steward`'s dev-staging
+exported artifact - the baseline shipped `baseline-steward`'s dev-staging
 `AGENT.md` content verbatim to adopters. D-8, together with the TC-063
 neutralization work on the exported onboarding and bootstrap documentation,
 makes ADR-0026's claim **true in practice**, not merely stated in intent. The
 gap closes down to the provisioning layer, too: `provision-bench.sh`'s
-worktree-creation logic is branch-agnostic by construction — it branches from
+worktree-creation logic is branch-agnostic by construction - it branches from
 whatever branch `.01` currently has checked out (HEAD), not a hard-coded name
-— so only the illustrative worktree-layout documentation shows the
+- so only the illustrative worktree-layout documentation shows the
 framework's own branch names, and adopters are not required to adopt them.
 
 **Consequence for D-1 and D-7.** D-1 and D-7 remain the authoritative
-statements of the distribution/adoption **flow** — how an adopter obtains the
+statements of the distribution/adoption **flow** - how an adopter obtains the
 framework and severs it from the framework's own history. D-8 does not alter
 either flow. D-8 clarifies a distinct, previously-unstated boundary: the
-**discipline-inheritance** boundary — which parts of the framework's own
+**discipline-inheritance** boundary - which parts of the framework's own
 governance the exported baseline imposes on the adopter's project, and which
 parts are specific to how this framework, and only this framework, ships its
 own releases.
 
 ---
 
-### Note: `.00` persona naming — future work
+### Note: `.00` persona naming - future work
 
 The `.00` bench persona is currently named `assistant` in the pattern-h
 template. This collides with the model's generic default identity, creating
@@ -449,13 +449,13 @@ resolved here.
 ## Consequences
 
 **Positive:**
-- Adopter repos are completely clean — no AC history, no upstream coupling
+- Adopter repos are completely clean - no AC history, no upstream coupling
   unless deliberately added
 - Hard requirements are minimal and explicit; operators know exactly what they
   need before starting
 - Versioned baseline model fits government program CM discipline
 - Pattern promotion gate creates a formal but lightweight path for ecosystem
-  growth — AC compounds value over time from all adopter innovations
+  growth - AC compounds value over time from all adopter innovations
 - Distribution is platform-agnostic; no assumption about where AC or the
   adopter's repo is hosted
 - EXAMPLE re-initialization from AC (as a v2.0 project) is a natural first
@@ -465,7 +465,7 @@ resolved here.
 - No automated upstream sync means adopters can drift silently. Mitigation:
   `framework-version.txt` makes the baseline explicit; AC release notes
   document what changed since any prior version
-- `export-framework.sh` does not yet exist — it is an implementation deliverable
+- `export-framework.sh` does not yet exist - it is an implementation deliverable
   from this ADR
 - Slug collision between organizations is possible; convention-only uniqueness
   is sufficient at current scale but may require a registry if AC adoption
@@ -482,7 +482,7 @@ resolved here.
 
 The following tasks are spawned from this ADR:
 
-1. **Write `export-framework.sh`** — copies AC release content to target
+1. **Write `export-framework.sh`** - copies AC release content to target
    directory; supports both adoption flows (D-7): Flow A `git init` into an
    empty dir, and Flow B re-home into an existing customer tree. Prompts for slug,
    writes slug to `AGENT.md` / `tasks.yaml` / `PROCESS.md`, severs framework
@@ -493,26 +493,26 @@ The following tasks are spawned from this ADR:
    and creates an initial commit recording the AC release version. The D-7.3 and
    D-7.5 assertions are non-overridable and run on every invocation.
    **Tracked by TC-050.**
-2. **Write `framework-version.txt`** — included in every AC release export;
+2. **Write `framework-version.txt`** - included in every AC release export;
    records AC release tag and export date. **Tracked by TC-050.**
-3. **Update `getting-started.md`** — replace current onboarding flow with
+3. **Update `getting-started.md`** - replace current onboarding flow with
    export-and-init procedure; document hard requirements prominently
-4. **Update ADR-0014** — remove `Proposed — pending ADR-0015` from status
+4. **Update ADR-0014** - remove `Proposed - pending ADR-0015` from status
    line; D-3 and D-5 are now resolved; advance to `Accepted`
-5. **Update `check-env.sh`** — add AI toolchain / OpenCode presence check as
+5. **Update `check-env.sh`** - add AI toolchain / OpenCode presence check as
    a hard-requirement validation step
 
 ---
 
 ## Related
 
-- [ADR-0014: Project Task Slug and ADR Ticket Governance](adr-0014-project-slug-adr-ticket-governance.md) — slug init procedure resolved by D-5
+- [ADR-0014: Project Task Slug and ADR Ticket Governance](adr-0014-project-slug-adr-ticket-governance.md) - slug init procedure resolved by D-5
 - [ADR-: AI toolchain Profile Inheritance](adr-0009-agent-portability-model.md)
 - [ADR-0001: Bootstrap Architecture](adr-0001-bootstrap-architecture.md)
-- [ADR-0026: Release-Branch Curation Model](adr-0026-release-branch-curation-model.md) — the
+- [ADR-0026: Release-Branch Curation Model](adr-0026-release-branch-curation-model.md) - the
   framework-release-specific `dev`-staging / curated-release discipline that D-8 clarifies
   adopters do **not** inherit
-- [ADR-0004: `main` Branch Protection and Immutability](adr-0004-main-branch-protection.md) —
+- [ADR-0004: `main` Branch Protection and Immutability](adr-0004-main-branch-protection.md) -
   the `main` append-only/merge-only discipline that D-8 clarifies adopters **do** inherit
-- [ADR-0025: Framework Write-Protection Model](adr-0025-framework-write-protection-model.md) —
+- [ADR-0025: Framework Write-Protection Model](adr-0025-framework-write-protection-model.md) -
   the adoption-posture layer that already excludes adopters from framework `main` write access

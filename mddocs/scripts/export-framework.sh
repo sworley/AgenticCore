@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# export-framework.sh — Export AgenticCore release content into an
+# export-framework.sh - Export AgenticCore release content into an
 # adopter repository (ADR-0015 D-1, D-5, D-7).
 #
 # Implements two adoption flows:
-#   Flow A (empty)  — target dir is empty/nonexistent. Copies release content,
+#   Flow A (empty)  - target dir is empty/nonexistent. Copies release content,
 #                      runs `git init`, produces a clean new repo (D-7.1).
-#   Flow B (rehome) — target dir is an existing git repo with customer code.
+#   Flow B (rehome) - target dir is an existing git repo with customer code.
 #                      Overlays framework files into it and severs any
 #                      framework remote/history (D-7.1).
 #
 # This script uses bash-only features ([[ ]], regex matching, arrays) and is
-# intentionally NOT #!/bin/sh — do not attempt to run it under /bin/sh or
+# intentionally NOT #!/bin/sh - do not attempt to run it under /bin/sh or
 # dash. See ADR-0017 Convention 1 for the portability rule this follows.
 #
 # Usage:
@@ -19,7 +19,7 @@
 #
 # Arguments:
 #   --target `<dir>`   Target directory for the adopter repo. Optional when
-#                     stdin is a TTY — the script prompts interactively with
+#                     stdin is a TTY - the script prompts interactively with
 #                     a suggested path derived from the TC-074 convention and
 #                     requires explicit confirmation (y/N) before mkdir -p.
 #                     Required (exit 1) in non-interactive mode (stdin not a
@@ -37,7 +37,7 @@
 #                     confirmation prompt (confirmation is only for real runs).
 #   --force           Override the Flow B dirty-tree guard ONLY (D-7.2).
 #                     Does NOT weaken the D-7.3 severance assertion or the
-#                     D-7.5 history-scrub verification — those are
+#                     D-7.5 history-scrub verification - those are
 #                     non-overridable on every invocation.
 #   -y, --yes         Skip the --target confirmation prompt. Use for
 #                     scripted/non-interactive adoption where --target is
@@ -46,7 +46,7 @@
 # Exit codes:
 #   0  Success (including no-op / dry-run report)
 #   1  Argument or usage error
-#   2  Ambiguous flow detection — explicit --flow required
+#   2  Ambiguous flow detection - explicit --flow required
 #   3  D-7.6 target-identity guard tripped (target is the framework itself
 #      or a nested/parent framework worktree)
 #   4  D-7.2 dirty-tree guard tripped (Flow B, target not clean, no --force)
@@ -62,7 +62,7 @@ set -euo pipefail
 
 # ---------------------------------------------------------------------------
 # Self-locate the framework repo root (ADR-0017 Convention 1)
-# SF-069 — pwd -P (physical, symlinks resolved) throughout this script's
+# SF-069 - pwd -P (physical, symlinks resolved) throughout this script's
 # path-identity comparisons, so a symlinked invocation path (e.g. the
 # script reached via a symlink) still canonicalizes to the same string a
 # physically-reached path would produce.
@@ -103,7 +103,7 @@ if git -C "$FRAMEWORK_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
     /*) FRAMEWORK_COMMON_DIR="$_fw_common" ;;
     *)  FRAMEWORK_COMMON_DIR="$FRAMEWORK_ROOT/$_fw_common" ;;
   esac
-  # SF-069 — pwd -P (physical, symlinks resolved) so a candidate path that
+  # SF-069 - pwd -P (physical, symlinks resolved) so a candidate path that
   # reaches the framework through a symlinked component canonicalizes to
   # the same string as this side, and vice versa. `pwd` alone (logical)
   # would preserve symlink components and silently miss the match.
@@ -132,7 +132,7 @@ Usage: export-framework.sh [--target <dir>] [--flow empty|rehome] [--slug <SLUG>
                        ALWAYS confirmed before mkdir -p (skippable with -y).
   --flow empty|rehome  Explicit flow selection (required if detection is ambiguous)
   --slug <SLUG>        Adopter project slug (non-empty uppercase ASCII)
-  --dry-run            Report only — zero side effects
+  --dry-run            Report only - zero side effects
   --force              Override the Flow B dirty-tree guard ONLY
   -y, --yes            Skip the --target confirmation prompt (non-interactive
                        / scripted adoption)
@@ -177,10 +177,10 @@ dry_note() {
 # ---------------------------------------------------------------------------
 # TC-085: --target prompt / confirm decision point.
 #
-# prompt_for_target — interactive prompt when --target is omitted (mirrors
+# prompt_for_target - interactive prompt when --target is omitted (mirrors
 # prompt_for_slug's exact pattern). Fails clearly in non-interactive mode.
 #
-# confirm_target — echoes the resolved --target and requires explicit y/N
+# confirm_target - echoes the resolved --target and requires explicit y/N
 # before any mkdir -p runs. Called for BOTH flag-supplied and prompted values,
 # so doc example values ("./my-project.01") are never silently treated as real
 # adopter intent. Skippable with -y/--yes for scripted/non-interactive use.
@@ -227,14 +227,14 @@ confirm_target() {
   case "$_confirm" in
     y|Y|yes|YES) return 0 ;;
     *)
-      printf 'Aborted — re-run with --target <correct-path> to choose a different directory.\n' >&2
+      printf 'Aborted - re-run with --target <correct-path> to choose a different directory.\n' >&2
       exit 1
       ;;
   esac
 }
 
 # ---------------------------------------------------------------------------
-# normalize_target_plane — append the `.01` management-plane suffix to TARGET.
+# normalize_target_plane - append the `.01` management-plane suffix to TARGET.
 #
 # `--target` is the adopter's BASE project identity. The management layer is
 # ALWAYS this base + `.01` (e.g. `myproject.v0.01` -> `myproject.v0.01.01`), so
@@ -242,7 +242,7 @@ confirm_target() {
 # provisioning (provision-bench.sh), and the personae all key off. Benches are
 # then provisioned as siblings of that layer in the SAME parent
 # (`myproject.v0.01.00`, `myproject.v0.01.02`, ...). The base name is the
-# adopter's own choice; only the `.01` layer suffix is appended here — ALWAYS,
+# adopter's own choice; only the `.01` layer suffix is appended here - ALWAYS,
 # even when the base already ends in `.01`, so a base `myproject.v0.01` becomes
 # the management layer `myproject.v0.01.01` (the base's own `.01` is part of the
 # project identity, not (yet) a management-plane suffix).
@@ -255,12 +255,12 @@ normalize_target_plane() {
 }
 
 # NOTE: prompt_for_target / confirm_target are called inside the
-# EXPORT_FRAMEWORK_SOURCED guard (main block below), not here — so sourcing
+# EXPORT_FRAMEWORK_SOURCED guard (main block below), not here - so sourcing
 # this script for function-level unit tests never triggers interactive prompts
 # or side effects from the TC-085 decision point.
 
 # ---------------------------------------------------------------------------
-# URL normalization — reduce any remote URL form to a bare "host/path"
+# URL normalization - reduce any remote URL form to a bare "host/path"
 # string for resolved-target comparison (D-7.3). Handles:
 #   https://[user@]host[:port]/path[.git]
 #   git@host:path[.git]              (SSH shorthand)
@@ -271,7 +271,7 @@ normalize_url() {
   u="${u%/}"
   u="${u%.git}"
   if [[ "$u" =~ ^[a-zA-Z][a-zA-Z0-9+.-]*:// ]]; then
-    # Has an explicit scheme (https://, ssh://, etc.) — strip scheme +
+    # Has an explicit scheme (https://, ssh://, etc.) - strip scheme +
     # optional userinfo, then strip a port number after the host.
     u="$(printf '%s' "$u" | sed -E 's#^[a-zA-Z][a-zA-Z0-9+.-]*://([^@/]+@)?##')"
     u="$(printf '%s' "$u" | sed -E 's#^([^/:]+):[0-9]+/#\1/#')"
@@ -283,21 +283,21 @@ normalize_url() {
 }
 
 resolve_rewrite_base_effective_target() {
-  # SF-067 — Resolve a url.<base>.insteadOf/pushInsteadOf BASE to its
+  # SF-067 - Resolve a url.<base>.insteadOf/pushInsteadOf BASE to its
   # effective push target by letting git's own resolution engine apply the
   # rewrite, rather than normalizing the base string in isolation. `git
   # remote get-url` only follows insteadOf/pushInsteadOf against a
   # remote's OWN stored URL when that remote already exists; it never
   # answers the question this check needs ("what does this rewrite BASE
   # itself expand into, including any further chained rewrite hop, absent
-  # any live remote using it yet?"). A dormant rewrite rule — configured
-  # but not yet matched by any remote URL — survives severance until an
+  # any live remote using it yet?"). A dormant rewrite rule - configured
+  # but not yet matched by any remote URL - survives severance until an
   # operator later adds a remote whose URL happens to start with the
   # base. The assertion must catch the rule itself, not wait for that
   # remote to exist.
   #
   # We answer this by creating a throwaway scratch repo (never touches
-  # repo_dir — safe to call during --dry-run), copying ONLY the url.*
+  # repo_dir - safe to call during --dry-run), copying ONLY the url.*
   # rewrite config from repo_dir into it, adding a probe remote whose URL
   # is exactly the rewrite base, and asking git to resolve it. This lets
   # git apply prefix substitution and any further chained rewrite hop
@@ -306,7 +306,7 @@ resolve_rewrite_base_effective_target() {
   local repo_dir="$1" base="$2"
   local scratch resolved
   scratch="$(mktemp -d "${TMPDIR:-/tmp}/export-framework-rwprobe.XXXXXX")" || return 1
-  # SF-074 — RETURN trap (matching do_flow_rehome's throwaway-dir cleanup
+  # SF-074 - RETURN trap (matching do_flow_rehome's throwaway-dir cleanup
   # pattern) so the scratch dir is removed on ANY function return, not only
   # the normal fall-through path. Without this, an unexpected failure after
   # mktemp but before the end of the function (e.g. git init failing) would
@@ -326,25 +326,25 @@ resolve_rewrite_base_effective_target() {
 }
 
 rewrite_target_covers_framework() {
-  # SF-067 — A rewrite BASE's effective resolved target is, by definition,
+  # SF-067 - A rewrite BASE's effective resolved target is, by definition,
   # only ever a PARTIAL host/path fragment when the rule is prefix-form
   # (the whole point of insteadOf prefix substitution is that a suffix is
-  # appended after substitution — see resolve_rewrite_base_effective_target).
+  # appended after substitution - see resolve_rewrite_base_effective_target).
   # Testing that fragment with url_resolves_to_framework (which requires an
   # EXACT full-identity match) always misses a dormant prefix-form rule,
   # because there is no live remote yet to supply the suffix that would
   # complete an exact match. The correct question for a rewrite target is:
   # "would ANY remote whose URL starts with this base land inside the
-  # framework?" — i.e. is the effective target equal to, or a
+  # framework?" - i.e. is the effective target equal to, or a
   # path-segment-bounded PREFIX of, a framework identity URL.
   #
   # Path-segment-bounded: comparison is done on '/'-delimited segments
   # after normalize_url, so "host/dev-user-lab" (missing the 's') does NOT
   # falsely match "host/example-group/...".
   #
-  # SF-073 — the prefix branch additionally requires the effective target
+  # SF-073 - the prefix branch additionally requires the effective target
   # to span at least the framework's HOST *and* ORG/GROUP segment
-  # (>= 2 path segments, e.g. "host/org") — a BARE HOST alone (1 segment,
+  # (>= 2 path segments, e.g. "host/org") - a BARE HOST alone (1 segment,
   # just "host") is no longer sufficient to flag. Rationale: the framework
   # is hosted on a shared enterprise git host
   # (git.example.com/example-group/AgenticCore); an
@@ -352,19 +352,19 @@ rewrite_target_covers_framework() {
   # configures an unrelated, legitimate host-level convenience rewrite
   # (e.g. `url."https://<shared-host>/".insteadOf "gl:"` for their own
   # short-URL convenience) has an effective target that normalizes to the
-  # bare host — which, under the pre-SF-073 logic, was a "/"-bounded prefix
+  # bare host - which, under the pre-SF-073 logic, was a "/"-bounded prefix
   # of the framework identity and was falsely flagged and severed. That is
   # over-severance of a legitimate customer control, not a security gap.
   # A rewrite reaching at least "host/org" (the framework's own
-  # organization/group) is still in-scope for severance — anything nested
-  # under the framework's org is a genuine framework push path — only the
+  # organization/group) is still in-scope for severance - anything nested
+  # under the framework's org is a genuine framework push path - only the
   # bare-host case (which says nothing framework-specific at all) is
   # excluded. The EXACT full-identity match branch below is unchanged and
   # untouched by this restriction: if a framework identity URL somehow
   # normalized to a bare host with no org (not the case for the real
   # framework remote, which is always host/org/repo), an effective target
   # that is ALSO exactly that bare host still matches via exact-match, so
-  # a genuinely degenerate identity does not silently stop being covered —
+  # a genuinely degenerate identity does not silently stop being covered -
   # only the PREFIX-widening of a bare host is disallowed.
   local effective="$1" norm_effective identity norm_identity suffix
   [ -z "$effective" ] && return 1
@@ -377,7 +377,7 @@ rewrite_target_covers_framework() {
     if [ "$norm_effective" = "$norm_identity" ]; then
       return 0
     fi
-    # SF-073 — only consider the prefix branch when norm_effective itself
+    # SF-073 - only consider the prefix branch when norm_effective itself
     # already spans >= 2 segments (host/org at minimum). A norm_effective
     # with no '/' at all is a bare host and is excluded here; it can still
     # match above via exact-match against a (real-world nonexistent)
@@ -395,16 +395,16 @@ rewrite_target_covers_framework() {
 }
 
 url_resolves_to_framework() {
-  # SF-068 — base_dir (2nd arg) is the repo the candidate URL/path was READ
+  # SF-068 - base_dir (2nd arg) is the repo the candidate URL/path was READ
   # FROM (i.e. $repo_dir at every call site in assert_remote_severance /
   # sever_framework_remotes). Git stores a relative local-path remote
-  # verbatim, resolved relative to the repo that configured it — NOT
+  # verbatim, resolved relative to the repo that configured it - NOT
   # relative to wherever this script's own process happens to be running
   # from. `git remote add fw ../AgenticCore` run inside the adopter
   # tree stores the literal string "../AgenticCore"; that string only
   # resolves to the framework when evaluated with the ADOPTER repo as the
   # base, never the script's ambient CWD (which is typically the framework
-  # checkout itself, or an operator's shell CWD — neither is correct).
+  # checkout itself, or an operator's shell CWD - neither is correct).
   # Every caller must pass its own repo_dir as base_dir so a relative
   # candidate is resolved from the right place.
   local candidate norm_candidate identity norm_identity base_dir
@@ -413,7 +413,7 @@ url_resolves_to_framework() {
   [ -z "$candidate" ] && return 1
 
   # Local filesystem path candidate (no scheme, no SSH shorthand, not a bare
-  # hostname/path) — resolve it as a path (relative candidates against
+  # hostname/path) - resolve it as a path (relative candidates against
   # base_dir, absolute candidates as-is) and compare git-common-dir against
   # the framework's own git-common-dir. This catches `git remote add fw
   # /path/to/AgenticCore` or `git remote add fw ../AgenticCore`
@@ -435,7 +435,7 @@ url_resolves_to_framework() {
           /*) : ;;
           *) cand_common="$resolved_path/$cand_common" ;;
         esac
-        # SF-069 — pwd -P (physical) on both this side and FRAMEWORK_COMMON_DIR
+        # SF-069 - pwd -P (physical) on both this side and FRAMEWORK_COMMON_DIR
         # so a symlinked path component on either side still canonicalizes to
         # the same string as the physical path on the other side.
         cand_common="$(cd "$(dirname "$cand_common")" 2>/dev/null && pwd -P)/$(basename "$cand_common")"
@@ -458,14 +458,14 @@ url_resolves_to_framework() {
 }
 
 # ---------------------------------------------------------------------------
-# D-7.6 — Target-identity guard. Refuse to operate on the framework repo
+# D-7.6 - Target-identity guard. Refuse to operate on the framework repo
 # itself or a nested/parent framework worktree. Independent of dirty-tree
 # check; runs before flow detection.
 # ---------------------------------------------------------------------------
 guard_target_identity() {
   local target_abs
   # Resolve target to an absolute path without requiring it to exist yet.
-  # SF-069 — pwd -P (physical) so a symlinked target path canonicalizes to
+  # SF-069 - pwd -P (physical) so a symlinked target path canonicalizes to
   # the same string FRAMEWORK_ROOT would (which is also now pwd -P).
   if [ -d "$TARGET" ]; then
     target_abs="$(cd "$TARGET" && pwd -P)"
@@ -493,7 +493,7 @@ guard_target_identity() {
 
   # Case 2: target is itself a framework worktree (git-common-dir points to
   # the same repository, e.g. a sibling .NN bench of THIS framework checkout).
-  # SF-069 — pwd -P (physical) on both sides here too.
+  # SF-069 - pwd -P (physical) on both sides here too.
   if [ -d "$target_abs" ] && git -C "$target_abs" rev-parse --git-common-dir >/dev/null 2>&1; then
     local target_common fw_common
     target_common="$(cd "$target_abs" && git rev-parse --git-common-dir 2>/dev/null || true)"
@@ -557,7 +557,7 @@ prompt_for_slug() {
   done
 }
 
-# TC-063 (D-8) — the framework's own root AGENT.md is the baseline-steward
+# TC-063 (D-8) - the framework's own root AGENT.md is the baseline-steward
 # persona and carries framework-release-specific dev-staging / curated-release
 # git discipline (ADR-0026) that adopters do NOT inherit. Ship the
 # lead-engineer-flavored adopter template as the adopter's root AGENT.md
@@ -586,7 +586,7 @@ swap_adopter_root_agent() {
 write_slug_files() {
   local repo_dir="$1" slug="$2"
 
-  # AGENT.md — add/replace a "## Project Slug" section near the top.
+  # AGENT.md - add/replace a "## Project Slug" section near the top.
   if [ -f "$repo_dir/AGENT.md" ]; then
     if grep -q '^## Project Slug' "$repo_dir/AGENT.md"; then
       # Replace the existing section's value line (first non-blank line after heading)
@@ -606,10 +606,10 @@ write_slug_files() {
     fi
   fi
 
-  # tasks.yaml — SF-117/SF-122: tasks.yaml is now excluded from
+  # tasks.yaml - SF-117/SF-122: tasks.yaml is now excluded from
   # copy_framework_content and SEEDED by seed_adopter_state() instead (which
-  # runs before this function — see the do_flow_empty/do_flow_rehome call
-  # order). The seed template's `# Task Queue — __SLUG__` HEADER comment
+  # runs before this function - see the do_flow_empty/do_flow_rehome call
+  # order). The seed template's `# Task Queue - __SLUG__` HEADER comment
   # already carries the slug via seed_adopter_state's __SLUG__ substitution,
   # so there is nothing left for this function to inject.
   #
@@ -619,15 +619,15 @@ write_slug_files() {
   # top-level `slug: <value>` mapping key inserted ABOVE that `---` makes
   # the file a two-document YAML stream (a mapping document, then a `---`
   # starting a second, list-only document), which
-  # `yaml.safe_load()` — used by every consumer, including the
+  # `yaml.safe_load()` - used by every consumer, including the
   # review-ledger MCP server's task-adjacent tooling and bench-status.sh's
-  # stale-bench check — rejects with `ComposerError: expected a single
+  # stale-bench check - rejects with `ComposerError: expected a single
   # document in the stream`. Confirmed by direct reproduction. tasks.yaml
   # has never carried a `slug:` field in the framework's own repo (grep
-  # confirms) — the header-comment convention is the correct, parseable
+  # confirms) - the header-comment convention is the correct, parseable
   # place for it, not a `slug:` YAML key.
 
-  # PROCESS.md — update the branch-naming example to use the active slug
+  # PROCESS.md - update the branch-naming example to use the active slug
   if [ -f "$repo_dir/PROCESS.md" ]; then
     sed -i.bak -E "s#Branch naming: \`<type>/<ticket-id>-<short-slug>\`#Branch naming: \`<type>/${slug}-NNNN-<short-slug>\`#" "$repo_dir/PROCESS.md" 2>/dev/null || true
     rm -f "$repo_dir/PROCESS.md.bak"
@@ -661,10 +661,10 @@ EOF
 }
 
 # ---------------------------------------------------------------------------
-# D-7.3 — Remote-severance assertion (allowlist, resolved-push-target).
+# D-7.3 - Remote-severance assertion (allowlist, resolved-push-target).
 # The allowlist here is implicit: any remote whose resolved push target does
 # NOT match the framework's identity is allowed (it is, by definition, the
-# adopter's own remote — export-framework.sh never adds a remote on its own
+# adopter's own remote - export-framework.sh never adds a remote on its own
 # initiative, so any remote present belongs to the adopter). Only remotes
 # that resolve to the framework are offenders.
 # Runs on EVERY invocation (including dry-run/no-op) in report-only or
@@ -675,7 +675,7 @@ assert_remote_severance() {
   local -a offenders=()
 
   if [ ! -d "$repo_dir/.git" ] && ! git -C "$repo_dir" rev-parse --git-dir >/dev/null 2>&1; then
-    # No repo yet (e.g. dry-run pre-init on empty flow) — nothing to assert.
+    # No repo yet (e.g. dry-run pre-init on empty flow) - nothing to assert.
     return 0
   fi
 
@@ -697,13 +697,13 @@ assert_remote_severance() {
   # 2. url.<base>.insteadOf / pushInsteadOf rewrite rules whose EFFECTIVE
   #    resolved target reaches the framework (SF-067). A rewrite base by
   #    itself is frequently a partial host/path fragment (that is the
-  #    entire point of prefix substitution) — normalizing and comparing
+  #    entire point of prefix substitution) - normalizing and comparing
   #    the base string in isolation misses any base whose resolution
   #    depends on prefix substitution or a further chained rewrite hop.
   #    We let git itself apply the rewrite (see
   #    resolve_rewrite_base_effective_target) and test whether that
   #    resolved target is, or is a path-bounded prefix of, the framework
-  #    identity (rewrite_target_covers_framework — see its header comment
+  #    identity (rewrite_target_covers_framework - see its header comment
   #    for why an exact-match check is the wrong test for a rewrite
   #    target), so a dormant rule is caught even with no live remote
   #    currently using it.
@@ -725,7 +725,7 @@ assert_remote_severance() {
     fi
   done < <(git -C "$repo_dir" config --get-regexp 'url\..*\.(insteadof|pushinsteadof)' 2>/dev/null || true)
 
-  # 3. remote.pushDefault — check the DEFAULT remote's resolved push target.
+  # 3. remote.pushDefault - check the DEFAULT remote's resolved push target.
   local push_default
   push_default="$(git -C "$repo_dir" config --get remote.pushDefault 2>/dev/null || true)"
   if [ -n "$push_default" ]; then
@@ -736,7 +736,7 @@ assert_remote_severance() {
     fi
   fi
 
-  # 4. branch.<name>.pushRemote — same resolved-target check, per branch.
+  # 4. branch.<name>.pushRemote - same resolved-target check, per branch.
   while IFS= read -r cfg_line; do
     [ -z "$cfg_line" ] && continue
     local key val
@@ -750,7 +750,7 @@ assert_remote_severance() {
   done < <(git -C "$repo_dir" config --get-regexp '^branch\..*\.pushremote$' 2>/dev/null || true)
 
   if [ "${#offenders[@]}" -gt 0 ]; then
-    err "D-7.3 remote-severance assertion FAILED — a push path to the framework repository survives:"
+    err "D-7.3 remote-severance assertion FAILED - a push path to the framework repository survives:"
     local o
     for o in "${offenders[@]}"; do
       err "  - $o"
@@ -768,7 +768,7 @@ sever_framework_remotes() {
       [ -z "$rname" ] && continue
       rurl="$(git -C "$repo_dir" remote get-url "$rname" 2>/dev/null || true)"
       if [ -n "$rurl" ] && url_resolves_to_framework "$rurl" "$repo_dir"; then
-        dry_note "would remove remote '$rname' ($rurl) — resolves to framework"
+        dry_note "would remove remote '$rname' ($rurl) - resolves to framework"
       fi
     done < <(git -C "$repo_dir" remote 2>/dev/null || true)
     return 0
@@ -797,7 +797,7 @@ sever_framework_remotes() {
   # Clear insteadOf/pushInsteadOf rewrite rules whose base resolves to the
   # framework, and remote.pushDefault / branch.*.pushRemote if they point
   # at a (now-removed or still-present) framework-resolving target.
-  # SF-067 — use the same effective-resolved-target check as detection
+  # SF-067 - use the same effective-resolved-target check as detection
   # (resolve_rewrite_base_effective_target / rewrite_target_covers_framework)
   # so a dormant prefix-form rewrite rule is cleared here too, not only
   # flagged by the assertion.
@@ -837,12 +837,12 @@ sever_framework_remotes() {
 }
 
 # ---------------------------------------------------------------------------
-# D-7.5 — History/refs/object scrub + verification.
+# D-7.5 - History/refs/object scrub + verification.
 # Approach (a) (preferred, SF-066): Flow A always uses this naturally
-# (fresh `git init`, no clone). Flow B uses this by construction too — see
-# do_flow_rehome — content is copied out of a throwaway WORKING-TREE COPY
+# (fresh `git init`, no clone). Flow B uses this by construction too - see
+# do_flow_rehome - content is copied out of a throwaway WORKING-TREE COPY
 # (a plain `tar` extraction of $FRAMEWORK_ROOT into a scratch dir, NOT a
-# `git clone` — see copy_framework_content, which excludes `.git` entirely)
+# `git clone` - see copy_framework_content, which excludes `.git` entirely)
 # into the EXISTING adopter repo's working tree; the adopter's OWN .git is
 # never touched by anything framework-related, so no framework GIT OBJECT
 # is ever created, let alone introduced into the adopter object store. This
@@ -857,7 +857,7 @@ sever_framework_remotes() {
 assert_no_framework_history() {
   local repo_dir="$1"
 
-  # SF-114/SF-116 — scope every git operation in this assertion to the
+  # SF-114/SF-116 - scope every git operation in this assertion to the
   # TARGET's own .git only; never let git's upward repository discovery
   # resolve to an ANCESTOR .git. The prior guard
   # (`[ ! -d "$repo_dir/.git" ] && ! git -C "$repo_dir" rev-parse --git-dir`)
@@ -867,7 +867,7 @@ assert_no_framework_history() {
   # any target created under an existing checkout) the guard's SECOND
   # condition (rev-parse succeeds, resolving to the ancestor) made the
   # overall AND false, so execution fell through to `git fsck
-  # --unreachable` against the ANCESTOR's object store — a false-positive
+  # --unreachable` against the ANCESTOR's object store - a false-positive
   # D-7.5 failure (SF-114) whenever that ancestor happened to carry any
   # unreachable object.
   #
@@ -883,19 +883,19 @@ assert_no_framework_history() {
   local -x GIT_CEILING_DIRECTORIES=""
   [ -n "$repo_parent" ] && GIT_CEILING_DIRECTORIES="$repo_parent"
 
-  # SF-116 — a bare `return 0` here is a SILENT skip, indistinguishable
+  # SF-116 - a bare `return 0` here is a SILENT skip, indistinguishable
   # from a pass, defeating the ADR-0015 D-7.4/D-7.5 "runs on every
   # invocation, non-overridable" guarantee. Every path that treats the
   # scrub as not-applicable must say so explicitly via `log`.
   if [ ! -e "$repo_dir" ]; then
-    log "D-7.5 scrub: target does not exist yet — nothing to scrub (N/A)."
+    log "D-7.5 scrub: target does not exist yet - nothing to scrub (N/A)."
     return 0
   fi
 
   local toplevel target_real
   toplevel="$(git -C "$repo_dir" rev-parse --show-toplevel 2>/dev/null || true)"
   if [ -z "$toplevel" ]; then
-    log "D-7.5 scrub: target is not yet a git repo — nothing to scrub (N/A)."
+    log "D-7.5 scrub: target is not yet a git repo - nothing to scrub (N/A)."
     return 0
   fi
   target_real="$(cd "$repo_dir" && pwd -P)"
@@ -905,13 +905,13 @@ assert_no_framework_history() {
     # not happen for an ANCESTOR match (discovery is capped at the target's
     # parent), but treat any mismatch conservatively as N/A rather than
     # proceeding against a repo that is not verifiably the target's own.
-    log "D-7.5 scrub: target is not yet its own git repo (resolved toplevel '$toplevel') — nothing to scrub (N/A)."
+    log "D-7.5 scrub: target is not yet its own git repo (resolved toplevel '$toplevel') - nothing to scrub (N/A)."
     return 0
   fi
 
   local -a offenders=()
 
-  # refs/remotes/* — any surviving remote-tracking ref at all is suspect
+  # refs/remotes/* - any surviving remote-tracking ref at all is suspect
   # once remotes have been severed; check it doesn't point into framework
   # history by cross-referencing against known framework commit SHAs is not
   # tractable without a framework history somewhere to diff against, so the
@@ -939,11 +939,11 @@ assert_no_framework_history() {
 
   # Unreachable objects surviving in the object store (dangling commits from
   # a since-removed remote's fetched history).
-  # SF-071 — known limitation, deliberately conservative: this check cannot
+  # SF-071 - known limitation, deliberately conservative: this check cannot
   # distinguish a FRAMEWORK unreachable object from an unrelated CUSTOMER
   # unreachable object (e.g. Flow B's pre-existing customer repo may
   # legitimately carry dangling objects from amended commits or dropped
-  # stashes that have nothing to do with the framework) — there is no
+  # stashes that have nothing to do with the framework) - there is no
   # framework history available locally to diff against once severed. Any
   # unreachable object at all is treated as an offender. This trades a
   # possible false-positive abort on a customer repo with pre-existing
@@ -960,7 +960,7 @@ assert_no_framework_history() {
   fi
 
   if [ "${#offenders[@]}" -gt 0 ]; then
-    err "D-7.5 history/refs/object scrub verification FAILED — framework-reachable state survives:"
+    err "D-7.5 history/refs/object scrub verification FAILED - framework-reachable state survives:"
     local o
     for o in "${offenders[@]}"; do
       err "  - $o"
@@ -994,7 +994,7 @@ scrub_framework_history() {
 }
 
 # ---------------------------------------------------------------------------
-# Framework file manifest — what gets copied into the adopter repo.
+# Framework file manifest - what gets copied into the adopter repo.
 # Excludes framework-internal-only artifacts that should not travel with
 # every export (bench worktrees, in-progress work state, build output).
 # ---------------------------------------------------------------------------
@@ -1004,7 +1004,7 @@ FRAMEWORK_EXCLUDE_PATTERNS=(
   ".work"
   ".tmp"
   "mddocs/book"
-  # SF-117/SF-122 — framework LIVE OPERATIONAL STATE must never land in the
+  # SF-117/SF-122 - framework LIVE OPERATIONAL STATE must never land in the
   # adopter tree: the framework's own task queue (69 AC-* tickets) and the
   # framework's own populated shared-context file. These are excluded here
   # and SEEDED with adopter-generic empty starting files by
@@ -1013,49 +1013,49 @@ FRAMEWORK_EXCLUDE_PATTERNS=(
   # were reconciled to `.core/review-ledger/{security,reviews}`, which ship
   # wired via .gitkeep and are NOT excluded (the framework's authoring does
   # not use them, so there is no operational state to scrub). mddocs/adr is
-  # deliberately NOT excluded — ADRs are reference material that must
+  # deliberately NOT excluded - ADRs are reference material that must
   # continue to ship (D-4/D-6).
   "tasks.yaml"
   ".core/agents/_context.md"
-  # SF-123 — bench-registry.yaml is the framework's own LIVE bench-provenance
+  # SF-123 - bench-registry.yaml is the framework's own LIVE bench-provenance
   # record: it names internal AC-* ticket IDs, security/review finding IDs
   # (SF-*, RF-*), reviewer-run IDs (SR-*, RR-*), commit SHAs, and teardown
   # narrative for every bench this framework repo has ever provisioned for
-  # itself. Same leak class as tasks.yaml/.core/agents/_context.md above —
+  # itself. Same leak class as tasks.yaml/.core/agents/_context.md above -
   # excluded here and SEEDED with an adopter-generic template by
   # seed_adopter_state() below (see mddocs/scripts/seed/bench-registry.yaml).
   "bench-registry.yaml"
-  # SF-124 — .bench/ and relay-pending.md are ON-DISK framework operational
+  # SF-124 - .bench/ and relay-pending.md are ON-DISK framework operational
   # state (bench assignment, cross-bench relay notes). Both are already
   # gitignored (never reach the framework's OWN git history), but `tar -c .`
   # in _copy_framework_content_raw below walks the WORKING TREE, not git's
   # index, so gitignore rules do not protect against them being copied into
   # the adopter tree. .bench/assignment.md holds the LIVE framework
   # ticket/branch assignment for whichever bench happens to be running this
-  # export. These are EXCLUDED ONLY — not seeded: an adopter has no bench
+  # export. These are EXCLUDED ONLY - not seeded: an adopter has no bench
   # assignment or relay note at bootstrap, so there is nothing adopter-
   # generic to seed in their place (contrast bench-registry.yaml above,
   # which IS seeded because the adopter needs the schema/scaffold to start
   # registering their own benches).
   ".bench"
   "relay-pending.md"
-  # SF-127 — mddocs/backlog.md is the human-readable MIRROR of tasks.yaml
+  # SF-127 - mddocs/backlog.md is the human-readable MIRROR of tasks.yaml
   # (its own preamble says so verbatim: "mirrors the current state of
   # tasks.yaml"): it carries the same framework AC-* ticket IDs,
   # per-ticket status/priority, and internal agent role names (including
-  # "baseline-steward") as tasks.yaml itself — same leak class as
+  # "baseline-steward") as tasks.yaml itself - same leak class as
   # SF-117/SF-122 (tasks.yaml) and SF-123 (bench-registry.yaml). mddocs/ is
   # deliberately NOT excluded wholesale (ADRs and other reference docs
-  # under mddocs/ are meant to ship — D-4/D-6), so this single nested path
+  # under mddocs/ are meant to ship - D-4/D-6), so this single nested path
   # is excluded specifically, following the exact working pattern already
   # used for the other nested exclusion above:
   # ".core/agents/_context.md". Seeded with an adopter-generic
-  # empty scaffold by seed_adopter_state() below — see
+  # empty scaffold by seed_adopter_state() below - see
   # mddocs/scripts/seed/mddocs/backlog.md.
   "mddocs/backlog.md"
 )
 
-# _copy_framework_content_raw — the actual tar-based extraction, with no
+# _copy_framework_content_raw - the actual tar-based extraction, with no
 # DRY_RUN gate. Only ever called against a THROWAWAY SCRATCH directory
 # (never against the adopter --target directly), so calling it during
 # --dry-run to build a manifest preview (TC-051, see do_flow_rehome) does
@@ -1085,22 +1085,22 @@ copy_framework_content() {
 }
 
 # ---------------------------------------------------------------------------
-# SF-117/SF-122/SF-123/SF-127 — Adopter state seeding.
+# SF-117/SF-122/SF-123/SF-127 - Adopter state seeding.
 #
 # The paths excluded from copy_framework_content above that carry an
 # adopter-generic replacement (tasks.yaml, .core/agents/_context.md,
-# bench-registry.yaml — SF-123 added this one, mddocs/backlog.md — SF-127
+# bench-registry.yaml - SF-123 added this one, mddocs/backlog.md - SF-127
 # added this one) are the framework's own LIVE OPERATIONAL STATE and must
 # never land in an adopter tree verbatim. seed_adopter_state() replaces
 # them with adopter-generic, EMPTY (or schema-only) starting files from
-# mddocs/scripts/seed/ — one seed template per excluded path, mirrored at
+# mddocs/scripts/seed/ - one seed template per excluded path, mirrored at
 # the same relative path under seed/ as it has in the adopter target (e.g.
 # seed/.core/agents/_context.md -> <target>/.core/agents/_context.md), so
 # the mapping here is a straight relative-path copy, not a lookup table.
-# (.bench and relay-pending.md are excluded too but NOT seeded — see their
+# (.bench and relay-pending.md are excluded too but NOT seeded - see their
 # FRAMEWORK_EXCLUDE_PATTERNS entries above for why.)
 #
-# NOTE — the review ledgers (`.security`, `.reviews`) are NOT seeded. The
+# NOTE - the review ledgers (`.security`, `.reviews`) are NOT seeded. The
 # ledgers were reconciled to `.core/review-ledger/{security,reviews}` and
 # ship wired via their .gitkeep placeholders; the framework's own authoring
 # does not use them, so there is no framework operational state to scrub
@@ -1111,15 +1111,15 @@ copy_framework_content() {
 # this function substitutes for the validated adopter slug with `sed`.
 #
 # Honors DRY_RUN (D-7.4 zero-side-effects): emits a dry_note per path and
-# writes nothing when DRY_RUN=1 — mirrors the copy_framework_content gate
+# writes nothing when DRY_RUN=1 - mirrors the copy_framework_content gate
 # above.
 # ---------------------------------------------------------------------------
 SEED_RELATIVE_PATHS=(
   "tasks.yaml"
   ".core/agents/_context.md"
-  # SF-123 — bench-registry.yaml (see FRAMEWORK_EXCLUDE_PATTERNS above).
+  # SF-123 - bench-registry.yaml (see FRAMEWORK_EXCLUDE_PATTERNS above).
   "bench-registry.yaml"
-  # SF-127 — mddocs/backlog.md (see FRAMEWORK_EXCLUDE_PATTERNS above).
+  # SF-127 - mddocs/backlog.md (see FRAMEWORK_EXCLUDE_PATTERNS above).
   "mddocs/backlog.md"
 )
 
@@ -1147,7 +1147,7 @@ seed_adopter_state() {
 }
 
 # ---------------------------------------------------------------------------
-# TC-051 — Framework manifest capture (Flow B reconciliation).
+# TC-051 - Framework manifest capture (Flow B reconciliation).
 #
 # write_framework_manifest walks a directory tree (the throwaway scratch
 # copy produced by copy_framework_content, BEFORE it is overlaid into the
@@ -1155,7 +1155,7 @@ seed_adopter_state() {
 # relative to that directory and with the leading "./" stripped, to
 # $manifest_file as NUL-delimited entries. NUL-delimited output (not
 # newline-delimited) is required so a path containing a space or other
-# shell-metacharacter round-trips exactly — this manifest is later consumed
+# shell-metacharacter round-trips exactly - this manifest is later consumed
 # by `git add --pathspec-from-file=... --pathspec-file-nul`, which requires
 # matching delimiter discipline.
 #
@@ -1171,14 +1171,14 @@ write_framework_manifest() {
   : > "$manifest_file"
   local raw=""
   raw="$(mktemp "${TMPDIR:-/tmp}/export-framework-manifest-raw.XXXXXX")"
-  # RF-008 — RETURN trap (matching the SF-074 idiom used elsewhere in this
+  # RF-008 - RETURN trap (matching the SF-074 idiom used elsewhere in this
   # file, e.g. resolve_rewrite_base_effective_target) so $raw is removed on
   # ANY function return, not only the normal fall-through path. Without
   # this, a failure between mktemp and the `rm -f` below (e.g. the `find`
   # pipeline failing) would leak $raw under set -euo pipefail. Cleared with
   # `trap - RETURN` on the normal path (after this function's own manual
-  # `rm -f`) so the trap does not remain armed and fire again — spuriously,
-  # against an out-of-scope $raw — on the CALLER's next return event.
+  # `rm -f`) so the trap does not remain armed and fire again - spuriously,
+  # against an out-of-scope $raw - on the CALLER's next return event.
   trap 'rm -f "$raw" 2>/dev/null || true' RETURN
   ( cd "$scratch_dir" && find . -type f -print0 ) > "$raw"
   local f
@@ -1189,7 +1189,7 @@ write_framework_manifest() {
   trap - RETURN
 }
 
-# manifest_contains_path — exact-match membership test against a
+# manifest_contains_path - exact-match membership test against a
 # NUL-delimited manifest file (see write_framework_manifest). Uses
 # `grep -z -F -x` (fixed-string, whole-"line"/NUL-record match) rather than
 # a bash loop over the manifest for every candidate path, since Flow B
@@ -1201,11 +1201,11 @@ manifest_contains_path() {
 }
 
 # ---------------------------------------------------------------------------
-# TC-051 — Reconciliation report (Flow B). Report-only: never writes
+# TC-051 - Reconciliation report (Flow B). Report-only: never writes
 # .gitignore, never decides tracked-vs-ignored on the operator's behalf.
 #
 # collect_customer_entries computes the set of untracked paths in $repo_dir
-# that are NOT in the framework manifest — i.e. pre-existing customer
+# that are NOT in the framework manifest - i.e. pre-existing customer
 # content the overlay did not introduce and this script will not stage.
 # Writes one path per line to $out_file (plain newline-delimited is fine
 # here; this file is a human-readable report artifact, not a git pathspec
@@ -1216,7 +1216,7 @@ collect_customer_entries() {
   : > "$out_file"
   local status_z=""
   status_z="$(mktemp "${TMPDIR:-/tmp}/export-framework-statusz.XXXXXX")"
-  # RF-008 — RETURN trap (same idiom as write_framework_manifest above and
+  # RF-008 - RETURN trap (same idiom as write_framework_manifest above and
   # resolve_rewrite_base_effective_target/SF-074 elsewhere in this file) so
   # $status_z is removed on ANY function return, not only the normal
   # fall-through path. Cleared with `trap - RETURN` after this function's
@@ -1238,13 +1238,13 @@ collect_customer_entries() {
   trap - RETURN
 }
 
-# write_reconciliation_report — durable provenance report for the operator.
+# write_reconciliation_report - durable provenance report for the operator.
 # Lists every pre-existing customer entry left untracked after the
 # manifest-scoped commit, with explicit instructions that classification
 # (gitignore vs. track) is the operator's decision, not this script's.
 # The report file itself is intentionally left OUT of the framework
 # commit (it describes customer content, not framework content) and is
-# NOT added to .gitignore — it surfaces in `git status` as an ordinary
+# NOT added to .gitignore - it surfaces in `git status` as an ordinary
 # untracked file the operator reads, then deletes or commits at their own
 # discretion.
 write_reconciliation_report() {
@@ -1262,22 +1262,22 @@ write_reconciliation_report() {
     printf 'the operator, not a record consumed by the script itself.\n\n'
     printf '## What happened\n\n'
     printf 'Only files known to belong to the AgenticCore release (the\n'
-    printf 'framework manifest — every path copied from the framework working\n'
+    printf 'framework manifest - every path copied from the framework working\n'
     printf 'tree during this export) were staged into the re-home commit.\n'
     printf 'Everything else already present in this repository was left\n'
-    printf 'exactly as it was — untouched, unstaged, and unclassified.\n\n'
+    printf 'exactly as it was - untouched, unstaged, and unclassified.\n\n'
     printf '## Pre-existing content requiring your classification (%s entries)\n\n' "$count"
     if [ "$count" -eq 0 ]; then
-      printf '(none — no untracked pre-existing content was found outside the\n'
+      printf '(none - no untracked pre-existing content was found outside the\n'
       printf 'framework manifest)\n\n'
     else
       printf 'The following paths existed in this repository before the framework\n'
       printf 'was re-homed into it, and are NOT part of the framework release.\n'
       printf 'They were intentionally NOT staged into the framework re-home\n'
       printf 'commit. Review each and decide:\n\n'
-      printf '  (a) if it should NOT be tracked in git — add it to .gitignore\n'
+      printf '  (a) if it should NOT be tracked in git - add it to .gitignore\n'
       printf '      yourself; this script does not write .gitignore for you.\n'
-      printf '  (b) if you DO want it tracked — run "git add <path>" yourself.\n\n'
+      printf '  (b) if you DO want it tracked - run "git add <path>" yourself.\n\n'
       printf 'Paths:\n\n'
       sed 's/^/  - /' "$customer_entries_file"
       printf '\n'
@@ -1285,13 +1285,13 @@ write_reconciliation_report() {
     printf '## Required next step\n\n'
     printf 'Classify every path listed above (gitignore or git add) before your\n'
     printf 'first commit on top of this framework re-home. This report file is\n'
-    printf 'not part of framework or customer history — read it, act on it, then\n'
+    printf 'not part of framework or customer history - read it, act on it, then\n'
     printf 'delete it (or commit it as a team record, if you prefer).\n'
   } > "$report_file"
 }
 
 # ---------------------------------------------------------------------------
-# Flow A — empty-dir init (D-7.1)
+# Flow A - empty-dir init (D-7.1)
 # ---------------------------------------------------------------------------
 do_flow_empty() {
   local target="$1"
@@ -1303,7 +1303,7 @@ do_flow_empty() {
   fi
 
   if [ "$already_init" -eq 1 ]; then
-    log "Target already initialized (framework-version.txt + .git present) — no-op (D-7.4 idempotence)."
+    log "Target already initialized (framework-version.txt + .git present) - no-op (D-7.4 idempotence)."
     cat "$target/framework-version.txt" 2>/dev/null || true
     assert_remote_severance "$target" || return $?
     assert_no_framework_history "$target" || return $?
@@ -1331,7 +1331,7 @@ do_flow_empty() {
     dry_note "would create initial commit recording release $version"
     assert_remote_severance "$target" || return $?
     assert_no_framework_history "$target" || return $?
-    log "[dry-run] zero side effects — report only."
+    log "[dry-run] zero side effects - report only."
     return 0
   fi
 
@@ -1342,7 +1342,7 @@ do_flow_empty() {
   swap_adopter_root_agent "$target"
   write_slug_files "$target" "$SLUG"
 
-  # D-7.3 / D-7.5 run before the initial commit too — a fresh git init has
+  # D-7.3 / D-7.5 run before the initial commit too - a fresh git init has
   # no remotes and no history, so this should always pass; it is here to
   # keep the "every invocation" guarantee uniform across flows.
   assert_remote_severance "$target"
@@ -1358,7 +1358,7 @@ do_flow_empty() {
 }
 
 # ---------------------------------------------------------------------------
-# Flow B — re-home into existing customer tree (D-7.1, D-7.2, D-7.5 approach a)
+# Flow B - re-home into existing customer tree (D-7.1, D-7.2, D-7.5 approach a)
 # ---------------------------------------------------------------------------
 do_flow_rehome() {
   local target="$1"
@@ -1371,7 +1371,7 @@ do_flow_rehome() {
 
   # D-7.4 idempotence: already re-homed?
   if [ -f "$target/framework-version.txt" ]; then
-    log "Target already carries framework-version.txt — no-op (D-7.4 idempotence)."
+    log "Target already carries framework-version.txt - no-op (D-7.4 idempotence)."
     cat "$target/framework-version.txt" 2>/dev/null || true
     assert_remote_severance "$target" || return $?
     assert_no_framework_history "$target" || return $?
@@ -1379,12 +1379,12 @@ do_flow_rehome() {
     return 0
   fi
 
-  # D-7.2 — dirty-tree guard (Flow B only; --force overrides THIS ONLY)
+  # D-7.2 - dirty-tree guard (Flow B only; --force overrides THIS ONLY)
   local status_output
   status_output="$(git -C "$target" status --porcelain 2>/dev/null || true)"
   if [ -n "$status_output" ]; then
     if [ "$FORCE" -eq 1 ]; then
-      warn "target working tree is not clean; proceeding because --force was given (D-7.2 dirty-tree guard override ONLY — this does not weaken D-7.3 or D-7.5)."
+      warn "target working tree is not clean; proceeding because --force was given (D-7.2 dirty-tree guard override ONLY - this does not weaken D-7.3 or D-7.5)."
     else
       err "D-7.2 safety interlock: target working tree is not clean (uncommitted changes or untracked files). Aborting with NO changes made."
       err "Dirty status:"
@@ -1409,7 +1409,7 @@ do_flow_rehome() {
     dry_note "would write slug '$SLUG' to AGENT.md and PROCESS.md (tasks.yaml slug is set via seed_adopter_state's header substitution)"
     dry_note "would sever any framework-resolving remote/config in $target"
 
-    # TC-051 — classification preview. Build the framework manifest from a
+    # TC-051 - classification preview. Build the framework manifest from a
     # scratch copy (never touches $target) and report what WOULD be staged
     # as framework content vs. what pre-existing customer content WOULD be
     # left for the operator to classify. Zero side effects on $target:
@@ -1424,12 +1424,12 @@ do_flow_rehome() {
     write_framework_manifest "$dr_scratch" "$dr_manifest"
     collect_customer_entries "$target" "$dr_manifest" "$dr_customer"
     local dr_fw_count dr_cust_count
-    # RF-011 — `grep -zc` prints the count AND exits 1 when that count is
+    # RF-011 - `grep -zc` prints the count AND exits 1 when that count is
     # zero (an empty manifest has zero NUL-delimited records to match).
     # The previous `|| echo 0` fallback fired on that exit-1-with-0-output
     # case too, appending a SECOND "0" line on top of the "0" grep already
     # printed, corrupting $dr_fw_count into a two-line "0\n0" string.
-    # `|| true` avoids ever writing to stdout on the fallback path — grep's
+    # `|| true` avoids ever writing to stdout on the fallback path - grep's
     # own count line (0 or otherwise) is the only thing $() ever captures,
     # regardless of grep's exit code.
     dr_fw_count="$(grep -zc '' "$dr_manifest" 2>/dev/null || true)"
@@ -1446,42 +1446,42 @@ do_flow_rehome() {
     dry_note "would create a commit recording release $version, staged to framework manifest paths ONLY (never a blind 'git add -A')"
     assert_remote_severance "$target" || return $?
     assert_no_framework_history "$target" || return $?
-    log "[dry-run] zero side effects — report only."
+    log "[dry-run] zero side effects - report only."
     return 0
   fi
 
   # SF-066 approach (a), implemented even more strongly than literally
   # described: copy_framework_content does a plain `tar` extraction of
   # $FRAMEWORK_ROOT's WORKING TREE into this scratch dir, excluding `.git`
-  # entirely (see copy_framework_content's exclude_patterns) — there is no
+  # entirely (see copy_framework_content's exclude_patterns) - there is no
   # `git clone` here, throwaway or otherwise, and no framework .git is ever
   # created anywhere in this flow. This guarantees the adopter's existing
   # object store is never touched by a framework git object at all, so
   # D-7.5 never has "framework objects introduced" to scrub in the normal
-  # path — the assertion below is a verification of that guarantee, not a
+  # path - the assertion below is a verification of that guarantee, not a
   # remediation of expected pollution. (SF-071: earlier comments in this
-  # file described this scratch dir as a "throwaway clone" — corrected;
+  # file described this scratch dir as a "throwaway clone" - corrected;
   # it never had a .git of its own.)
   #
-  # RF-009 — all three temp paths this function creates (throwaway,
+  # RF-009 - all three temp paths this function creates (throwaway,
   # manifest_file, customer_entries_file) are covered by ONE combined
   # RETURN trap set up front, declared local with empty-string defaults so
   # the trap body (which references all three) never trips `set -u` before
   # each is actually assigned. This protects every early exit in this
-  # function — including `assert_remote_severance "$target"` /
+  # function - including `assert_remote_severance "$target"` /
   # `assert_no_framework_history "$target"` below, which abort via
-  # set -e/D-7.3/D-7.5 non-zero return with no `|| return` guard — not just
+  # set -e/D-7.3/D-7.5 non-zero return with no `|| return` guard - not just
   # the final success path. `rm -rf`/`rm -f` on an empty or already-removed
   # path is a harmless no-op, so this trap firing after this function's own
   # manual cleanup already ran (the normal path) does no damage.
   local throwaway="" manifest_file="" customer_entries_file=""
-  # RF-014 — self-disarming trap: `trap - RETURN` inside the body clears the
+  # RF-014 - self-disarming trap: `trap - RETURN` inside the body clears the
   # RETURN trap as its first action so it fires exactly once and does not stay
   # globally armed after do_flow_rehome returns. This gives parity with
   # write_framework_manifest / collect_customer_entries (which clear their trap
   # on their single return path) and closes the latent case where a leftover
-  # armed trap could fire again in a caller's scope — referencing these now
-  # out-of-scope locals — and abort under `set -u`. Reachable only via
+  # armed trap could fire again in a caller's scope - referencing these now
+  # out-of-scope locals - and abort under `set -u`. Reachable only via
   # unsupported direct-sourcing; fixed here for consistency regardless.
   trap 'trap - RETURN; rm -rf "$throwaway" 2>/dev/null || true; rm -f "$manifest_file" "$customer_entries_file" 2>/dev/null || true' RETURN
 
@@ -1489,16 +1489,16 @@ do_flow_rehome() {
 
   copy_framework_content "$throwaway"
 
-  # TC-051 — capture the framework manifest from the scratch copy BEFORE it
+  # TC-051 - capture the framework manifest from the scratch copy BEFORE it
   # is overlaid into the target and removed. This is the authoritative,
-  # deterministic definition of "framework content" for this export — see
+  # deterministic definition of "framework content" for this export - see
   # write_framework_manifest's header comment. Must happen before the
   # `rm -rf "$throwaway"` below.
   manifest_file="$(mktemp "${TMPDIR:-/tmp}/export-framework-manifest.XXXXXX")"
   write_framework_manifest "$throwaway" "$manifest_file"
 
   # Overlay: copy framework files into the existing adopter tree. This is a
-  # working-tree file copy only — no git object transfer of any kind.
+  # working-tree file copy only - no git object transfer of any kind.
   ( cd "$throwaway" && tar -c . ) | ( cd "$target" && tar -x )
   rm -rf "$throwaway"
   throwaway=""
@@ -1508,27 +1508,27 @@ do_flow_rehome() {
   swap_adopter_root_agent "$target"
   write_slug_files "$target" "$SLUG"
 
-  # TC-051 — extend the manifest with the generated files this script
+  # TC-051 - extend the manifest with the generated files this script
   # writes directly into $target. framework-version.txt is genuinely new
   # (never part of $FRAMEWORK_ROOT, so write_framework_manifest above could
-  # not have seen it). AGENT.md / PROCESS.md are DIFFERENT — RF-010: they
+  # not have seen it). AGENT.md / PROCESS.md are DIFFERENT - RF-010: they
   # already exist in $FRAMEWORK_ROOT and are not in
   # FRAMEWORK_EXCLUDE_PATTERNS, so write_framework_manifest's `find` walk
   # already picked them up; write_slug_files only edits their CONTENT
   # in-place (slug insertion), it does not create new paths. Re-adding
-  # them here is therefore defensive/idempotent, not a fix for an absence —
+  # them here is therefore defensive/idempotent, not a fix for an absence -
   # `git add --pathspec-from-file` tolerates a duplicate path in the list
   # (harmless no-op on the second occurrence), so this costs nothing and
   # guards against a future change to write_slug_files ever creating one
   # of these files where it didn't already exist.
   #
-  # SF-117/SF-122/SF-123/SF-127 — the seed_adopter_state() paths (tasks.yaml,
+  # SF-117/SF-122/SF-123/SF-127 - the seed_adopter_state() paths (tasks.yaml,
   # .core/agents/_context.md, bench-registry.yaml, mddocs/backlog.md) are
   # DIFFERENT again: they ARE in
   # FRAMEWORK_EXCLUDE_PATTERNS, so
   # write_framework_manifest's walk of the throwaway scratch copy never
   # saw them at all (they were tar --exclude'd before the scratch copy was
-  # even created) — unlike AGENT.md/PROCESS.md, these paths are genuinely
+  # even created) - unlike AGENT.md/PROCESS.md, these paths are genuinely
   # absent from the manifest and MUST be added here or the subsequent
   # manifest-scoped `git add -f --pathspec-from-file` silently drops them
   # from the re-home commit despite having just written them to disk.
@@ -1550,11 +1550,11 @@ do_flow_rehome() {
   # adopter repo (e.g. from a manual clone-then-move procedure done before
   # running this script), then verify.
   sever_framework_remotes "$target"
-  # RF-009 — `|| return $?` (not a bare call) is required for the combined
+  # RF-009 - `|| return $?` (not a bare call) is required for the combined
   # RETURN trap above to actually fire on this assertion's failure path.
   # Under `set -euo pipefail`, an unguarded non-zero return from a function
   # call kills the script immediately WITHOUT unwinding through any RETURN
-  # trap — bash only runs a function's RETURN trap on an actual `return`
+  # trap - bash only runs a function's RETURN trap on an actual `return`
   # from that function, not on a set -e-triggered abort. Routing the
   # non-zero exit through an explicit `return $?` here preserves the exact
   # same exit code and stderr output D-7.3 already produces (assert_remote_-
@@ -1568,10 +1568,10 @@ do_flow_rehome() {
   # objects/refs (e.g. the 9-step manual procedure that motivated TC-050),
   # scrub them too before asserting.
   scrub_framework_history "$target"
-  # RF-009 — same rationale as assert_remote_severance above.
+  # RF-009 - same rationale as assert_remote_severance above.
   assert_no_framework_history "$target" || return $?
 
-  # TC-051 — reconciliation report. Compute pre-existing customer content
+  # TC-051 - reconciliation report. Compute pre-existing customer content
   # (untracked entries NOT in the framework manifest) BEFORE staging, so
   # the report reflects the tree as the operator will see it in
   # `git status` immediately after this script exits: framework paths
@@ -1582,7 +1582,7 @@ do_flow_rehome() {
   report_file="$target/.framework-rehome-report.txt"
   write_reconciliation_report "$target" "$report_file" "$version" "$export_date" "$customer_entries_file"
 
-  # TC-051 — replace the blind `git add -A` (which would have swept the
+  # TC-051 - replace the blind `git add -A` (which would have swept the
   # ENTIRE customer tree, including everything the report above just
   # flagged for operator classification, into the framework re-home
   # commit with no classification at all) with manifest-scoped staging.
@@ -1592,7 +1592,7 @@ do_flow_rehome() {
   # so a framework path containing a space or other shell metacharacter
   # is staged correctly. `-f` is required because a framework path may
   # legitimately fall under a customer .gitignore rule the framework
-  # itself does not control (e.g. a broad customer `*.txt` rule) — this
+  # itself does not control (e.g. a broad customer `*.txt` rule) - this
   # script's own manifest is the authority on what is framework content,
   # not the customer's pre-existing ignore rules.
   git -C "$target" add -f --pathspec-from-file="$manifest_file" --pathspec-file-nul --
@@ -1611,12 +1611,12 @@ do_flow_rehome() {
     flagged_count="$(grep -c '^  - ' "$report_file" 2>/dev/null || echo 0)"
     log "  reconciliation report: $report_file"
     log "    $flagged_count pre-existing customer path(s) left untracked for your classification."
-    log "    Review the report, then gitignore or 'git add' each as appropriate — before your next commit."
+    log "    Review the report, then gitignore or 'git add' each as appropriate - before your next commit."
   fi
 }
 
 # ---------------------------------------------------------------------------
-# D-7.1 — Flow detection
+# D-7.1 - Flow detection
 # ---------------------------------------------------------------------------
 detect_flow() {
   local target="$1"
@@ -1642,7 +1642,7 @@ detect_flow() {
       printf 'rehome'
       return 0
     fi
-    # Non-empty, not a git repo — ambiguous. Do not guess.
+    # Non-empty, not a git repo - ambiguous. Do not guess.
     err "flow detection ambiguous: '$target' exists, is non-empty, and is not a git repository."
     err "Specify explicitly: --flow empty (to git-init anyway) or --flow rehome (if it will become one)."
     exit 2
@@ -1685,7 +1685,7 @@ if [ "${EXPORT_FRAMEWORK_SOURCED:-0}" != "1" ]; then
   esac
 
   # ---------------------------------------------------------------------------
-  # FF-6 / TC-062 — minimum-viable cold-start pointer. A fresh adopter has a
+  # FF-6 / TC-062 - minimum-viable cold-start pointer. A fresh adopter has a
   # stood-up management plane but no framework fluency: they don't know
   # agentic assistance is the intended mode, which session-open phrase to
   # use, or that .00/.01/.02+ benches exist. Print once, flow-agnostic,
@@ -1696,7 +1696,7 @@ if [ "${EXPORT_FRAMEWORK_SOURCED:-0}" != "1" ]; then
     cold_start_release="$(grep '^release:' "$TARGET/framework-version.txt" 2>/dev/null | cut -d' ' -f2-)"
     cold_start_release="${cold_start_release:-unknown}"
     log ""
-    log "You are here — adopter management plane ready"
+    log "You are here - adopter management plane ready"
     log ""
     log "Created: an agentic management plane initialized from AgenticCore release"
     log "$cold_start_release, at: $TARGET"
@@ -1706,7 +1706,7 @@ if [ "${EXPORT_FRAMEWORK_SOURCED:-0}" != "1" ]; then
     log "Next: open an agentic session (OpenCode or compatible runtime) in that directory and say:"
     log "  \"Lead-engineer, session open\""
     log ""
-    log "Persona: as an adopter you operate as lead-engineer for your own project —"
+    log "Persona: as an adopter you operate as lead-engineer for your own project -"
     log "distinct from framework development (baseline-steward)."
     log ""
     log ".00 (HIL) / .01 (lead-engineer) / .02+ (worker) benches may be provisioned as"

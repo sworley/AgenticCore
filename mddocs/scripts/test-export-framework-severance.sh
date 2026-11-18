@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# test-export-framework-severance.sh — Confidentiality-control test harness
+# test-export-framework-severance.sh - Confidentiality-control test harness
 # for mddocs/scripts/export-framework.sh (ADR-0015 D-7).
 #
 # Proves the D-7.3 remote-severance assertion and D-7.5 history/refs/object
-# scrub verification are real backstops, not decorative checks — the four
+# scrub verification are real backstops, not decorative checks - the four
 # severance-bypass cases (i)-(iv) must abort non-zero when checked directly,
 # and the full script must produce a clean adopter repo end-to-end for both
 # flows.
@@ -22,7 +22,7 @@
 #
 # Exit codes:
 #   0  All test cases passed (severance caught where expected, clean where expected)
-#   1  One or more test cases failed — see per-case FAIL lines
+#   1  One or more test cases failed - see per-case FAIL lines
 #
 # See mddocs/adr/adr-0015-framework-distribution-adoption-model.md D-7.
 
@@ -112,7 +112,7 @@ FW_HOST_PATH="$(printf '%s' "$FW_URL" \
 FW_HOST="${FW_HOST_PATH%%/*}"
 FW_PATH="${FW_HOST_PATH#*/}"
 FW_SSH="git@${FW_HOST}:${FW_PATH}.git"
-# FW_ORG — the first path segment (e.g. "group" in group/repo.git). Used to
+# FW_ORG - the first path segment (e.g. "group" in group/repo.git). Used to
 # build a PREFIX-form insteadOf base (SF-067 test) that covers the
 # framework without being a full framework identity URL itself.
 FW_ORG="${FW_PATH%%/*}"
@@ -129,7 +129,7 @@ echo "=================================================================="
 echo ""
 
 # ---------------------------------------------------------------------------
-# Group 1 — Flow A produces a clean repo
+# Group 1 - Flow A produces a clean repo
 # ---------------------------------------------------------------------------
 echo "-- Group 1: Flow A (empty-dir init) --"
 FLOWA_DIR="$WORKDIR/flowA"
@@ -147,7 +147,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Group 2 — Flow B on a clean customer tree
+# Group 2 - Flow B on a clean customer tree
 # ---------------------------------------------------------------------------
 echo ""
 echo "-- Group 2: Flow B (clean customer tree) --"
@@ -171,7 +171,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Group 3 — D-7.3 severance-bypass detection (direct assertion, unremediated)
+# Group 3 - D-7.3 severance-bypass detection (direct assertion, unremediated)
 # ---------------------------------------------------------------------------
 echo ""
 echo "-- Group 3: D-7.3 severance-bypass detection (assertion catches, unremediated) --"
@@ -219,7 +219,7 @@ expect_exit "(iv) remote.pushDefault resolves to framework -> assertion aborts" 
 
 # (v) PREFIX-form insteadOf, DORMANT (no live remote uses the rewrite yet).
 # SF-067 negative control. url.<base>.insteadOf performs PREFIX substitution
-# — a base that is only a partial host/path fragment (never a full framework
+# - a base that is only a partial host/path fragment (never a full framework
 # identity URL by itself) still redirects any remote whose URL starts with
 # that base into the framework. This must be caught even with zero remotes
 # configured, because the rule survives severance until an operator later
@@ -234,7 +234,7 @@ expect_exit "(v) prefix-form insteadOf, dormant rule, no live remote -> assertio
 # relative remote URL verbatim; it must resolve against the ADOPTER repo
 # (repo_dir), not the export script's own process CWD. This fixture builds a
 # self-contained "framework mirror" (a throwaway repo carrying a copy of
-# export-framework.sh, used only as FRAMEWORK_ROOT for this probe — it is
+# export-framework.sh, used only as FRAMEWORK_ROOT for this probe - it is
 # NOT cloned or fetched, only its config/self-location logic runs) and an
 # adopter sibling directory with a remote pointing at it via a short
 # relative path, then verifies the assertion catches it even when invoked
@@ -270,7 +270,7 @@ mkdir -p "$BP_VII"
 expect_exit "(vii) pushurl redirected to framework, fetch url benign -> assertion aborts" 5 -- run_assertion_only "$BP_VII"
 
 # (viii) branch.<name>.pushRemote positive case (a real branch pushRemote
-# pointing at a framework-resolving remote name — Group 3's test (iv) only
+# pointing at a framework-resolving remote name - Group 3's test (iv) only
 # exercises remote.pushDefault; this exercises the per-branch override).
 BP_VIII="$WORKDIR/bypass_viii_branchpush"
 mkdir -p "$BP_VIII"
@@ -292,18 +292,18 @@ mkdir -p "$BP_X"
 ( cd "$BP_X" && git init -q && git remote add sneaky "$FW_USERINFO_URL" )
 expect_exit "(x) userinfo/token-in-URL form survives severance -> assertion aborts" 5 -- run_assertion_only "$BP_X"
 
-# (xi) SF-073 — bare-HOST-only insteadOf rewrite must NOT be flagged. A
+# (xi) SF-073 - bare-HOST-only insteadOf rewrite must NOT be flagged. A
 # customer hosting their own repos on the SAME git host as the framework
 # may legitimately configure a host-level convenience rewrite unrelated to
 # the framework (e.g. a short-URL alias for their own org). The effective
 # target of such a rewrite normalizes to the bare host with no org/group
-# segment — this must PASS severance (not be falsely flagged/severed).
+# segment - this must PASS severance (not be falsely flagged/severed).
 BP_XI="$WORKDIR/nobypass_xi_barehost_insteadof"
 mkdir -p "$BP_XI"
 ( cd "$BP_XI" && git init -q && git config url."https://${FW_HOST}/".insteadOf "custom-host:" )
 expect_exit "(xi) SF-073 bare-host-only insteadOf (customer same-host convenience rewrite) -> NOT flagged, passes" 0 -- run_assertion_only "$BP_XI"
 
-# (xii) SF-073 negative control / no-weakening proof — an insteadOf rewrite
+# (xii) SF-073 negative control / no-weakening proof - an insteadOf rewrite
 # that reaches at least the framework's HOST *and* ORG/GROUP segment
 # (host/org, no repo needed) must STILL abort. This proves SF-073 only
 # excluded the bare-host case, not genuine framework-org-covering rewrites.
@@ -313,7 +313,7 @@ mkdir -p "$BP_XII"
 expect_exit "(xii) SF-073 host+org-reaching insteadOf still survives severance -> assertion aborts" 5 -- run_assertion_only "$BP_XII"
 
 # ---------------------------------------------------------------------------
-# Group 4 — Allowlist correctness: customer remote preserved
+# Group 4 - Allowlist correctness: customer remote preserved
 # ---------------------------------------------------------------------------
 echo ""
 echo "-- Group 4: allowlist correctness (customer remote preserved, framework severed) --"
@@ -337,7 +337,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Group 5 — D-7.2 dirty-tree guard + bounded --force
+# Group 5 - D-7.2 dirty-tree guard + bounded --force
 # ---------------------------------------------------------------------------
 echo ""
 echo "-- Group 5: D-7.2 dirty-tree guard --"
@@ -369,7 +369,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Group 6 — --dry-run zero side effects
+# Group 6 - --dry-run zero side effects
 # ---------------------------------------------------------------------------
 echo ""
 echo "-- Group 6: --dry-run zero side effects --"
@@ -396,7 +396,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Group 7 — D-7.6 target-identity guard
+# Group 7 - D-7.6 target-identity guard
 # ---------------------------------------------------------------------------
 echo ""
 echo "-- Group 7: D-7.6 target-identity guard --"
@@ -404,7 +404,7 @@ expect_exit "target IS the framework repo -> aborts (D-7.6)" 3 -- bash "$EXPORT_
 expect_exit "target nested inside framework repo -> aborts (D-7.6)" 3 -- bash "$EXPORT_SCRIPT" --target "$FRAMEWORK_ROOT/mddocs" --slug ACME --yes
 
 # ---------------------------------------------------------------------------
-# Group 8 — D-7.1 flow-detection ambiguity
+# Group 8 - D-7.1 flow-detection ambiguity
 # ---------------------------------------------------------------------------
 echo ""
 echo "-- Group 8: D-7.1 flow-detection ambiguity --"
@@ -423,7 +423,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Group 9 — TC-051 Flow B reconciliation: manifest-scoped staging + report
+# Group 9 - TC-051 Flow B reconciliation: manifest-scoped staging + report
 #
 # Proves the blind `git add -A` this ticket replaced is actually gone:
 # pre-existing customer content in the target must NOT be staged into the
@@ -459,7 +459,7 @@ else
 fi
 
 # (9b) pre-existing customer file is NOT staged/committed into the
-# framework re-home commit — still untracked after the script runs.
+# framework re-home commit - still untracked after the script runs.
 customer_status="$(git -C "$(eff "$RECON_DIR")" status --porcelain -- "loose customer file.txt" node_modules/dep.js 2>/dev/null || true)"
 if printf '%s\n' "$customer_status" | grep -q '^?? "loose customer file.txt"$' \
    && printf '%s\n' "$customer_status" | grep -q '^?? node_modules/dep.js$'; then
@@ -479,7 +479,7 @@ else
 fi
 
 # (9d) framework content IS staged/committed (the commit is not empty of
-# framework files — pick a file guaranteed to be part of every export).
+# framework files - pick a file guaranteed to be part of every export).
 if printf '%s\n' "$commit_files" | grep -qx "framework-version.txt"; then
   pass_case "TC-051 (9d): framework files ARE staged into the re-home commit"
 else
@@ -500,7 +500,7 @@ fi
 # (9f) .gitignore is not auto-modified by the script: it should be
 # EXACTLY the framework's own .gitignore (the overlay legitimately writes
 # the framework's .gitignore over the target's, same as any other
-# manifest path — the assertion here is that no CUSTOMER-specific entry
+# manifest path - the assertion here is that no CUSTOMER-specific entry
 # was appended to it as a side effect of reconciliation).
 recon_gitignore_after="$(cat "$(eff "$RECON_DIR")/.gitignore" 2>/dev/null || true)"
 framework_gitignore="$(cat "$FRAMEWORK_ROOT/.gitignore" 2>/dev/null || true)"
@@ -559,7 +559,7 @@ else
   sed 's/^/  /' "$WORKDIR/reconcile_dryrun.out"
 fi
 
-# (9i) RF-012 — `git add -f` overrides a pre-existing customer .gitignore
+# (9i) RF-012 - `git add -f` overrides a pre-existing customer .gitignore
 # rule that WOULD match a framework-manifest path. Proves the exact
 # guarantee do_flow_rehome's `-f` rationale comment cites: the framework
 # manifest is the authority on what is framework content, not the
@@ -574,7 +574,7 @@ mkdir -p "$(eff "$GITIGNORE_OVERRIDE_DIR")"
   && git add -f .gitignore tracked_seed.txt && git commit -q -m "customer initial commit with broad *.txt gitignore rule" )
 
 # Negative control: without -f, git itself refuses to stage a path this
-# .gitignore rule matches — proves the rule really would have blocked
+# .gitignore rule matches - proves the rule really would have blocked
 # framework-version.txt (a .txt file) absent the -f override.
 gitignore_control_rc=0
 ( cd "$(eff "$GITIGNORE_OVERRIDE_DIR")" && touch would-be-blocked.txt \
@@ -598,11 +598,11 @@ else
   sed 's/^/  /' "$WORKDIR/gitignore_override.out"
 fi
 
-# (9j) RF-013 — a framework-manifest path CONTAINING A SPACE stages
+# (9j) RF-013 - a framework-manifest path CONTAINING A SPACE stages
 # correctly through the NUL-delimited `git add --pathspec-from-file
 # --pathspec-file-nul` mechanism write_framework_manifest's header comment
 # claims. Exercised directly against write_framework_manifest and the
-# actual staging command (not the real framework tree — injecting a
+# actual staging command (not the real framework tree - injecting a
 # spaced file into $FRAMEWORK_ROOT itself is out of scope for a test
 # fixture and would pollute the framework checkout under test; a
 # synthetic scratch tree exercises the identical code path
@@ -637,28 +637,28 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Group 10 — SF-125 confidentiality assertion: exported target must be free
+# Group 10 - SF-125 confidentiality assertion: exported target must be free
 # of framework operational-state markers (ticket IDs, finding IDs, reviewer-
 # run IDs, framework identity strings). This is the assertion that WOULD
 # have caught SF-123 (bench-registry.yaml leaking framework AC-*/SF-*/RF-*
 # ticket and finding IDs into the adopter tree) had it existed before that
 # finding was filed. SF-127 extended the scope to mddocs/backlog.md (the
-# human-readable mirror of tasks.yaml — same leak class).
+# human-readable mirror of tasks.yaml - same leak class).
 #
 # Deliberately SCOPED, not a blind whole-tree grep: mddocs/adr and other
 # shipped reference docs LEGITIMATELY mention ADR numbers, historical
-# rationale, and even example ticket IDs in prose (D-4/D-6 — ADRs are
+# rationale, and even example ticket IDs in prose (D-4/D-6 - ADRs are
 # reference material that ships with every export). A whole-tree grep for
 # `TC-0`/`SF-0`/`RF-0` would false-positive on those files immediately.
 # Instead this scopes to exactly the files that MUST be adopter-clean
 # per FRAMEWORK_EXCLUDE_PATTERNS/SEED_RELATIVE_PATHS: tasks.yaml,
-# bench-registry.yaml, .core/agents/_context.md, mddocs/backlog.md — plus
+# bench-registry.yaml, .core/agents/_context.md, mddocs/backlog.md - plus
 # a direct existence check that .bench/,
 # relay-pending.md, and .core/work/ never reached the adopter working tree at
 # all (SF-124).
 #
-# Reuses FLOWA_DIR (Group 1, Flow A) and CUST_DIR (Group 2, Flow B) — both
-# already-completed successful exports still on disk in $WORKDIR — rather
+# Reuses FLOWA_DIR (Group 1, Flow A) and CUST_DIR (Group 2, Flow B) - both
+# already-completed successful exports still on disk in $WORKDIR - rather
 # than re-running the script, since this group only needs to inspect their
 # resulting trees.
 # ---------------------------------------------------------------------------
@@ -666,11 +666,11 @@ echo ""
 echo "-- Group 10: SF-125 confidentiality assertion (adopter-clean scope) --"
 
 # ---------------------------------------------------------------------------
-# SF-128 — Source FRAMEWORK_EXCLUDE_PATTERNS and SEED_RELATIVE_PATHS
+# SF-128 - Source FRAMEWORK_EXCLUDE_PATTERNS and SEED_RELATIVE_PATHS
 # directly from export-framework.sh rather than re-hardcoding them here.
 #
 # Prior to this hardening, Group 10's confidentiality assertion carried its
-# OWN hardcoded `scoped_files` list — a second, hand-maintained mirror of
+# OWN hardcoded `scoped_files` list - a second, hand-maintained mirror of
 # the authoritative arrays already living in export-framework.sh. That is
 # exactly the failure mode that let SF-123 and SF-127 originate: a file was
 # added to the real exclude/seed machinery, but the separate test-side list
@@ -682,7 +682,7 @@ echo "-- Group 10: SF-125 confidentiality assertion (adopter-clean scope) --"
 # EXPORT_FRAMEWORK_SOURCED=1, the same idiom run_assertion_only above already
 # uses) in an isolated subshell and prints the named array's elements
 # NUL-delimited. A throwaway, nonexistent --target satisfies the sourcing
-# script's arg-parse path only — EXPORT_FRAMEWORK_SOURCED=1 skips the
+# script's arg-parse path only - EXPORT_FRAMEWORK_SOURCED=1 skips the
 # guarded main block entirely, so this placeholder path is never touched,
 # read, or written.
 # ---------------------------------------------------------------------------
@@ -705,22 +705,22 @@ while IFS= read -r -d '' _p; do
 done < <(read_export_array FRAMEWORK_EXCLUDE_PATTERNS)
 unset _p
 
-# SF-128 sanity guard — if the sourcing plumbing above silently degrades
+# SF-128 sanity guard - if the sourcing plumbing above silently degrades
 # (a future refactor of export-framework.sh renames these arrays, changes
 # how they're declared, or otherwise breaks sourcing), Group 10 would
-# quietly become vacuous — looping over nothing and passing trivially.
+# quietly become vacuous - looping over nothing and passing trivially.
 # Fail the whole harness loudly instead of passing silently.
 if [ "${#SOURCED_SEED_RELATIVE_PATHS[@]}" -eq 0 ] || [ "${#SOURCED_FRAMEWORK_EXCLUDE_PATTERNS[@]}" -eq 0 ]; then
-  echo "FATAL: SF-128 sourced-array plumbing returned an empty array from export-framework.sh — Group 10 would be vacuous. Aborting harness." >&2
+  echo "FATAL: SF-128 sourced-array plumbing returned an empty array from export-framework.sh - Group 10 would be vacuous. Aborting harness." >&2
   exit 1
 fi
 
-# SOURCED_EXCLUDE_ONLY_PATTERNS — set difference: entries present in
+# SOURCED_EXCLUDE_ONLY_PATTERNS - set difference: entries present in
 # FRAMEWORK_EXCLUDE_PATTERNS but NOT also (exactly, or as a directory
 # ancestor of) an entry in SEED_RELATIVE_PATHS. These are excluded from the
 # adopter export with NO adopter-generic replacement seeded in their
-# place, so — unlike the seeded set, which is present but must be
-# adopter-clean CONTENT — an exclude-only entry must be completely ABSENT
+# place, so - unlike the seeded set, which is present but must be
+# adopter-clean CONTENT - an exclude-only entry must be completely ABSENT
 # from the exported tree.
 #
 # Directory-ancestor match (not exact-only) is kept as a defensive
@@ -730,15 +730,15 @@ fi
 # comparison would wrongly classify that directory itself as exclude-only,
 # which would then make the absence check below FALSE-FAIL on every real
 # export (the directory legitimately exists post-seed, holding the seeded
-# files). There is no such case today — every seeded path is an exact file
-# match and every directory exclude entry is exclude-only — but the match
+# files). There is no such case today - every seeded path is an exact file
+# match and every directory exclude entry is exclude-only - but the match
 # stays so a future partially-seeded directory cannot trip the harness.
 #
 # ".git" is deliberately excluded from this derived set even though it IS
 # in FRAMEWORK_EXCLUDE_PATTERNS (the framework's own .git must never be
 # tar'd into the adopter tree): export-framework.sh recreates ".git" fresh
 # via `git init` in both flows, so its post-export PRESENCE is expected and
-# correct — it is verified by the D-7.5 history/refs/object scrub
+# correct - it is verified by the D-7.5 history/refs/object scrub
 # (assert_no_framework_history), not by an absence check here.
 SOURCED_EXCLUDE_ONLY_PATTERNS=()
 for _p in "${SOURCED_FRAMEWORK_EXCLUDE_PATTERNS[@]}"; do
@@ -762,7 +762,7 @@ echo "    exclude-only, no-seed, must-be-absent (${#SOURCED_EXCLUDE_ONLY_PATTERN
 # Greps every SOURCED_SEED_RELATIVE_PATHS file for framework-identity
 # markers, and checks every SOURCED_EXCLUDE_ONLY_PATTERNS entry is entirely
 # absent. Both lists are sourced from export-framework.sh itself (above),
-# not re-hardcoded here — see the SF-128 block above for why. Prints every
+# not re-hardcoded here - see the SF-128 block above for why. Prints every
 # offending marker/file or presence violation it finds; returns 0 only if
 # none are found.
 assert_adopter_confidentiality() {
@@ -781,11 +781,11 @@ assert_adopter_confidentiality() {
     'baseline-steward'
   )
 
-  # SF-128 — iterate SOURCED_SEED_RELATIVE_PATHS (sourced directly from
+  # SF-128 - iterate SOURCED_SEED_RELATIVE_PATHS (sourced directly from
   # export-framework.sh's SEED_RELATIVE_PATHS above), not a second
   # hardcoded list. Every seeded path is, by construction, exactly the set
   # of files that MUST be adopter-clean (excluded from the raw copy,
-  # replaced with adopter-generic seed content) — a future addition to
+  # replaced with adopter-generic seed content) - a future addition to
   # SEED_RELATIVE_PATHS in export-framework.sh is picked up here with zero
   # additional edits to this test file.
   local f m hit
@@ -800,7 +800,7 @@ assert_adopter_confidentiality() {
   done
 
   # bench-registry.yaml specific: no torn_down history ENTRIES (an actual
-  # `status: torn_down` field value) should survive into an adopter seed —
+  # `status: torn_down` field value) should survive into an adopter seed -
   # a torn_down entry is exactly where the real file's commit-SHA/finding-ID
   # teardown narrative lives (SF-123). Matches the field value specifically
   # (not a bare substring match), since the seed template's own explanatory
@@ -810,9 +810,9 @@ assert_adopter_confidentiality() {
     offenders+=("bench-registry.yaml contains a 'status: torn_down' entry (framework bench history survived)")
   fi
 
-  # SF-124/SF-128 — every FRAMEWORK_EXCLUDE_PATTERNS entry with NO seeded
+  # SF-124/SF-128 - every FRAMEWORK_EXCLUDE_PATTERNS entry with NO seeded
   # replacement (SOURCED_EXCLUDE_ONLY_PATTERNS, derived above) must be
-  # completely ABSENT from the exported tree — not just marker-free. This
+  # completely ABSENT from the exported tree - not just marker-free. This
   # generalizes the original SF-124 .bench/relay-pending.md existence
   # checks: those two are now covered BY DERIVATION (they are exclude-only
   # entries with no seed), and any FUTURE exclude-only addition to
@@ -821,7 +821,7 @@ assert_adopter_confidentiality() {
   local ep
   for ep in "${SOURCED_EXCLUDE_ONLY_PATTERNS[@]}"; do
     if [ -e "$target/$ep" ]; then
-      offenders+=("$ep present in adopter tree (exclude-only pattern with no seed — must be absent)")
+      offenders+=("$ep present in adopter tree (exclude-only pattern with no seed - must be absent)")
     fi
   done
 
@@ -850,10 +850,10 @@ else
   fail_case "SF-125 (10b): Flow B export contains no framework-identity/ticket/finding markers in scoped files"
 fi
 
-# (10c) Negative control — proves (10a)/(10b) are not vacuously passing
+# (10c) Negative control - proves (10a)/(10b) are not vacuously passing
 # because the check itself is broken. Run the SAME assertion directly
 # against the framework's OWN bench-registry.yaml (never exported to an
-# adopter — this is the real, unseeded file this ticket is protecting
+# adopter - this is the real, unseeded file this ticket is protecting
 # against), which is known to carry AC-*/SF-*/RF-* markers and torn_down
 # entries. The assertion MUST fail here, proving it actually detects the
 # leak class SF-123 described instead of trivially passing on anything.

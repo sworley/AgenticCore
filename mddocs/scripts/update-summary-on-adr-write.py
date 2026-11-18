@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-PostToolUse hook — auto-insert new ADR rows into the active ADR index.
+PostToolUse hook - auto-insert new ADR rows into the active ADR index.
 Fires on Write tool calls targeting mddocs/management/governance/decisions/adr-*.md.
 Under the forward-only model (ADR-0029 D1; ADR-0030), new ADRs live there and are
 recorded in mddocs/management/governance/decisions/index.md (the active, primary-true
@@ -19,7 +19,7 @@ import pathlib
 data = json.load(sys.stdin)
 fp = data.get("tool_input", {}).get("file_path", "")
 
-# Resolve repository root dynamically — no hardcoded paths
+# Resolve repository root dynamically - no hardcoded paths
 try:
     project_root = subprocess.check_output(
         ["git", "rev-parse", "--show-toplevel"],
@@ -61,7 +61,7 @@ row = "| [ADR-%s](%s) | %s | %s | %s |" % (adr_id, name, title, status, date)
 with open(active_index) as f:
     content = f.read()
 
-# Already present — nothing to do
+# Already present - nothing to do
 if name in content:
     sys.exit(0)
 
@@ -71,14 +71,14 @@ for i, line in enumerate(lines):
     if line.lstrip().startswith("| [ADR-"):
         last_data_idx = i
 if last_data_idx == -1:
-    # No data rows yet — insert right after the table separator row
+    # No data rows yet - insert right after the table separator row
     for i, line in enumerate(lines):
         if re.match(r"^\s*\|[-: ]+\|", line):
             last_data_idx = i
             break
 
 if last_data_idx == -1:
-    print("update-summary-on-adr-write: ERROR — could not find ADR table in active index", file=sys.stderr)
+    print("update-summary-on-adr-write: ERROR - could not find ADR table in active index", file=sys.stderr)
     sys.exit(0)
 
 lines.insert(last_data_idx + 1, row + "\n")

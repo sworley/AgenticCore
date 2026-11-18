@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-egress-audit-log.py — PostToolUse hook for Bash, WebFetch, WebSearch.
+egress-audit-log.py - PostToolUse hook for Bash, WebFetch, WebSearch.
 
 Appends a JSON line to ~/.agentic/audit/session-<date>.jsonl for each
 egress-relevant tool call. Never interrupts agent work on failure.

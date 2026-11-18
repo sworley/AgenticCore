@@ -67,5 +67,5 @@ Every significant action produces a document:
 - Session memory → Session state file in `.core/work/`
 - Task tracking → Entry in `tasks.yaml`
 
-This produces a **RAG-friendly corpus** — every decision and procedure is searchable
+This produces a **RAG-friendly corpus** - every decision and procedure is searchable
 and discoverable by agents and humans alike.

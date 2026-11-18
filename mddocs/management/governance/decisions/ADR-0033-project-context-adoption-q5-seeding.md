@@ -2,15 +2,15 @@
 
 **Date:** 2026-11-17
 **Status:** accepted
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** -
+**Superseded by:** -
 
 ## Context
 
 ADR-0029 adopted the two-plane `mddocs/` taxonomy and set a **future action (Q5)**:
 the first `projects/<context>/` directory is created when the first adopted
-customer context is live. ADR-0031 then codified the context contract — what a
-context is, its `CTX-<SLUG>` identity, and its required structure — and repeated
+customer context is live. ADR-0031 then codified the context contract - what a
+context is, its `CTX-<SLUG>` identity, and its required structure - and repeated
 the Q5 rule that no context directory is seeded speculatively.
 
 Neither ADR defined the **operation** for bringing an existing project's
@@ -30,19 +30,19 @@ first adoption attempt:
 ## Decision
 
 1. **Project-context adoption (Q5 seeding) is a distinct, HIL-directed
-   management-plane documentation operation — not Pattern A feature task work.**
+   management-plane documentation operation - not Pattern A feature task work.**
    It does **not** require a `.02+` worker bench, and the HIL is **not** asked to
    open a session in a bench to review a pushed import. Review is a
    `docs-reviewer` verdict plus HIL LGTM on the branch/diff.
 2. **Classify the plane boundary first, as an explicit HIL decision.** Content is
-   either (a) customer work product — stays in the customer repo under `.00`,
+   either (a) customer work product - stays in the customer repo under `.00`,
    gitignored by `.01` (ADR-0006; ADR-0028); (b) harness-owned documentation
-   *about* the context — moves to `projects/<context>/`; or (c) harness internals —
+   *about* the context - moves to `projects/<context>/`; or (c) harness internals -
    stays in `management/`. No content moves before this is decided.
 3. **`.00` content movement is per-action HIL directed (Invariant 7).** An agent
    asked to move/copy `.00` content into the harness plane states the control, the
    concrete next step (HIL per-action direction to seed `projects/<context>/`), and
-   waits — it does **not** refuse outright or improvise. The runbook is the path.
+   waits - it does **not** refuse outright or improvise. The runbook is the path.
 4. **Compose, don't duplicate.** When adopting the framework into an existing
    project repo, run the framework adoption first (ADR-0015; `export-framework.sh`,
    `--flow empty|rehome`), then seed `projects/<context>/`. The two are separate
@@ -63,7 +63,7 @@ first adoption attempt:
 **Negative / Trade-offs:**
 - Adds one more procedural ADR; the boundary classification still rests on HIL
   judgment per context (a deliberate, accountable decision, not fully automated).
-- No script automates the seeding yet — it is a manual/HIL-directed operation
+- No script automates the seeding yet - it is a manual/HIL-directed operation
   (a script may be scoped as follow-on once the contract has soak time).
 
 **Neutral:**

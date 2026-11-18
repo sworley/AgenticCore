@@ -8,7 +8,7 @@
 ## Problem This Solves
 
 Agent definitions exist in two tool-specific directories. If one is updated
-without the other, the two tools diverge — the same agent behaves differently
+without the other, the two tools diverge - the same agent behaves differently
 depending on which tool is running. This workflow eliminates that risk by
 maintaining a single canonical source for agent body content and a single
 metadata file for tool-specific frontmatter.
@@ -21,7 +21,7 @@ metadata file for tool-specific frontmatter.
 <program>.01/
 ├── .agents/                        ← canonical source (single source of truth)
 │   ├── _meta.yaml                  ← per-agent frontmatter config for both tools
-│   ├── sync-agents.sh              ← sync script — run after any agent change
+│   ├── sync-agents.sh              ← sync script - run after any agent change
 │   ├── ai-engineer.md              ← body content only, no tool-specific frontmatter
 │   ├── baseline-steward.md
 │   ├── docs-engineer.md
@@ -33,11 +33,11 @@ metadata file for tool-specific frontmatter.
 │   ├── security-engineer.md
 │   └── security-reviewer.md
 │
-├── .agentic/agents/                 ← generated — AI toolchain format
-│   └── <name>.md                   ← AUTO-GENERATED — do not hand-edit
+├── .agentic/agents/                 ← generated - AI toolchain format
+│   └── <name>.md                   ← AUTO-GENERATED - do not hand-edit
 │
-└── .opencode/agents/               ← generated — opencode format
-    └── <name>.md                   ← AUTO-GENERATED — do not hand-edit
+└── .opencode/agents/               ← generated - opencode format
+    └── <name>.md                   ← AUTO-GENERATED - do not hand-edit
 ```
 
 **Rule:** `.agentic/agents/` and `.opencode/agents/` are generated outputs.
@@ -51,19 +51,19 @@ Each agent has an entry in `.agents/_meta.yaml`:
 
 ```yaml
 <agent-name>:
-  description: "<one sentence — what the agent does and when to invoke it>"
+  description: "<one sentence - what the agent does and when to invoke it>"
   opencode:
     name: <agent-name>
-    # tools: [Read, Write, Edit, ...]  — restrict tool access if needed
+    # tools: [Read, Write, Edit, ...]  - restrict tool access if needed
   opencode:
     mode: primary | subagent
-    # permission:                      — restrict tool access if needed
+    # permission:                      - restrict tool access if needed
     #   edit: deny
     #   bash: deny
 ```
 
 **`description`** is shared between both tools. It is the single most important
-field — it controls when the agent is auto-selected. Front-load concrete trigger
+field - it controls when the agent is auto-selected. Front-load concrete trigger
 keywords. Write in third person. Use "Use ONLY when..." for narrow-scope agents.
 
 ---
@@ -73,10 +73,10 @@ keywords. Write in third person. Use "Use ONLY when..." for narrow-scope agents.
 | Agent | Role |
 |---|---|
 | `orchestrator` | Routes complex multi-step tasks across agents |
-| `baseline-steward` | Pattern A framework flavor — framework improvement lifecycle, versioning, scrubbing, release lifecycle |
-| `lead-engineer` | Pattern A project flavor — task queue, bench lifecycle, agent coordination |
+| `baseline-steward` | Pattern A framework flavor - framework improvement lifecycle, versioning, scrubbing, release lifecycle |
+| `lead-engineer` | Pattern A project flavor - task queue, bench lifecycle, agent coordination |
 | `docs-engineer` | Runbooks, ADRs, and mddocs/ maintenance |
-| `docs-reviewer` | Documentation quality gate — spell check, link check, style review before branch_ready |
+| `docs-reviewer` | Documentation quality gate - spell check, link check, style review before branch_ready |
 | `ops-engineer` | Operational scripts, automation, and runbooks |
 | `release-engineer` | CI/CD pipeline and tactical release execution (adopter project scope) |
 | `security-engineer` | Security controls and hook logic |
@@ -92,21 +92,21 @@ keywords. Write in third person. Use "Use ONLY when..." for narrow-scope agents.
    The ticket is the authorization to create the agent. No ticket = no agent.
 
 2. **Write the body file.**
-   Create `.agents/<name>.md` — body content only, no frontmatter.
+   Create `.agents/<name>.md` - body content only, no frontmatter.
 
    Required sections:
    - Role statement: one paragraph defining what this agent is and owns
-   - `## Shared Practices` — project-wide practices this agent follows
-   - `## Tool Usage` — which tools and how
-   - `## Domain Scope` — what this agent owns (be specific)
-   - `## Guardrails` — role boundaries, human gate, security pre-step, domain-specific rules
-   - `## Response Style` — how this agent formats its output
+   - `## Shared Practices` - project-wide practices this agent follows
+   - `## Tool Usage` - which tools and how
+   - `## Domain Scope` - what this agent owns (be specific)
+   - `## Guardrails` - role boundaries, human gate, security pre-step, domain-specific rules
+   - `## Response Style` - how this agent formats its output
 
 3. **Add the entry to `_meta.yaml`.**
    Fill in `description`, `opencode`, and `opencode` fields.
    For `opencode.mode`:
-   - `primary` — for the lead-engineer and baseline-steward (entry point agents)
-   - `subagent` — for all specialist agents (invoked by lead-engineer)
+   - `primary` - for the lead-engineer and baseline-steward (entry point agents)
+   - `subagent` - for all specialist agents (invoked by lead-engineer)
 
 4. **Run the sync script.**
    ```zsh
@@ -127,12 +127,12 @@ keywords. Write in third person. Use "Use ONLY when..." for narrow-scope agents.
    to regenerate lead-engineer in both tool directories.
 
 7. **Commit all changes together** on the task branch:
-   - `.agents/<name>.md` — new body file
-   - `.agents/_meta.yaml` — updated metadata
-   - `.agentic/agents/<name>.md` — generated output
-   - `.opencode/agents/<name>.md` — generated output
-   - `.agentic/agents/lead-engineer.md` — roster update (generated)
-   - `.opencode/agents/lead-engineer.md` — roster update (generated)
+   - `.agents/<name>.md` - new body file
+   - `.agents/_meta.yaml` - updated metadata
+   - `.agentic/agents/<name>.md` - generated output
+   - `.opencode/agents/<name>.md` - generated output
+   - `.agentic/agents/lead-engineer.md` - roster update (generated)
+   - `.opencode/agents/lead-engineer.md` - roster update (generated)
 
    ```zsh
    git add .agents/ .agentic/agents/ .opencode/agents/
@@ -158,7 +158,7 @@ keywords. Write in third person. Use "Use ONLY when..." for narrow-scope agents.
 4. **Commit the source and both generated outputs together.**
    ```zsh
    git add .agents/ .agentic/agents/ .opencode/agents/
-   git commit -m "chore(AC-NNNN): update <name> agent — <what changed>"
+   git commit -m "chore(AC-NNNN): update <name> agent - <what changed>"
    ```
 
 ---
@@ -166,7 +166,7 @@ keywords. Write in third person. Use "Use ONLY when..." for narrow-scope agents.
 ## Workflow: Removing an Agent
 
 1. **Delete the body file and `_meta.yaml` entry.**
-2. **Run the sync script** — it will not write generated files for agents
+2. **Run the sync script** - it will not write generated files for agents
    no longer present in `_meta.yaml`. Delete the old generated files manually.
 3. **Remove the agent from the lead-engineer roster** in `.agents/lead-engineer.md`.
 4. **Run sync again** to regenerate lead-engineer.
@@ -200,13 +200,13 @@ after reviewing the diff.
 Both generated files open with this comment to signal their origin:
 
 ```
-<!-- AUTO-GENERATED by .agents/sync-agents.sh — do not hand-edit -->
+<!-- AUTO-GENERATED by .agents/sync-agents.sh - do not hand-edit -->
 <!-- Source: .agents/<name>.md + .agents/_meta.yaml -->
 <!-- Run .agents/sync-agents.sh to regenerate -->
 ```
 
 Any agent session that reads a generated file and sees this comment must not
-edit the file directly — it must edit the source and re-run the sync script.
+edit the file directly - it must edit the source and re-run the sync script.
 
 ---
 
@@ -218,14 +218,14 @@ If a third tool is adopted alongside AI toolchain and opencode:
 2. Extend `sync-agents.sh` to write to the new tool's agent directory.
 3. Document the new tool's frontmatter schema in this file under a new section.
 
-The body content in `.agents/` does not change — only the metadata and the
+The body content in `.agents/` does not change - only the metadata and the
 sync script need updating.
 
 ---
 
 ## Related
 
-- `.agents/_meta.yaml` — per-agent frontmatter configuration
-- `.agents/sync-agents.sh` — the sync script
-- [Configure Agent Namespace](configure-agents.md) — full agent namespace setup and MCP configuration
-- [Runbook: Sync Agent Definitions](sync-agent-definitions.md) — operational sync procedure
+- `.agents/_meta.yaml` - per-agent frontmatter configuration
+- `.agents/sync-agents.sh` - the sync script
+- [Configure Agent Namespace](configure-agents.md) - full agent namespace setup and MCP configuration
+- [Runbook: Sync Agent Definitions](sync-agent-definitions.md) - operational sync procedure

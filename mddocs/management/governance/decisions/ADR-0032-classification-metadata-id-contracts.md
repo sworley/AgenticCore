@@ -2,38 +2,38 @@
 
 **Date:** 2026-11-17
 **Status:** accepted
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** -
+**Superseded by:** -
 
 ## Context
 
 ADR-0029 D4 adopts an annotation-first metadata contract for `mddocs/`
 artefacts. The annotation pass (AC-0013) and the metadata standard
 (`mddocs/scripts/metadata-standard.md`) introduced a family of classification
-identifiers for framework artefacts — `SH-` (scripts), `SDX-` (indexes),
+identifiers for framework artefacts - `SH-` (scripts), `SDX-` (indexes),
 `REF-` (references), `STD-` (standards), and `SEED-` (seed templates). These
 sit alongside the governance identifiers `ADR-` (decisions) and `AC-`
 (tickets) and the review-ledger identifiers `SF-`/`RF-` (findings) and
 `SR-`/`RR-` (reviewer runs, ADR-0019).
 
 This ADR records the decision for what these classification identifiers are,
-how they relate to governance identities, and the rules governing them — so the
+how they relate to governance identities, and the rules governing them - so the
 framework treats them as a **contract**, not ad hoc labels, and keeps the
 namespace surface as small as best practice allows.
 
 ## Decision
 
 1. **Three distinct ID classes.**
-   - **(a) Governance IDs** — `ADR-NNNN` (decisions), `AC-NNNN` (tickets), and
+   - **(a) Governance IDs** - `ADR-NNNN` (decisions), `AC-NNNN` (tickets), and
      the ADR-0019 ledger IDs (`SF-`/`RF-` findings, `SR-`/`RR-` reviewer runs).
      These are authoritative identities.
-   - **(b) Classification IDs** — `SH-NNNN`, `SDX-NNN`, `REF-NNN`, `STD-NNN`,
+   - **(b) Classification IDs** - `SH-NNNN`, `SDX-NNN`, `REF-NNN`, `STD-NNN`,
      `SEED-<NAME>` for `mddocs/` artefacts. These are metadata values that
      classify framework content.
-   - **(c) Taxonomy-local IDs** — `CTX-<SLUG>` for adopted contexts (ADR-0031).
+   - **(c) Taxonomy-local IDs** - `CTX-<SLUG>` for adopted contexts (ADR-0031).
    The classes are **not** interchangeable.
 2. **Classification IDs are contracts.** Each classification ID:
-   - is **stable and immutable once published** (principle P4) — never renumber
+   - is **stable and immutable once published** (principle P4) - never renumber
      or reuse;
    - follows its documented kind pattern (§1 of `metadata-standard.md`) and is
      registered in the standard's registry;
@@ -57,7 +57,7 @@ namespace surface as small as best practice allows.
 
 **Negative / Trade-offs:**
 - The contract adds ceremony (registry + per-artefact frontmatter) for what is
-  largely documentation classification — the cost of machine-readable metadata.
+  largely documentation classification - the cost of machine-readable metadata.
 
 **Neutral:**
 - No change to the existing `ADR`/`AC`/ledger ID schemes.

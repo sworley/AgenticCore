@@ -2,9 +2,9 @@
 
 **Date:** 2026-11-16
 **Status:** accepted
-**Supersedes:** — (resolves the "future migration ADR" placeholder)
-**Superseded by:** —
-**Governed by:** ADR-0029 (D1/D2) — this is the focused record of that resolution
+**Supersedes:** - (resolves the "future migration ADR" placeholder)
+**Superseded by:** -
+**Governed by:** ADR-0029 (D1/D2) - this is the focused record of that resolution
 
 ## Context
 
@@ -35,7 +35,7 @@ historical ADRs will be physically relocated.
    independent of physical location.
 5. **Future relocation is a new decision.** If a future relocation of the
    historical ADRs is ever warranted, it will be made via a new ADR through the
-   HIL process — not assumed or pre-committed here.
+   HIL process - not assumed or pre-committed here.
 
 ## Consequences
 

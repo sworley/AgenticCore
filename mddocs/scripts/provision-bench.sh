@@ -1,5 +1,5 @@
 #!/bin/sh
-# provision-bench.sh — Provision an ephemeral worker bench (git worktree)
+# provision-bench.sh - Provision an ephemeral worker bench (git worktree)
 #
 # Usage:
 #   ./scripts/provision-bench.sh --bench `<N>` --ticket `<ID>` --type `<type>` --slug `<slug>` [--flavor `<flavor>`] [--pattern `<pattern>`]
@@ -18,7 +18,7 @@
 #   ./scripts/provision-bench.sh --bench 02 --ticket TC-004 --type feat --slug add-ci-pipeline --flavor framework
 #   ./scripts/provision-bench.sh --bench 02 --ticket TC-004 --type feat --slug add-ci-pipeline --pattern w
 #   ./scripts/provision-bench.sh --pattern h
-#   # Pattern H provisions the .00 HIL worktree on branch workspace/owner — no --bench/--ticket/--type/--slug needed.
+#   # Pattern H provisions the .00 HIL worktree on branch workspace/owner - no --bench/--ticket/--type/--slug needed.
 #
 # Exit codes:
 #   0  Success
@@ -32,17 +32,17 @@ set -eu
 # Strips the template's single-line header comment and substitutes the
 # AC-NNNN / feat/AC-NNNN-short-slug / "Brief description of the task"
 # placeholders with the real TICKET / BRANCH / TASK values (read from the
-# caller's environment/globals — not passed positionally, matching this
+# caller's environment/globals - not passed positionally, matching this
 # script's existing convention of reading BENCH/TICKET/BRANCH/etc. as
 # globals rather than threading them through every function's arg list).
 # Shared by the Pattern W and Pattern A blocks below (Pattern H's template
-# has no placeholders and does not use this function — see its own inline
+# has no placeholders and does not use this function - see its own inline
 # comment where it strips its header with a plain `sed "1d"`).
 #
 # Defined ahead of the argument-parsing/main guard below (TC-081) so a test
 # harness can `. provision-bench.sh` with PROVISION_BENCH_SOURCED=1 set and
 # exercise this function directly, in isolation, with arbitrary
-# TICKET/BRANCH/TASK values — without triggering worktree creation or any
+# TICKET/BRANCH/TASK values - without triggering worktree creation or any
 # other main-flow side effect. See
 # mddocs/scripts/test-provision-bench-substitution.sh.
 #
@@ -51,12 +51,12 @@ set -eu
 # awk's gsub().
 #   - sed interpolates $TASK/$BRANCH/$TICKET directly into a sed PROGRAM (as
 #     this script previously did). Any sed/regex-special character in those
-#     values — most commonly `/` in a task description, but also `&`, `\`,
-#     or the chosen delimiter — corrupts or breaks the sed command entirely
+#     values - most commonly `/` in a task description, but also `&`, `\`,
+#     or the chosen delimiter - corrupts or breaks the sed command entirely
 #     (e.g. "sed: bad flag in substitute command"), and the AGENT.md
 #     overlay is written empty/partial.
 #   - awk's gsub() has the same class of trap one level down: its SEARCH
-#     argument is an ERE, and — the part that matters here — its REPLACEMENT
+#     argument is an ERE, and - the part that matters here - its REPLACEMENT
 #     argument treats `&` as "insert the matched text" and backslash
 #     specially. That is exactly the untrusted-injected-value problem this
 #     function exists to fix, just moved from sed to awk instead of solved.
@@ -102,7 +102,7 @@ render_bench_agent_md() {
 }
 
 # ---------------------------------------------------------------------------
-# Main — guarded so this script can be `.`-sourced by a test harness to
+# Main - guarded so this script can be `.`-sourced by a test harness to
 # exercise render_bench_agent_md (above) in isolation, without triggering
 # argument validation, worktree creation, or any other side effect. See
 # mddocs/scripts/test-provision-bench-substitution.sh and the analogous
@@ -138,7 +138,7 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-# Pattern H (.00 HIL worktree) has a fixed bench number and branch — --bench,
+# Pattern H (.00 HIL worktree) has a fixed bench number and branch - --bench,
 # --ticket, --type, and --slug are irrelevant and not required.
 if [ "$PATTERN" != "h" ]; then
   if [ -z "$BENCH" ] || [ -z "$TICKET" ] || [ -z "$TYPE" ] || [ -z "$SLUG" ]; then
@@ -186,7 +186,7 @@ PROJECT_NAME="$(basename "$REPO_ROOT" | sed 's/\.[0-9]*$//')"
 PARENT_DIR="$(dirname "$REPO_ROOT")"
 
 if [ "$PATTERN" = "h" ]; then
-  # Pattern H is the .00 HIL worktree — fixed bench number and branch name.
+  # Pattern H is the .00 HIL worktree - fixed bench number and branch name.
   BENCH="00"
   BRANCH="workspace/owner"
   TICKET="${TICKET:-N/A}"
@@ -225,10 +225,10 @@ if [ "$PATTERN" = "h" ] && ! command -v jq >/dev/null 2>&1; then
 fi
 
 # Create the worktree on a new branch cut from the current branch (the .01
-# integration branch — its name is the adopter's choice; this script does not
+# integration branch - its name is the adopter's choice; this script does not
 # assume 'main' or 'dev').
 # Pattern H targets workspace/owner, which may already exist as a branch in a
-# real deployment (e.g. after a prior .00 was torn down and reprovisioned) —
+# real deployment (e.g. after a prior .00 was torn down and reprovisioned) -
 # reuse it if present rather than failing on -b.
 if [ "$PATTERN" = "h" ] && git show-ref --verify --quiet refs/heads/workspace/owner; then
   git worktree add "$BENCH_DIR" workspace/owner
@@ -238,7 +238,7 @@ fi
 
 # --- Disk-local bench record (.bench/assignment.md) ---
 # Gitignored, regenerable, worktree-local convenience file read by the
-# attendant/tools inside this live worktree. Never staged or committed —
+# attendant/tools inside this live worktree. Never staged or committed -
 # bench-registry.yaml is the canonical, durable, queryable per-bench
 # provenance record (TC-056, ADR-0012 amendment).
 mkdir -p "$BENCH_DIR/.bench"
@@ -255,7 +255,7 @@ EOF
 if [ "$PATTERN" = "h" ]; then
   # Pattern H: overlay the hil-assistant AGENT.md and flip default_agent in
   # opencode.json to hil-assistant. Both files are tracked-but-overlaid via
-  # skip-worktree — never committed in the .00 worktree. (jq availability was
+  # skip-worktree - never committed in the .00 worktree. (jq availability was
   # verified before worktree creation.)
 
   PATTERN_TEMPLATE="$REPO_ROOT/.agents/bootstrap/bench-AGENT.md.pattern-h"
@@ -275,10 +275,10 @@ if [ "$PATTERN" = "h" ]; then
   echo "==> Bench provisioned successfully"
   echo ""
   echo "Next steps:"
-  echo "  1. AGENT.md overlaid with hil-assistant persona (not committed — excluded from git)"
-  echo "  2. opencode.json overlaid with default_agent=hil-assistant (not committed — excluded from git)"
-  echo "  3. .bench/assignment.md written to disk (gitignored, not committed) — provenance in bench-registry.yaml"
-  echo "  4. Register in bench-registry.yaml — this is the HIL plane; set locked: true"
+  echo "  1. AGENT.md overlaid with hil-assistant persona (not committed - excluded from git)"
+  echo "  2. opencode.json overlaid with default_agent=hil-assistant (not committed - excluded from git)"
+  echo "  3. .bench/assignment.md written to disk (gitignored, not committed) - provenance in bench-registry.yaml"
+  echo "  4. Register in bench-registry.yaml - this is the HIL plane; set locked: true"
   echo "  5. Open agentic session in: $BENCH_DIR (opens as hil-assistant)"
 elif [ "$PATTERN" = "w" ]; then
   # Pattern W: select pattern-w template, commit AGENT.md (no skip-worktree)
@@ -295,7 +295,7 @@ elif [ "$PATTERN" = "w" ]; then
   echo ""
   echo "Next steps:"
   echo "  1. AGENT.md generated and committed (Pattern W)"
-  echo "  2. .bench/assignment.md written to disk (gitignored, not committed) — provenance in bench-registry.yaml"
+  echo "  2. .bench/assignment.md written to disk (gitignored, not committed) - provenance in bench-registry.yaml"
   echo "  3. Update bench-registry.yaml"
   echo "  4. Update tasks.yaml: status=in_progress, bench=$BENCH_SUFFIX, branch=$BRANCH"
   echo "  5. Open agentic session in: $BENCH_DIR"
@@ -308,7 +308,7 @@ else
 
   # Prevent AGENT.md changes from appearing in git status for this worktree.
   # AGENT.md is tracked on the .01 integration branch (the .01 persona file) so
-  # info/exclude is not enough — skip-worktree tells git to ignore divergence
+  # info/exclude is not enough - skip-worktree tells git to ignore divergence
   # between the index and working tree.
   git -C "$BENCH_DIR" update-index --skip-worktree AGENT.md
 
@@ -316,8 +316,8 @@ else
   echo "==> Bench provisioned successfully"
   echo ""
   echo "Next steps:"
-  echo "  1. AGENT.md generated (not committed — excluded from git)"
-  echo "  2. .bench/assignment.md written to disk (gitignored, not committed) — provenance in bench-registry.yaml"
+  echo "  1. AGENT.md generated (not committed - excluded from git)"
+  echo "  2. .bench/assignment.md written to disk (gitignored, not committed) - provenance in bench-registry.yaml"
   echo "  3. Update bench-registry.yaml"
   echo "  4. Update tasks.yaml: status=in_progress, bench=$BENCH_SUFFIX, branch=$BRANCH"
   echo "  5. Open agentic session in: $BENCH_DIR"

@@ -7,7 +7,7 @@
 # ]
 # ///
 """
-review-ledger MCP server — file-backed YAML ledger for security and review findings.
+review-ledger MCP server - file-backed YAML ledger for security and review findings.
 
 Transport: stdio. Framework: mcp SDK.
 Launch via:
@@ -507,7 +507,7 @@ def main() -> None:
     global DATA_PATH, ID_PREFIX, RUN_PREFIX
 
     parser = argparse.ArgumentParser(
-        description="review-ledger MCP server — file-backed YAML finding ledger"
+        description="review-ledger MCP server - file-backed YAML finding ledger"
     )
     parser.add_argument(
         "--data-path",
@@ -539,7 +539,7 @@ def main() -> None:
 
     if not DATA_PATH.exists():
         print(
-            f"review-ledger: WARNING — data path {DATA_PATH} does not exist; "
+            f"review-ledger: WARNING - data path {DATA_PATH} does not exist; "
             "it will be created on first write",
             file=sys.stderr,
         )

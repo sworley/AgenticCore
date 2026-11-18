@@ -1,4 +1,4 @@
-# .tmp — Ephemeral / Scratch Workspace
+# .tmp - Ephemeral / Scratch Workspace
 
 `.tmp` is the **project-local scratch directory** for ephemeral work. It is the
 durable convention for "throwaway inputs/outputs that should never touch the
@@ -23,7 +23,7 @@ associated with the project and lets the project clean it up on its own terms.
 
 The standing rule (see `AGENT.md`) is:
 
-> **Ephemeral work stays local** — do throwaway/scratch work in `./.tmp` at the
+> **Ephemeral work stays local** - do throwaway/scratch work in `./.tmp` at the
 > project root (gitignored, not `/tmp`), so it never leaks into the tree or
 > history. Keep it out of any tracked path.
 
@@ -67,7 +67,7 @@ rm -rf .tmp/*            # clear scratch (keeps Tmp.md)
 ## Scrubbing / lifecycle
 
 - **On demand:** create `.tmp` when you need it; it is not required to exist.
-- **When done:** delete scratch files. `rm -rf .tmp/*` is safe — it leaves
+- **When done:** delete scratch files. `rm -rf .tmp/*` is safe - it leaves
   `Tmp.md` in place.
 - **Session close:** the session-close checklist should clear `.tmp` of anything
   not needed for the next session.
@@ -87,6 +87,6 @@ is committed via git, which is how it reaches maintainers and contributors.
 
 ## Related
 
-- `AGENT.md` — standing rule: "Ephemeral work stays local"
-- `.gitignore` — `.tmp/*` ignore + `!.tmp/Tmp.md` exception
-- `mddocs/scripts/export-framework.sh` — excludes `.tmp` from adoption exports
+- `AGENT.md` - standing rule: "Ephemeral work stays local"
+- `.gitignore` - `.tmp/*` ignore + `!.tmp/Tmp.md` exception
+- `mddocs/scripts/export-framework.sh` - excludes `.tmp` from adoption exports

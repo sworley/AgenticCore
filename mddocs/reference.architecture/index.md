@@ -17,8 +17,8 @@ for the AgenticCore framework.
 | [Agent Authoring Workflow](agent-authoring-workflow.md) | Create or modify agent definitions |
 | [Release Process](release-process.md) | Full release lifecycle with HIL gates |
 | [Release Notes Template](release-notes-template.md) | Template for `mddocs/release-notes/vX.Y.Z.md` |
-| [Configure MCP Servers](configure-mcp.md) | One-time MCP setup — cache warm, config, verify |
-| [Sign-Off Package](sign-off-package.md) | HIL approval gate — diff, verdicts, open findings, blockers |
+| [Configure MCP Servers](configure-mcp.md) | One-time MCP setup - cache warm, config, verify |
+| [Sign-Off Package](sign-off-package.md) | HIL approval gate - diff, verdicts, open findings, blockers |
 | [Adopter Reconciliation Model](adopter-reconciliation.md) | Change propagation, ADR namespace, upgrade cadence |
 
 ## Guide: Scripts

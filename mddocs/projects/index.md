@@ -4,13 +4,13 @@ status: active
 lifecycle: active
 primary: true
 domain: Projects
-purpose: Portfolio plane — durable documentation about adopted work contexts
+purpose: Portfolio plane - durable documentation about adopted work contexts
 ---
 
 # Projects Plane
 
 > **Plane purpose.** `projects/` holds documentation **about** work performed by
-> independently adopted contexts — customer engineering, COE, AI Accelerator,
+> independently adopted contexts - customer engineering, COE, AI Accelerator,
 > investigations, and activities that may not involve software development. It
 > is the second plane of the ADR-0029 two-plane taxonomy (`management/` is the
 > first).
@@ -19,7 +19,7 @@ purpose: Portfolio plane — durable documentation about adopted work contexts
 
 AgenticCore is a **documentation-first, purpose-first** harness. This taxonomy
 exists so that knowledge stays discoverable, versioned, and safely reusable as
-work changes and historical activities are retired — not to dictate *how* work
+work changes and historical activities are retired - not to dictate *how* work
 is initiated.
 
 You are **free to drive activities the way you want**: a ticket, a backlog item,
@@ -29,7 +29,7 @@ documentation object with a stable ID**, and that it sits under a context with
 its `index.md`.
 
 In other words, the harness governs **how knowledge is organized, identified,
-and versioned** — not **how work originates or is approved**. Work initiation and
+and versioned** - not **how work originates or is approved**. Work initiation and
 approval remain governed by the existing management-plane workflow and your own
 process.
 
@@ -44,7 +44,7 @@ Each adopted context is a directory under `projects/<context>/`:
 | `artifacts/` | Durable, purpose-based packages (`<purpose>/<slug>/`) |
 | `decisions/` | Project-scoped decisions, as authorized |
 | `evidence/` | Retained assurance records |
-| `references/` | Links and references — not copied authorities |
+| `references/` | Links and references - not copied authorities |
 
 ## Stand-up rules (context metadata)
 
@@ -61,13 +61,13 @@ status: active
 ---
 ```
 
-## Repository boundary — what belongs in the harness Git repo
+## Repository boundary - what belongs in the harness Git repo
 
 The harness repository is the **management layer**: it versions the framework's
 own knowledge and tooling, plus the documentation the harness owns **about** a
 context. It does **not** hold the customer's work product.
 
-### Plane boundary — which plane owns what?
+### Plane boundary - which plane owns what?
 
 The three places content can live are not interchangeable. Decide the plane
 first, before moving anything:
@@ -80,16 +80,16 @@ first, before moving anything:
 
 > **Bringing in existing project data?** Use the
 > [Adopt a Project Context](../reference.architecture/adopt-project-context.md)
-> runbook. It is a HIL-directed, low-ceremony seeding operation — **not** a
+> runbook. It is a HIL-directed, low-ceremony seeding operation - **not** a
 > Pattern A feature task. If the source docs live in `.00`, an agent must state
 > Invariant 7 and wait for HIL per-action direction rather than blocking or
 > improvising.
 
 **Belongs in the harness Git repo (tracked, versioned):**
 
-- Management-plane documentation and governance artifacts — ADRs, policies,
+- Management-plane documentation and governance artifacts - ADRs, policies,
   standards, architecture, security, assurance, work activities.
-- Harness-owned project documentation **about** a context — `projects/<context>/`
+- Harness-owned project documentation **about** a context - `projects/<context>/`
   indexes, activity records, durable artifacts, project decisions, evidence,
   and references.
 - Harness tooling and executables (scripts, hooks, enforcement) and their
@@ -100,15 +100,15 @@ first, before moving anything:
 
 - **Customer source code.** A customer checkout (e.g. `MyCode/`) is an
   independently owned Git repository, excluded from harness version control.
-  Reference it by source location / commit SHA / links — **never** copy its files
+  Reference it by source location / commit SHA / links - **never** copy its files
   into the harness index.
 - **Secrets and credentials.** Never commit credentials, private keys, or
   restricted content (ADR-0016; see the secret-guard runbook). Reference the
   secure store instead.
 - **Generated build output.** `mddocs/book/` (mdBook HTML) is build output, not
-  source — keep it out of the knowledge taxonomy.
+  source - keep it out of the knowledge taxonomy.
 - **Sensitive or bulky outputs.** Restricted customer content, large binaries, or
-  runtime output — use Git LFS or approved external storage rather than
+  runtime output - use Git LFS or approved external storage rather than
   committing them to make an artifact package "self-contained" (proposal §10).
 - **Duplicated authorities.** Don't copy a document body that already has a
   canonical home; reference it instead.

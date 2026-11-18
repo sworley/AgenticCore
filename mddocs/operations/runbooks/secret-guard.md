@@ -21,7 +21,7 @@ AI toolchain sessions. It blocks commands that would expand or print credential
 values in plaintext and prints a safe alternative to stderr.
 
 The hook is a Python script at `.agentic/hooks/secret-guard.py`. It is wired
-in `.agentic/settings.local.json` and fires automatically — no manual invocation
+in `.agentic/settings.local.json` and fires automatically - no manual invocation
 is needed.
 
 ---
@@ -37,7 +37,7 @@ head ~/.bash_profile
 tail .env
 ```
 
-Safe alternative — grep for the specific key with value redacted:
+Safe alternative - grep for the specific key with value redacted:
 
 ```bash
 grep 'SPECIFIC_KEY_NAME' ~/.zshrc | sed 's/=.*/=[REDACTED]/'
@@ -126,10 +126,10 @@ pass show vault/platform/pat
 pass show azure/sp-secret
 ```
 
-Safe alternative — capture into a variable, never let the value reach stdout:
+Safe alternative - capture into a variable, never let the value reach stdout:
 
 ```bash
-# Allowed — output captured inside $(...)
+# Allowed - output captured inside $(...)
 VARNAME="$(pass show vault/platform/pat 2>/dev/null)"
 ```
 
@@ -144,7 +144,7 @@ Any command that already pipes through `sed 's/=.*/=[REDACTED]/'` is allowed
 through unconditionally:
 
 ```bash
-# Allowed — redaction pattern detected
+# Allowed - redaction pattern detected
 grep 'SP_CLIENT' ~/.zshrc | sed 's/=.*/=[REDACTED]/'
 ```
 
@@ -153,22 +153,22 @@ grep 'SP_CLIENT' ~/.zshrc | sed 's/=.*/=[REDACTED]/'
 ## Validation
 
 Test a rule change before committing by feeding synthetic tool input directly to the script.
-The hook reads a JSON object from stdin — the same structure AI toolchain sends at runtime.
+The hook reads a JSON object from stdin - the same structure AI toolchain sends at runtime.
 
 ```bash
-# Should be BLOCKED (exit 1) — bare pass show
+# Should be BLOCKED (exit 1) - bare pass show
 echo '{"tool_name":"Bash","tool_input":{"command":"pass show vault/x/y"}}' \
   | python3 .agentic/hooks/secret-guard.py 2>&1; echo "Exit: $?"
 
-# Should PASS (exit 0) — output captured inside $()
+# Should PASS (exit 0) - output captured inside $()
 echo '{"tool_name":"Bash","tool_input":{"command":"VARNAME=\"$(pass show vault/x/y 2>/dev/null)\""}}' \
   | python3 .agentic/hooks/secret-guard.py 2>&1; echo "Exit: $?"
 
-# Should be BLOCKED (exit 1) — printenv on a secret variable
+# Should be BLOCKED (exit 1) - printenv on a secret variable
 echo '{"tool_name":"Bash","tool_input":{"command":"printenv AZURE_CLIENT_SECRET"}}' \
   | python3 .agentic/hooks/secret-guard.py 2>&1; echo "Exit: $?"
 
-# Should PASS (exit 0) — redaction pipe present
+# Should PASS (exit 0) - redaction pipe present
 echo '{"tool_name":"Bash","tool_input":{"command":"grep TOKEN ~/.zshrc | sed '\''s/=.*/=[REDACTED]/'\'' "}}' \
   | python3 .agentic/hooks/secret-guard.py 2>&1; echo "Exit: $?"
 ```
@@ -182,7 +182,7 @@ and safe cases exit `0` with no output.
 
 See [Hook Rollback](hook-rollback.md) for the full procedure.
 
-**Quick reference — revert a rule change:**
+**Quick reference - revert a rule change:**
 
 ```bash
 # Identify the last known-good commit for this file
@@ -224,5 +224,5 @@ bash .core/scripts/install-git-hooks.sh
 
 ## Related
 
-- [Hook Rollback](hook-rollback.md) — emergency disable, revert, and full rollback procedure for all hooks
+- [Hook Rollback](hook-rollback.md) - emergency disable, revert, and full rollback procedure for all hooks
 - [ADR-: Agentic Agent Enforcement Posture](../../adr/adr-0022-git-pre-commit-permission-order-check.md)

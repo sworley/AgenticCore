@@ -3,12 +3,12 @@
 **Date:** 2026-11-12
 **Adopted:** 2026-11-12
 **Status:** accepted
-**Supersedes:** — (ADR placement resolved in ADR-0030: forward-only + historical coexistence; no physical migration planned)
-**Superseded by:** —
+**Supersedes:** - (ADR placement resolved in ADR-0030: forward-only + historical coexistence; no physical migration planned)
+**Superseded by:** -
 
 ## Context
 
-AgenticCore's `mddocs/` directory is the harness's primary documentation surface. It currently contains approximately 150 tracked artefacts across ADRs, runbooks, reference architecture, onboarding content, release notes, scripts, MCP services, and seed data. The structure is flat or loosely grouped — there is no consistent hierarchy, no metadata contract, and no governed classification model.
+AgenticCore's `mddocs/` directory is the harness's primary documentation surface. It currently contains approximately 150 tracked artefacts across ADRs, runbooks, reference architecture, onboarding content, release notes, scripts, MCP services, and seed data. The structure is flat or loosely grouped - there is no consistent hierarchy, no metadata contract, and no governed classification model.
 
 As the corpus grows (28 ADRs, 18 runbooks, 15 reference documents, a growing script set, and increasing project activity), three problems are becoming visible:
 
@@ -18,20 +18,20 @@ As the corpus grows (28 ADRs, 18 runbooks, 15 reference documents, a growing scr
 
 3. **Lifecycle management.** There is no standard mechanism for retiring obsolete content, promoting activity-local results to durable project artefacts, or tracking the lifecycle state of documentation. Git retains history, but there is no taxonomy-level contract for what "superseded" or "retired" means at the artefact level.
 
-These problems are not urgent today — the corpus is still small enough that humans can navigate it. But they are structural, and they compound. The absence of a metadata contract means every new artefact is a fresh classification decision made without a reference framework. The absence of a lifecycle model means obsolete content accumulates without a defined retirement path.
+These problems are not urgent today - the corpus is still small enough that humans can navigate it. But they are structural, and they compound. The absence of a metadata contract means every new artefact is a fresh classification decision made without a reference framework. The absence of a lifecycle model means obsolete content accumulates without a defined retirement path.
 
-A separate concern — knowledge-management tooling (Obsidian, graph-backed memory), reduced churn of `.md` files, efficient memory management backends — is noted as future value but is **not** the motivation for this ADR. It is downstream of the metadata contract, not the reason to adopt it.
+A separate concern - knowledge-management tooling (Obsidian, graph-backed memory), reduced churn of `.md` files, efficient memory management backends - is noted as future value but is **not** the motivation for this ADR. It is downstream of the metadata contract, not the reason to adopt it.
 
 ## Decision
 
 ### Guiding principle
 
-The taxonomy governs **documentation and metadata contracts**. The metadata on a tool is the contractual record of its owner, its domain, and the governance it enforces or participates in. **Physical file location is downstream of both.** Where a file sits today is not what governs it — the frontmatter contract is. Physical location is an execution detail; under the forward-only model (ADR-0030) existing paths stay unchanged, and any relocation would be a separate decision.
+The taxonomy governs **documentation and metadata contracts**. The metadata on a tool is the contractual record of its owner, its domain, and the governance it enforces or participates in. **Physical file location is downstream of both.** Where a file sits today is not what governs it - the frontmatter contract is. Physical location is an execution detail; under the forward-only model (ADR-0030) existing paths stay unchanged, and any relocation would be a separate decision.
 
 This means:
 - A tool's *governance identity* is defined by its frontmatter (`enforces: ADR-XXXX`, `owner`, `lifecycle`, `domain`), not by its directory path.
 - A tool's *discoverability* is defined by the metadata query surface, not by human directory navigation.
-- A tool's *accountability* — who owns it, what policy it enforces, what process it participates in — is visible without reading its content.
+- A tool's *accountability* - who owns it, what policy it enforces, what process it participates in - is visible without reading its content.
 - Relocating a file does not change its governance identity; relocating a file does change its governance identity if the frontmatter is not updated alongside it.
 
 ### Sub-decisions
@@ -40,14 +40,14 @@ Adopt the proposed documentation and knowledge taxonomy (the Documentation Knowl
 
 | Decision | Resolution |
 |---|---|
-| D1 — ADR migration scope | Forward-only. New ADRs use the new structure from approval onward. Existing 28 ADRs remain in `mddocs/adr/` as the canonical historical record. No physical migration is planned (see ADR-0030). |
-| D2 — ADR canonicity during transition | Directed coexistence. Both `mddocs/adr/index.md` and `mddocs/management/governance/decisions/index.md` are live, each using the metadata contract with `primary: true/false` and `redirect`. ADR numbering is a flat global sequence independent of physical location. |
-| D3 — Cross-domain resolution | No automatic primary-destination rule. Each cross-domain artefact is reviewed case-by-case. Resolution rationale is recorded in the activity file before the location is committed. The `primary: true/false` pattern (from D2) is the general-purpose resolution tool. |
-| D4 — Script classification | Annotate-first, restructure-later. All executables and sidecars receive frontmatter (or `.meta.yaml` companion) encoding `domain`, `category`, `process`, `owner`, `lifecycle`, and where applicable `enforces: ADR-XXXX`, `allowed_in_adopter_repos`, `source_ticket`, `migrated_from`. Physical restructuring to `management/tools/` or `projects/<context>/tools/` happens only under a future decision, if ever warranted. |
-| D5 — `AGENTICCORE_SPEC.md` | Directed coexistence. Stays at `mddocs/AGENTICCORE_SPEC.md` as `primary: true`. Companion stub at `mddocs/management/architecture/system/AgenticCore-Spec.md` as `primary: false` with `redirect`. No physical move. |
-| D6 — Seed backlog | Directed coexistence. `mddocs/backlog.md` (live, `lifecycle: active`, `primary: true`) and `mddocs/scripts/seed/mddocs/backlog.md` (template, `lifecycle: template`, `primary: false`) carry mutual `redirect` frontmatter. Distinct lifecycles; distinct roles. |
-| D7 — Guardrail runbooks | Directed coexistence. `credential-identity-guard.md` and `secret-guard.md` stay at current paths as `primary: true`. Frontmatter adds `security_category: guardrail` and `governance_context` to make their security purpose machine-readable. No physical move. |
-| D8 — Review ledger runbook | Directed coexistence. `review-ledger-runbook.md` stays at current path as `primary: true`. Frontmatter adds `assurance_category: review-governance` and `governance_context`. No physical move. |
+| D1 - ADR migration scope | Forward-only. New ADRs use the new structure from approval onward. Existing 28 ADRs remain in `mddocs/adr/` as the canonical historical record. No physical migration is planned (see ADR-0030). |
+| D2 - ADR canonicity during transition | Directed coexistence. Both `mddocs/adr/index.md` and `mddocs/management/governance/decisions/index.md` are live, each using the metadata contract with `primary: true/false` and `redirect`. ADR numbering is a flat global sequence independent of physical location. |
+| D3 - Cross-domain resolution | No automatic primary-destination rule. Each cross-domain artefact is reviewed case-by-case. Resolution rationale is recorded in the activity file before the location is committed. The `primary: true/false` pattern (from D2) is the general-purpose resolution tool. |
+| D4 - Script classification | Annotate-first, restructure-later. All executables and sidecars receive frontmatter (or `.meta.yaml` companion) encoding `domain`, `category`, `process`, `owner`, `lifecycle`, and where applicable `enforces: ADR-XXXX`, `allowed_in_adopter_repos`, `source_ticket`, `migrated_from`. Physical restructuring to `management/tools/` or `projects/<context>/tools/` happens only under a future decision, if ever warranted. |
+| D5 - `AGENTICCORE_SPEC.md` | Directed coexistence. Stays at `mddocs/AGENTICCORE_SPEC.md` as `primary: true`. Companion stub at `mddocs/management/architecture/system/AgenticCore-Spec.md` as `primary: false` with `redirect`. No physical move. |
+| D6 - Seed backlog | Directed coexistence. `mddocs/backlog.md` (live, `lifecycle: active`, `primary: true`) and `mddocs/scripts/seed/mddocs/backlog.md` (template, `lifecycle: template`, `primary: false`) carry mutual `redirect` frontmatter. Distinct lifecycles; distinct roles. |
+| D7 - Guardrail runbooks | Directed coexistence. `credential-identity-guard.md` and `secret-guard.md` stay at current paths as `primary: true`. Frontmatter adds `security_category: guardrail` and `governance_context` to make their security purpose machine-readable. No physical move. |
+| D8 - Review ledger runbook | Directed coexistence. `review-ledger-runbook.md` stays at current path as `primary: true`. Frontmatter adds `assurance_category: review-governance` and `governance_context`. No physical move. |
 
 **Governing principle (restated from Decision section):** Artefacts are governed by their frontmatter contract, not by their directory path. Physical file location is an execution detail; the metadata contract is the authority. All eight sub-decisions are consistent with this principle. No sub-decision defers the metadata contract to a future step; all sub-decisions defer only physical restructuring.
 
@@ -73,7 +73,7 @@ Adopt the proposed documentation and knowledge taxonomy (the Documentation Knowl
 
 ## Implementation Notes
 
-**Supporting evidence:** `AC-0013` (Taxonomy Reconciliation — `mddocs/management/work/activities/ac-0013-taxonomy-reconciliation/index.md`) contains the full artefact inventory, reconciliation table, cross-domain tension analysis, and the rationale for each of the eight sub-decisions.
+**Supporting evidence:** `AC-0013` (Taxonomy Reconciliation - `mddocs/management/work/activities/ac-0013-taxonomy-reconciliation/index.md`) contains the full artefact inventory, reconciliation table, cross-domain tension analysis, and the rationale for each of the eight sub-decisions.
 
 **Immediate actions upon HIL approval (this ADR):**
 1. Establish `mddocs/management/work/activities/ac-0013-taxonomy-reconciliation` as an approved management-plane activity record tied to ticket AC-0013.
@@ -82,7 +82,7 @@ Adopt the proposed documentation and knowledge taxonomy (the Documentation Knowl
 4. Create companion stubs at `management/architecture/system/AgenticCore-Spec.md`, `management/security/guardrails/credential-identity/`, `management/security/guardrails/secret-management/`, and `management/assurance/reviews/ledger-runbook/` as `primary: false` with `redirect` back to the live files.
 
 **Future actions (governed by separate tickets / ADRs):**
-1. **ADR placement** — resolved in ADR-0030: forward-only + historical coexistence; no physical migration is planned.
+1. **ADR placement** - resolved in ADR-0030: forward-only + historical coexistence; no physical migration is planned.
 2. **Script physical restructuring** (D4): would govern the move of annotated executables and sidecars to `management/tools/` and `projects/<context>/tools/`, only if such a move is ever warranted.
 3. **projects/ seeding** (Q5): first `projects/<context>/` directory is created when the first adopted customer context is live.
 

@@ -20,12 +20,12 @@ ID/run prefix:
 | `review-ledger-reviews` | `.core/review-ledger/reviews` | `RF` / `RR` |
 
 `approve_finding_update` is wired **only** into the `hil-assistant` agent (ADR-0019
-D-3) — never into security-reviewer, docs-reviewer, or code-reviewer.
+D-3) - never into security-reviewer, docs-reviewer, or code-reviewer.
 
 `mcp-rag-docs` directory contains:
-- `server.py` — runtime implementation (launched via `uv run` at session start)
-- `README.md` — operations reference: prerequisites, cache warm, diagnostics, version bump procedure
-- `cve-scan.txt` — pip-audit security scan artifact, updated on every dependency version bump
+- `server.py` - runtime implementation (launched via `uv run` at session start)
+- `README.md` - operations reference: prerequisites, cache warm, diagnostics, version bump procedure
+- `cve-scan.txt` - pip-audit security scan artifact, updated on every dependency version bump
 
 Configuration: MCP servers are configured inline in `opencode.json` at the repo root
 (read directly by OpenCode); use the gitignored `opencode.json.local` for

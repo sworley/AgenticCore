@@ -17,7 +17,7 @@ For tag-only releases (no `release/*` branch), omit the Branch field.
 
 ## Summary
 
-One paragraph describing the overall theme of this release — what changed and why,
+One paragraph describing the overall theme of this release - what changed and why,
 not just a list. Write for a developer or SRE picking up this framework for the
 first time or upgrading from the previous version.
 

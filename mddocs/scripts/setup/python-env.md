@@ -1,3 +1,20 @@
+---
+id: SH-0014-doc
+document_type: script-docs
+status: active
+lifecycle: active
+title: Project-local Python virtualenv provider (script docs)
+domain: Management
+category: Operations
+process: python-env-provision
+owner: ops-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - python-env.sh
+    - ../../reference.architecture/bootstrap-new-project.md
+---
+
 # python-env.sh
 
 <a href="python-env.sh" download>Download python-env.sh</a> · bash · [Bootstrap New Project](../../reference.architecture/bootstrap-new-project.md)
@@ -10,15 +27,15 @@ polluting the machine-wide Python.
 
 What it does:
 
-- **`--create`** — creates `<repo-root>/.venv` with `python3 -m venv` (skipped if it
+- **`--create`** - creates `<repo-root>/.venv` with `python3 -m venv` (skipped if it
   already exists).
-- **`--install`** — `pip install -r requirements.txt` into `.venv`.
-- **`--check`** — verifies the required modules import (`mcp`, `yaml`, `fastmcp`);
+- **`--install`** - `pip install -r requirements.txt` into `.venv`.
+- **`--check`** - verifies the required modules import (`mcp`, `yaml`, `fastmcp`);
   exits non-zero if any are missing.
-- **`--freeze`** — regenerates `requirements.txt` via `pip freeze` (harness
+- **`--freeze`** - regenerates `requirements.txt` via `pip freeze` (harness
   maintenance; run in a clean venv and commit the result).
 
-With no flags it runs `--create`, `--install`, `--check` — the adoption default. It is
+With no flags it runs `--create`, `--install`, `--check` - the adoption default. It is
 idempotent and safe to re-run.
 
 ```sh

@@ -1,13 +1,24 @@
+---
+id: REF-0001
+document_type: reference
+status: active
+lifecycle: active
+domain: Management
+category: Operations
+process: runtime-config
+owner: lead-engineer
+---
+
 # init-opencode-settings
 
-opencode reads the committed `opencode.json` directly — no machine-local
+opencode reads the committed `opencode.json` directly - no machine-local
 generation step is required. MCP servers are configured inline in `opencode.json`,
 and `.opencode/agents/` is regenerated from the canonical `.agents/` source.
 
 ## Setup
 
 Configure the opencode adapter (regenerates `.opencode/agents/`, writes
-`start-opencode.sh`) — or use it at adoption time with `--tool opencode`:
+`start-opencode.sh`) - or use it at adoption time with `--tool opencode`:
 
 ```sh
 bash mddocs/scripts/setup/tool-adapter.sh --tool opencode

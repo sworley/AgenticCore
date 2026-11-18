@@ -25,11 +25,11 @@ AgenticCore requires minimal hard requirements. Everything else is adopter choic
 | `LLM_CONTEXT` | Context window size | No | `262144` |
 | `LLM_OUTPUT` | Max output tokens | No | `30000` |
 
-## configure.sh — Environment Bootstrap
+## configure.sh - Environment Bootstrap
 
 ```bash
 #!/usr/bin/env bash
-# .core/scripts/configure.sh — Set up AgenticCore environment
+# .core/scripts/configure.sh - Set up AgenticCore environment
 
 set -e
 
@@ -52,7 +52,7 @@ fi
 echo "AgenticCore environment validated."
 ```
 
-## adopt.sh — Future Feature
+## adopt.sh - Future Feature
 
 `adopt.sh` (severed-copy export for adopter onboarding) is deferred to v0.2.
 See ADR-0005 for the adoption model specification. v0.1 operators are expected
@@ -61,7 +61,7 @@ to clone the repo directly and configure their own environment.
 ## External Dependencies
 
 AgenticCore is designed to run on a local Kubernetes cluster (harness-cluster). The harness
-does not manage the cluster lifecycle — that is an infrastructure concern consumed
+does not manage the cluster lifecycle - that is an infrastructure concern consumed
 via configuration:
 
 | Concern | Integration point |

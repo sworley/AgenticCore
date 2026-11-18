@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-08
 **Status:** accepted
-**Supersedes:** —
+**Supersedes:** -
 
 ## Prior Art
 
@@ -16,9 +16,9 @@ artifact hygiene requirements carried forward unchanged.
 
 Each agentic work session produces three types of knowledge that are currently disconnected:
 
-1. **The prompt** — the exact user request that initiated the work
-2. **The implementation** — commits, branches, tasks in `tasks.yaml`
-3. **The lesson** — behavioral rules saved to `~/.agentic/projects/.../memory/`
+1. **The prompt** - the exact user request that initiated the work
+2. **The implementation** - commits, branches, tasks in `tasks.yaml`
+3. **The lesson** - behavioral rules saved to `~/.agentic/projects/.../memory/`
 
 The traceability chain today is:
 ```
@@ -41,7 +41,7 @@ unindexed, ephemeral, and not linked to any task or commit.
 
 ## Considered Options
 
-### Option A — tasks.yaml schema additions
+### Option A - tasks.yaml schema additions
 
 Add two optional fields to every task:
 
@@ -52,9 +52,9 @@ lessons_learned:
 ```
 
 - Good: zero new tooling; integrates with existing sprint-metrics and task review workflow
-- Bad: `prompt_ref` is a paraphrase, not verbatim — fidelity depends on the author
+- Bad: `prompt_ref` is a paraphrase, not verbatim - fidelity depends on the author
 
-### Option B — Session log index (future target)
+### Option B - Session log index (future target)
 
 A dedicated audit archive under `mddocs/audits/sessions/` with one file per session.
 
@@ -70,7 +70,7 @@ mddocs/audits/sessions/
 - Bad: adds per-session authoring overhead; full transcript verbatim storage may surface
        sensitive operational context
 
-### Option C — ADR template additions
+### Option C - ADR template additions
 
 Add `## Prompts / Origin` and `## Lessons Learned` sections to the ADR template.
 
@@ -94,7 +94,7 @@ enough detail to implement as a future sprint.
 
 **Positive:**
 - Every task links to its originating prompt and any lessons it generated
-- ADRs contain the conversation context needed to understand *why* — not just *what*
+- ADRs contain the conversation context needed to understand *why* - not just *what*
 
 **Negative / Trade-offs:**
 - `prompt_ref` fidelity is author-dependent; paraphrases may lose nuance
@@ -106,7 +106,7 @@ enough detail to implement as a future sprint.
 ## Lessons Learned
 
 - Session transcripts (`.jsonl`) are high-fidelity but practically inaccessible for
-  audit; they require an index layer to be useful — which is exactly what Option B provides
+  audit; they require an index layer to be useful - which is exactly what Option B provides
 - The gap between "what the agent did" and "why the user asked for it" is invisible
   in git history alone; `prompt_ref` is the minimal viable bridge
 

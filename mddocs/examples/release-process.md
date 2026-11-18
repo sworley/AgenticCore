@@ -1,6 +1,6 @@
 # Example: Release Process
 
-**Scenario:** The team is ready to cut `v0.6.0` — the next AgenticCore release,
+**Scenario:** The team is ready to cut `v0.6.0` - the next AgenticCore release,
 from the `v0.5.0` baseline. Shows the full release workflow from version proposal
 through release branch and README update, with all HIL gates.
 
@@ -10,7 +10,7 @@ through release branch and README update, with all HIL gates.
 
 The HIL signals readiness: *"dev looks good, let's do v0.6.0."*
 
-**baseline-steward** — the framework release owner/gate — creates the release ticket in
+**baseline-steward** - the framework release owner/gate - creates the release ticket in
 `tasks.yaml` and owns the release end-to-end:
 
 ```yaml
@@ -43,12 +43,12 @@ git log $(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-paren
 ```
 
 Output shows the adoption-toolchain and release-process formalization work merged
-to `dev` since the v0.5.0 baseline — capabilities, backward compatible.
+to `dev` since the v0.5.0 baseline - capabilities, backward compatible.
 
 Release-engineer proposes to baseline-steward → surfaced to HIL:
 
 > "Proposed: v0.6.0. Minor release from the v0.5.0 baseline. Semantic versioning:
-> MAJOR.MINOR.PATCH — this is a MINOR bump (new capabilities, backward compatible)."
+> MAJOR.MINOR.PATCH - this is a MINOR bump (new capabilities, backward compatible)."
 
 HIL: *"Confirmed. v0.6.0."*
 
@@ -73,7 +73,7 @@ consolidating:
 - Commit history
 
 Requests security-reviewer pass:
-> "@security-reviewer please review release/v0.6.0-prep — release notes and
+> "@security-reviewer please review release/v0.6.0-prep - release notes and
 > all framework artifacts."
 
 Security-reviewer responds:
@@ -171,7 +171,7 @@ Commits, baseline-steward confirms with HIL, pushes.
 ## 10. Relay Completion
 
 ```markdown
-## Relay pending — 2026-06-22
+## Relay pending - 2026-06-22
 
 **Destination:** .01 / baseline-steward
 **Request:** Mark TC-010 as released
@@ -184,10 +184,10 @@ baseline-steward marks TC-010 `released`, tears down bench `.02` with HIL author
 
 ## Key Points
 
-- Eight explicit HIL gates — no gate covers any subsequent gate
+- Eight explicit HIL gates - no gate covers any subsequent gate
 - Ownership split: **baseline-steward** owns/gates the framework release; **release-engineer**
   executes the tactical mechanics under its tasking (`HIL → baseline-steward → release-engineer`)
 - Security-reviewer pass is mandatory before HIL sees the release artifacts
-- One correction requested by HIL during notes review — incorporated before LGTM
-- Release-engineer never pushes autonomously — every push is confirmed
-- Relay note is the hand-off signal — baseline-steward closes the ticket, not the agent
+- One correction requested by HIL during notes review - incorporated before LGTM
+- Release-engineer never pushes autonomously - every push is confirmed
+- Relay note is the hand-off signal - baseline-steward closes the ticket, not the agent

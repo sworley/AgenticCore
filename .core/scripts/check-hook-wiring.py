@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-check-hook-wiring.py — Verify that all required hooks are installed and executable.
+check-hook-wiring.py - Verify that all required hooks are installed and executable.
 
 Exit codes:
-  0 — all hooks installed and executable
-  1 — hooks missing or not executable
+  0 - all hooks installed and executable
+  1 - hooks missing or not executable
 """
 
 import os

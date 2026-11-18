@@ -1,4 +1,4 @@
-# _config — AGENT.md Recovery Archive
+# _config - AGENT.md Recovery Archive
 
 This directory tracks copies of AGENT.md files that live outside the git tree
 (e.g., org-level, parent directory, or user-level AGENT.md files).

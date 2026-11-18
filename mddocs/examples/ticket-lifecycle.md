@@ -12,7 +12,7 @@ the gap during bootstrap review.
 
 ```yaml
 - id: TC-002
-  title: "Git CI — mdBook Pages pipeline"
+  title: "Git CI - mdBook Pages pipeline"
   description: "Configure .git-ci.yml to build mdBook and publish to Git Pages."
   acceptance_criteria:
     - "Pipeline passes on push to main"
@@ -25,7 +25,7 @@ the gap during bootstrap review.
   updated: 2026-06-22
 ```
 
-Lead-engineer surfaces it to HIL: *"TC-002 is ready — adds the CI pipeline for docs
+Lead-engineer surfaces it to HIL: *"TC-002 is ready - adds the CI pipeline for docs
 publishing. Small task, release-engineer. Want me to spin up a bench?"*
 
 HIL: *"Yes, provision it."*
@@ -75,7 +75,7 @@ Agent creates `.git-ci.yml`, validates `mddocs/book.toml`, tests a local build:
 
 ```sh
 mdbook build mddocs/
-# Exit 0 — build succeeded
+# Exit 0 - build succeeded
 ```
 
 Commits on the bench branch:
@@ -90,12 +90,12 @@ feat: add Git CI pipeline for mdBook Pages [TC-002]
 
 ---
 
-## 4. Branch Ready — Relay to Lead-Engineer
+## 4. Branch Ready - Relay to Lead-Engineer
 
 Bench lead cannot write `tasks.yaml` directly. Writes to `.core/work/relay-pending.md`:
 
 ```markdown
-## Relay pending — 2026-06-23
+## Relay pending - 2026-06-23
 
 **Destination:** .01 / lead-engineer
 **Task:** TC-002
@@ -149,7 +149,7 @@ Updates `tasks.yaml`:
 
 ## 7. Bench Teardown
 
-Lead-engineer requests teardown authorization: *"Tearing down `.02` — TC-002 merged."*
+Lead-engineer requests teardown authorization: *"Tearing down `.02` - TC-002 merged."*
 
 HIL: *"Go ahead."*
 
@@ -167,8 +167,8 @@ Updates `bench-registry.yaml`:
 
 ## Key Points
 
-- The lead-engineer never executes the task work — that happens on `.02`
+- The lead-engineer never executes the task work - that happens on `.02`
 - Bench leads relay through `relay-pending.md`; they never write `tasks.yaml` directly
-- LGTM triggers an immediate merge — no additional confirmation step
+- LGTM triggers an immediate merge - no additional confirmation step
 - Bench teardown is a separate HIL authorization, distinct from LGTM on the work
-- The commit message carries the ticket ID — searchable in `git log`
+- The commit message carries the ticket ID - searchable in `git log`

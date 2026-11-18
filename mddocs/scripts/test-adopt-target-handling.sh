@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# test-adopt-target-handling.sh — Regression test harness for TC-084 and TC-085.
+# test-adopt-target-handling.sh - Regression test harness for TC-084 and TC-085.
 #
 # TC-084: adopt.sh Steps 6-7 fail with a relative --target (double-nested
 #   path bug). Proves that adopt.sh end-to-end with a RELATIVE --target
 #   (e.g. ./my-project.01) correctly canonicalizes to an absolute path before
-#   Steps 6-7 run — no "No such file or directory" false failures.
+#   Steps 6-7 run - no "No such file or directory" false failures.
 #
 # TC-085: adopt.sh / export-framework.sh have no decision point for --target.
 #   Proves:
@@ -29,7 +29,7 @@
 #
 # Exit codes:
 #   0  All test cases passed
-#   1  One or more test cases failed — see per-case FAIL lines
+#   1  One or more test cases failed - see per-case FAIL lines
 #
 # See mddocs/scripts/test-export-framework-severance.sh for the sibling test
 # harness this one's style and conventions follow.
@@ -94,33 +94,33 @@ echo "=================================================================="
 echo ""
 
 # ---------------------------------------------------------------------------
-# Group 1 — TC-084: adopt.sh end-to-end with a RELATIVE --target (the
+# Group 1 - TC-084: adopt.sh end-to-end with a RELATIVE --target (the
 # regression that shipped as the TC-079/v1.6.0 defect).
 #
 # We run adopt.sh from a sub-directory of $WORKDIR and pass a RELATIVE
-# --target path (./my-project.01 — the exact README form). Steps 6-7 must
-# run and report real status, not "No such file or directory".
+# --target path (./my-project - the exact README form; adopt.sh appends .01).
+# Steps 6-7 must run and report real status, not "No such file or directory".
 #
-# --skip-agent-config because opencode.json needs a live AI toolchain
-# Code install and we're not testing that here.
+# --tool none (the adopt.sh default) skips generating a runtime adapter, so
+# we don't need a live AI toolchain/codex install for this e2e.
 #
 # --yes skips the TC-085 confirmation prompt (we test that separately).
 # ---------------------------------------------------------------------------
 if [ "$SKIP_E2E" -eq 0 ]; then
-  echo "-- Group 1: TC-084 — adopt.sh with RELATIVE --target (regression) --"
+  echo "-- Group 1: TC-084 - adopt.sh with RELATIVE --target (regression) --"
 
   # Create a parent workdir that ADOPT.SH will cd INTO implicitly, then pass
   # a relative path from there.
   G1_PARENT="$WORKDIR/g1_parent"
   mkdir -p "$G1_PARENT"
-  G1_RELATIVE_TARGET="./my-project.01"
+  G1_RELATIVE_TARGET="./my-project"
   G1_ABS_TARGET="$G1_PARENT/my-project.01"
 
   # Run from inside G1_PARENT so the relative path is valid
   ( cd "$G1_PARENT" && bash "$ADOPT_SCRIPT" \
       --target "$G1_RELATIVE_TARGET" \
       --slug TEST \
-      --skip-agent-config \
+      --tool none \
       --yes \
     ) > "$WORKDIR/g1_adopt.out" 2>&1 || true
 
@@ -160,14 +160,15 @@ if [ "$SKIP_E2E" -eq 0 ]; then
   fi
 
   echo ""
-  echo "-- Group 2: TC-084 — adopt.sh with ABSOLUTE --target (no regression) --"
+  echo "-- Group 2: TC-084 - adopt.sh with ABSOLUTE --target (no regression) --"
 
-  G2_ABS_TARGET="$WORKDIR/g2_absolute_target.01"
+  G2_BASE="$WORKDIR/g2_absolute_target"
+  G2_ABS_TARGET="$G2_BASE.01"
 
   bash "$ADOPT_SCRIPT" \
-    --target "$G2_ABS_TARGET" \
+    --target "$G2_BASE" \
     --slug TESTABS \
-    --skip-agent-config \
+    --tool none \
     --yes \
     > "$WORKDIR/g2_adopt.out" 2>&1 || true
 
@@ -189,11 +190,11 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Group 3 — TC-085 (a): --target omitted in non-interactive mode must fail
+# Group 3 - TC-085 (a): --target omitted in non-interactive mode must fail
 # clearly (stdin redirected from /dev/null, not a TTY).
 # ---------------------------------------------------------------------------
 echo ""
-echo "-- Group 3: TC-085(b) — --target omitted + non-interactive: fails clearly --"
+echo "-- Group 3: TC-085(b) - --target omitted + non-interactive: fails clearly --"
 
 # adopt.sh: --target omitted, stdin is /dev/null (not a TTY) → exit 1, clear message
 g3_adopt_rc=0
@@ -216,11 +217,11 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Group 4 — TC-085 (c): --target supplied but confirmation aborts when input
+# Group 4 - TC-085 (c): --target supplied but confirmation aborts when input
 # is 'n'. The confirmation prompt must surface the target path before mkdir -p.
 # ---------------------------------------------------------------------------
 echo ""
-echo "-- Group 4: TC-085(c) — --target supplied: confirmation surfaces path, 'n' aborts --"
+echo "-- Group 4: TC-085(c) - --target supplied: confirmation surfaces path, 'n' aborts --"
 
 G4_TARGET="$WORKDIR/g4_should_not_exist"
 
@@ -270,13 +271,13 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Group 5 — TC-085: -y/--yes skips the confirmation prompt and proceeds.
+# Group 5 - TC-085: -y/--yes skips the confirmation prompt and proceeds.
 # Verifies only that the flag is accepted (non-zero exit other than 1
 # means arg parse failed, not confirmation blocked); we don't need a full
-# export here — use --dry-run to avoid creating real state.
+# export here - use --dry-run to avoid creating real state.
 # ---------------------------------------------------------------------------
 echo ""
-echo "-- Group 5: TC-085 — -y/--yes flag accepted, --dry-run proceeds without confirm --"
+echo "-- Group 5: TC-085 - -y/--yes flag accepted, --dry-run proceeds without confirm --"
 
 G5_TARGET="$WORKDIR/g5_dry_run_target"
 

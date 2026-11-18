@@ -1,4 +1,4 @@
-# AgenticCore.000 — Shared Agent Context
+# AgenticCore.000 - Shared Agent Context
 
 <!-- schema: agent-context/v1 -->
 <!-- Required sections: Identity, Bench Model, Agent Roster, Environment -->
@@ -32,12 +32,12 @@ same repo, sharing `.git/` at the repo root.
 
 | Bench | Path | Role | Notes |
 |---|---|---|---|
-| `.00` | `AgenticCore.00` | Owner workspace | IDE work, R&D, scratch — never assign agent tasks here |
+| `.00` | `AgenticCore.00` | Owner workspace | IDE work, R&D, scratch - never assign agent tasks here |
 | `.01` | `AgenticCore.01` | Lead-engineer | Owns `main`, remote, task queue, bench lifecycle |
 | `.02`+ | `AgenticCore.02`, `.03` | Worker benches | Execute assigned tasks; do not merge, do not push |
 
 **Rule:** `.01` provisions and coordinates. Worker benches execute. Agent task work never
-happens directly in `.01` — if a task requires building, running, or generating artifacts,
+happens directly in `.01` - if a task requires building, running, or generating artifacts,
 stop and assign to a worker bench.
 
 Bench registry: `bench-registry.yaml`
@@ -49,21 +49,21 @@ Bench registry: `bench-registry.yaml`
 | Agent | Role | Mode |
 |---|---|---|
 | `lead-engineer` | Orchestrates routing; owns task queue and bench lifecycle; primary entry point | primary |
-| `orchestrator` | Routing planning agent — produces ROUTING_PLAN blocks, applies invariants, signals fallback | subagent |
-| `docs-engineer` | Documentation — mddocs, ADRs, runbooks | subagent |
-| `docs-reviewer` | Documentation quality gate — evaluative only | subagent |
+| `orchestrator` | Routing planning agent - produces ROUTING_PLAN blocks, applies invariants, signals fallback | subagent |
+| `docs-engineer` | Documentation - mddocs, ADRs, runbooks | subagent |
+| `docs-reviewer` | Documentation quality gate - evaluative only | subagent |
 | `ops-engineer` | Operational scripts, automation, developer environment tooling | subagent |
 | `ai-engineer` | AI agent config, MCP servers, workflow integration | subagent |
 | `attendant` | Pattern W bench-lead for project-scoped work | primary |
-| `baseline-steward` | Framework improvement lifecycle — governance, versioning, release | subagent |
-| `release-engineer` | Tactical release execution — CI/CD, branch/tag workflow | subagent |
+| `baseline-steward` | Framework improvement lifecycle - governance, versioning, release | subagent |
+| `release-engineer` | Tactical release execution - CI/CD, branch/tag workflow | subagent |
 | `security-engineer` | Security controls, hook logic, content inspection gate | subagent |
-| `security-reviewer` | Adversarial security review — verdict-only, never modifies files | subagent |
+| `security-reviewer` | Adversarial security review - verdict-only, never modifies files | subagent |
 | `ux-engineer` | UI/UX, information architecture, accessibility, developer experience | subagent |
 | `hil-assistant` | HIL-proximate collaborator in `.00`; personal management plane | primary |
-| `code-reviewer` | Semantic code review — evaluates before commits; never modifies files | subagent |
-| `azure-cloud-engineer` | Cloud architecture specialist — IaC, Well-Architected, region/compliance | subagent |
-| `infra-engineer` | Infrastructure engineer — IaC, networking, deployment lifecycle | subagent |
+| `code-reviewer` | Semantic code review - evaluates before commits; never modifies files | subagent |
+| `azure-cloud-engineer` | Cloud architecture specialist - IaC, Well-Architected, region/compliance | subagent |
+| `infra-engineer` | Infrastructure engineer - IaC, networking, deployment lifecycle | subagent |
 
 ### Two-Role Documentation Model
 
@@ -72,7 +72,7 @@ Bench registry: `bench-registry.yaml`
 | **Purpose** | Author and maintain documentation | Evaluate documentation quality before acceptance |
 | **Gate type** | Implementation (writes and edits) | Quality gate (evaluates before branch_ready) |
 | **Produces** | ADRs, runbooks, SUMMARY.md updates | Verdict: APPROVED / APPROVED WITH NOTES / BLOCKED |
-| **Can fix findings?** | Yes | No — escalates to docs-engineer |
+| **Can fix findings?** | Yes | No - escalates to docs-engineer |
 
 ### Two-Role Security Model
 
@@ -81,7 +81,7 @@ Bench registry: `bench-registry.yaml`
 | **Purpose** | Build and operate security controls | Evaluate architecture decisions before acceptance |
 | **Gate type** | Content inspection (pre-action) | Architecture sign-off (pre-acceptance) |
 | **Produces** | Working changes, runbooks, hook logic | Verdict: APPROVED / APPROVED WITH NOTES / BLOCKED |
-| **Can implement remediations?** | Yes | No — escalates to security-engineer |
+| **Can implement remediations?** | Yes | No - escalates to security-engineer |
 
 ---
 
@@ -98,8 +98,8 @@ Bench registry: `bench-registry.yaml`
 
 | Path | Purpose |
 |---|---|
-| `.core/Core.md` | Instruction contract — session checklist, standing rules |
-| `.core/invariants.md` | Absolute prohibitions — loaded by every agent |
+| `.core/Core.md` | Instruction contract - session checklist, standing rules |
+| `.core/invariants.md` | Absolute prohibitions - loaded by every agent |
 | `tasks.yaml` | Agent-facing task queue |
 | `bench-registry.yaml` | Bench state registry |
 | `.core/hooks/` | Enforcement scripts (secret-guard, scope-guard, install-guard) |

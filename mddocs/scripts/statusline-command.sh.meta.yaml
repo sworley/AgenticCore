@@ -1,0 +1,13 @@
+id: SH-0009
+title: Session statusline command
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Agentic
+process: session-statusline
+owner: orchestrator
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - statusline-command.md

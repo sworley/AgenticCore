@@ -9,14 +9,14 @@
 ## Overview
 
 Agent definitions follow a two-layer model:
-1. **Canonical source** — `.agents/<name>.md` + `.agents/_meta.yaml`
-2. **Generated outputs** — `.opencode/agents/<name>.md` (and future tool targets)
+1. **Canonical source** - `.agents/<name>.md` + `.agents/_meta.yaml`
+2. **Generated outputs** - `.opencode/agents/<name>.md` (and future tool targets)
 
 Never hand-edit the generated outputs. All changes go to the canonical source first,
 then `sync-agents.sh` propagates to tool-specific directories.
 
 **Authoring-agent execution model.** Authoring agents (`docs-engineer`) are
-execution-light by design — they hold no `bash`/`git` capability. The Lead
+execution-light by design - they hold no `bash`/`git` capability. The Lead
 (`lead-engineer` / `baseline-steward`) runs their mandatory gates (`mdbook build`, link
 check) and commits on their behalf (ADR-0027).
 
@@ -24,7 +24,7 @@ check) and commits on their behalf (ADR-0027).
 
 ## Procedure: Add a New Agent
 
-### Step 1 — Write the agent body
+### Step 1 - Write the agent body
 
 Create `.agents/<name>.md` with the agent's persona, responsibilities, and guardrails.
 
@@ -44,7 +44,7 @@ You are the **<role>** for this project. <One-sentence purpose.>
 - ...
 ```
 
-### Step 2 — Register in _meta.yaml
+### Step 2 - Register in _meta.yaml
 
 Add an entry to `.agents/_meta.yaml`:
 ```yaml
@@ -56,7 +56,7 @@ Add an entry to `.agents/_meta.yaml`:
     edit: allow
 ```
 
-### Step 3 — Run sync-agents.sh
+### Step 3 - Run sync-agents.sh
 
 ```sh
 chmod +x .agents/sync-agents.sh
@@ -68,14 +68,14 @@ Verify the generated file:
 cat .opencode/agents/your-agent.md
 ```
 
-### Step 4 — Test the agent
+### Step 4 - Test the agent
 
 Open a session and invoke the agent:
 ```
 @your-agent Hello, confirm you can read your instructions.
 ```
 
-### Step 5 — Document the addition
+### Step 5 - Document the addition
 
 Write or update an ADR if the new agent represents a significant architectural
 decision (e.g., adding a domain-specific specialist).
@@ -126,15 +126,15 @@ its class with an explicit sentinel token near the top of the file:
 ```
 
 The check excludes any file carrying that sentinel. It is an exact-token declaration, not
-free prose — a hook that merely *mentions* git hooks in its docstring is still treated as an
+free prose - a hook that merely *mentions* git hooks in its docstring is still treated as an
 AI-tool hook. A file that does *not* carry the sentinel is treated as an AI-tool hook and
-flagged if unwired — the check fails safe.
+flagged if unwired - the check fails safe.
 
 The steps below apply to **AI-tool hooks**. An AI-tool hook must be wired into
 `AGENT.md` to take effect; adding a hook file without updating the
 template is a silent no-op. For git hooks, see `.core/scripts/install-git-hooks.sh` and ADR-0022.
 
-### Step 1 — Write or update the hook
+### Step 1 - Write or update the hook
 
 Create or edit `.core/hooks/<name>.py`. Follow the existing hook conventions:
 - Read tool input from `json.load(sys.stdin)`
@@ -143,7 +143,7 @@ Create or edit `.core/hooks/<name>.py`. Follow the existing hook conventions:
 - Include a `AGENT_<HOOKNAME>_DISABLED=1` circuit breaker for conditional hooks
 - Unconditional safety hooks (e.g. `package-install-guard.py`) must not have a circuit breaker
 
-### Step 2 — Wire into settings.json.template
+### Step 2 - Wire into settings.json.template
 
 Open `AGENT.md` and add the hook under the correct event
 (`PreToolUse` or `PostToolUse`) with the appropriate `matcher`.
@@ -161,7 +161,7 @@ Open `AGENT.md` and add the hook under the correct event
 }
 ```
 
-### Step 3 — Verify wiring
+### Step 3 - Verify wiring
 
 Run the hook audit check to confirm no hooks are unwired:
 
@@ -169,17 +169,17 @@ Run the hook audit check to confirm no hooks are unwired:
 python3 .core/scripts/check-hook-wiring.py
 ```
 
-### Step 4 — Test the hook
+### Step 4 - Test the hook
 
 ```sh
-# PreToolUse — pipe a simulated tool call to the hook directly
+# PreToolUse - pipe a simulated tool call to the hook directly
 echo '{"tool_input": {"command": "your test command"}}' | python3 .core/hooks/<name>.py
 echo "exit: $?"
 ```
 
-### Step 5 — Commit both files together
+### Step 5 - Commit both files together
 
-Hook files and `settings.json.template` are coupled artifacts — always commit them
+Hook files and `settings.json.template` are coupled artifacts - always commit them
 in the same commit:
 
 ```sh

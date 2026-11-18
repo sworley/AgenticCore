@@ -37,8 +37,8 @@
   - [ADR-0009: Agent Portability Model](adr/adr-0009-agent-portability-model.md)
   - [ADR-0010: Hook Rollback Strategy](adr/adr-0010-hook-rollback-strategy.md)
   - [ADR-0011: Lead-Engineer Identity Anchoring](adr/adr-0011-lead-engineer-identity-anchoring.md)
-  - [ADR-0012: Bench Assignment — Canonical/Generated Split](adr/adr-0012-bench-assignment-canonical-generated-split.md)
-  - [ADR-0013: Pattern A — Two-Flavor Model](adr/adr-0013-pattern-a-two-flavor-model.md)
+  - [ADR-0012: Bench Assignment - Canonical/Generated Split](adr/adr-0012-bench-assignment-canonical-generated-split.md)
+  - [ADR-0013: Pattern A - Two-Flavor Model](adr/adr-0013-pattern-a-two-flavor-model.md)
   - [ADR-0014: Project Task Slug and ADR Ticket Governance](adr/adr-0014-project-slug-adr-ticket-governance.md)
   - [ADR-0015: Framework Distribution and Adoption Model](adr/adr-0015-framework-distribution-adoption-model.md)
   - [ADR-0016: Agentic Toolchain Secret Management](adr/adr-0016-agentic-toolchain-secret-management.md)
@@ -49,11 +49,23 @@
   - [ADR-0021: Per-Agent Model Tiering (Opt-In Overrides on Top of the Default)](adr/adr-0021-per-agent-model-tiering.md)
   - [ADR-0022: Git-Native Pre-Commit Permission-Order Check and Install-Only Hook Installer](adr/adr-0022-git-pre-commit-permission-order-check.md)
   - [ADR-0023: Config-Enforced opencode MCP Tool Restriction for approve_finding_update](adr/adr-0023-opencode-mcp-tool-restriction.md)
-  - [ADR-0024: Informed HIL Override — Documented Risk-Acceptance Valve](adr/adr-0024-informed-hil-override.md)
+  - [ADR-0024: Informed HIL Override - Documented Risk-Acceptance Valve](adr/adr-0024-informed-hil-override.md)
   - [ADR-0025: Framework Write-Protection Model](adr/adr-0025-framework-write-protection-model.md)
   - [ADR-0026: Release-Branch Curation Model](adr/adr-0026-release-branch-curation-model.md)
   - [ADR-0027: Authoring-Agent Execution Model](adr/adr-0027-authoring-agent-execution-model.md)
   - [ADR-0028: Customer/Project Plane Provisioning](adr/adr-0028-customer-plane-provisioning.md)
+
+---
+
+# Documentation Planes
+
+- [Management Plane](management/index.md)
+  - [Architecture · System](management/architecture/system/AgenticCore-Spec.md)
+  - [Assurance · Reviews](management/assurance/reviews/ledger-runbook/index.md)
+  - [Governance · Decisions](management/governance/decisions/index.md)
+  - [Security · Guardrails](management/security/guardrails/credential-identity/index.md)
+  - [Security · Guardrails · Secret](management/security/guardrails/secret-management/index.md)
+- [Projects Plane](projects/index.md)
 
 ---
 
@@ -64,6 +76,7 @@
   - [Session Close Checklist](reference.architecture/session-close-checklist.md)
   - [Provision Worker Bench](reference.architecture/provision-worker-bench.md)
   - [Bootstrap New Project](reference.architecture/bootstrap-new-project.md)
+  - [Adopt a Project Context](reference.architecture/adopt-project-context.md)
   - [Tooling Contract](reference.architecture/tooling-contract.md)
   - [Task Queue Operations](reference.architecture/task-queue-operations.md)
   - [Bench Registry](reference.architecture/bench-registry.md)
@@ -80,7 +93,7 @@
 # Operations
 
 - [Operations Index](operations/index.md)
-  - [Runbook: git-sync — Git Workspace Sync](operations/runbooks/git-sync-runbook.md)
+  - [Runbook: git-sync - Git Workspace Sync](operations/runbooks/git-sync-runbook.md)
   - [Runbook: Sync Agent Definitions](operations/runbooks/sync-agent-definitions.md)
   - [Runbook: Configure Agent Namespace](operations/runbooks/configure-agents.md)
   - [Runbook: Sync Agent Config](operations/runbooks/sync-opencode-config.md)
@@ -92,7 +105,7 @@
   - [Runbook: Agent Session Tracking](operations/runbooks/agent-session-tracking.md)
   - [Runbook: secret-guard Hook](operations/runbooks/secret-guard.md)
   - [Runbook: Credential-Identity Guard](operations/runbooks/credential-identity-guard.md)
-  - [Runbook: check-links — Internal Link Validator](operations/runbooks/check-links-runbook.md)
+  - [Runbook: check-links - Internal Link Validator](operations/runbooks/check-links-runbook.md)
   - [Runbook: Bench Recovery](operations/runbooks/bench-recovery.md)
   - [Runbook: AI-Assisted Session Commit Discipline](operations/runbooks/ai-doc-session-commit-discipline.md)
   - [Runbook: Agent Authoring Workflow](operations/runbooks/agent-authoring-workflow.md)
@@ -151,13 +164,14 @@
   - [adopt.sh](scripts/setup/adopt.md)
   - [python-env.sh](scripts/setup/python-env.md)
   - [toolchain.sh](scripts/setup/toolchain.md)
-  - [opencode.json — init-opencode-settings](scripts/setup/init-opencode-settings.md)
+  - [opencode.json - init-opencode-settings](scripts/setup/init-opencode-settings.md)
   - [phase2-dev-toolchain.sh](scripts/setup/phase2-dev-toolchain.md)
   - [verify-toolchain.sh](scripts/setup/verify-toolchain.md)
 
 - [Hooks and Utilities](scripts/hooks-index.md)
   - [statusline-command.sh](scripts/statusline-command.md)
   - [update-summary-on-adr-write.py](scripts/update-summary-on-adr-write.md)
+  - [reconcile-metadata-registry.py](scripts/reconcile-metadata-registry.md)
 
 ---
 

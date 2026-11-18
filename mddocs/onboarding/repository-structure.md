@@ -6,7 +6,7 @@ AgenticCore/
 ├── AGENT.md                        Lead-engineer persona (AI toolchain)
 ├── PROCESS.md                       Canonical workflow, roles, governance
 ├── opencode.json                    OpenCode tool configuration
-├── tasks.yaml                       Task queue — lead-engineer is sole writer
+├── tasks.yaml                       Task queue - lead-engineer is sole writer
 ├── .gitignore
 ├── .envrc.template                  Credential injection template
 │
@@ -63,7 +63,7 @@ AgenticCore/
 ## Key Conventions
 
 - `mddocs/` is the single source of truth for all documentation
-- `.agents/` is the canonical source for agent definitions — never hand-edit `.opencode/agents/` directly
+- `.agents/` is the canonical source for agent definitions - never hand-edit `.opencode/agents/` directly
 - `tasks.yaml` is owned exclusively by the lead-engineer (`.01`)
-- `.core/work/` tracks session state — commit at every session close
-- `_oob/` captures orphaned artifacts — never silently ignore untracked files
+- `.core/work/` tracks session state - commit at every session close
+- `_oob/` captures orphaned artifacts - never silently ignore untracked files

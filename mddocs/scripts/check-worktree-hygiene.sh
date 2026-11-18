@@ -1,5 +1,5 @@
 #!/bin/sh
-# check-worktree-hygiene.sh — Verify all git worktrees are clean
+# check-worktree-hygiene.sh - Verify all git worktrees are clean
 #
 # Usage: ./scripts/check-worktree-hygiene.sh
 #
@@ -14,11 +14,11 @@
 # read back into a `while read` loop in the CURRENT shell (not a pipe
 # subshell), so that `found_dirty` set inside the loop is visible to the exit
 # logic below. Piping directly into `while read` (or using bash-only process
-# substitution `< <(...)`) would either run the loop in a subshell — silently
-# discarding `found_dirty` — or require a non-POSIX shebang. Same pattern as
+# substitution `< <(...)`) would either run the loop in a subshell - silently
+# discarding `found_dirty` - or require a non-POSIX shebang. Same pattern as
 # bench-status.sh (TC-052).
 #
-# Note: the per-worktree status variable is named `wt_status`, not `status` —
+# Note: the per-worktree status variable is named `wt_status`, not `status` -
 # zsh reserves `status` as a read-only special variable (last exit code), so
 # assigning to a plain `status` var fails with "read-only variable" under zsh.
 

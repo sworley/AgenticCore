@@ -1,5 +1,5 @@
 #!/bin/bash
-# configure.sh — Validate AgenticCore environment
+# configure.sh - Validate AgenticCore environment
 
 set -e
 

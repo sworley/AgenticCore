@@ -1,16 +1,16 @@
-# Runbook: Session Continuity — Commit Discipline and End-of-Focus Memory Write
+# Runbook: Session Continuity - Commit Discipline and End-of-Focus Memory Write
 
 **Category:** Platform & Developer Tooling
 **Last Updated:** 2026-05-13
 **Owner:** Platform Engineering
 
-**Companion Script:** `.agentic/scripts/check-worktree-hygiene.sh` (check-mode only — audits worktree state, no changes)
+**Companion Script:** `.agentic/scripts/check-worktree-hygiene.sh` (check-mode only - audits worktree state, no changes)
 
 ## Overview
 
 This runbook documents two session continuity practices adopted after an OS patch
 reboot interrupted active agentic sessions. Git and file state survived the reboot
-cleanly; the loss was in-flight conversation context — what was being worked on at
+cleanly; the loss was in-flight conversation context - what was being worked on at
 the moment of interruption.
 
 Two mitigations are in place:
@@ -30,17 +30,17 @@ Two mitigations are in place:
 
 ---
 
-## Practice 1 — Commit Early, Commit Often
+## Practice 1 - Commit Early, Commit Often
 
 ### What it means
 
-Agents commit after each **discrete unit of work** — a completed subtask, a generated
+Agents commit after each **discrete unit of work** - a completed subtask, a generated
 artifact that is ready, a decision that landed in a file. Changes are not accumulated
 across multiple subtasks before committing.
 
 A "unit of work" is anything describable in a one-line commit subject.
 
-### Automated enforcement — Stop hook
+### Automated enforcement - Stop hook
 
 `.agentic/hooks/session-close-reminder.py` fires as a `Stop` hook at the end of every
 agent turn. It:
@@ -50,7 +50,7 @@ agent turn. It:
 3. Emits a warning to stderr if any worktree has uncommitted changes
 4. Is silent when all worktrees are clean
 
-The hook is informational — it never blocks the agent. Exit code is always `0`.
+The hook is informational - it never blocks the agent. Exit code is always `0`.
 
 ### Hook location
 
@@ -73,7 +73,7 @@ Registered in `settings.local.json.template` under the `Stop` event:
 ]
 ```
 
-### Companion script — manual check
+### Companion script - manual check
 
 ```bash
 .agentic/scripts/check-worktree-hygiene.sh
@@ -97,7 +97,7 @@ DIRTY: /path/to/<program>.02
 
 ---
 
-## Practice 2 — End-of-Focus Memory Write
+## Practice 2 - End-of-Focus Memory Write
 
 ### What it means
 
@@ -120,24 +120,24 @@ Write or update a `project_queue_state_<date>.md` file in
 ```markdown
 ---
 name: queue-state-<YYYY-MM-DD>
-description: Session state snapshot — active task, status, next step
+description: Session state snapshot - active task, status, next step
 metadata:
   type: project
 ---
 
-Current focus: <AC-NNNN> — <ticket title>
-Status: <where I stopped — e.g., "hook implemented, runbook in progress">
+Current focus: <AC-NNNN> - <ticket title>
+Status: <where I stopped - e.g., "hook implemented, runbook in progress">
 Next: <immediate next step>
 Open: <any blocking question or pending decision, or "none">
 
-**Why:** Session continuity — preserves in-flight context across interruptions.
+**Why:** Session continuity - preserves in-flight context across interruptions.
 **How to apply:** Read at session open to restore focus before checking tasks.yaml.
 ```
 
 Add a pointer to `MEMORY.md`:
 
 ```markdown
-- [Task queue state — session end YYYY-MM-DD](project_queue_state_YYYY-MM-DD.md) — ...
+- [Task queue state - session end YYYY-MM-DD](project_queue_state_YYYY-MM-DD.md) - ...
 ```
 
 ### Manual procedure (no AI toolchain available)
@@ -151,12 +151,12 @@ MEMORY_DIR="$HOME/.agentic/projects/<hashed-project-path>/memory"
 cat > "$MEMORY_DIR/project_queue_state_$(date +%Y-%m-%d).md" << 'EOF'
 ---
 name: queue-state-YYYY-MM-DD
-description: Session state snapshot — active task, status, next step
+description: Session state snapshot - active task, status, next step
 metadata:
   type: project
 ---
 
-Current focus: AC-NNNN — <title>
+Current focus: AC-NNNN - <title>
 Status: <where stopped>
 Next: <next step>
 Open: <open questions or "none">
@@ -166,7 +166,7 @@ Open: <open questions or "none">
 EOF
 
 # Add pointer to index
-echo "- [Task queue state — session end YYYY-MM-DD](project_queue_state_YYYY-MM-DD.md) — <one-line hook>" \
+echo "- [Task queue state - session end YYYY-MM-DD](project_queue_state_YYYY-MM-DD.md) - <one-line hook>" \
   >> "$MEMORY_DIR/MEMORY.md"
 ```
 
@@ -212,7 +212,7 @@ print('Stop hook removed from live settings')
 "
 ```
 
-The template (`settings.local.json.template`) is the committed source of truth — do
+The template (`settings.local.json.template`) is the committed source of truth - do
 not modify it during a rollback. Restore the live settings from the template when ready
 to re-enable:
 
@@ -224,8 +224,8 @@ cp .agentic/settings.local.json.template .agentic/settings.local.json
 
 ## Related
 
-- [Agent Session Tracking](agent-session-tracking.md) — full session persistence model (memory, session-state.md, audit log)
-- `.agentic/hooks/session-close-reminder.py` — Stop hook implementation
-- `.agentic/scripts/check-worktree-hygiene.sh` — companion audit script
-- `.agentic/settings.local.json.template` — hook registration source of truth
-- `~/.agentic/projects/<hashed-project-path>/memory/MEMORY.md` — long-term memory index
+- [Agent Session Tracking](agent-session-tracking.md) - full session persistence model (memory, session-state.md, audit log)
+- `.agentic/hooks/session-close-reminder.py` - Stop hook implementation
+- `.agentic/scripts/check-worktree-hygiene.sh` - companion audit script
+- `.agentic/settings.local.json.template` - hook registration source of truth
+- `~/.agentic/projects/<hashed-project-path>/memory/MEMORY.md` - long-term memory index

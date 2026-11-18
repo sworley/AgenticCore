@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-17
 **Status:** accepted
-**Supersedes:** —
+**Supersedes:** -
 
 ## Prior Art
 
@@ -16,17 +16,17 @@ forward; customer-plane and IL2-specific enforcement details removed.
 
 Three related problems were identified:
 
-**Problem 1 — External content gate definition gap.**
+**Problem 1 - External content gate definition gap.**
 The lead-engineer content inspection gate named WebFetch URLs, files ingested from outside
-the collection, user-supplied data, and third-party API responses — but not `git clone`,
+the collection, user-supplied data, and third-party API responses - but not `git clone`,
 `git pull`, `git rebase`, or package dependency installation. An agent reading the
 definition literally could skip inspection for any of those operations.
 
-**Problem 2 — No explicit rule prohibiting git hook installation in external repos.**
+**Problem 2 - No explicit rule prohibiting git hook installation in external repos.**
 No agent definition stated that git hooks must not be installed in repositories outside
 the management plane without team and customer approval.
 
-**Problem 3 — Plane model not formally recorded.**
+**Problem 3 - Plane model not formally recorded.**
 The management/external plane separation was implemented in code but not documented as
 a named architectural decision with explicit scope, enforcement mechanism, and
 forward-looking notes.
@@ -48,7 +48,7 @@ forward-looking notes.
 | Git root | `<program>.01/.git` |
 | Worktrees | `.00` (owner HIL), `.01` (lead-engineer), `.02`+ (workers) |
 | Contents | Tickets, agent definitions, AGENT.md files, hooks, scripts, ADRs, runbooks |
-| Security posture | Maximum — all agentic guardrails apply |
+| Security posture | Maximum - all agentic guardrails apply |
 
 ### External / Customer Plane
 
@@ -65,7 +65,7 @@ enter management git history by accident or agent error.
 
 ## Decisions
 
-### Decision 1 — External Content Gate Scope
+### Decision 1 - External Content Gate Scope
 
 The following operations are explicitly classified as external content and require
 security-engineer content inspection before any agent acts on the result:
@@ -81,24 +81,24 @@ security-engineer content inspection before any agent acts on the result:
 | User-supplied text acted on as data | Prompt injection surface |
 | Third-party API response | Untrusted data |
 
-### Decision 2 — No Git Hooks on External Repositories
+### Decision 2 - No Git Hooks on External Repositories
 
 No agent may install, configure, modify, or remove git hooks in any external or customer
 repository without explicit written approval from both the delivery team and the customer.
 
-### Decision 3 — Agent-Level Enforcement Only (for Now)
+### Decision 3 - Agent-Level Enforcement Only (for Now)
 
 **Chosen approach:** Agent-level guardrails only. System-level git hooks are not
 implemented at this time. The management plane is always operated under agentic control,
 so agent-level rules cover the primary enforcement surface.
 
-The decision is reversible — implementing system-level hooks later requires no
+The decision is reversible - implementing system-level hooks later requires no
 architectural change.
 
 ## Consequences
 
 **Positive:**
-- External content gate has no ambiguous cases — every common agentic operation that introduces external material is named explicitly
+- External content gate has no ambiguous cases - every common agentic operation that introduces external material is named explicitly
 - The incremental approach (agent-level first) allows validation before committing to system-level changes
 
 **Negative / Trade-offs:**
@@ -121,4 +121,4 @@ well understood.
 
 - [ADR-: Agentic Agent Enforcement Posture](adr-0022-git-pre-commit-permission-order-check.md)
 - [ADR-0007: Bench Scope Isolation](adr-0007-bench-scope-isolation.md)
-- `PROCESS.md` — human gate and security inspection gate contract
+- `PROCESS.md` - human gate and security inspection gate contract

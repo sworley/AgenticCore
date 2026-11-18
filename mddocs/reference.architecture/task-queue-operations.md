@@ -1,8 +1,8 @@
 # Task Queue Operations
 
-**Purpose:** Working with `tasks.yaml` — creating, claiming, transitioning, and closing tasks.
+**Purpose:** Working with `tasks.yaml` - creating, claiming, transitioning, and closing tasks.
 
-**Owner:** lead-engineer (`.01`) — sole writer of `tasks.yaml`
+**Owner:** lead-engineer (`.01`) - sole writer of `tasks.yaml`
 
 ---
 
@@ -50,7 +50,7 @@ backlog → ready → claimed → in_progress → branch_ready → awaiting_revi
 | `branch_ready` | bench-lead (via relay) | Deliverables committed, awaiting HIL review |
 | `awaiting_review` | lead-engineer | HIL review explicitly requested |
 | `accepted` | lead-engineer (on HIL LGTM) | Approved; ready to merge |
-| `merged` | lead-engineer | Landed to `dev` (integration surface; not yet release-selected — ADR-0026) |
+| `merged` | lead-engineer | Landed to `dev` (integration surface; not yet release-selected - ADR-0026) |
 
 ---
 
@@ -107,8 +107,8 @@ Update in `tasks.yaml`:
 
 ## Gap Label Convention
 
-Tasks that represent a systemic gap — a missing capability, process hole, or
-architectural weakness — should carry a `gap` label. This separates them from
+Tasks that represent a systemic gap - a missing capability, process hole, or
+architectural weakness - should carry a `gap` label. This separates them from
 normal feature/fix work and ensures they surface at session-open for HIL visibility.
 
 ```yaml
@@ -144,9 +144,9 @@ and branch-ready items.
 
 ## Field-Feedback Label Convention
 
-Tasks that originate from real-world use of a deployed AgenticCore release —
+Tasks that originate from real-world use of a deployed AgenticCore release -
 observations, friction, or defects encountered by an operator running a fresh
-deployment in the field — should carry a `field-feedback` label. This distinguishes
+deployment in the field - should carry a `field-feedback` label. This distinguishes
 items driven by actual adopter experience from framework-internal work, so their
 signal (and volume) can be traced back to deployment use.
 
@@ -155,7 +155,7 @@ labels: [field-feedback]
 ```
 
 The label answers "did this come from someone actually using a shipped release?"
-It composes with other labels — a field-reported defect is
+It composes with other labels - a field-reported defect is
 `labels: [field-feedback, bug]`; a first-run onboarding rough edge is
 `labels: [field-feedback, developer-experience]`. Where the item also reveals a
 systemic hole, add `gap` as well.
@@ -163,7 +163,7 @@ systemic hole, add `gap` as well.
 Any agent or the HIL may relay field feedback. The lead-engineer (or
 baseline-steward, for framework tasks) creates the task and applies the label.
 Field-feedback tasks follow the standard lifecycle. High-signal moments to watch:
-fresh startup, first bench provision, and initial release consumption — these
+fresh startup, first bench provision, and initial release consumption - these
 surface bootstrap and onboarding gaps invisible to a long-lived bench.
 
 ### Identifying field-feedback tasks at session-open
@@ -192,7 +192,7 @@ else:
 Bench leads cannot write `tasks.yaml` directly. Use `relay-pending.md`:
 
 ```markdown
-## Relay pending — YYYY-MM-DD
+## Relay pending - YYYY-MM-DD
 
 **Destination:** .01 / lead-engineer
 **Task:** AC-NNNN

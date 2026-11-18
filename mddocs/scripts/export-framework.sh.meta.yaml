@@ -1,0 +1,16 @@
+id: SH-0007
+title: Framework export / adopter distribution
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Adoption
+process: adoption-export
+owner: release-engineer
+allowed_in_adopter_repos: false
+enforces: ADR-0015
+related:
+  paths:
+    - ../adr/adr-0015-framework-distribution-adoption-model.md
+    - test-export-framework-severance.sh
+    - ../reference.architecture/provision-worker-bench.md

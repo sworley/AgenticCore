@@ -2,8 +2,8 @@
 
 **Date:** 2026-06-22
 **Status:** accepted
-**Scope:** v0.0.1 initial release — all foundational structural decisions
-**Partially superseded by:** ADR-0026 (the branch-flow model below — `feat/* → dev → main → tag → release/*` and the branch-tier purpose table — is replaced by the curated release-branch model; the rest of this ADR remains authoritative)
+**Scope:** v0.0.1 initial release - all foundational structural decisions
+**Partially superseded by:** ADR-0026 (the branch-flow model below - `feat/* → dev → main → tag → release/*` and the branch-tier purpose table - is replaced by the curated release-branch model; the rest of this ADR remains authoritative)
 
 ---
 
@@ -19,7 +19,7 @@ any individual decision will reference this document and the specific section.
 
 ---
 
-## Decision 1 — Repository Structure and Namespace
+## Decision 1 - Repository Structure and Namespace
 
 ### Context
 
@@ -29,9 +29,9 @@ A portable agentic framework requires a clear, opinionated repository layout tha
 - Avoids project-specific bleed that reduces portability
 
 Options considered:
-1. Flat structure — simple but does not scale to multi-agent coordination
-2. Monorepo with subdirectories per concern — chosen
-3. Separate repos per concern — too much overhead for a framework repo
+1. Flat structure - simple but does not scale to multi-agent coordination
+2. Monorepo with subdirectories per concern - chosen
+3. Separate repos per concern - too much overhead for a framework repo
 
 ### Decision
 
@@ -47,9 +47,9 @@ workspace. `.02`+ are ephemeral per-ticket worker benches.
 ### Consequences
 
 **Positive:**
-- Clear ownership — every file belongs to a known layer
-- Portable — no project-specific paths or references at structural level
-- Navigable — agents and humans can orient from the root
+- Clear ownership - every file belongs to a known layer
+- Portable - no project-specific paths or references at structural level
+- Navigable - agents and humans can orient from the root
 
 **Negative / Trade-offs:**
 - More initial setup than a flat layout
@@ -61,16 +61,16 @@ workspace. `.02`+ are ephemeral per-ticket worker benches.
 
 ---
 
-## Decision 2 — Credential Injection via direnv
+## Decision 2 - Credential Injection via direnv
 
 ### Context
 
 Agentic workflows require access to Git tokens and other credentials at runtime.
 Options:
-1. Hardcode in config files — security violation; rejected
-2. Environment variables set manually — fragile; error-prone
-3. direnv with pass store integration — chosen
-4. Vault/secrets manager — overkill for this framework tier
+1. Hardcode in config files - security violation; rejected
+2. Environment variables set manually - fragile; error-prone
+3. direnv with pass store integration - chosen
+4. Vault/secrets manager - overkill for this framework tier
 
 ### Decision
 
@@ -97,7 +97,7 @@ appropriate credential path automatically.
 - Windows/non-POSIX environments need adaptation
 
 **Neutral:**
-- `.envrc` is per-checkout — each worktree has its own credential injection
+- `.envrc` is per-checkout - each worktree has its own credential injection
 
 ### See also
 
@@ -105,7 +105,7 @@ appropriate credential path automatically.
 
 ---
 
-## Decision 3 — Documentation-First Workflow with mdBook
+## Decision 3 - Documentation-First Workflow with mdBook
 
 ### Context
 
@@ -113,16 +113,16 @@ The framework must maintain comprehensive, searchable, and versioned documentati
 that supports agentic RAG (Retrieval-Augmented Generation) access patterns.
 
 Options evaluated:
-1. Zola (Rust SSG) — good performance; tabi theme supply chain concern; disqualified
-2. MkDocs — Python dependency; not aligned with Rust toolchain preference
-3. mdBook (Rust/Cargo) — chosen; native Rust, mdbook-mermaid available, Git Pages compatible
-4. Custom Rust SSG — maximum control; eliminated on onboarding friction
+1. Zola (Rust SSG) - good performance; tabi theme supply chain concern; disqualified
+2. MkDocs - Python dependency; not aligned with Rust toolchain preference
+3. mdBook (Rust/Cargo) - chosen; native Rust, mdbook-mermaid available, Git Pages compatible
+4. Custom Rust SSG - maximum control; eliminated on onboarding friction
 
 ### Decision
 
 All documentation lives in `mddocs/` and is built with mdBook. Mermaid diagrams
 are supported via `mdbook-mermaid` preprocessor. Diagrams are used only where they
-genuinely clarify complex workflows — not decoratively.
+genuinely clarify complex workflows - not decoratively.
 
 `mddocs/` is the single source of truth. Every ADR, runbook, and procedure must be
 in `mddocs/` and linked in `SUMMARY.md`.
@@ -130,10 +130,10 @@ in `mddocs/` and linked in `SUMMARY.md`.
 ### Consequences
 
 **Positive:**
-- Rust toolchain alignment — `cargo install mdbook` is one command
-- Git Pages compatible — CI pipeline publishes on push to main
+- Rust toolchain alignment - `cargo install mdbook` is one command
+- Git Pages compatible - CI pipeline publishes on push to main
 - Mermaid support without external dependencies
-- Flat Markdown files — fully RAG-indexable
+- Flat Markdown files - fully RAG-indexable
 
 **Negative / Trade-offs:**
 - No live search without additional plugin
@@ -142,12 +142,12 @@ in `mddocs/` and linked in `SUMMARY.md`.
 
 ### See also
 
-Build: `mdbook build mddocs/` — Serve: `mdbook serve mddocs/`
+Build: `mdbook build mddocs/` - Serve: `mdbook serve mddocs/`
 CI pipeline: `.git-ci.yml`
 
 ---
 
-## Decision 4 — Agentic Bench Model and Namespace Hierarchy
+## Decision 4 - Agentic Bench Model and Namespace Hierarchy
 
 ### Context
 
@@ -159,12 +159,12 @@ work. A structured isolation model mapped to git's native primitives is required
 
 Workspaces are organized as **git worktrees** in a numbered namespace hierarchy:
 
-- `.00` — HIL (human) workspace. Long-living. Owner-controlled.
-- `.01` — Lead-engineer. Long-living. Owns task queue and bench lifecycle.
-- `.02`+ — Worker benches. Ephemeral. Provisioned per ticket by lead-engineer.
+- `.00` - HIL (human) workspace. Long-living. Owner-controlled.
+- `.01` - Lead-engineer. Long-living. Owns task queue and bench lifecycle.
+- `.02`+ - Worker benches. Ephemeral. Provisioned per ticket by lead-engineer.
 
 Each namespace suffix corresponds to a git worktree checked out to a specific branch.
-Context isolation is enforced by worktree scope — each agent session opens in its
+Context isolation is enforced by worktree scope - each agent session opens in its
 assigned worktree.
 
 Lead-engineer (`.01`) is the sole orchestrator. It never executes task work directly.
@@ -173,14 +173,14 @@ Bench leads (`.02`+) may not write to `.01` namespace.
 ### Consequences
 
 **Positive:**
-- Native git primitive — no external tooling required
-- Clear ownership — each worktree is a named, trackable workspace
-- Parallel execution — multiple tasks can run concurrently without conflicts
-- Recoverable — any bench can be rebuilt from its branch
+- Native git primitive - no external tooling required
+- Clear ownership - each worktree is a named, trackable workspace
+- Parallel execution - multiple tasks can run concurrently without conflicts
+- Recoverable - any bench can be rebuilt from its branch
 
 **Negative / Trade-offs:**
-- Requires discipline at teardown — orphaned worktrees accumulate if not cleaned
-- Context does not cross worktrees — relay protocol required for cross-bench work
+- Requires discipline at teardown - orphaned worktrees accumulate if not cleaned
+- Context does not cross worktrees - relay protocol required for cross-bench work
 
 ### See also
 
@@ -189,7 +189,7 @@ Bench leads (`.02`+) may not write to `.01` namespace.
 
 ---
 
-## Decision 5 — Agent Definition Propagation
+## Decision 5 - Agent Definition Propagation
 
 ### Context
 
@@ -200,9 +200,9 @@ drift and makes updates expensive.
 ### Decision
 
 Agent definitions are maintained in `.agents/` as the canonical source:
-- `<name>.md` — the agent body (tool-agnostic persona and instructions)
-- `_meta.yaml` — per-agent metadata (mode, permissions, description, tool-specific frontmatter)
-- `sync-agents.sh` — generates tool-specific outputs from the canonical source
+- `<name>.md` - the agent body (tool-agnostic persona and instructions)
+- `_meta.yaml` - per-agent metadata (mode, permissions, description, tool-specific frontmatter)
+- `sync-agents.sh` - generates tool-specific outputs from the canonical source
 
 Tool-specific directories (`.opencode/agents/`, `.agentic/agents/`) are **auto-generated**
 outputs. They must not be hand-edited. All changes go to `.agents/` first.
@@ -212,7 +212,7 @@ outputs. They must not be hand-edited. All changes go to `.agents/` first.
 **Positive:**
 - Single source of truth for all agent logic
 - Adding a new AI tool only requires a new generator block in `sync-agents.sh`
-- Clean diffs — canonical source changes are meaningful
+- Clean diffs - canonical source changes are meaningful
 
 **Negative / Trade-offs:**
 - Requires running `sync-agents.sh` after every agent body change
@@ -224,7 +224,7 @@ outputs. They must not be hand-edited. All changes go to `.agents/` first.
 
 ---
 
-## Decision 6 — Commit and Push Acceptance Gate
+## Decision 6 - Commit and Push Acceptance Gate
 
 ### Context
 
@@ -237,15 +237,15 @@ committed, and unauditable history.
 All commits and pushes require explicit HIL acceptance before execution.
 Enforced in two layers:
 
-1. **Instruction layer** — `.opencode/commit-push-gate.md` is loaded as a system
+1. **Instruction layer** - `.opencode/commit-push-gate.md` is loaded as a system
    instruction. Agents must present a staged change summary and wait for explicit
    acceptance before running `git commit` or `git push`.
 
-2. **Permission layer** — `opencode.json` sets `"git commit *": "ask"` and
+2. **Permission layer** - `opencode.json` sets `"git commit *": "ask"` and
    `"git push *": "ask"`, triggering a platform-level confirmation prompt.
 
 Acceptance signals: "lgtm", "commit it", "go ahead", "yes".
-Ambiguous signals ("ok", "sure") are not acceptance — agent must ask for clarification.
+Ambiguous signals ("ok", "sure") are not acceptance - agent must ask for clarification.
 
 ### Consequences
 
@@ -255,8 +255,8 @@ Ambiguous signals ("ok", "sure") are not acceptance — agent must ask for clari
 - Audit trail in session log for every accepted commit
 
 **Negative / Trade-offs:**
-- Intentional friction — adds a confirmation step to every commit and push
-- Cannot be waived — no session-level "proceed autonomously" override
+- Intentional friction - adds a confirmation step to every commit and push
+- Cannot be waived - no session-level "proceed autonomously" override
 
 ### See also
 
@@ -264,7 +264,7 @@ Ambiguous signals ("ok", "sure") are not acceptance — agent must ask for clari
 
 ---
 
-## Decision 7 — Branch Protection and Merge Strategy
+## Decision 7 - Branch Protection and Merge Strategy
 
 ### Context
 
@@ -286,7 +286,7 @@ Feature/task work uses short-lived branches from `dev`:
 - Naming: `<type>/<ticket-id>-<short-slug>`
 - Types: `feat`, `fix`, `docs`, `security`, `poc`, `review`, `release`
 
-Merge strategy: `git merge --no-ff` everywhere — merge commits are required.
+Merge strategy: `git merge --no-ff` everywhere - merge commits are required.
 Flow: `feat/*` → `dev` → `main` → (tag) → `release/vX.Y.Z`
 
 > **Superseded by ADR-0026 (2026-08-20).** The wholesale flow above (treating `dev` as

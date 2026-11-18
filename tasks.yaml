@@ -1,4 +1,4 @@
-# tasks.yaml — AgenticCore Task Queue
+# tasks.yaml - AgenticCore Task Queue
 #
 # Single source of truth for all work in the harness. Maintained by
 # lead-engineer (`.01`). Only `.01` writes to this file. See
@@ -182,7 +182,7 @@ tasks:
       Bump the MCP SDK (mcp) to 1.30.0. Trivial requirements.txt pin change
       surfaced by dependabot. Verified compatible with fastmcp 3.4.2 + pyyaml
       (modules import cleanly). Part of the dependency/security review
-      (mcp, fastmcp, fastmcp-slim) — reviewed one at a time on dev.
+      (mcp, fastmcp, fastmcp-slim) - reviewed one at a time on dev.
     acceptance_criteria:
       - "requirements.txt pins mcp==1.30.0"
       - "mcp/fastmcp/yaml import cleanly"
@@ -304,3 +304,200 @@ tasks:
     created: "2026-11-09"
     updated: "2026-11-09"
     started_at: "2026-11-09T17:00:00"
+
+  - id: AC-0012
+    title: "HIL submission: adopt documentation and knowledge taxonomy (ADR-0029)"
+    description: |
+      Formalize the adoption of the proposed documentation and knowledge taxonomy
+      (the Documentation Knowledge Taxonomy proposal v0.4) as the governance framework for all current and
+      future mddocs/ artefacts.
+
+      Governing principle: the taxonomy covers documentation and metadata
+      contracts. The metadata on a tool is the contractual record of its owner,
+      its domain, and the governance it enforces or participates in. Physical
+      file location is downstream of both - it is an execution detail, not an
+      authority. Artefacts are governed by their frontmatter contract, not by
+      their directory path.
+
+      Deliverable: management-plane ADR-0029 with all eight sub-decisions resolved
+      (D1–D8), submitted to HIL for approval. Supporting evidence is recorded in
+      AC-0013 (taxonomy reconciliation).
+
+      Scope of this ticket: approve the taxonomy adoption decision and the
+      frontmatter annotation contract. Physical directory restructuring, ADR
+      migration, and script relocation are explicitly out of scope - they are
+      future migration ADR work, not prerequisites for this approval.
+    acceptance_criteria:
+      - "ADR-0029 drafted with all 8 sub-decisions (D1–D8) resolved and recorded"
+      - "AC-0013 reconciliation exists as supporting evidence"
+      - "HIL APPROVED on ADR-0029"
+    adr: [ADR-0029]
+    priority: P1
+    size: L
+    labels: [governance, taxonomy, docs, hil-approval]
+    agent: baseline-steward
+    status: merged
+    completed_at: "2026-11-12T00:00:00"
+    branch: "chore/taxonomy-adoption"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-12"
+    updated: "2026-11-12"
+
+  - id: AC-0013
+    title: "Annotate script frontmatter contracts (ADR-0029 D4 implementation)"
+    description: |
+      Execute the one-time frontmatter annotation pass required by ADR-0029
+      D4. The adopted taxonomy governs documentation and metadata contracts;
+      the metadata on a tool is the contractual record of its owner, its
+      domain, and the governance it enforces or participates in. Physical
+      file location is downstream of both - this ticket adds the metadata,
+      it does not move files.
+
+      Scope covers every file under mddocs/scripts/:
+
+      **Executables (27 files):**
+      - .sh (23): bench-status, check-env, check-links, check-worktree-hygiene,
+        export-framework, git-sync, mcp-tests/run-all, mcp-tests/test-mcp-filesystem,
+        mcp-tests/test-mcp-git, provision-bench, read-audit-log, setup/{adopt,
+        model-distribution, phase2-dev-toolchain, python-env, tool-adapter,
+        toolchain, verify-toolchain}, statusline-command, sync-agent-config,
+        test-{adopt-target-handling, export-framework-severance,
+        provision-bench-substitution}
+      - .py (2): mcp-tests/test-mcp-rag-docs.py, update-summary-on-adr-write.py
+      - .yaml (2): seed/bench-registry.yaml, seed/tasks.yaml
+
+      **Script `.md` files under mddocs/scripts/ (27 total):**
+      - **script-docs sidecars (19)** - document a single executable:
+        mcp-tests/{run-all, test-mcp-filesystem, test-mcp-git, test-mcp-rag-docs},
+        operations/{bench-status, check-env, check-links, check-worktree-hygiene,
+        git-sync, provision-bench, read-audit-log, sync-opencode-config},
+        setup/{adopt, phase2-dev-toolchain, python-env, toolchain, verify-toolchain},
+        statusline-command, update-summary-on-adr-write
+      - **index / standard / reference / seed docs (8)** - NOT script-docs:
+        hooks-index.md (SDX-002), mcp-tests/README.md (SDX-001),
+        operations/index.md (SDX-003), setup/index.md (SDX-004),
+        metadata-standard.md (STD-0001), setup/init-opencode-settings.md (REF-0001),
+        seed/.core/agents/_context.md (SEED-CONTEXT), seed/mddocs/backlog.md (SEED-BACKLOG)
+
+      **Classification contract per ADR-0029 D4:**
+
+      Each artefact receives frontmatter encoding:
+        id:        SH-<STABLE_ID>
+        document_type: script | script-docs | data
+        status:    active | template | superseded | retired
+        lifecycle: active | template | shared (migrated) | superseded | retired
+        domain:    Management | Projects/<context>
+        category:  Operations | Security | Agentic | Architecture | Adoption | Governance | Testing
+        process:   <workflow artefact participates in>
+        owner:     <agent role>
+        allowed_in_adopter_repos: false | true   (default: false)
+        enforces:  ADR-XXXX   (only for governance enforcement scripts; omit otherwise)
+        source_ticket: AC-XXXX   (only for project-activity scripts; omit for Management-owned)
+        source_context: <context>   (only for project-activity scripts; omit for Management-owned)
+        migrated_from: <path>       (only when lifecycle=shared; omit otherwise)
+        related.paths: [<relative paths to docs this script is documented by or governs>]
+
+      For executable files (.sh, .py, .yaml, .js) that cannot carry YAML
+      frontmatter natively, a .meta.yaml companion file is created alongside
+      the executable using the same contract.
+
+      **Four-class classification:**
+
+      1. Harness-owned tooling - domain: Management, allowed_in_adopter_repos: false
+      2. Harness-provided general-use - domain: Management, allowed_in_adopter_repos: true
+         (provision-bench.sh, git-sync.sh as exemplars). adopt.sh is NOT class 2 - it is a
+         class 1 bootstrap (allowed_in_adopter_repos: false) and must never ship into an
+         adopted environment.
+      3. Project-activity script - domain: Projects/<context>, source_ticket and
+         source_context populated; currently no instances exist; annotate as
+         domain: Management with a NOTE that these will be classified when
+         Projects/<context> activity begins
+      4. Governance enforcement - enforces: ADR-XXXX as primary identity field;
+         placement governed by the mandating ADR, not the taxonomy
+
+      **Out of scope:**
+      - Physical file relocation (future migration ADR per D4)
+      - Creation of Management/Tools/ or Projects/Tools/ directories
+      - Changes to mddocs/scripts/seed/ provisioning templates (handled separately if needed)
+
+      Source document for all decisions: AC-0013 section 4.10 and D4.
+      Approval authority: this ticket requires lead-engineer sign-off before
+      commit, per ADR-0019 HIL gates.
+    acceptance_criteria:
+      - "All 27 executables annotated - .meta.yaml companion on .sh/.py/.yaml executables; frontmatter where natively supported"
+      - "All 19 executable-documentation sidecars annotated with document_type: script-docs and inheriting domain from parent artefact (the remaining 8 mddocs/scripts/ .md files are index/standard/reference/seed docs: SDX-001–004, STD-0001, REF-0001, SEED-CONTEXT, SEED-BACKLOG)"
+      - "Governance enforcement scripts identified and annotated with enforces: ADR-XXXX"
+      - "Harness-provided general-use scripts (provision-bench.sh, git-sync.sh) annotated with allowed_in_adopter_repos: true"
+      - "adopt.sh annotated with allowed_in_adopter_repos: false (class 1 bootstrap). It must NOT ship into an adopted environment: a downstream adopter could otherwise re-run adopt.sh to adopt the already-adopted environment. The class-2 exemplar list accordingly drops adopt.sh."
+      - "lead-engineer review and sign-off recorded before commit"
+      - "No files relocated; no scripts renamed; no provisioning templates modified"
+      - "ADR-0029 D4 frontmatter contract verified against AC-0013 reference positions"
+    adr: [ADR-0029]
+    priority: P1
+    size: L
+    labels: [governance, taxonomy, docs, scripts]
+    agent: baseline-steward
+    status: accepted
+    branch: "dev"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-12"
+    updated: "2026-11-18"
+    completed_at: "2026-11-18"
+    review:
+      docs-reviewer:
+        verdict: approved_with_notes
+        run: RR-2026-11-17-01
+        note: "5 findings/notes recorded then resolved; no open findings"
+      security-reviewer:
+        verdict: clean
+        run: SR-2026-11-18-01
+        note: "Branch touches .core/hooks/*.py + adopt.sh classification; sweep verified cosmetic, no secrets, no authz hole"
+
+  - id: AC-0014
+    title: "Wire allowed_in_adopter_repos to export-framework.sh shipping (bootstrap exclusion)"
+    description: |
+      The `allowed_in_adopter_repos` metadata flag (metadata-standard §4) documents
+      which scripts ship as the supported adoption surface, but it is descriptive
+      only - `export-framework.sh`'s `FRAMEWORK_EXCLUDE_PATTERNS` ignores it, so
+      `allowed_in_adopter_repos: false` artifacts still ship to adopters.
+
+      Stage 1 (done): exclude the one-shot bootstrap tools `setup/adopt.sh` and
+      `export-framework.sh` from the adopter tree (a downstream adopter could
+      otherwise re-run adopt.sh to re-adopt an adopted environment, or re-home
+      via export-framework.sh).
+
+      Stage 2 (done): make the flag authoritative - `export-framework.sh`
+      computes exclusions from `.meta.yaml` for every `allowed_in_adopter_repos:
+      false` artifact; re-review each of the 19 false flags; record the decision
+      as an ADR-0015 D-9 amendment (the governing adoption model) + manifest/
+      severance test coverage (the test harness already sources
+      `FRAMEWORK_EXCLUDE_PATTERNS`, so new excludes are asserted automatically).
+    acceptance_criteria:
+      - "setup/adopt.sh and export-framework.sh are absent from an exported adopter tree"
+      - "test-export-framework-severance.sh and test-adopt-target-handling.sh pass"
+      - "D-7 confidentiality controls intact; --dry-run manifests reflect the excludes"
+      - "metadata-standard §4 documents the flag as the authoritative shipping gate"
+      - "governance recorded as an ADR-0015 D-9 amendment (adoption model), not a new ADR"
+    adr: [ADR-0015]
+    priority: P2
+    size: M
+    labels: [governance, taxonomy, security, scripts]
+    agent: baseline-steward
+    status: accepted
+    branch: "feat/taxonomy-adoption"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-18"
+    updated: "2026-11-18"
+    completed_at: "2026-11-18"
+    review:
+      docs-reviewer:
+        verdict: approved_with_notes
+        run: RR-2026-11-18-01
+        note: "ADR-0034 stub properly covered via decisions index; no blocking findings"
+      security-reviewer:
+        verdict: approved_with_notes
+        run: SR-2026-11-18-02
+        note: "Baseline/Tier 1; gate injection-safe, D-7 untouched, surface only narrowed. Non-blocking notes W1 (fail-open default), W2 (gate .md frontmatter scope), W3 (stale .md doc frontmatter) - none blocking"

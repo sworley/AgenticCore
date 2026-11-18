@@ -5,10 +5,10 @@
 # (export-framework.sh copies the framework tree into the adopter repo).
 # They fall into two classes:
 #
-#   UNIVERSAL — machine-local config / secrets / build output. Never commit in
+#   UNIVERSAL - machine-local config / secrets / build output. Never commit in
 #   ANY repo (framework or adopter). An adopter must NOT un-ignore these.
 #
-#   FRAMEWORK-BENCH — bench/worktree mechanics that the framework and adopters
+#   FRAMEWORK-BENCH - bench/worktree mechanics that the framework and adopters
 #   both use (benches are git worktrees, relay notes, session logs). Regenerable.
 #
 # Adopters manage their OWN project-specific ignores on top of this file;
@@ -30,7 +30,7 @@
 # Nested git repositories (sub-projects / worktrees that contain their own .git)
 **/.git/
 
-# Machine-local agentic tool settings — never commit
+# Machine-local agentic tool settings - never commit
 .mcp.json
 opencode.json.local
 .agentic/
@@ -42,13 +42,13 @@ mddocs/book/
 __pycache__/
 *.pyc
 
-# Environment / credential injection — see .envrc.template
-# .envrc is never committed (ADR-0001 D-2, ADR-0021 D-4) — .envrc.template is the reference
+# Environment / credential injection - see .envrc.template
+# .envrc is never committed (ADR-0001 D-2, ADR-0021 D-4) - .envrc.template is the reference
 .envrc
 .envrc.local
 
 # Machine-local env var overrides (never commit)
-# .env-required itself is committed — only var names, no values
+# .env-required itself is committed - only var names, no values
 .env-required.local
 
 # Project-local Python virtualenv (created at adoption time by
@@ -63,7 +63,7 @@ __pycache__/
 # macOS filesystem metadata
 .DS_Store
 
-# Review-ledger runtime data (findings) — machine-local audit entries.
+# Review-ledger runtime data (findings) - machine-local audit entries.
 # The framework's own authoring does NOT utilize the review-ledger; adopters get
 # both ledgers (security + reviews) wired and ready. The .gitkeep files that
 # create the directories remain tracked.
@@ -75,7 +75,7 @@ __pycache__/
 .worktrees/
 worktrees/
 
-# Bench artifacts — relay-pending.md and .bench/ are worktree-local (written by provision-bench.sh), regenerable, never committed; canonical bench provenance lives in bench-registry.yaml (AP-056, ADR-0015 amendment)
+# Bench artifacts - relay-pending.md and .bench/ are worktree-local (written by provision-bench.sh), regenerable, never committed; canonical bench provenance lives in bench-registry.yaml (AP-056, ADR-0015 amendment)
 relay-pending.md
 .bench/
 

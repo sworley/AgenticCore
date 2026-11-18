@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
 # .core/scripts/install-git-hooks.sh
 # Install the tracked git-native pre-commit checks into this repo's git hooks
-# directory. Install-only — there is no check mode.
+# directory. Install-only - there is no check mode.
 #
 # The tracked pre-commit checks are chained through a single `pre-commit`
 # dispatcher, each guarded by its own idempotent marker so re-running is safe
 # and any pre-existing/foreign pre-commit hook is preserved:
-#   1. permission-order-check (AP-035, ADR-0022) — catch-all-first ordering in
+#   1. permission-order-check (AP-035, ADR-0022) - catch-all-first ordering in
 #      staged opencode config.
-#   2. credential-identity-check (AP-068) — rejects commits whose author or
+#   2. credential-identity-check (AP-068) - rejects commits whose author or
 #      committer identity (name/email) matches a credential pattern (glpat-, …).
 #
 # What it does:
@@ -24,7 +24,7 @@
 #   install-git-hooks.sh
 #
 # This script must be run explicitly by an authorized operator. Installing git
-# hooks is a privileged, per-repo action — see ADR-0022 and Invariant #10.
+# hooks is a privileged, per-repo action - see ADR-0022 and Invariant #10.
 
 set -euo pipefail
 
@@ -43,7 +43,7 @@ for src in "$PERMISSION_HOOK_SRC" "$IDENTITY_HOOK_SRC"; do
 done
 
 # ---------------------------------------------------------------------------
-# Resolve the hooks directory — worktree-safe.
+# Resolve the hooks directory - worktree-safe.
 # `git rev-parse --git-path hooks` returns the git-common-dir hooks path, which
 # is correct whether run from the main working tree or a linked worktree.
 # ---------------------------------------------------------------------------
@@ -106,7 +106,7 @@ fi
 append_check() {
   local marker="$1" block="$2" label="$3"
   if grep -qF "$marker" "$PRECOMMIT" 2>/dev/null; then
-    print "[install] pre-commit already dispatches to ${label} — no change"
+    print "[install] pre-commit already dispatches to ${label} - no change"
   else
     {
       print ""

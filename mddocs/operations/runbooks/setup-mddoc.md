@@ -9,8 +9,8 @@ setup.
 
 ## Prerequisites
 
-- Access: none — local machine setup only
-- Tools: `cargo` (Rust package manager) — install from [rustup.rs](https://rustup.rs) if not present
+- Access: none - local machine setup only
+- Tools: `cargo` (Rust package manager) - install from [rustup.rs](https://rustup.rs) if not present
 - State: `mddocs/` directory cloned from the repository
 
 ## Steps
@@ -60,7 +60,7 @@ To build a static snapshot without serving:
 ```bash
 cd mddocs
 mdbook build
-# Output written to mddocs/book/ — do not commit this directory
+# Output written to mddocs/book/ - do not commit this directory
 ```
 
 ## Validation

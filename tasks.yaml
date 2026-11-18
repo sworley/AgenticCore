@@ -470,16 +470,17 @@ tasks:
 
       Stage 2 (done): make the flag authoritative - `export-framework.sh`
       computes exclusions from `.meta.yaml` for every `allowed_in_adopter_repos:
-      false` artifact; re-review each of the 19 false flags; add an ADR-0015
-      amendment + manifest/severance test coverage (the test harness already
-      sources `FRAMEWORK_EXCLUDE_PATTERNS`, so new excludes are asserted
-      automatically).
+      false` artifact; re-review each of the 19 false flags; record the decision
+      as an ADR-0015 D-9 amendment (the governing adoption model) + manifest/
+      severance test coverage (the test harness already sources
+      `FRAMEWORK_EXCLUDE_PATTERNS`, so new excludes are asserted automatically).
     acceptance_criteria:
       - "setup/adopt.sh and export-framework.sh are absent from an exported adopter tree"
       - "test-export-framework-severance.sh and test-adopt-target-handling.sh pass"
       - "D-7 confidentiality controls intact; --dry-run manifests reflect the excludes"
       - "metadata-standard §4 documents the flag as the authoritative shipping gate"
-    adr: [ADR-0015, ADR-0034]
+      - "governance recorded as an ADR-0015 D-9 amendment (adoption model), not a new ADR"
+    adr: [ADR-0015]
     priority: P2
     size: M
     labels: [governance, taxonomy, security, scripts]

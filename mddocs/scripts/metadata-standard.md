@@ -105,7 +105,7 @@ not a new file.
 **Important:** this is a **governance/documentation contract** for what ships to
 adopters, not an access control or permission. It never forbids use, but
 `export-framework.sh` now honors it as the authoritative gate for the shipped
-adoption surface (AC-0014 Stage 2, ADR-0034): any artifact whose `.meta.yaml`
+adoption surface (AC-0014 Stage 2, ADR-0015 D-9): any artifact whose `.meta.yaml`
 declares `allowed_in_adopter_repos: false` is excluded from the adopter tree.
 The supported adoption surface is the `allowed_in_adopter_repos: true` set.
 

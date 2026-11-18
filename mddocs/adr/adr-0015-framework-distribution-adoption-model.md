@@ -5,7 +5,8 @@
 **Supersedes:** -
 **Superseded by:** -
 **Amended:** 2026-08-17 (D-7 - two adoption flows; TC-050 field feedback); 2026-08-20
-(D-8 - discipline-inheritance boundary; TC-063 field feedback)
+(D-8 - discipline-inheritance boundary; TC-063 field feedback); 2026-11-18
+(D-9 - `allowed_in_adopter_repos` as the authoritative shipping gate; AC-0014)
 
 ---
 
@@ -429,6 +430,50 @@ either flow. D-8 clarifies a distinct, previously-unstated boundary: the
 governance the exported baseline imposes on the adopter's project, and which
 parts are specific to how this framework, and only this framework, ships its
 own releases.
+
+---
+
+### D-9: `allowed_in_adopter_repos` as the authoritative shipping gate
+
+**Status of this decision:** Amendment (2026-11-18), sourced from AC-0014
+(Stage 1 + Stage 2) - the `allowed_in_adopter_repos` metadata flag was
+descriptive only; `export-framework.sh`'s `FRAMEWORK_EXCLUDE_PATTERNS` ignored
+it, so `allowed_in_adopter_repos: false` artifacts still shipped to adopters.
+Stage 1 excluded the one-shot bootstrap tools (`setup/adopt.sh`,
+`export-framework.sh`); Stage 2 makes the flag authoritative.
+
+**Decision.**
+
+- **The flag is authoritative.** `export-framework.sh` excludes from the
+  adopter tree every artifact whose `.meta.yaml` declares
+  `allowed_in_adopter_repos: false`. The supported adoption surface is the
+  `true` set (metadata-standard section 3/4). This is the shipping mechanism for
+  the D-1/D-7 adoption surface and the D-8 discipline-inheritance boundary; it
+  does not weaken any D-7 confidentiality control (remote severance, history/
+  refs/object scrub).
+- **Reclassification (15 -> class 2 / `true`).** The following are part of the
+  shipped, supported surface: `bench-status.sh`, `check-worktree-hygiene.sh`,
+  `read-audit-log.sh`, `statusline-command.sh`, `sync-agent-config.sh`,
+  `setup/phase2-dev-toolchain.sh`, `update-summary-on-adr-write.py`,
+  `reconcile-metadata-registry.py`, `mcp-tests/run-all.sh`,
+  `mcp-tests/test-mcp-filesystem.sh`, `mcp-tests/test-mcp-git.sh`,
+  `mcp-tests/test-mcp-rag-docs.py`, `test-adopt-target-handling.sh`,
+  `test-export-framework-severance.sh`, `test-provision-bench-substitution.sh`.
+  These were previously `false` but are referenced by shipped agent definitions
+  and runbooks (e.g. `lead-engineer.md` runs `bench-status.sh --stale` at
+  session open), so excluding them would ship a surface whose instructions
+  reference missing tools.
+- **Keep `false` (excluded / not shipped):** the one-shot bootstrap tools
+  `setup/adopt.sh` and `export-framework.sh`, and the seed data
+  `seed/tasks.yaml` / `seed/bench-registry.yaml`. The bootstrap tools are
+  excluded so a downstream adopter cannot re-run `adopt.sh` to re-adopt an
+  already-adopted environment, or re-home via `export-framework.sh`.
+
+**Consequence.** The shipped script set is now driven by metadata, so a future
+reclassification has shipping consequences and must be reviewed (HIL-gated).
+`export-framework.sh` computes the excludes from `.meta.yaml` at source time so
+the same authoritative `FRAMEWORK_EXCLUDE_PATTERNS` array drives the tar copy,
+the manifest walk, and the test harness (which sources it directly).
 
 ---
 

@@ -468,7 +468,7 @@ tasks:
       otherwise re-run adopt.sh to re-adopt an adopted environment, or re-home
       via export-framework.sh).
 
-      Stage 2 (pending): make the flag authoritative - `export-framework.sh`
+      Stage 2 (done): make the flag authoritative - `export-framework.sh`
       computes exclusions from `.meta.yaml` for every `allowed_in_adopter_repos:
       false` artifact; re-review each of the 19 false flags; add an ADR-0015
       amendment + manifest/severance test coverage (the test harness already
@@ -478,13 +478,13 @@ tasks:
       - "setup/adopt.sh and export-framework.sh are absent from an exported adopter tree"
       - "test-export-framework-severance.sh and test-adopt-target-handling.sh pass"
       - "D-7 confidentiality controls intact; --dry-run manifests reflect the excludes"
-      - "metadata-standard §4 documents that the flag does not yet drive shipping generically (Stage 2 pending)"
-    adr: [ADR-0015]
+      - "metadata-standard §4 documents the flag as the authoritative shipping gate"
+    adr: [ADR-0015, ADR-0034]
     priority: P2
     size: M
     labels: [governance, taxonomy, security, scripts]
     agent: baseline-steward
-    status: in_progress
+    status: branch_ready
     branch: "feat/taxonomy-adoption"
     bench: .01
     blocked_by: []

@@ -102,14 +102,12 @@ not a new file.
   orchestration, internal state, or a one-shot bootstrap not meant to be re-run
   from inside an adopted workspace.
 
-**Important:** this is a **descriptive governance/documentation contract**, not
-an access control or permission. It never forbids use. The *physical* gate for
-what ships into an adopter repo is `export-framework.sh`'s
-`FRAMEWORK_EXCLUDE_PATTERNS`. The flag does **not** drive shipping generically;
-however, the one-shot bootstrap tools `setup/adopt.sh` and `export-framework.sh`
-are excluded from the adopter tree (AC-0014 Stage 1) so an adopter cannot
-re-run adopt / re-home. Wiring the flag to drive shipping generically is
-AC-0014 Stage 2.
+**Important:** this is a **governance/documentation contract** for what ships to
+adopters, not an access control or permission. It never forbids use, but
+`export-framework.sh` now honors it as the authoritative gate for the shipped
+adoption surface (AC-0014 Stage 2, ADR-0034): any artifact whose `.meta.yaml`
+declares `allowed_in_adopter_repos: false` is excluded from the adopter tree.
+The supported adoption surface is the `allowed_in_adopter_repos: true` set.
 
 ---
 
@@ -164,34 +162,34 @@ AC-0014 Stage 2.
 
 | ID | Executable | Class | Owner | `allowed_in_adopter_repos` | `enforces` |
 |---|---|---|---|---|---|
-| SH-0001 | `bench-status.sh` | 1 | ops-engineer | false | - |
+| SH-0001 | `bench-status.sh` | 2 | ops-engineer | true | - |
 | SH-0002 | `provision-bench.sh` | 2 | ops-engineer | true | - |
 | SH-0003 | `check-env.sh` | 2 | ops-engineer | true | - |
 | SH-0004 | `check-links.sh` | 2 | docs-engineer | true | - |
-| SH-0005 | `check-worktree-hygiene.sh` | 1 | ops-engineer | false | - |
+| SH-0005 | `check-worktree-hygiene.sh` | 2 | ops-engineer | true | - |
 | SH-0006 | `git-sync.sh` | 2 | ops-engineer | true | - |
 | SH-0007 | `export-framework.sh` | 4 | release-engineer | false | ADR-0015 |
-| SH-0008 | `read-audit-log.sh` | 1 | security-engineer | false | - |
-| SH-0009 | `statusline-command.sh` | 1 | orchestrator | false | - |
-| SH-0010 | `sync-agent-config.sh` | 1 | lead-engineer | false | - |
+| SH-0008 | `read-audit-log.sh` | 2 | security-engineer | true | - |
+| SH-0009 | `statusline-command.sh` | 2 | orchestrator | true | - |
+| SH-0010 | `sync-agent-config.sh` | 2 | lead-engineer | true | - |
 | SH-0011 | `setup/adopt.sh` | 1 | release-engineer | false | - |
 | SH-0012 | `setup/model-distribution.sh` | 2 | lead-engineer | true | - |
-| SH-0013 | `setup/phase2-dev-toolchain.sh` | 1 | infra-engineer | false | - |
+| SH-0013 | `setup/phase2-dev-toolchain.sh` | 2 | infra-engineer | true | - |
 | SH-0014 | `setup/python-env.sh` | 2 | ops-engineer | true | - |
 | SH-0015 | `setup/tool-adapter.sh` | 2 | lead-engineer | true | - |
 | SH-0016 | `setup/toolchain.sh` | 2 | infra-engineer | true | - |
 | SH-0017 | `setup/verify-toolchain.sh` | 2 | infra-engineer | true | - |
-| SH-0018 | `mcp-tests/run-all.sh` | 1 | ops-engineer | false | - |
-| SH-0019 | `mcp-tests/test-mcp-filesystem.sh` | 1 | ops-engineer | false | - |
-| SH-0020 | `mcp-tests/test-mcp-git.sh` | 1 | ops-engineer | false | - |
-| SH-0021 | `mcp-tests/test-mcp-rag-docs.py` | 1 | ops-engineer | false | - |
-| SH-0022 | `update-summary-on-adr-write.py` | 1 | docs-engineer | false | - |
-| SH-0023 | `test-adopt-target-handling.sh` | 1 | release-engineer | false | - |
-| SH-0024 | `test-export-framework-severance.sh` | 1 | security-engineer | false | - |
-| SH-0025 | `test-provision-bench-substitution.sh` | 1 | ops-engineer | false | - |
+| SH-0018 | `mcp-tests/run-all.sh` | 2 | ops-engineer | true | - |
+| SH-0019 | `mcp-tests/test-mcp-filesystem.sh` | 2 | ops-engineer | true | - |
+| SH-0020 | `mcp-tests/test-mcp-git.sh` | 2 | ops-engineer | true | - |
+| SH-0021 | `mcp-tests/test-mcp-rag-docs.py` | 2 | ops-engineer | true | - |
+| SH-0022 | `update-summary-on-adr-write.py` | 2 | docs-engineer | true | - |
+| SH-0023 | `test-adopt-target-handling.sh` | 2 | release-engineer | true | - |
+| SH-0024 | `test-export-framework-severance.sh` | 2 | security-engineer | true | - |
+| SH-0025 | `test-provision-bench-substitution.sh` | 2 | ops-engineer | true | - |
 | SH-0026 | `seed/bench-registry.yaml` | 1 | ops-engineer | false | - |
 | SH-0027 | `seed/tasks.yaml` | 1 | lead-engineer | false | - |
-| SH-0028 | `reconcile-metadata-registry.py` | 1 | docs-engineer | false | - |
+| SH-0028 | `reconcile-metadata-registry.py` | 2 | docs-engineer | true | - |
 
 > Note: the generated per-file `.meta.yaml` metadata is authoritative over this
 > table. Reconcile the table here whenever a classification changes - or run

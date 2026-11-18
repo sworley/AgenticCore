@@ -105,8 +105,11 @@ fi
 
 # Stale bench detection - requires python3 and tasks.yaml
 if [ "$STALE_MODE" -eq 1 ]; then
-  # Prefer uv run (has pyyaml in the project env), fall back to bare python3
-  if command -v uv >/dev/null 2>&1; then
+  # Prefer the harness .venv (created at adopt time by adopt.sh -> python-env.sh,
+  # which installs pyyaml from requirements.txt), then uv run, then bare python3.
+  if [ -x ".venv/bin/python" ]; then
+    PY=".venv/bin/python"
+  elif command -v uv >/dev/null 2>&1; then
     PY="uv run python3"
   elif command -v python3 >/dev/null 2>&1; then
     PY="python3"
@@ -129,11 +132,14 @@ except ImportError:
     sys.exit(0)
 
 with open("tasks.yaml") as f:
-    tasks = yaml.safe_load(f) or []
+    doc = yaml.safe_load(f) or {}
+    # tasks.yaml is a mapping with a top-level `tasks:` list; unwrap it and
+    # tolerate a bare list for robustness.
+    tasks = doc.get("tasks", []) if isinstance(doc, dict) else doc
 
 terminal_ids = {
     t["id"] for t in tasks
-    if t.get("status") in ("merged", "cancelled")
+    if isinstance(t, dict) and t.get("status") in ("merged", "cancelled")
 }
 
 result = subprocess.run(

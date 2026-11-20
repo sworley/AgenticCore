@@ -25,6 +25,6 @@ primary: true
 | [ADR-0032](ADR-0032-classification-metadata-id-contracts.md) | Classification Metadata and Standard ID Contracts | accepted | 2026-11-17 |
 | [ADR-0033](ADR-0033-project-context-adoption-q5-seeding.md) | Project Context Adoption / Q5 Seeding | accepted | 2026-11-17 |
 | [ADR-0034](ADR-0034-allowed-in-adopter-repos-authoritative.md) | allowed_in_adopter_repos as the Authoritative Shipping Gate | superseded (folded into ADR-0015 D-9) | 2026-11-18 |
-| [ADR-0035](ADR-0035-adr-evolution-forward-only-supersede.md) | ADR Evolution - Forward-Only Supersede and Historical Coexistence | proposed | 2026-11-20 |
+| [ADR-0035](ADR-0035-adr-evolution-forward-only-supersede.md) | ADR Evolution - Forward-Only Supersede and Historical Coexistence | accepted | 2026-11-20 |
 
 → [Historical ADR index](../../../adr/)

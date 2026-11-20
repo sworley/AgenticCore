@@ -2,11 +2,12 @@
 """
 Metadata Registry Reconcile / Report.
 
-Scans every `*.meta.yaml` companion under `mddocs/scripts/` (SH executable IDs),
-every SH `.md` script-doc sidecar under `mddocs/scripts/`, and the frontmatter
-classification IDs (SDX/REF/STD/SEED) across `mddocs/`, and compares them
-against the registry tables (section 8 for SH, section 8.1 for classification
-IDs) in `mddocs/scripts/metadata-standard.md`.
+Scans every `*.meta.yaml` companion under `mddocs/scripts/` and
+`mddocs/management/tooling/` (SH executable IDs), every SH `.md` script-doc
+sidecar under `mddocs/scripts/`, and the classification IDs (SDX/REF/STD/SEED)
+across `mddocs/` (from `.md` frontmatter and `.meta.yaml` reference companions),
+and compares them against the registry tables (section 8 for SH, section 8.1 for
+classification IDs) in `mddocs/scripts/metadata-standard.md`.
 
 The per-artifact metadata (`.meta.yaml` / frontmatter) is authoritative. This
 tool reports any drift between the authoritative metadata and the static registry
@@ -32,8 +33,19 @@ from pathlib import Path
 # Repository root = three levels up from this script (<root>/mddocs/scripts/).
 REPO = Path(__file__).resolve().parents[2]
 SCRIPTS_DIR = REPO / "mddocs" / "scripts"
+TOOLING_DIR = REPO / "mddocs" / "management" / "tooling"
 MDDOCS = REPO / "mddocs"
 STANDARD = REPO / "mddocs" / "scripts" / "metadata-standard.md"
+
+# Annotation roots. Each entry is (directory to scan, base for the reported
+# artifact path). `mddocs/scripts/` paths are reported relative to that dir
+# (historical convention, e.g. `bench-status.sh`); `mddocs/management/tooling/`
+# paths are reported relative to `mddocs/` (e.g. `management/tooling/scripts/validate_book.py`)
+# so the registry table stays unambiguous across the two homes.
+ANNOTATION_ROOTS = (
+    (SCRIPTS_DIR, SCRIPTS_DIR),
+    (TOOLING_DIR, MDDOCS),
+)
 
 ROW_RE = re.compile(
     r'^\|\s*(SH-\d+)\s*\|\s*`([^`]+)`\s*\|\s*(\d+)\s*\|\s*([a-zA-Z-]+)\s*\|\s*'
@@ -97,20 +109,21 @@ def derive_class(meta):
 def scan_canonical():
     """Build the canonical registry from `.meta.yaml` companions, keyed by SH id."""
     canonical = {}
-    for meta_path in sorted(SCRIPTS_DIR.rglob("*.meta.yaml")):
-        meta = parse_meta(meta_path)
-        sh_id = str(meta.get("id", "")).strip()
-        if not re.fullmatch(r"SH-\d+", sh_id):
-            continue
-        rel = meta_path.relative_to(SCRIPTS_DIR)
-        exec_path = str(rel)[: -len(".meta.yaml")]
-        canonical[sh_id] = {
-            "exec": exec_path,
-            "class": derive_class(meta),
-            "owner": str(meta.get("owner", "")).strip(),
-            "allowed": to_bool(meta.get("allowed_in_adopter_repos")),
-            "enforces": norm(meta.get("enforces")),
-        }
+    for base_dir, rel_base in ANNOTATION_ROOTS:
+        for meta_path in sorted(base_dir.rglob("*.meta.yaml")):
+            meta = parse_meta(meta_path)
+            sh_id = str(meta.get("id", "")).strip()
+            if not re.fullmatch(r"SH-\d+", sh_id):
+                continue
+            rel = meta_path.relative_to(rel_base)
+            exec_path = str(rel)[: -len(".meta.yaml")]
+            canonical[sh_id] = {
+                "exec": exec_path,
+                "class": derive_class(meta),
+                "owner": str(meta.get("owner", "")).strip(),
+                "allowed": to_bool(meta.get("allowed_in_adopter_repos")),
+                "enforces": norm(meta.get("enforces")),
+            }
     return canonical
 
 
@@ -157,7 +170,12 @@ def parse_frontmatter(path):
 
 
 def scan_classification_ids():
-    """Scan .md frontmatter across mddocs/ for SDX/REF/STD/SEED classification IDs."""
+    """Scan for SDX/REF/STD/SEED classification IDs across mddocs/.
+
+    Reads `.md` frontmatter and `.meta.yaml` companions (reference artefacts such
+    as schemas, dependency locks, and rendering assets carry a REF id in their
+    companion), so classification IDs are reconciled regardless of artefact type.
+    """
     ids = {}
     for f in sorted(MDDOCS.rglob("*.md")):
         if "book" in f.parts:
@@ -171,6 +189,20 @@ def scan_classification_ids():
             "doc_type": str(meta.get("document_type", "")).strip(),
             "domain": str(meta.get("domain", "")).strip(),
             "path": rel.as_posix(),
+        }
+    for f in sorted(MDDOCS.rglob("*.meta.yaml")):
+        meta = parse_meta(f)
+        cid = str(meta.get("id", "")).strip()
+        if not CLASS_ID_RE.fullmatch(cid):
+            continue
+        rel = f.relative_to(MDDOCS)
+        # Report the artefact path, not the companion path, so the registry table
+        # lists `profile.schema.json` rather than `profile.schema.json.meta.yaml`.
+        artefact = rel.as_posix()[: -len(".meta.yaml")]
+        ids[cid] = {
+            "doc_type": str(meta.get("document_type", "")).strip(),
+            "domain": str(meta.get("domain", "")).strip(),
+            "path": artefact,
         }
     return ids
 
@@ -296,7 +328,7 @@ def main():
 
     # ---- report ----
     print("== Metadata Registry Reconcile ==")
-    print(f"Scanned {len(sh_canonical)} .meta.yaml companion(s) under mddocs/scripts/")
+    print(f"Scanned {len(sh_canonical)} .meta.yaml SH companion(s) under mddocs/scripts/ + mddocs/management/tooling/")
     print(f"Scanned {len(sh_docs)} SH script-doc sidecar(s) under mddocs/scripts/")
     print(f"Scanned {len(cls_canonical)} classification ID(s) (SDX/REF/STD/SEED) in mddocs/ frontmatter")
     print(f"Registry rows: SH section 8 = {len(sh_table)}; classification section 8.1 = {len(cls_table)}")

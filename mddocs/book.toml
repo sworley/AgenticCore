@@ -6,4 +6,10 @@ src = "."
 [output.html]
 site-url = "/"
 no-section-label = true
-additional-js = ["mermaid.min.js", "mermaid-init.js"]
+additional-js = [
+  "mermaid.min.js",
+  "mermaid-init.js",
+  "management/tooling/mddoc-assets/collapsible-sidebar.js",
+  "management/tooling/mddoc-assets/external-links.js",
+]
+additional-css = ["management/tooling/mddoc-assets/collapsible-sidebar.css"]

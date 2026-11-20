@@ -501,3 +501,60 @@ tasks:
         verdict: approved_with_notes
         run: SR-2026-11-18-02
         note: "Baseline/Tier 1; gate injection-safe, D-7 untouched, surface only narrowed. Non-blocking notes W1 (fail-open default), W2 (gate .md frontmatter scope), W3 (stale .md doc frontmatter) - none blocking"
+
+  - id: AC-0015
+    title: "Adopt management tooling as canonical reusable tooling home"
+    description: |
+      Adopt the `feat/management-tools-for-review` team-workspace provisioning and
+      adoption toolchain as canonical reusable tooling under
+      `mddocs/management/tooling/`, classified per the metadata standard and
+      governed by an in-place ADR-0032 amendment.
+
+      The toolchain (template deploy, receipt state machine, verified dependency
+      install from locks, mdBook validation, git pre-commit guardrail, project
+      protection schema, and rendering assets) is distinct from the existing
+      framework adoption path (`scripts/setup/adopt.sh`); it is a distinct,
+      reusable team-workspace provisioning and adoption surface.
+
+      Sanitized per the no-project-names rule: `AgenticTeam` is retained as a
+      generic workspace role and team-name default (overridden by adopting
+      teams), not a project reference; test fixtures (`Test.v0.1`, `Team-X.v0.x`,
+      `OtherTeam.v0.99`) are generic. Foreign taxonomy references in the tooling
+      READMEs were repaired to the adopted taxonomy.
+
+      Dedup: the tooling tree's stock mdBook mermaid assets were redundant with
+      the taxonomy-fixed root `mddocs/` mermaid bundle (AC-0013) and were
+      dropped; the root bundle stays the single wired source, and the new
+      navigation assets (collapsible sidebar, external links) are wired via
+      `book.toml`.
+
+      **Rejected scope (ADR-0032, 2026-11-20).** On review, the harness-coupled
+      provisioning toolchain (`template-deploy.sh`, `team-adopt.sh`,
+      `adoption_state.py`, `receipt_check.py`, `create_venv.py`,
+      `install_dependencies.py` and their tests), the git commit guardrail
+      (`git-hooks/`), the harness dependency locks (`python/requirements/`), and
+      the project-protection test-requirements pointer were formally rejected:
+      they depend on a project `pyproject.toml` (SHA-256 pinned in
+      `verified-target.json`) and generated lock files that are not present in
+      this framework, so they cannot be made functional here. Only the
+      self-contained, functional artefacts were adopted (mdBook validation/build
+      helpers, rendering assets, and the project-protection schema + its test).
+    acceptance_criteria:
+      - "retained tooling artefacts carry classification metadata (SH-0035/0036/0045, REF-0002..0005, SDX-005) registered in metadata-standard section 8/8.1"
+      - "harness-coupled tooling (SH-0029..0034, SH-0037..0044, REF-0006..0009, SDX-006) formally rejected and removed; withdrawal recorded in ADR-0032 and metadata-standard"
+      - "reconcile-metadata-registry.py --check passes after extending its scan scope to mddocs/management/tooling/"
+      - "mdbook build and check-links pass; no em-dashes; no broken links"
+      - "no project names or new SLUGs; AgenticTeam naming justified in ADR-0032"
+      - "existing mddocs/scripts/ not migrated in this change"
+    adr: [ADR-0032]
+    priority: P2
+    size: L
+    labels: [taxonomy, adoption, security, scripts]
+    agent: baseline-steward
+    status: in_progress
+    branch: "feat/management-tooling-adoption"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-19"
+    updated: "2026-11-20"
+    started_at: "2026-11-19T00:00:00"

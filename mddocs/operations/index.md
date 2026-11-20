@@ -8,4 +8,4 @@ Operational runbooks for AgenticCore.
 | [Sync Agent Definitions](runbooks/sync-agent-definitions.md) | Propagate .agents/ changes to tool-specific outputs |
 | [Build and Publish mdBook](runbooks/build-publish-mddocs.md) | Build and publish documentation |
 | [Rotate Git PAT](runbooks/rotate-git-pat.md) | Rotate a Git Personal Access Token |
-| [Branch-Protection Rulesets](runbooks/branch-protection-rulesets.md) | Apply/verify GitHub rulesets enforcing ADR-0036 (`main` + `feat/*`) |
+| [Branch-Protection Rulesets](runbooks/branch-protection-rulesets.md) | Apply/verify GitHub rulesets enforcing ADR-0036 (`main` + `dev`) |

@@ -598,3 +598,50 @@ tasks:
     created: "2026-11-20"
     updated: "2026-11-20"
     started_at: "2026-11-20T00:00:00"
+  - id: AC-0017
+    title: "Adopt GitHub branch-protection rulesets for main and feat/*"
+    description: |
+      Implement ADR-0036: adopt GitHub branch-protection rulesets as the
+      server-side enforcement layer for the `main` append-only / merge-only rule
+      (previously ADR-0004, deferred to TC-002) and for the `feat/*` creation
+      gate. Two active rulesets are defined:
+
+        - main-strict (target `main`): block creation/deletion/non-fast-forward;
+          require a pull request with the `verify` CI check, strict (branches up
+          to date), 0 approving reviews and no code-owner review (single-operator;
+          GitHub disallows self-approval, so the gate is CI + workflow + signed
+          commits); require signed commits. Bypass actor: the operator account
+          (deliberate lock-out avoidance; agentic sessions share that identity).
+        - feat-restrict-creation (target `feat/*`): block branch creation by
+          default; bypass actors: operator + malachid (authorized creators).
+
+      ADR-0036 supersedes ADR-0004 (clean forward-only supersession, recorded in
+      the supersession ledger). ADR-0004 is marked `superseded` (metadata only).
+      The legacy `main` branch protection is removed once `main-strict` is active
+      (single source of truth). The ruleset definitions are versioned in the
+      runbook mddocs/operations/runbooks/branch-protection-rulesets.md.
+
+      Note: single-operator harness - the operator is the only human; this ruleset
+      is a process-level backstop, with local pre-commit hooks (ADR-0022) and HIL
+      discipline as the first line of defense.
+    acceptance_criteria:
+      - "ADR-0036 created in mddocs/management/governance/decisions/ superseding ADR-0004 (forward-only)"
+      - "ADR-0004 marked superseded by ADR-0036 (status metadata only; body unedited)"
+      - "supersession-ledger.yaml records ADR-0004 -> ADR-0036 (retired: false)"
+      - "active decisions index lists ADR-0036; historical index marks ADR-0004 superseded"
+      - "runbook branch-protection-rulesets.md documents both rulesets, bypass actors, apply/verify/rollback"
+      - "reconcile-metadata-registry.py --check validates the supersession ledger and passes"
+      - "mdbook build and check-links pass; no em-dashes"
+      - "legacy main branch protection removed after main-strict is active (applied out-of-band by operator)"
+    adr: [ADR-0004, ADR-0036]
+    priority: P2
+    size: M
+    labels: [governance, adr, security]
+    agent: baseline-steward
+    status: in_progress
+    branch: "feat/branch-protection-rulesets"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-20"
+    updated: "2026-11-20"
+    started_at: "2026-11-20T00:00:00"

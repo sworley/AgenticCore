@@ -18,7 +18,7 @@ decisions get a new ADR that references the one it replaces.
 | [ADR-0001](adr-0001-bootstrap-architecture.md) | Bootstrap Architecture | accepted | 2026-06-22 |
 | [ADR-0002](adr-0002-mcp-rag-docs.md) | mcp-rag-docs - Local BM25 Search MCP Server | accepted | 2026-06-22 |
 | [ADR-0003](adr-0003-mcp-stdio-architecture.md) | Local stdio MCP Architecture | accepted | 2026-06-22 |
-| [ADR-0004](adr-0004-main-branch-protection.md) | `main` Branch Protection and Immutability | accepted | 2026-06-25 |
+| [ADR-0004](adr-0004-main-branch-protection.md) | `main` Branch Protection and Immutability | superseded | 2026-06-25 |
 | [ADR-0005](adr-0005-prompt-traceability-session-logging.md) | Prompt Traceability and Session Logging | accepted | 2026-05-08 |
 
 > **Note - retired vendor-specific records.** Three ADRs originally authored as

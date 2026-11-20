@@ -558,3 +558,43 @@ tasks:
     created: "2026-11-19"
     updated: "2026-11-20"
     started_at: "2026-11-19T00:00:00"
+  - id: AC-0016
+    title: "ADR evolution convention: forward-only supersede and supersession ledger"
+    description: |
+      Establish the ADR evolution convention as forward-only supersede: accepted
+      ADR text is never edited in place; any change to a governed decision
+      produces a new ADR that supersedes the prior one. Codify the convention in
+      AGENTICCORE_SPEC.md and create ADR-0035 (superseding ADR-0030, carrying the
+      ADR-0029 D1/D2 placement resolution) as the clean record. Add the
+      machine-checked supersession ledger and the retire-and-remove gate, and wire
+      the reconcile gate to validate the ledger.
+
+      No in-place amendment / addendum / modify is permitted on an accepted ADR.
+      The superseding ADR embodies the substance of the decision it supersedes,
+      rewritten clean rather than pasted.
+
+      ADR-0035 is created as `proposed` in this change; HIL transitions it to
+      `accepted` at review. ADR-0030 is marked `superseded` (status metadata only)
+      and is NOT removed until the retire-and-remove gate passes (ADR-0035
+      accepted). The ledger records the transition with `retired: false`.
+    acceptance_criteria:
+      - "AGENTICCORE_SPEC.md states forward-only supersede; no in-place amendment/addendum/modify"
+      - "ADR-0035 created in mddocs/management/governance/decisions/ superseding ADR-0030, carrying ADR-0029 D1/D2"
+      - "ADR-0030 marked superseded by ADR-0035 (status metadata only; body unedited)"
+      - "supersession-ledger.yaml records ADR-0030 -> ADR-0035 (retired: false); pre-convention amendment-based transitions (e.g. ADR-0034) are handled in the later consolidation pass"
+      - "reconcile-metadata-registry.py --check validates the supersession ledger and passes"
+      - "mdbook build and check-links pass; no em-dashes; no broken links"
+      - "active decisions index lists ADR-0035 and marks ADR-0030 superseded"
+      - "branch-protection rulesets are a separate governed change (not in scope here)"
+    adr: [ADR-0030, ADR-0035]
+    priority: P2
+    size: M
+    labels: [governance, adr, security]
+    agent: baseline-steward
+    status: in_progress
+    branch: "feat/management-tooling-adoption"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-20"
+    updated: "2026-11-20"
+    started_at: "2026-11-20T00:00:00"

@@ -158,7 +158,8 @@ tree. The supported adoption surface is the `allowed_in_adopter_repos: true` set
 5. Review and merge to `dev`. **No new ADR required** for a single
    reclassification - classification is adjustable data, not schema (see §9).
 6. A change to the **schema/contract** itself (field set, enums, class set, or
-   the meaning of a field) requires an **ADR amendment** to `ADR-0029`.
+   the meaning of a field) requires a **new ADR that supersedes** `ADR-0029`
+   (forward-only supersede, ADR-0035) - not an in-place amendment.
 
 ---
 

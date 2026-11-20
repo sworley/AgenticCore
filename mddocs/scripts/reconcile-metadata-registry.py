@@ -36,6 +36,10 @@ SCRIPTS_DIR = REPO / "mddocs" / "scripts"
 TOOLING_DIR = REPO / "mddocs" / "management" / "tooling"
 MDDOCS = REPO / "mddocs"
 STANDARD = REPO / "mddocs" / "scripts" / "metadata-standard.md"
+DECISIONS_DIR = REPO / "mddocs" / "management" / "governance" / "decisions"
+SUPERSESSION_LEDGER = DECISIONS_DIR / "supersession-ledger.yaml"
+# ADR homes: active decisions (from ADR-0029) + historical mddocs/adr/ (ADR-0000..0028).
+ADR_DIRS = (DECISIONS_DIR, REPO / "mddocs" / "adr")
 
 # Annotation roots. Each entry is (directory to scan, base for the reported
 # artifact path). `mddocs/scripts/` paths are reported relative to that dir
@@ -244,8 +248,159 @@ def parse_classification_table():
     return table
 
 
+ADR_ID_RE = re.compile(r"^(ADR|adr)-(\d{4})")
+DEF_ADR_RE = re.compile(r"^(ADR-\d{4})$")
+SUPERSESSION_LIST_RE = re.compile(r"^\s*-\s+([A-Za-z_]+)\s*:\s*(.*)$")
+SUPERSESSION_FIELD_RE = re.compile(r"^\s{2,}([A-Za-z_]+)\s*:\s*(.*)$")
+
+
+def parse_adr_body_meta(path):
+    """Parse an ADR's metadata lines of the form `**Field:** value`."""
+    meta = {}
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return meta
+    for line in lines[:20]:
+        m = re.match(r"^\*\*([A-Za-z /]+):\*\*\s*(.*)$", line.strip())
+        if m:
+            meta[m.group(1).strip().lower()] = m.group(2).strip()
+    return meta
+
+
+def scan_adr_status():
+    """Scan every ADR file (both homes) for its lifecycle status + superseded-by."""
+    adrs = {}
+    for d in ADR_DIRS:
+        if not d.exists():
+            continue
+        for f in sorted(d.glob("*.md")):
+            m = ADR_ID_RE.match(f.name)
+            if not m:
+                continue
+            adr_id = "ADR-" + m.group(2)
+            meta = parse_adr_body_meta(f)
+            adrs[adr_id] = {
+                "status": str(meta.get("status", "")).strip(),
+                "supersedes": str(meta.get("supersedes", "")).strip(),
+                "superseded_by": str(meta.get("superseded by", "")).strip(),
+                "path": f.relative_to(d).as_posix(),
+            }
+    return adrs
+
+
+def parse_supersession_ledger():
+    """Parse the supersession ledger into a list of entry dicts."""
+    entries = []
+    try:
+        lines = SUPERSESSION_LEDGER.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return entries
+    cur = None
+    for line in lines:
+        st = line.strip()
+        if not st or st.startswith("#"):
+            continue
+        m = SUPERSESSION_LIST_RE.match(line)
+        if m:
+            if cur is not None:
+                entries.append(cur)
+            cur = {m.group(1): m.group(2).strip().strip("'\"")}
+            continue
+        m = SUPERSESSION_FIELD_RE.match(line)
+        if m and cur is not None:
+            cur[m.group(1)] = m.group(2).strip().strip("'\"")
+    if cur is not None:
+        entries.append(cur)
+    return entries
+
+
+def is_true(value):
+    return str(value).strip().lower() in ("true", "yes", "1")
+
+
+def is_blank(value):
+    return str(value).strip().lower() in ("", "-", "null", "none", "n/a")
+
+
 def fmt_allowed(value):
     return "true" if value is True else "false"
+
+
+def reconcile_supersession_ledger(adrs):
+    """Validate the supersession ledger (ADR-0035) against the ADR files.
+
+    Checks, per entry:
+      - `superseded` / `superseding` are well-formed ADR ids (ADR-NNNN).
+      - `status`, `disposition`, `date`, `ticket` match the field contract.
+      - Bidirectional linkage: the superseding ADR records `Supersedes: <id>` and
+        the superseded ADR records `Superseded by: <id>`.
+      - Retire consistency: `retired: true` requires a `retired_git_ref` and the
+        retired file absent from the tree; `retired: false` requires the file
+        present and no `retired_git_ref`.
+    Returns a list of drift strings (empty when the ledger is consistent).
+    """
+    drift = []
+    entries = parse_supersession_ledger()
+    seen_superseded = set()
+    for i, e in enumerate(entries, 1):
+        sid = str(e.get("superseded", "")).strip()
+        sup = str(e.get("superseding", "")).strip()
+        if not DEF_ADR_RE.fullmatch(sid):
+            drift.append(f"[LEDGER #{i}] superseded must be ADR-NNNN, got {sid!r}")
+            continue
+        if not DEF_ADR_RE.fullmatch(sup):
+            drift.append(f"[LEDGER #{i}] superseding must be ADR-NNNN, got {sup!r}")
+            continue
+        if sid in seen_superseded:
+            drift.append(f"[LEDGER #{i}] duplicate superseded record for {sid}")
+        seen_superseded.add(sid)
+
+        if str(e.get("status", "")).strip().lower() not in ("superseded", "deprecated"):
+            drift.append(f"[LEDGER #{i}] {sid} status must be superseded|deprecated (got {e.get('status')!r})")
+        if str(e.get("disposition", "")).strip().lower() not in ("superseded", "waived"):
+            drift.append(f"[LEDGER #{i}] {sid} disposition must be superseded|waived (got {e.get('disposition')!r})")
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(e.get("date", "")).strip()):
+            drift.append(f"[LEDGER #{i}] {sid} date must be YYYY-MM-DD (got {e.get('date')!r})")
+        if not re.fullmatch(r"AC-\d{4}", str(e.get("ticket", "")).strip()):
+            drift.append(f"[LEDGER #{i}] {sid} ticket must be AC-NNNN (got {e.get('ticket')!r})")
+
+        n_meta = adrs.get(sup)
+        s_meta = adrs.get(sid)
+        if s_meta is None:
+            drift.append(f"[LEDGER #{i}] superseded {sid} not found among ADR files")
+        if n_meta is None:
+            drift.append(f"[LEDGER #{i}] superseding {sup} not found among ADR files")
+        if s_meta is None or n_meta is None:
+            continue
+
+        # Bidirectional linkage.
+        sup_field = str(n_meta.get("supersedes", "")).strip()
+        if sid not in sup_field:
+            drift.append(f"[LEDGER #{i}] {sup} does not record 'Supersedes: {sid}' (got {sup_field!r})")
+        sb_field = str(s_meta.get("superseded_by", "")).strip()
+        if sup not in sb_field:
+            drift.append(f"[LEDGER #{i}] {sid} does not record 'Superseded by: {sup}' (got {sb_field!r})")
+
+        # Retire consistency (the gate in AGENTICCORE_SPEC.md).
+        retired = is_true(e.get("retired"))
+        ref = str(e.get("retired_git_ref", "")).strip()
+        if retired:
+            if is_blank(ref):
+                drift.append(f"[LEDGER #{i}] {sid} retired:true but no retired_git_ref")
+            if s_meta is not None:
+                drift.append(f"[LEDGER #{i}] {sid} retired:true but file still present ({s_meta['path']})")
+        else:
+            if s_meta is None:
+                drift.append(f"[LEDGER #{i}] {sid} retired:false but superseded file not found in tree")
+            elif not is_blank(ref):
+                drift.append(f"[LEDGER #{i}] {sid} retired:false but retired_git_ref set ({ref!r})")
+
+        # The superseded ADR's own status should reflect the supersession.
+        own_status = str(s_meta.get("status", "")).strip().lower()
+        if own_status not in ("superseded", "deprecated"):
+            drift.append(f"[LEDGER #{i}] {sid} own status should be superseded|deprecated (got {s_meta.get('status')!r})")
+    return drift
 
 
 def main():
@@ -255,6 +410,8 @@ def main():
     sh_docs = scan_sh_script_docs()
     cls_canonical = scan_classification_ids()
     cls_table = parse_classification_table()
+    adrs = scan_adr_status()
+    ledger_entries = parse_supersession_ledger()
 
     drift = []
 
@@ -326,11 +483,15 @@ def main():
                 f"[ORPHAN IN SECTION 8.1] {cid} `{cls_table[cid]['path']}` in the registry but no matching frontmatter"
             )
 
+    # --- Supersession ledger reconciliation (ADR-0035) ---
+    drift.extend(reconcile_supersession_ledger(adrs))
+
     # ---- report ----
     print("== Metadata Registry Reconcile ==")
     print(f"Scanned {len(sh_canonical)} .meta.yaml SH companion(s) under mddocs/scripts/ + mddocs/management/tooling/")
     print(f"Scanned {len(sh_docs)} SH script-doc sidecar(s) under mddocs/scripts/")
     print(f"Scanned {len(cls_canonical)} classification ID(s) (SDX/REF/STD/SEED) in mddocs/ frontmatter")
+    print(f"Scanned {len(adrs)} ADR(s); supersession ledger: {len(ledger_entries)} entry/entries")
     print(f"Registry rows: SH section 8 = {len(sh_table)}; classification section 8.1 = {len(cls_table)}")
     print()
     print("Canonical SH registry (from .meta.yaml, authoritative):")

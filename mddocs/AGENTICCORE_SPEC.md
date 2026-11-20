@@ -158,10 +158,15 @@ documentation - they are the mechanism by which behavioral rules, guardrails, an
 architectural constraints acquire provenance, enforce continuity, and support continuous
 improvement.
 
-**Forward-only, append-only.** Once an ADR reaches `accepted` status, its text is never
-edited. Changes to a governed decision produce a new ADR that `supersedes` the prior one,
-with explicit linkage. This makes the history of every rule auditable: any ticket,
-session, or artifact can trace its governing constraint to the ADR that enacted it.
+**Forward-only.** Once an ADR reaches `accepted` status, its text is never edited.
+Any subsequent change to a governed decision - whether additive, revisionary, or a
+reversal - produces a **new** ADR that `supersedes` the prior one, with explicit
+`Supersedes` / `Superseded by` linkage. The superseding ADR is the single, complete
+source of truth from that point forward: it **embodies** the substance of the
+decision it supersedes, rewritten clean rather than pasted, so the prior ADR's file
+is not needed to understand the current decision. This keeps the history of every
+rule auditable: any ticket, session, or artifact can trace its governing constraint
+to the ADR that enacted it.
 
 **ADR-to-task provenance.** Every ticket in the task queue that implements, modifies, or
 extends governed behavior carries a reference to the ADR(s) that authorize the change.
@@ -224,6 +229,69 @@ deprecated - removed from active consideration; reason recorded
 from `proposed` to `accepted`. Transition to `superseded` requires HIL approval and a
 linking superseding ADR.
 
+#### ADR Modification Terminology
+
+Accepted ADR text is never edited in place. The following terms describe the
+relationship between ADRs only; none of them is a license to amend, append, or
+otherwise modify an accepted record.
+
+- **Supersede** - the only allowed forward path. New ADR-B `supersedes` ADR-A when
+  ADR-B replaces ADR-A as the governing record. ADR-A is marked `superseded` and links
+  to ADR-B via `Superseded by`; ADR-B links back via `Supersedes`.
+- **Amendment** - a change to a decision. **Not permitted** as an in-place edit to an
+  accepted ADR. Realize it as a new superseding ADR.
+- **Addendum** - additional material appended to a decision. **Not permitted** as an
+  in-place edit. Realize it as a new superseding ADR.
+- **Modify / Revise** - any alteration of a decision. **Not permitted** in place.
+  Realize it as a new superseding ADR.
+
+Because all four intents resolve to a new superseding ADR, the terms are descriptive
+of *what changed*, never a license to edit an accepted record. A superseding ADR
+embodies the decision it replaces, rewritten clean rather than pasted; the prior
+record is retired via the Retire-and-Remove Gate below.
+
+#### Supersession Ledger
+
+Every accepted ADR that is superseded is recorded in a single, machine-checked
+ledger at `mddocs/management/governance/decisions/supersession-ledger.yaml`, the
+authoritative record of every supersedence. The `reconcile-metadata-registry.py`
+gate validates the ledger, so a supersession cannot be recorded inconsistently or
+dropped silently.
+
+Each ledger entry records:
+- `superseded` - the ADR ID being retired.
+- `superseding` - the ADR ID that embodies the decision.
+- `status` - lifecycle state of the retired record (`superseded` or `deprecated`).
+- `date` + `ticket` - provenance: when, and under which task, the supersession was
+  accepted.
+- `disposition` - `superseded` (substance carried forward) or `waived` (deliberately
+  dropped with a written rationale).
+- `outcome` - a concise note of what changed between the two ADRs.
+- `retired` - `true` once the prior ADR file is removed from the working tree and the
+  active index.
+- `retired_git_ref` - the git reference where the retired file last existed, so it
+  stays findable in history.
+
+#### Retire-and-Remove Gate
+
+Removing a superseded ADR file from the tree is a governed act, not a cleanup
+shortcut. A prior ADR is retired and removed **only when every condition holds**:
+
+1. The superseding ADR records `Supersedes: <retired ID>` and is `accepted`.
+2. The superseding ADR genuinely embodies the retired decision - no governing
+   constraint is silently dropped. Every constraint either carries forward, or is
+   explicitly `waived` in the ledger entry with a written rationale (the accept or
+   waive decision).
+3. The ledger entry records `retired: true` and a `retired_git_ref`, and passes the
+   `reconcile` gate.
+4. For a significant decision, a security pass and HIL LGTM precede the removal.
+5. The retired ADR's row is removed from the active index, cross-references are
+   repointed, and `check-links` / `mdbook build` stay green.
+
+No agent - including lead-engineer - may remove a superseded ADR until this gate is
+satisfied. This turns "delete the old ADR" into "replace it and prove nothing was
+lost."
+
 #### Core ADRs (load-bearing set)
 
 The following eight ADRs are the load-bearing governance backbone of AgenticCore.
@@ -246,11 +314,11 @@ Additional ADRs are added as the harness evolves.
 #### ADR Index
 
 ADR-####-short-title.md files live in `mddocs/management/governance/decisions/`
-(ADR-0029 onward, forward-only) or `mddocs/adr/` (historical ADR-0000–0028,
+(ADR-0029 onward, forward-only) or `mddocs/adr/` (historical ADR-0000-0028,
 the canonical historical record). The active index
 `mddocs/management/governance/decisions/index.md` is `primary: true` and the
 authoritative registry for new ADRs; `mddocs/adr/index.md` is
-`primary: false, lifecycle: superseded` and redirects to it (ADR-0029 D1/D2; ADR-0030).
+`primary: false, lifecycle: superseded` and redirects to it (ADR-0029 D1/D2; ADR-0035).
 
 ```markdown
 | ID | Title | Status | Date |

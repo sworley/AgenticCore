@@ -24,7 +24,7 @@ and context window percentage.
 **update-summary-on-adr-write.py** - configure as a `PostToolUse` hook in
 `.opencode/settings.json` (or `.agentic/settings.local.json`) for the Write tool event.
 Fires when an ADR file matching `mddocs/management/governance/decisions/adr-*.md` is
-written (the forward-only active location, per ADR-0029 D1 / ADR-0030), reads the
+written (the forward-only active location, per ADR-0029 D1 / ADR-0035), reads the
 title/status/date, and inserts a row into the active ADR index
 `mddocs/management/governance/decisions/index.md`. Historical ADRs under `mddocs/adr/`
 are not touched. Exits 0 silently if the file is not an active-location ADR or if the

@@ -65,6 +65,7 @@
   - [Governance · Decisions](management/governance/decisions/index.md)
   - [Security · Guardrails](management/security/guardrails/credential-identity/index.md)
   - [Security · Guardrails · Secret](management/security/guardrails/secret-management/index.md)
+  - [Tooling](management/tooling/README.md)
 - [Projects Plane](projects/index.md)
 
 ---

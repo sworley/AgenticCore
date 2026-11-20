@@ -121,7 +121,7 @@ tree. The supported adoption surface is the `allowed_in_adopter_repos: true` set
 |---|---|
 | `script-docs` | `.md` sidecar documenting a single executable (inherits domain/owner/category/process) |
 | `index` | directory index / overview of a script group |
-| `reference` | config / reference doc not tied to one executable |
+| `reference` | config / reference artifact not tied to one executable (including schemas, dependency locks, dependency declarations, and rendering assets) |
 | `backlog` | backlog seed template (D6, `primary: false` + `redirect`) |
 | `seed-template` | provisioned-workspace template |
 | `standard` | this standard / other governing reference |
@@ -158,7 +158,8 @@ tree. The supported adoption surface is the `allowed_in_adopter_repos: true` set
 5. Review and merge to `dev`. **No new ADR required** for a single
    reclassification - classification is adjustable data, not schema (see §9).
 6. A change to the **schema/contract** itself (field set, enums, class set, or
-   the meaning of a field) requires an **ADR amendment** to `ADR-0029`.
+   the meaning of a field) requires a **new ADR that supersedes** `ADR-0029`
+   (forward-only supersede, ADR-0035) - not an in-place amendment.
 
 ---
 
@@ -194,11 +195,19 @@ tree. The supported adoption surface is the `allowed_in_adopter_repos: true` set
 | SH-0026 | `seed/bench-registry.yaml` | 1 | ops-engineer | false | - |
 | SH-0027 | `seed/tasks.yaml` | 1 | lead-engineer | false | - |
 | SH-0028 | `reconcile-metadata-registry.py` | 2 | docs-engineer | true | - |
+| SH-0035 | `management/tooling/scripts/validate_book.py` | 2 | docs-engineer | true | - |
+| SH-0036 | `management/tooling/scripts/build.sh` | 2 | docs-engineer | true | - |
+| SH-0045 | `management/tooling/project_protection/test_profile_schema.py` | 2 | security-engineer | true | - |
 
 > Note: the generated per-file `.meta.yaml` metadata is authoritative over this
 > table. Reconcile the table here whenever a classification changes - or run
 > `mddocs/scripts/reconcile-metadata-registry.py --check` (SH-0028) to verify this
-> table matches the `.meta.yaml` metadata and report any drift.
+> table matches the `.meta.yaml` metadata and report any drift. The adopted
+> `mddocs/management/tooling/` SH artifacts (`SH-0035`, `SH-0036`, `SH-0045`)
+> have executable paths reported relative to `mddocs/` (for example
+> `management/tooling/scripts/validate_book.py`). The rejected harness-coupled
+> IDs (`SH-0029` through `SH-0034` and `SH-0037` through `SH-0044`) were
+> formally rejected and removed, and are not registered here.
 
 ### 8.1 Classification ID registry (index / reference / standard / seed)
 
@@ -208,14 +217,24 @@ tree. The supported adoption surface is the `allowed_in_adopter_repos: true` set
 | SDX-002 | index | Management | `scripts/hooks-index.md` |
 | SDX-003 | index | Management | `scripts/operations/index.md` |
 | SDX-004 | index | Management | `scripts/setup/index.md` |
+| SDX-005 | index | Management | `management/tooling/README.md` |
 | STD-0001 | standard | Management | `scripts/metadata-standard.md` |
 | REF-0001 | reference | Management | `scripts/setup/init-opencode-settings.md` |
+| REF-0002 | reference | Management | `management/tooling/mddoc-assets/collapsible-sidebar.css` |
+| REF-0003 | reference | Management | `management/tooling/mddoc-assets/collapsible-sidebar.js` |
+| REF-0004 | reference | Management | `management/tooling/mddoc-assets/external-links.js` |
+| REF-0005 | reference | Management | `management/tooling/project_protection/profile.schema.json` |
 | SEED-CONTEXT | seed-template | Management | `scripts/seed/.core/agents/_context.md` |
 | SEED-BACKLOG | backlog | Management | `scripts/seed/mddocs/backlog.md` |
 
 > Note: as with section 8, the per-artifact frontmatter is authoritative over
 > this table. `mddocs/scripts/reconcile-metadata-registry.py --check` (SH-0028)
 > verifies both tables against the artifact metadata and reports any drift.
+> The adopted `mddocs/management/tooling/` reference artifacts (`REF-0002`
+> through `REF-0005`; rendering assets and the project-protection schema) each
+> carry a `.meta.yaml` companion with `document_type: reference`. The
+> harness-coupled reference artifacts (`REF-0006` through `REF-0009`) and the
+> git-hook index (`SDX-006`) were formally rejected and are not registered here.
 
 ---
 

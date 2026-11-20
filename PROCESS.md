@@ -83,6 +83,34 @@ backlog → ready → claimed → in_progress → branch_ready → awaiting_revi
 
 **LGTM is the acceptance gate.** Receipt of "lgtm" from HIL means approved; proceed with merge immediately.
 
+### Definition of Done (No Silent Technical Debt)
+
+A task may be marked `branch_ready`, `accepted`, `merged`, or `released` only when
+every declared deliverable is genuinely functional in this repository and the change
+carries no unaddressed remaining work. This is a hard gate, not a preference.
+
+1. **Approval implies functional completion.** Do not approve, mark done, or merge a
+   change while any component is known to be non-functional, cannot be built or
+   validated here, or has remaining work that prevents it from running. "It works in
+   a different context" is not a substitute for verifying it works here.
+2. **No silent technical debt.** Any intentional deferral, known limitation, or
+   deferred work must be surfaced explicitly in the ticket and presented to the HIL
+   before the item is considered done. It may remain only if the HIL has explicitly
+   agreed to a handling plan (for example, a committed follow-up ticket with owner and
+   scope, or an instruction to remediate now). Unexplained or unplanned remaining
+   effort must not land on `dev` or enter any "done" state.
+3. **Acceptance criteria are the floor.** A ticket's `acceptance_criteria` must all be
+   verifiably satisfied in this repository. If any criterion cannot be met here (for
+   example, because required inputs are not present), the ticket is not done: either
+   obtain those inputs, re-scope with HIL, or record a HIL-approved handling plan.
+4. **Stop and escalate.** When a change cannot be made fully functional without
+   additional scope (for example, adopting supporting fixture or template files), stop
+   and present the options to HIL rather than shipping a partial or unverifiable change.
+
+This rule exists so the framework does not accumulate unverifiable or half-finished
+capability. The HIL is the sole authority for any exception, granted explicitly via a
+handling plan recorded in the ticket.
+
 **`merged` vs. `released`** (ADR-0026). `merged` means the work is on `dev` - the integration
 and durability surface - where it is safely backed up but not yet chosen for a release.
 `released` means the work has been curated onto a release prep branch and shipped to `main`

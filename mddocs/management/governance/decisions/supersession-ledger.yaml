@@ -30,3 +30,12 @@ supersessions:
     outcome: "superseded by ADR-0035 - forward-only supersede and historical coexistence convention"
     retired: false
     retired_git_ref: null
+  - superseded: ADR-0004
+    superseding: ADR-0036
+    status: superseded
+    date: 2026-11-20
+    ticket: AC-0017
+    disposition: superseded
+    outcome: "superseded by ADR-0036 - GitHub branch-protection rulesets as the server-side enforcement of the main append-only / merge-only rule"
+    retired: false
+    retired_git_ref: null

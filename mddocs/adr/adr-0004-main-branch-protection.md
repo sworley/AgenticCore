@@ -1,7 +1,8 @@
 # ADR-0004: `main` Branch Protection and Immutability
 
 **Date:** 2026-06-25
-**Status:** accepted
+**Status:** superseded
+**Superseded by:** ADR-0036
 
 ## Context
 

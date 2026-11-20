@@ -37,7 +37,7 @@ direct pushes. The gates are unchanged; the PR merge is the mechanism:
 - **G-8** - update the README as-built on a branch and open a PR → `main`.
 - **Release close** - mark the scoped tickets `released` (terminal, ADR-0026), then catch
   `dev` up by opening a PR `main → dev` (`--no-ff`, never rebase - `main` is append-only per
-  ADR-0004). Verify: `git merge-base --is-ancestor main dev`.
+  ADR-0036). Verify: `git merge-base --is-ancestor main dev`.
 
 **First release bootstrap.** Before the first release under this model there are no tags,
 so `git describe --tags` (Step 1) fails. Establish the baseline tag first:

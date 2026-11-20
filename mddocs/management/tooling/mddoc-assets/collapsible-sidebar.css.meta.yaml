@@ -1,0 +1,10 @@
+id: REF-0002
+title: Collapsible sidebar stylesheet
+document_type: reference
+status: active
+lifecycle: active
+domain: Management
+category: Architecture
+process: mddoc-rendering
+owner: docs-engineer
+allowed_in_adopter_repos: true

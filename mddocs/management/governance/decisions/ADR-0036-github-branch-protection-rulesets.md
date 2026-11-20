@@ -1,7 +1,7 @@
 # ADR-0036: GitHub Branch-Protection Rulesets
 
 **Date:** 2026-11-20
-**Status:** proposed
+**Status:** accepted
 **Supersedes:** ADR-0004 (the process-level `main` append-only / merge-only rule; this ADR is its server-side enforcement and extension)
 **Superseded by:** -
 **Governed by:** ADR-0035 (forward-only supersede; this supersession is recorded in the supersession ledger)

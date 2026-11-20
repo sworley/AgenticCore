@@ -299,7 +299,7 @@ Their numbering matches the sequential index in `mddocs/adr/`:
 
 | ADR | Title | AgenticCore relevance |
 |---|---|---|
-| ADR-0036 | GitHub Branch-Protection Rulesets | `main` is append-only, merge-only; roll-forward policy (supersedes ADR-0004) |
+| ADR-0036 | GitHub Branch-Protection Rulesets | `main` append-only, merge-only + PR-gated `dev` integration (supersedes ADR-0004) |
 | ADR-0005 | Prompt Traceability and Session Logging | Every session produces a traceable log; provenance chain |
 | ADR-0006 | External Content Gate Scope | Security gate triggers and content inspection rules |
 | ADR-0007 | Bench Scope Isolation | Bench-to-bench isolation; no cross-bench writes |

@@ -1,0 +1,10 @@
+id: REF-0005
+title: Project protection profile schema
+document_type: reference
+status: active
+lifecycle: active
+domain: Management
+category: Security
+process: project-protection
+owner: security-engineer
+allowed_in_adopter_repos: true

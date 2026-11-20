@@ -1,17 +1,19 @@
-# Session State — 2026-11-18 (taxonomy adoption / AC-0013 + AC-0014 + pyyaml fix; pre-dev-PR)
+# Session State — 2026-11-18 (taxonomy adoption / AC-0013 + AC-0014 + pyyaml fix; merged to dev, ready for next item)
 
 Per-session resume note (tracked). Read at session open to restore focus before
 checking `tasks.yaml`. See `.core/work/README.md` for the schema.
 
 ## Branch / position
 - Repo: `/home/sworley/files/sandbox/AgenticCore.v1.01/AgenticCore`
-- Branch: `feat/taxonomy-adoption` — **in sync** with `origin/feat/taxonomy-adoption` (HEAD `2128494`)
+- Branch: `feat/taxonomy-adoption` — **in sync** with `origin/feat/taxonomy-adoption` (HEAD `dcf2060`)
 - Working tree: clean; all AC-0013/AC-0014 commits GPG-signed (`[AC-0013]` / `[AC-0014]`)
-- Integration target: `dev` (next release); `main` is merge-only (ADR-0004)
+- **Taxonomy/shipping-gate work is MERGED to `dev`** (PR #24, `f7aa58e`); the
+  feature branch has been removed. New work starts **on `dev`**. `main` is
+  merge-only (ADR-0004).
 
-## Session outcome — branch is merge-ready; next gate is the `dev` integration PR
+## Session outcome — taxonomy adoption (AC-0013) + shipping gate (AC-0014) complete & on `dev`
 The taxonomy adoption (AC-0013) and the `allowed_in_adopter_repos` → `export-framework.sh`
-shipping-gate wiring (AC-0014) are complete and reviewed on the feature branch:
+shipping-gate wiring (AC-0014) are complete, reviewed, and merged to `dev`:
 
 - **AC-0013** — taxonomy adopted (ID namespaces retired; ADR-0029/0030/0031/0032/0033;
   reconcile tool SH-0028; no-em-dash rule).
@@ -54,10 +56,11 @@ Full history: `git log --oneline origin/dev..HEAD` (also AC-0013 commits `fbe154
 - typos / `bash -n` / `py_compile` / YAML — clean
 
 ## Open items / follow-ups
-1. **`feat/taxonomy-adoption → dev` integration PR — CREATED.** Branch is ready
-   (all AC-0013/AC-0014 work committed, reviewed, validated). HIL-gated;
-   `main` merge-only per ADR-0004. Awaiting HIL review/merge, then release cutover.
-2. **Release cutover (`dev → main`)** — after the PR merges, via the release process.
+1. **`feat/taxonomy-adoption → dev` — MERGED (#24, `f7aa58e`); branch removed.**
+   AC-0013 + AC-0014 + pyyaml fix are one more set of changes on `dev`. Local
+   checkout is on `feat/taxonomy-adoption`; new work starts on `dev`.
+2. **Ready for a new item on `dev`** — taxonomy/shipping-gate work is complete.
+   Community release (with release notes) is a separate, later step, not now.
 3. **Projects-space / previous-art import (DEFERRED)** — the `projects/<context>/`
    (CTX-) plane and Q5 seed runbook exist and are wired into mdBook, but
    `Current contexts` is `_None yet_`. No real context adopted yet. When a real
@@ -74,9 +77,9 @@ Full history: `git log --oneline origin/dev..HEAD` (also AC-0013 commits `fbe154
      classification + HIL direction before any work.*
 
 ## Next steps (in order)
-1. HIL review/merge of `feat/taxonomy-adoption → dev` PR (created; HIL-gated).
-2. Then `dev → main` release cutover via the release process.
-3. (Deferred) Projects-space migration when a real context is adopted (Q5).
+1. Pick up the next item on `dev` (taxonomy/shipping-gate work is complete).
+2. (Deferred) Projects-space migration when a real context is adopted (Q5).
+3. (Later) Community release including release notes, when it's time.
 
 ## Notes
 - GPG signing needs the key passphrase cached (pinentry; unlock with

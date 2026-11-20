@@ -1,9 +1,9 @@
 # ADR-0030: Forward-Only ADR Adoption and Historical Coexistence
 
 **Date:** 2026-11-16
-**Status:** accepted
+**Status:** superseded
 **Supersedes:** - (resolves the "future migration ADR" placeholder)
-**Superseded by:** -
+**Superseded by:** ADR-0035
 **Governed by:** ADR-0029 (D1/D2) - this is the focused record of that resolution
 
 ## Context

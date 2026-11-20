@@ -1,7 +1,7 @@
 # ADR-0035: ADR Evolution - Forward-Only Supersede and Historical Coexistence
 
 **Date:** 2026-11-20
-**Status:** proposed
+**Status:** accepted
 **Supersedes:** ADR-0030 (and the ADR-placement resolution made in ADR-0029 D1/D2)
 **Superseded by:** -
 **Governed by:** ADR-0029 (D1/D2 placement resolution, carried forward here)

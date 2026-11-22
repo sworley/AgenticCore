@@ -14,7 +14,7 @@ for the AgenticCore framework.
 | [Adopt a Project Context](adopt-project-context.md) | Seed an existing project's docs into `projects/<context>/` (Q5) |
 | [Task Queue Operations](task-queue-operations.md) | Working with `tasks.yaml` |
 | [Bench Registry](bench-registry.md) | Track and manage open benches |
-| [Agent Authoring Workflow](agent-authoring-workflow.md) | Create or modify agent definitions |
+| [Agent Authoring Workflow](../management/runbooks/agent-authoring-workflow.md) | Create or modify agent definitions |
 | [Release Process](release-process.md) | Full release lifecycle with HIL gates |
 | [Release Notes Template](release-notes-template.md) | Template for `mddocs/release-notes/vX.Y.Z.md` |
 | [Configure MCP Servers](configure-mcp.md) | One-time MCP setup - cache warm, config, verify |

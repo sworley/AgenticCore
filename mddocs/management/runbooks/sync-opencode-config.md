@@ -60,4 +60,4 @@ To add a new AGENT.md pair, append a `sync_pair <archive> <target>` line in the
 ## Related
 
 - [Sync Agent Definitions](sync-agent-definitions.md)
-- [Configure Agent Namespace](../../operations/runbooks/configure-agents.md)
+- [Configure Agent Namespace](../agentic/procedures/configure-agents.md)

@@ -14,11 +14,11 @@
 # Onboarding
 
 - [Visual Overview](onboarding/visual-overview.md)
-- [Agent Roster](onboarding/agent-roster.md)
+- [Agent Roster](management/agentic/roster/agent-roster.md)
 - [Getting Started](onboarding/getting-started.md)
 - [Repository Structure](onboarding/repository-structure.md)
-- [Agentic Workflow Overview](onboarding/agentic-workflow-overview.md)
-- [Bench Model](onboarding/bench-model.md)
+- [Agentic Workflow Overview](management/agentic/overview/agentic-workflow-overview.md)
+- [Bench Model](management/agentic/context/bench-model.md)
 
 ---
 
@@ -81,11 +81,10 @@
   - [Tooling Contract](reference.architecture/tooling-contract.md)
   - [Task Queue Operations](reference.architecture/task-queue-operations.md)
   - [Bench Registry](reference.architecture/bench-registry.md)
-  - [Agent Authoring Workflow](reference.architecture/agent-authoring-workflow.md)
   - [Release Process](reference.architecture/release-process.md)
   - [Release Notes Template](reference.architecture/release-notes-template.md)
   - [Configure MCP Servers](reference.architecture/configure-mcp.md)
-  - [Shared Agent Context](reference.architecture/shared-context.md)
+  - [Shared Agent Context](management/agentic/context/shared-context.md)
   - [Adopter Reconciliation](reference.architecture/adopter-reconciliation.md)
   - [Sign-Off Package](reference.architecture/sign-off-package.md)
 
@@ -96,7 +95,7 @@
 - [Operations Index](operations/index.md)
   - [Runbook: git-sync - Git Workspace Sync](management/runbooks/git-sync-runbook.md)
   - [Runbook: Sync Agent Definitions](management/runbooks/sync-agent-definitions.md)
-  - [Runbook: Configure Agent Namespace](operations/runbooks/configure-agents.md)
+  - [Runbook: Configure Agent Namespace](management/agentic/procedures/configure-agents.md)
   - [Runbook: Sync Agent Config](management/runbooks/sync-opencode-config.md)
   - [Runbook: Build and Publish mdBook](management/runbooks/build-publish-mddocs.md)
   - [Runbook: Rotate Git PAT](management/runbooks/rotate-git-pat.md)

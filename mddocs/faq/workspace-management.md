@@ -46,7 +46,7 @@ runbook step and requires explicit human authorization.
 
 ## Canonical References
 
-- [Bench Model](../onboarding/bench-model.md)
+- [Bench Model](../management/agentic/context/bench-model.md)
 - [Repository Structure](../onboarding/repository-structure.md)
 - [Provision Worker Bench](../reference.architecture/provision-worker-bench.md)
 - [Bench Registry](../reference.architecture/bench-registry.md)

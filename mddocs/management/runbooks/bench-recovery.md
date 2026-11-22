@@ -288,7 +288,7 @@ If the reprovision is incorrect:
 
 - [ADR-: AI toolchain Config Versioning and Bench Manifest](../../adr/adr-0011-lead-engineer-identity-anchoring.md)
 - [Provision Worker Bench](../../reference.architecture/provision-worker-bench.md) - first-time bench creation
-- [Configure Agent Namespace](../../operations/runbooks/configure-agents.md) - agent namespace setup
+- [Configure Agent Namespace](../agentic/procedures/configure-agents.md) - agent namespace setup
 - [Bench Registry](../../reference.architecture/bench-registry.md) - bench tracking and registration
 - `bench-registry.yaml` (collection root) - live bench state
 - `tasks.yaml` (collection root) - task queue and bench assignments

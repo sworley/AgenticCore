@@ -232,9 +232,93 @@ sync script need updating.
 
 ---
 
+## Authoring-Agent Execution Model
+
+Authoring agents (`docs-engineer`) are execution-light by design - they hold no
+`bash`/`git` capability. The Lead (`lead-engineer` / `baseline-steward`) runs their
+mandatory gates (`mdbook build`, link check) and commits on their behalf (ADR-0027).
+
+## Add or Modify a Hook
+
+`.core/hooks/` holds two distinct classes of hook:
+
+| Class | Fired by | Wired where | Example |
+|---|---|---|---|
+| **AI-tool hook** | The AI tool's event system (`PreToolUse`, `PostToolUse`, `Stop`, `UserPromptSubmit`) | `AGENT.md` | `secret-guard.py` |
+| **Git hook** | Git, installed into `.git/hooks/` via `.core/scripts/install-git-hooks.sh` (ADR-0022) | Never in `settings.json.template` | `pre-commit-permission-order-check.py` |
+
+`check-hook-wiring.py` enforces wiring for **AI-tool hooks only**. A git hook self-declares
+its class with an explicit sentinel token near the top of the file:
+
+```python
+# hook-class: git
+```
+
+The check excludes any file carrying that sentinel. It is an exact-token declaration, not
+free prose - a hook that merely *mentions* git hooks in its docstring is still treated as an
+AI-tool hook. A file that does *not* carry the sentinel is treated as an AI-tool hook and
+flagged if unwired - the check fails safe.
+
+The steps below apply to **AI-tool hooks**. An AI-tool hook must be wired into
+`AGENT.md` to take effect; adding a hook file without updating the
+template is a silent no-op. For git hooks, see `.core/scripts/install-git-hooks.sh` and ADR-0022.
+
+### Step 1 - Write or update the hook
+
+Create or edit `.core/hooks/<name>.py`. Follow the existing hook conventions:
+- Read tool input from `json.load(sys.stdin)`
+- PreToolUse hooks: exit 1 to block, exit 0 to allow
+- PostToolUse hooks: always exit 0 (informational only)
+- Include a `AGENT_<HOOKNAME>_DISABLED=1` circuit breaker for conditional hooks
+- Unconditional safety hooks (e.g. `package-install-guard.py`) must not have a circuit breaker
+
+### Step 2 - Wire into settings.json.template
+
+Open `AGENT.md` and add the hook under the correct event
+(`PreToolUse` or `PostToolUse`) with the appropriate `matcher`.
+
+```json
+{
+  "matcher": "Bash",
+  "hooks": [
+    {
+      "type": "command",
+      "command": "python3 \"${REPO_ROOT}/.core/hooks/<name>.py\"",
+      "statusMessage": "<short description>..."
+    }
+  ]
+}
+```
+
+### Step 3 - Verify wiring
+
+Run the hook audit check to confirm no hooks are unwired:
+
+```sh
+python3 .core/scripts/check-hook-wiring.py
+```
+
+### Step 4 - Test the hook
+
+```sh
+# PreToolUse - pipe a simulated tool call to the hook directly
+echo '{"tool_input": {"command": "your test command"}}' | python3 .core/hooks/<name>.py
+echo "exit: $?"
+```
+
+### Step 5 - Commit both files together
+
+Hook files and `settings.json.template` are coupled artifacts - always commit them
+in the same commit:
+
+```sh
+git add .core/hooks/<name>.py AGENT.md
+git commit -m "feat: add <name> hook [AC-NNNN]"
+```
+
 ## Related
 
 - `.agents/_meta.yaml` - per-agent frontmatter configuration
 - `.agents/sync-agents.sh` - the sync script
-- [Configure Agent Namespace](../../operations/runbooks/configure-agents.md) - full agent namespace setup and MCP configuration
+- [Configure Agent Namespace](../agentic/procedures/configure-agents.md) - full agent namespace setup and MCP configuration
 - [Runbook: Sync Agent Definitions](sync-agent-definitions.md) - operational sync procedure

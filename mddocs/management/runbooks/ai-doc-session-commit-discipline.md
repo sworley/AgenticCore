@@ -264,7 +264,7 @@ git commit
 
 - `PROCESS.md` (collection root) - authoritative agent workflow contract; defines
   the human acceptance gate, security inspection gate, branch convention, and merge sequence
-- [Configure Agent Namespace](../../operations/runbooks/configure-agents.md) - namespace structure and MCP setup
+- [Configure Agent Namespace](../agentic/procedures/configure-agents.md) - namespace structure and MCP setup
 - [Agent Session Tracking](agent-session-tracking.md) - cross-session task continuity and audit log
 - `PROCESS.md` § *Security Gate* - full verdict table and escalation protocol
 - `PROCESS.md` § *Human Acceptance Gate* - acceptance signal examples and ambiguous response list

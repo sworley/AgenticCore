@@ -70,6 +70,6 @@ AgenticCore/
 ## Navigation
 
 - New to the project? Start with [Getting Started](onboarding/getting-started.md)
-- Understanding the workflow? See [Agentic Workflow Overview](onboarding/agentic-workflow-overview.md)
+- Understanding the workflow? See [Agentic Workflow Overview](management/agentic/overview/agentic-workflow-overview.md)
 - Architecture decisions: [ADR Index](adr/index.md)
 - Operational procedures: [Runbook Index](reference.architecture/index.md)

@@ -169,6 +169,23 @@ registering its residents. The moved documents retain their frontmatter and gain
 Each is reviewed in HIL before the move is staged (D3), and the disposition is
 recorded here.
 
+**Dispositions (stage 1 `runbooks/`, 2026-11-21):**
+
+- `operations/runbooks/rotate-git-pat.md` -> primary `management/runbooks/rotate-git-pat.md`.
+  Secondary reference: security (credential rotation); the operational cross-reference
+  is retained in the runbooks home.
+- `operations/runbooks/ai-doc-session-commit-discipline.md` -> primary
+  `management/runbooks/ai-doc-session-commit-discipline.md`. Secondary reference:
+  governance (commit discipline); the operational cross-reference is retained in
+  the runbooks home.
+- `operations/runbooks/agent-authoring-workflow.md` -> primary
+  `management/runbooks/agent-authoring-workflow.md`. The
+  `reference.architecture/agent-authoring-workflow.md` copy is NOT consolidated in
+  this stage; it is deferred to stage 2 (`agentic/`), where the two copies are
+  reconciled and the primary decided (pending HIL review).
+- `mcp/mcp-rag-docs/cve-scan.txt` -> not touched in this stage; deferred to stage 4
+  (`tooling/mcp/`), where it moves with the MCP docs home.
+
 ## 7. Link-rewrite budget
 
 Counted against the tracked corpus (excluding `book/` build output).

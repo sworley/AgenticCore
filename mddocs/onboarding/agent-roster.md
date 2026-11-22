@@ -65,7 +65,7 @@ specialty. Authorities are bounded: implementers write, evaluators verdict-only.
 3. Verify the generated files load (`opencode agent list`).
 
 See [Agent Authoring Workflow](../reference.architecture/agent-authoring-workflow.md) and
-[Sync Agent Definitions](../operations/runbooks/sync-agent-definitions.md).
+[Sync Agent Definitions](../management/runbooks/sync-agent-definitions.md).
 
 ---
 

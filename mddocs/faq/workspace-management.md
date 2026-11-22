@@ -42,7 +42,7 @@ runbook step and requires explicit human authorization.
 - The lead-engineer (`.01`) is the sole writer of `tasks.yaml`; bench leads cannot
   write to `.01` or `tasks.yaml`.
 - Synced top-level directories must be in `.gitignore` (see
-  [`git-sync-runbook.md`](../operations/runbooks/git-sync-runbook.md#gitignore-requirement)).
+  [`git-sync-runbook.md`](../management/runbooks/git-sync-runbook.md#gitignore-requirement)).
 
 ## Canonical References
 
@@ -53,8 +53,8 @@ runbook step and requires explicit human authorization.
 - [Task Queue Operations](../reference.architecture/task-queue-operations.md)
 - [Session Open Checklist](../reference.architecture/session-open-checklist.md)
 - [Session Close Checklist](../reference.architecture/session-close-checklist.md)
-- [git-sync Runbook](../operations/runbooks/git-sync-runbook.md)
-- [Session Continuity Runbook](../operations/runbooks/session-continuity.md)
+- [git-sync Runbook](../management/runbooks/git-sync-runbook.md)
+- [Session Continuity Runbook](../management/runbooks/session-continuity.md)
 
 ## Provenance
 

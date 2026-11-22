@@ -11,4 +11,4 @@ allowed_in_adopter_repos: true
 related:
   paths:
     - operations/check-worktree-hygiene.md
-    - ../operations/runbooks/session-continuity.md
+    - ../management/runbooks/session-continuity.md

@@ -70,7 +70,7 @@ git commit -m "feat: configure agent namespace [AC-NNNN]"
 
 ## Related
 
-- [Agent Authoring Workflow](agent-authoring-workflow.md)
-- [Sync Agent Definitions](sync-agent-definitions.md)
+- [Agent Authoring Workflow](../../management/runbooks/agent-authoring-workflow.md)
+- [Sync Agent Definitions](../../management/runbooks/sync-agent-definitions.md)
 - [Shared Agent Context](../../reference.architecture/shared-context.md)
 - [Configure MCP Servers](../../reference.architecture/configure-mcp.md)

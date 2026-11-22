@@ -144,5 +144,5 @@ Promotion requires explicit HIL action. There is no time-based automatic promoti
 ## Related
 
 - [ADR-: Agentic Agent Enforcement Posture](adr-0022-git-pre-commit-permission-order-check.md)
-- [hook-rollback.md](../operations/runbooks/hook-rollback.md)
+- [hook-rollback.md](../management/runbooks/hook-rollback.md)
 - [secret-guard.md](../operations/runbooks/secret-guard.md)

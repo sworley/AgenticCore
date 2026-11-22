@@ -11,4 +11,4 @@ allowed_in_adopter_repos: true
 related:
   paths:
     - operations/check-links.md
-    - ../operations/runbooks/check-links-runbook.md
+    - ../management/runbooks/check-links-runbook.md

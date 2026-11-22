@@ -27,8 +27,8 @@ All scripts live in `mddocs/scripts/` and have companion runbooks here.
 
 | Script | Runbook | Purpose |
 |---|---|---|
-| `mddocs/scripts/git-sync.sh` | [git-sync runbook](../operations/runbooks/git-sync-runbook.md) | Clone/update all repos in a Git group |
-| `mddocs/scripts/check-env.sh` | [Sync Agent Definitions](../operations/runbooks/sync-agent-definitions.md) | Validate developer environment |
+| `mddocs/scripts/git-sync.sh` | [git-sync runbook](../management/runbooks/git-sync-runbook.md) | Clone/update all repos in a Git group |
+| `mddocs/scripts/check-env.sh` | [Sync Agent Definitions](../management/runbooks/sync-agent-definitions.md) | Validate developer environment |
 | `mddocs/scripts/bench-status.sh` | (inline) | Show all worktree states |
 | `mddocs/scripts/provision-bench.sh` | [Provision Worker Bench](provision-worker-bench.md) | Provision a worker bench |
 | `mddocs/scripts/check-worktree-hygiene.sh` | (inline) | Verify all worktrees are clean |

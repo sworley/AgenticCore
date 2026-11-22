@@ -41,7 +41,7 @@ present in this framework. Only the self-contained, functional artefacts above
 were adopted.
 
 Build and validation sources, commands, and prerequisites are in the
-[mdBook build runbook](../../operations/runbooks/build-publish-mddocs.md).
+[mdBook build runbook](../runbooks/build-publish-mddocs.md).
 Mermaid rendering stays wired at the `mddocs/` root per the taxonomy
 reconciliation (AC-0013); this home's `mddoc-assets/` supply the sidebar and
 external-link navigation behavior, referenced from `book.toml` under

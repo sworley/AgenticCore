@@ -626,7 +626,7 @@ tasks:
       The legacy branch protection on `main` and `dev` is removed once the
       rulesets are active (single source of truth). The ruleset definitions are
       versioned in the runbook
-      mddocs/operations/runbooks/branch-protection-rulesets.md.
+      mddocs/management/runbooks/branch-protection-rulesets.md.
 
       Note: single-operator harness - the operator is the only human; these
       rulesets are a process-level backstop, with local pre-commit hooks (ADR-0022)

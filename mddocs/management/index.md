@@ -22,6 +22,7 @@ purpose: Harness management plane
 | [Assurance](assurance/reviews/ledger-runbook/index.md) | Reviews, audits, evidence | ✓ |
 | [Governance](governance/decisions/index.md) | ADRs, standards, policies, exceptions | ✓ |
 | [Security](security/guardrails/credential-identity/index.md) · [Secret](security/guardrails/secret-management/index.md) | Trust boundaries, guardrails, access | ✓ |
+| [Runbooks](runbooks/README.md) | Operational and harness procedures | ✓ |
 | [Tooling](tooling/README.md) | Reusable framework tooling, schemas, assets | ✓ |
 | [Work](work/activities/ac-0013-taxonomy-reconciliation/index.md) | Time-bounded harness improvement work | ✓ |
 

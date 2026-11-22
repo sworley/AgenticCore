@@ -180,7 +180,7 @@ and safe cases exit `0` with no output.
 
 ## Rollback
 
-See [Hook Rollback](hook-rollback.md) for the full procedure.
+See [Hook Rollback](../../management/runbooks/hook-rollback.md) for the full procedure.
 
 **Quick reference - revert a rule change:**
 
@@ -224,5 +224,5 @@ bash .core/scripts/install-git-hooks.sh
 
 ## Related
 
-- [Hook Rollback](hook-rollback.md) - emergency disable, revert, and full rollback procedure for all hooks
+- [Hook Rollback](../../management/runbooks/hook-rollback.md) - emergency disable, revert, and full rollback procedure for all hooks
 - [ADR-: Agentic Agent Enforcement Posture](../../adr/adr-0022-git-pre-commit-permission-order-check.md)

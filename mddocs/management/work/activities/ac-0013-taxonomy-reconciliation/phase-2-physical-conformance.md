@@ -186,6 +186,29 @@ recorded here.
 - `mcp/mcp-rag-docs/cve-scan.txt` -> not touched in this stage; deferred to stage 4
   (`tooling/mcp/`), where it moves with the MCP docs home.
 
+**Dispositions (stage 2 `agentic/`, 2026-11-21):**
+
+- `onboarding/agent-roster.md` -> primary `management/agentic/roster/agent-roster.md`.
+  Harness-internal agent model; not adopter-facing onboarding, so in scope.
+- `onboarding/bench-model.md` -> primary `management/agentic/context/bench-model.md`.
+  Harness-internal bench/worktree model; not adopter-facing onboarding, so in scope.
+- `onboarding/agentic-workflow-overview.md` -> primary
+  `management/agentic/overview/agentic-workflow-overview.md`. Harness-internal
+  workflow description, not adopter-facing onboarding, so in scope.
+- `reference.architecture/shared-context.md` -> primary
+  `management/agentic/context/shared-context.md`. Harness-internal shared agent
+  context; in scope.
+- `reference.architecture/agent-authoring-workflow.md` -> PRIMARY resolved to
+  `management/runbooks/agent-authoring-workflow.md` (runbook form). The two unique
+  blocks (hook authoring procedure + authoring-agent execution model) were folded
+  into the runbook primary; the `reference.architecture/` path becomes a
+  `primary: false` redirect stub. This deviates from the section 3.1 target
+  `management/agentic/procedures/authoring-workflow.md` per HIL decision (2026-11-21)
+  to keep a single authoring-workflow authority.
+- `operations/runbooks/configure-agents.md` -> primary
+  `management/agentic/procedures/configure-agents.md`. Previously a reroute file
+  kept in `operations/runbooks/`; moved in this stage with the agentic set.
+
 ## 7. Link-rewrite budget
 
 Counted against the tracked corpus (excluding `book/` build output).

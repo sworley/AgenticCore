@@ -21,11 +21,12 @@
 
 # Ephemeral / scratch working directory (project-local). Durable rule: do
 # throwaway work in ./.tmp at the project root, not /tmp. All scratch content
-# is ignored; the ONE durable reference (`Tmp.md`, which documents how .tmp is
-# used and scrubbed) IS committed. (The workspace-root AgenticCore.v0.5/.tmp
-# lives outside this repo; this rule also guards any .tmp created in-repo.)
+# is ignored; the ONE durable reference (`README.md`, which documents how .tmp
+# is used and scrubbed) IS committed. (A workspace-root .tmp outside this repo
+# is the shared scratch area for all workbenches; this rule also guards any
+# .tmp created in-repo. Only .tmp/README.md is ever tracked or shipped.)
 .tmp/*
-!.tmp/Tmp.md
+!.tmp/README.md
 
 # Nested git repositories (sub-projects / worktrees that contain their own .git)
 **/.git/
@@ -84,3 +85,8 @@ _oob/*.log
 
 # Session reasoning logs (append-only, machine-local, never committed)
 _scratch/sessions/
+
+# Per-session resume notes - machine-local working notes that can contain the
+# maintainer's local absolute paths; never commit (adopter state must not leak
+# private/personal paths).
+.core/work/session-state-*.md

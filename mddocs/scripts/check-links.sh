@@ -54,7 +54,7 @@ if [ ! -d "$SCAN_ABS" ]; then
 fi
 
 # Temp file to accumulate results (avoids subshell counter loss)
-RESULTS="$(mktemp /tmp/check-links.XXXXXX)"
+RESULTS="$(mktemp "${TMPDIR:-/tmp}/check-links.XXXXXX")"
 trap 'rm -f "$RESULTS" "$EMRESULTS"' EXIT
 
 [ "$SUMMARY_ONLY" -eq 0 ] && printf "==> check-links: scanning %s\n\n" "$SCAN_DIR"
@@ -141,7 +141,7 @@ external=$(grep -c "^external$" "$RESULTS" 2>/dev/null); external=${external:-0}
 
 # --- Em-dash guard (durable no-em-dash rule; U+2014 built from bytes so this file stays ASCII) ---
 EMDASH=$(printf '\342\200\224')
-EMRESULTS="$(mktemp /tmp/check-links-emdash.XXXXXX)"
+EMRESULTS="$(mktemp "${TMPDIR:-/tmp}/check-links-emdash.XXXXXX")"
 find "$SCAN_ABS" -name "*.md" | sort | while IFS= read -r mdfile; do
   if grep -q "$EMDASH" "$mdfile" 2>/dev/null; then
     rel="${mdfile#$REPO_ROOT/}"

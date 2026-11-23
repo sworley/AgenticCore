@@ -1002,6 +1002,10 @@ FRAMEWORK_EXCLUDE_PATTERNS=(
   ".git"
   "_poc"
   ".work"
+  # .tmp - scratch content never ships (it is gitignored, and the tar copy
+  # walks the working tree, so gitignore alone is not enough). The one durable
+  # reference (.tmp/README.md) IS seeded to adopters by seed_adopter_state()
+  # below, so only the README reaches an adopter - never scratch files.
   ".tmp"
   "mddocs/book"
   # SF-117/SF-122 - framework LIVE OPERATIONAL STATE must never land in the
@@ -1121,18 +1125,23 @@ copy_framework_content() {
 }
 
 # ---------------------------------------------------------------------------
-# SF-117/SF-122/SF-123/SF-127 - Adopter state seeding.
+# SF-117/SF-122/SF-123/SF-127 + .tmp README - Adopter state seeding.
 #
 # The paths excluded from copy_framework_content above that carry an
 # adopter-generic replacement (tasks.yaml, .core/agents/_context.md,
 # bench-registry.yaml - SF-123 added this one, mddocs/backlog.md - SF-127
-# added this one) are the framework's own LIVE OPERATIONAL STATE and must
-# never land in an adopter tree verbatim. seed_adopter_state() replaces
-# them with adopter-generic, EMPTY (or schema-only) starting files from
-# mddocs/scripts/seed/ - one seed template per excluded path, mirrored at
-# the same relative path under seed/ as it has in the adopter target (e.g.
-# seed/.core/agents/_context.md -> <target>/.core/agents/_context.md), so
-# the mapping here is a straight relative-path copy, not a lookup table.
+# added this one, .tmp/README.md) are excluded because the framework's own
+# copies must never land in an adopter tree verbatim - tasks.yaml /
+# .core/agents/_context.md / bench-registry.yaml / mddocs/backlog.md are the
+# framework's LIVE OPERATIONAL STATE (internal ticket IDs, bench provenance,
+# reviewer/security finding IDs), and .tmp/README.md is the framework's own
+# scratch-dir convention reference. seed_adopter_state() replaces them with
+# adopter-generic starting files from mddocs/scripts/seed/ - one seed template
+# per excluded path, mirrored at the same relative path under seed/ as it has
+# in the adopter target (e.g. seed/.core/agents/_context.md ->
+# <target>/.core/agents/_context.md), so the mapping here is a straight
+# relative-path copy, not a lookup table. The .tmp README is seeded to carry
+# the scratch convention forward; the other seeds are empty/schema-only starts.
 # (.bench and relay-pending.md are excluded too but NOT seeded - see their
 # FRAMEWORK_EXCLUDE_PATTERNS entries above for why.)
 #
@@ -1157,6 +1166,11 @@ SEED_RELATIVE_PATHS=(
   "bench-registry.yaml"
   # SF-127 - mddocs/backlog.md (see FRAMEWORK_EXCLUDE_PATTERNS above).
   "mddocs/backlog.md"
+  # .tmp/README.md - the durable .tmp convention reference. The whole .tmp
+  # directory is excluded from the adopter tree (so scratch never leaks), but
+  # this README is seeded so the scratch convention carries forward - only the
+  # README reaches the adopter, never scratch files.
+  ".tmp/README.md"
 )
 
 seed_adopter_state() {

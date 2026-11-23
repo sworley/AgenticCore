@@ -64,8 +64,13 @@
   - [Architecture · System](management/architecture/system/AgenticCore-Spec.md)
   - [Agentic](management/agentic/README.md)
   - [Agentic Procedures](management/agentic/procedures/README.md)
+  - [Delivery](management/delivery/README.md)
   - [Assurance · Reviews](management/assurance/reviews/ledger-runbook/index.md)
+  - [Audits](management/audits/README.md)
+  - [Audits · Evidence](management/audits/evidence/README.md)
   - [Governance · Decisions](management/governance/decisions/index.md)
+  - [Governance · Exceptions](management/governance/exceptions/README.md)
+  - [Governance · Exceptions · Waiver-Log Contract](management/governance/exceptions/waiver-log-contract.md)
   - [Security · Guardrails](management/security/guardrails/credential-identity/index.md)
   - [Security · Guardrails · Secret](management/security/guardrails/secret-management/index.md)
   - [Tooling](management/tooling/README.md)
@@ -84,12 +89,9 @@
   - [Tooling Contract](reference.architecture/tooling-contract.md)
   - [Task Queue Operations](reference.architecture/task-queue-operations.md)
   - [Bench Registry](reference.architecture/bench-registry.md)
-  - [Release Process](reference.architecture/release-process.md)
-  - [Release Notes Template](reference.architecture/release-notes-template.md)
   - [Configure MCP Servers](reference.architecture/configure-mcp.md)
   - [Shared Agent Context](management/agentic/context/shared-context.md)
   - [Adopter Reconciliation](reference.architecture/adopter-reconciliation.md)
-  - [Sign-Off Package](reference.architecture/sign-off-package.md)
 
 ---
 
@@ -106,13 +108,13 @@
   - [Procedure: Hook Rollback](management/agentic/procedures/hook-rollback.md)
   - [Procedure: Session Continuity](management/agentic/procedures/session-continuity.md)
   - [Procedure: Agent Session Tracking](management/agentic/procedures/agent-session-tracking.md)
-  - [Runbook: secret-guard Hook](operations/runbooks/secret-guard.md)
-  - [Runbook: Credential-Identity Guard](operations/runbooks/credential-identity-guard.md)
+  - [Runbook: secret-guard Hook](management/security/guardrails/secret-management/secret-guard.md)
+  - [Runbook: Credential-Identity Guard](management/security/guardrails/credential-identity/credential-identity-guard.md)
   - [Procedure: check-links - Internal Link Validator](management/agentic/procedures/check-links-runbook.md)
   - [Procedure: Bench Recovery](management/agentic/procedures/bench-recovery.md)
   - [Procedure: AI-Assisted Session Commit Discipline](management/agentic/procedures/ai-doc-session-commit-discipline.md)
   - [Procedure: Agent Authoring Workflow](management/agentic/procedures/agent-authoring-workflow.md)
-  - [Runbook: Review Ledger](operations/runbooks/review-ledger-runbook.md)
+  - [Runbook: Review Ledger](management/assurance/reviews/ledger-runbook/review-ledger-runbook.md)
   - [Procedure: Session Reasoning Log](management/agentic/procedures/session-reasoning-log.md)
 
 ---
@@ -140,8 +142,9 @@
 
 # MCP Servers
 
-- [MCP Servers](mcp/index.md)
-  - [mcp-rag-docs](mcp/mcp-rag-docs/README.md)
+- [MCP Servers](management/tooling/mcp/README.md)
+  - [mcp-rag-docs](management/tooling/mcp/mcp-rag-docs/README.md)
+  - [review-ledger](management/tooling/mcp/review-ledger/README.md)
 
 ---
 
@@ -164,7 +167,6 @@
   - [test-mcp-git.sh](scripts/mcp-tests/test-mcp-git.md)
 
 - [Onboarding](scripts/setup/index.md)
-  - [adopt.sh](scripts/setup/adopt.md)
   - [python-env.sh](scripts/setup/python-env.md)
   - [toolchain.sh](scripts/setup/toolchain.md)
   - [opencode.json - init-opencode-settings](scripts/setup/init-opencode-settings.md)
@@ -180,9 +182,9 @@
 
 # Release Notes
 
-- [Unreleased](release-notes/UNRELEASED.md)
-- [v0.7.0](release-notes/v0.7.0.md)
-- [v0.6.0](release-notes/v0.6.0.md)
+- [Unreleased](management/delivery/releases/UNRELEASED.md)
+- [v0.7.0](management/delivery/releases/v0.7.0.md)
+- [v0.6.0](management/delivery/releases/v0.6.0.md)
 
 ---
 

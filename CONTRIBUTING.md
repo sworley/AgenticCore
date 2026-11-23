@@ -10,7 +10,7 @@ There are **two distinct paths** for improvements to reach AgenticCore, dependin
 on how you came to the framework:
 
 - **Contributing to this repo directly** - you cloned or forked
-  `sworley/AgenticCore`. Your branch shares history with `main`, so a standard
+  `<owner>/AgenticCore`. Your branch shares history with `main`, so a standard
   PR works: branch, open a PR against `main`, attach the `AC-NNNN` task id and
   governing ADR, and pass the required gates (below). This is the normal OSS
   contribution flow.

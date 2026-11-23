@@ -3,7 +3,6 @@ document_type: spec
 status: active
 lifecycle: active
 primary: true
-redirect: management/architecture/system/AgenticCore-Spec.md
 domain: Management
 purpose: Authoritative harness specification and governance anchor
 ---
@@ -26,7 +25,7 @@ It is designed to be:
 
 - **Provider-agnostic** - AI coding toolchains - including opencode and adapter-compatible
   tools - are pluggable adapters; swapping or adding them does not change agent logic.
-- **Self-hosted** - designed to run on a local Kubernetes cluster (`harness-cluster`), not dependent
+- **Self-hosted** - designed to run on a local Kubernetes cluster, not dependent
   on external AI services for its own control plane.
 - **Opensource-ready** - no customer data, no internal URLs, no hardcoded credentials,
   no organization-specific metadata of any kind.
@@ -100,39 +99,38 @@ tier matching, not on ad-hoc decision making.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                           KUBERNETES (harness-cluster)                       │
+│                        KUBERNETES (harness cluster)                      │
 │                                                                          │
 │  ┌───────────────────────────────────────────────────────────────────┐  │
 │  │ Control Plane (etcd, API server, scheduler, controller-manager)   │  │
 │  └───────────────────────────────────────────────────────────────────┘  │
 │                                                                          │
 │  Tier 1/2 Agent Pods ──┐                                                  │
-│  Tier 3 Ephemeral Jobs ┤  run on harness-cluster as CPU-only workloads            │
+│  Tier 3 Ephemeral Jobs ┤  run as CPU-only workloads on the cluster        │
 │                        │                                                  │
 │  ExternalName Service  │                                                  │
-│  llm-inference-service │──────────────► inference-node-1:8000/v1                │
-│                         │          (bare-metal inference, NoSchedule)        │
+│  llm-inference-service │──────────────► inference-node:8000/v1            │
+│                         │         (dedicated inference host)              │
 └─────────────────────────┼──────────────────────────────────────────────────┘
                           │
-                          │ high-speed fabric (outside K8s CNI)
+                          │  high-speed fabric (outside the cluster network)
                           ▼
                 ┌─────────────────────┐
-                │  inference-node-2 (GPU node #2)│
-                │  vLLM worker node   │
+                │   inference node    │
+                │  (inference replica)│
                 └─────────────────────┘
 ```
 
-| Node | Role | K8s Scheduler |
+| Component | Role | Scheduling |
 |---|---|---|
-| `harness-cluster` | Control plane + sole K8s worker + shared storage | Accepts all Tier 1/2/3 pods |
-| `inference-node-1` (GPU node #1) | Bare-metal vLLM head node - `<model-id>` node 1/2 | Tainted `NoSchedule` - inference only, outside K8s |
-| `inference-node-2` (GPU node #2) | Bare-metal vLLM worker - `<model-id>` node 2/2 | Tainted `NoSchedule` - inference only, outside K8s |
-| Operator workstation | Interactive dev seat, local orchestrator CLI | Outside K8s - API consumer only |
+| Kubernetes cluster | Control plane + worker + shared storage | Accepts all Tier 1/2/3 pods |
+| Inference node | Dedicated model-inference host (vLLM) | Outside the cluster; tainted/unschedulable for agent pods |
+| Operator console | Interactive dev seat, local orchestrator CLI | Outside the cluster; API consumer only |
 
-Both inference nodes are 100% committed to the distributed vLLM instance. Stopping or
-interrupting vLLM breaks all AI routing across the network. Neither node has spare VRAM
-or compute headroom for K8s workloads. The high-speed fabric interconnect is raw bare-metal
-fabric and is not routable through K8s CNI.
+The inference host is dedicated to serving the model and is not schedulable for agent
+workloads. Stopping or interrupting it breaks all AI routing across the network. The
+high-speed fabric interconnect is raw bare-metal and is not routable through the cluster
+network.
 
 ### 4.3 Reference Archive Boundary
 
@@ -593,7 +591,7 @@ metadata:
   namespace: default
 spec:
   type: ExternalName
-  externalName: <inference-ip>   # inference-node-1 head node fabric IP
+  externalName: <inference-ip>   # dedicated inference host fabric IP
 ```
 
 Agents address inference as `http://llm-inference-service:8000/v1`. Changing the backend
@@ -621,7 +619,7 @@ a shared Git hosting organization.
 
 ```
 <git-host>/
-└── harness-cluster/
+└── <harness-repo>/
     ├── orchestrator/          ← orchestrator agent repo
     ├── docs-engineer/         ← docs-engineer agent repo
     ├── security-engineer/     ← security-engineer agent repo
@@ -654,8 +652,8 @@ Git hosting's native push-mirror support makes this a single configuration chang
 |---|---|---|
 | Git hosting (Git, PRs, issues, API) | Infrastructure team (optional integration) | Agents call Git hosting API; harness does not manage it |
 | storage / backup | Infrastructure team | Runtime state, large artifacts, backup - outside harness |
-| K8s cluster (harness-cluster) | Infrastructure team | Harness runs on it; harness does not manage the cluster lifecycle |
-| Inference (vLLM on GPU node) | Infrastructure team | LLM endpoint accessed via ExternalName; harness does not manage it |
+| K8s cluster | Infrastructure team | Harness runs on it; harness does not manage the cluster lifecycle |
+| Inference (vLLM) | Infrastructure team | LLM endpoint accessed via ExternalName; harness does not manage it |
 | Secrets / credentials | Infrastructure team | Injected via environment or vault at deploy-time |
 | Harbor / private registry | Infrastructure team | Container images for agent pods; future step |
 

@@ -115,24 +115,37 @@ tree. The supported adoption surface is the `allowed_in_adopter_repos: true` set
 
 ---
 
-## 5. Companion documentation `document_type`
+## 5. Governed `document_type` vocabulary
+
+The complete set of `document_type` values the harness governs, covering both
+`.meta.yaml` executable companions and `.md` front-matter. `reconcile-metadata-registry.py`
+(SH-0028) asserts every artefact's `document_type` is a member of this set.
 
 | `document_type` | Used for |
 |---|---|
+| `script` | `.meta.yaml` companion for a single executable (holds the SH id, owner, class, `allowed_in_adopter_repos`) |
 | `script-docs` | `.md` sidecar documenting a single executable (inherits domain/owner/category/process) |
-| `index` | directory index / overview of a script group |
+| `index` | directory index / overview of a script group or management-plane home |
 | `reference` | config / reference artifact not tied to one executable (including schemas, dependency locks, dependency declarations, and rendering assets) |
 | `backlog` | backlog seed template (D6, `primary: false` + `redirect`) |
 | `seed-template` | provisioned-workspace template |
-| `standard` | this standard / other governing reference |
+| `standard` | governing standard / reference contract (this file) |
+| `spec` | specification (for example the harness-wide `AGENTICCORE_SPEC.md` and its cross-plane pointer) |
+| `analysis` | analysis / decision-support record (for example the AC-0013 activity index) |
+| `runbook` | operational runbook or a compat stub retained at a legacy / transitional location |
 | `procedure` | management-plane agentic procedure executed by the harness (deterministic, script/gate-backed harness machinery); home `management/agentic/procedures/` |
 
-> This table enumerates the companion-doc types under `mddocs/scripts/`. The
-> management-plane homes extend the governed `document_type` vocabulary (defined
-> by ADR-0029) with `procedure`, and reuse `index` / `reference` / `spec` /
-> `analysis` / `runbook` for management-plane artefacts. `procedure` carries no
-> classification-ID kind (ADR-0029 introduces no new kind); it is distinguished
-> by the `agentic/procedures/` home and its `category` identity.
+> The script-companion types (`script` in `.meta.yaml`, `script-docs` in `.md`,
+> plus the primary `index` / `reference` set) are minted under `mddocs/scripts/`.
+> The management-plane homes reuse `index` / `reference` / `spec` / `analysis` /
+> `runbook` and add `procedure`. `procedure` carries no classification-ID kind
+> (ADR-0029 introduces no new kind); it is distinguished by the
+> `agentic/procedures/` home and its `category` identity.
+>
+> **Vocabulary conformance.** Unless a value is added to this table it is not
+> governed. Adding a value is a change to ADR-0029's governed vocabulary and
+> must be carried by a superseding ADR (forward-only, ADR-0035); do not add
+> values casually.
 
 ---
 

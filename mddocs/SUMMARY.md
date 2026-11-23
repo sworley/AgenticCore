@@ -167,7 +167,6 @@
   - [test-mcp-git.sh](scripts/mcp-tests/test-mcp-git.md)
 
 - [Onboarding](scripts/setup/index.md)
-  - [adopt.sh](scripts/setup/adopt.md)
   - [python-env.sh](scripts/setup/python-env.md)
   - [toolchain.sh](scripts/setup/toolchain.md)
   - [opencode.json - init-opencode-settings](scripts/setup/init-opencode-settings.md)

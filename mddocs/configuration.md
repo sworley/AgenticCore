@@ -60,7 +60,7 @@ to clone the repo directly and configure their own environment.
 
 ## External Dependencies
 
-AgenticCore is designed to run on a local Kubernetes cluster (harness-cluster). The harness
+AgenticCore is designed to run on a local Kubernetes cluster. The harness
 does not manage the cluster lifecycle - that is an infrastructure concern consumed
 via configuration:
 

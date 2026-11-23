@@ -15,10 +15,10 @@ for the AgenticCore framework.
 | [Task Queue Operations](task-queue-operations.md) | Working with `tasks.yaml` |
 | [Bench Registry](bench-registry.md) | Track and manage open benches |
 | [Agent Authoring Workflow](../management/agentic/procedures/agent-authoring-workflow.md) | Create or modify agent definitions |
-| [Release Process](release-process.md) | Full release lifecycle with HIL gates |
-| [Release Notes Template](release-notes-template.md) | Template for `mddocs/release-notes/vX.Y.Z.md` |
+| [Release Process](../management/delivery/release-process.md) | Full release lifecycle with HIL gates |
+| [Release Notes Template](../management/delivery/release-notes-template.md) | Template for `mddocs/management/delivery/releases/vX.Y.Z.md` |
 | [Configure MCP Servers](configure-mcp.md) | One-time MCP setup - cache warm, config, verify |
-| [Sign-Off Package](sign-off-package.md) | HIL approval gate - diff, verdicts, open findings, blockers |
+| [Sign-Off Package](../management/delivery/sign-off-package.md) | HIL approval gate - diff, verdicts, open findings, blockers |
 | [Adopter Reconciliation Model](adopter-reconciliation.md) | Change propagation, ADR namespace, upgrade cadence |
 
 ## Guide: Scripts

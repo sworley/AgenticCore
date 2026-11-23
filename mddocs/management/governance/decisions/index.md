@@ -3,8 +3,8 @@ document_type: index
 status: active
 lifecycle: active
 records: ADR-0029 onward
-redirect: ../../../adr/
 primary: true
+domain: Management
 ---
 
 # Decision Index (active)

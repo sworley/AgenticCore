@@ -12,7 +12,6 @@ Scripts for bootstrapping and verifying the AgenticCore development environment.
 
 | Script | Reference | Purpose |
 |--------|-----------|---------|
-| [adopt.sh](adopt.md) | [Bootstrap New Project](../../reference.architecture/bootstrap-new-project.md) | Single-command adopter onboarding - wraps README Quick Start (Adopter) steps 3-7 (create target, run `export-framework.sh`, provision the Python env, validate, generate the agent adapter) |
 | [python-env.sh](python-env.md) | [Bootstrap New Project](../../reference.architecture/bootstrap-new-project.md) | Create the project-local `.venv`, install `requirements.txt`, validate the harness's Python deps (`mcp`, `yaml`, `fastmcp`) - and `--freeze` to regenerate the pinned snapshot |
 | [toolchain.sh](toolchain.md) | [Bootstrap New Project](../../reference.architecture/bootstrap-new-project.md) | Manage the non-Python docs/dev toolchain (validate + opt-in install: `mdbook`, `mdbook-mermaid`, `typos-cli`, `shellcheck`, `gh`, `jq`) |
 | `tool-adapter.sh` | [tooling-contract](../../reference.architecture/tooling-contract.md) | Generate/configure the agent-runtime adapter (opencode/codex) - regenerates `.opencode/agents/` and writes a start script |

@@ -2,18 +2,26 @@
 document_type: index
 status: active
 lifecycle: active
-primary: false
-redirect: ../../../../operations/runbooks/credential-identity-guard.md
+primary: true
 security_category: guardrail
+category: Security
 domain: Management
-purpose: Companion index to the credential-identity guard rail runbook
+purpose: Home for the credential-identity guardrail runbook
 ---
 
-# Credential-Identity Guard (companion index)
+# Credential-Identity Guardrail
 
-> **Compat stub - the authoritative runbook lives at**
-> `mddocs/operations/runbooks/credential-identity-guard.md` (`primary: true`).
-> This index exists to make the guardrail discoverable under the
-> management/security/guardrails/ category. **Do not edit this stub.**
+**Top:** [Management plane](../../../index.md)
 
-→ [Open the authoritative runbook](../../../../operations/runbooks/credential-identity-guard.md)
+**Purpose.** Canonical home for the credential-identity guardrail. The runbook
+enforces credential identity boundaries during bench operations.
+
+## Contents
+
+- [Credential-Identity Guard](credential-identity-guard.md) - enforce credential
+  identity boundaries during bench operations
+
+**Owner:** maintained by the harness. This home carries `category: Security`
+(ADR-0029). The authoritative runbook is `primary: true` at this path; the
+historical `operations/runbooks/credential-identity-guard.md` location is
+retained as a `primary: false` redirect stub so existing links continue to resolve.

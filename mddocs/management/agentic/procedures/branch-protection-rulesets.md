@@ -29,12 +29,12 @@ the enforcement layer.
 ## Prerequisites
 
 - Repo admin access (operator account).
-- A PAT with `Administration` read/write on `sworley/AgenticCore` (rulesets require
+- A PAT with `Administration` read/write on `<owner>/AgenticCore` (rulesets require
   the `Administration` permission on fine-grained tokens).
 - `gh` authenticated (see the credential store; the PAT lives in `pass`).
 
 ```sh
-export GH_TOKEN="$(pass show github.com/personal/sworley/AgenticCore/pat | head -1)"
+export GH_TOKEN="$(pass show github.com/<owner>/AgenticCore/pat | head -1)"
 ```
 
 ---
@@ -43,8 +43,8 @@ export GH_TOKEN="$(pass show github.com/personal/sworley/AgenticCore/pat | head 
 
 | Ruleset | Target | Rules | Bypass actors |
 |---|---|---|---|
-| `main-strict` | `main` | block creation, block deletion, block non-fast-forward; require PR with strict `verify` status check, 0 approving reviews, no code-owner review, no conversation resolution; require signed commits | operator (`sworley`) |
-| `dev-strict` | `dev` | block creation, block deletion, block non-fast-forward; require PR with strict `verify` status check, 0 approving reviews, no code-owner review, no conversation resolution; require signed commits | operator (`sworley`) |
+| `main-strict` | `main` | block creation, block deletion, block non-fast-forward; require PR with strict `verify` status check, 0 approving reviews, no code-owner review, no conversation resolution; require signed commits | operator |
+| `dev-strict` | `dev` | block creation, block deletion, block non-fast-forward; require PR with strict `verify` status check, 0 approving reviews, no code-owner review, no conversation resolution; require signed commits | operator |
 
 **Why no required approving reviews / code-owner review:** AgenticCore is a
 single-operator harness. GitHub will not let a user approve their own pull request,
@@ -66,10 +66,11 @@ branch-name validation (which could lock out agentic sessions).
 ## User IDs
 
 The operator is the bypass actor on both rulesets. Resolve the numeric ID if it
-changes:
+changes. Throughout this runbook, `<owner>` is the GitHub owner/org of the repo and
+`<OWNER_ID>` is the operator's numeric GitHub user ID:
 
 ```sh
-gh api users/sworley --jq .id   # operator (currently 1118535)
+gh api users/<owner> --jq .id   # operator (substitute your numeric GitHub user id)
 ```
 
 ---
@@ -85,7 +86,7 @@ cat <<'JSON' > /tmp/opencode/ruleset-main.json
   "target": "branch",
   "enforcement": "active",
   "bypass_actors": [
-    {"actor_id": 1118535, "actor_type": "User", "bypass_mode": "always"}
+    {"actor_id": <OWNER_ID>, "actor_type": "User", "bypass_mode": "always"}
   ],
   "conditions": {
     "ref_name": {
@@ -112,7 +113,7 @@ cat <<'JSON' > /tmp/opencode/ruleset-main.json
   ]
 }
 JSON
-gh api --method POST repos/sworley/AgenticCore/rulesets --input /tmp/opencode/ruleset-main.json
+gh api --method POST repos/<owner>/AgenticCore/rulesets --input /tmp/opencode/ruleset-main.json
 ```
 
 ### Step 2 - Create the `dev-strict` ruleset
@@ -124,7 +125,7 @@ cat <<'JSON' > /tmp/opencode/ruleset-dev.json
   "target": "branch",
   "enforcement": "active",
   "bypass_actors": [
-    {"actor_id": 1118535, "actor_type": "User", "bypass_mode": "always"}
+    {"actor_id": <OWNER_ID>, "actor_type": "User", "bypass_mode": "always"}
   ],
   "conditions": {
     "ref_name": {
@@ -151,7 +152,7 @@ cat <<'JSON' > /tmp/opencode/ruleset-dev.json
   ]
 }
 JSON
-gh api --method POST repos/sworley/AgenticCore/rulesets --input /tmp/opencode/ruleset-dev.json
+gh api --method POST repos/<owner>/AgenticCore/rulesets --input /tmp/opencode/ruleset-dev.json
 ```
 
 ### Step 3 - Remove the legacy branch protection on `main` and `dev`
@@ -160,8 +161,8 @@ Once both rulesets are active, remove the legacy protection so there is a single
 source of truth (rulesets), not two competing enforcement layers:
 
 ```sh
-gh api -X DELETE repos/sworley/AgenticCore/branches/main/protection
-gh api -X DELETE repos/sworley/AgenticCore/branches/dev/protection
+gh api -X DELETE repos/<owner>/AgenticCore/branches/main/protection
+gh api -X DELETE repos/<owner>/AgenticCore/branches/dev/protection
 ```
 
 ---
@@ -169,11 +170,11 @@ gh api -X DELETE repos/sworley/AgenticCore/branches/dev/protection
 ## Verification
 
 ```sh
-gh api repos/sworley/AgenticCore/rulesets --jq '.[] | {name, target, enforcement}'
+gh api repos/<owner>/AgenticCore/rulesets --jq '.[] | {name, target, enforcement}'
 # expect: main-strict (branch, active) + dev-strict (branch, active)
 
 for b in main dev; do
-  gh api repos/sworley/AgenticCore/branches/$b/protection 2>&1 | grep -q 'Not Found' \
+  gh api repos/<owner>/AgenticCore/branches/$b/protection 2>&1 | grep -q 'Not Found' \
     && echo "$b: legacy protection removed" \
     || echo "$b: legacy protection still present (review)"
 done
@@ -193,13 +194,13 @@ are a bypass actor), and that a force-push to either branch is rejected.
 List the ruleset IDs, then delete the relevant one:
 
 ```sh
-gh api repos/sworley/AgenticCore/rulesets --jq '.[] | "\(.id)\t\(.name)"'
-gh api -X DELETE repos/sworley/AgenticCore/rulesets/<id>
+gh api repos/<owner>/AgenticCore/rulesets --jq '.[] | "\(.id)\t\(.name)"'
+gh api -X DELETE repos/<owner>/AgenticCore/rulesets/<id>
 ```
 
 To restore the legacy protection after a rollback, recreate it via the UI
 (Settings → Branches → Add rule) or the REST endpoints under
-`/repos/sworley/AgenticCore/branches/<branch>/protection`.
+`/repos/<owner>/AgenticCore/branches/<branch>/protection`.
 
 ---
 

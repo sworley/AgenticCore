@@ -20,10 +20,12 @@ purpose: Harness management plane
 |---|---|---|
 | [Architecture](architecture/README.md) | Harness structure, planes, bench/workflow models, system spec anchor | ✓ |
 | [Agentic](agentic/README.md) | Agent model, agent namespace, agentic procedures | ✓ |
+| [Delivery](delivery/README.md) | Release management, release notes, delivery process contracts | ✓ |
 | [Assurance](assurance/reviews/ledger-runbook/index.md) | Reviews, audits, evidence | ✓ |
-| [Governance](governance/decisions/index.md) | ADRs, standards, policies, exceptions | ✓ |
+| [Governance](governance/decisions/index.md) · [Exceptions](governance/exceptions/README.md) | ADRs, standards, policies, exceptions, waivers | ✓ |
+| [Audits](audits/README.md) · [Evidence](audits/evidence/README.md) | Gate-output provenance, audits, evidence | ✓ |
 | [Security](security/guardrails/credential-identity/index.md) · [Secret](security/guardrails/secret-management/index.md) | Trust boundaries, guardrails, access | ✓ |
-| [Tooling](tooling/README.md) | Reusable framework tooling, schemas, assets | ✓ |
+| [Tooling](tooling/README.md) · [MCP](tooling/mcp/README.md) | Reusable framework tooling, schemas, assets, MCP servers | ✓ |
 | [Work](work/activities/ac-0013-taxonomy-reconciliation/index.md) | Time-bounded harness improvement work | ✓ |
 
 ## Rules

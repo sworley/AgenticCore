@@ -3,7 +3,6 @@ document_type: backlog
 status: active
 lifecycle: active
 primary: true
-redirect: scripts/seed/mddocs/backlog.md
 domain: Management
 ---
 

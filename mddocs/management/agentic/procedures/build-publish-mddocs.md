@@ -4,6 +4,7 @@ status: active
 lifecycle: active
 primary: true
 domain: Management
+category: Agentic
 purpose: Build and publish the mdBook documentation site
 ---
 

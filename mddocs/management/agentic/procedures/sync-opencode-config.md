@@ -4,6 +4,7 @@ status: active
 lifecycle: active
 primary: true
 domain: Management
+category: Agentic
 purpose: Sync agent config between AGENT.md archive and on-disk
 ---
 

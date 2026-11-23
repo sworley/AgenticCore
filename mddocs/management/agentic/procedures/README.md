@@ -4,6 +4,7 @@ status: active
 lifecycle: active
 primary: true
 domain: Management
+category: Agentic
 purpose: Home for agentic procedures executed by the harness
 ---
 

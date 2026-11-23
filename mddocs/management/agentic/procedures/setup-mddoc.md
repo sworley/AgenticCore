@@ -4,6 +4,7 @@ status: active
 lifecycle: active
 primary: true
 domain: Management
+category: Agentic
 purpose: Set up a local mddoc documentation site
 ---
 

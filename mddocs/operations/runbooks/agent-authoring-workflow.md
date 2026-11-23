@@ -8,7 +8,7 @@ domain: Management
 purpose: Author agent operation workflows
 ---
 
-# Agent Authoring Workflow (moved)
+# Procedure: Agent Authoring Workflow (moved)
 
 > **Compat stub.** The authoritative procedure now lives at
 > `mddocs/management/agentic/procedures/agent-authoring-workflow.md` (`primary: true`).

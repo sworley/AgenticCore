@@ -125,6 +125,14 @@ tree. The supported adoption surface is the `allowed_in_adopter_repos: true` set
 | `backlog` | backlog seed template (D6, `primary: false` + `redirect`) |
 | `seed-template` | provisioned-workspace template |
 | `standard` | this standard / other governing reference |
+| `procedure` | management-plane agentic procedure executed by the harness (deterministic, script/gate-backed harness machinery); home `management/agentic/procedures/` |
+
+> This table enumerates the companion-doc types under `mddocs/scripts/`. The
+> management-plane homes extend the governed `document_type` vocabulary (defined
+> by ADR-0029) with `procedure`, and reuse `index` / `reference` / `spec` /
+> `analysis` / `runbook` for management-plane artefacts. `procedure` carries no
+> classification-ID kind (ADR-0029 introduces no new kind); it is distinguished
+> by the `agentic/procedures/` home and its `category` identity.
 
 ---
 

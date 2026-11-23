@@ -69,7 +69,7 @@ never breaks even before links are rewritten.
 | `onboarding/bench-model.md` | `management/architecture/bench/bench-model.md` (rev, item #5) |
 | `onboarding/agentic-workflow-overview.md` | `management/architecture/workflow/agentic-workflow-overview.md` (rev, item #5) |
 | `reference.architecture/shared-context.md` | `management/agentic/context/shared-context.md` |
-| `reference.architecture/agent-authoring-workflow.md` | `management/agentic/procedures/authoring-workflow.md` (rev, item #1) |
+| `reference.architecture/agent-authoring-workflow.md` | `management/agentic/procedures/agent-authoring-workflow.md` (rev, item #1) |
 | `operations/runbooks/configure-agents.md` | `management/agentic/procedures/configure-agents.md` |
 
 ### 3.2 `management/delivery/`
@@ -137,21 +137,21 @@ harness self-maintenance items carry an inline manual fallback section.
 
 | Current path | New path |
 |---|---|
-| `operations/runbooks/agent-authoring-workflow.md` | `management/agentic/procedures/agent-authoring-workflow.md` |
-| `operations/runbooks/agent-session-tracking.md` | `management/agentic/procedures/agent-session-tracking.md` |
-| `operations/runbooks/ai-doc-session-commit-discipline.md` | `management/agentic/procedures/ai-doc-session-commit-discipline.md` |
-| `operations/runbooks/bench-recovery.md` | `management/agentic/procedures/bench-recovery.md` |
-| `operations/runbooks/branch-protection-rulesets.md` | `management/agentic/procedures/branch-protection-rulesets.md` |
-| `operations/runbooks/build-publish-mddocs.md` | `management/agentic/procedures/build-publish-mddocs.md` |
-| `operations/runbooks/check-links-runbook.md` | `management/agentic/procedures/check-links-runbook.md` |
-| `operations/runbooks/git-sync-runbook.md` | `management/agentic/procedures/git-sync-runbook.md` |
-| `operations/runbooks/hook-rollback.md` | `management/agentic/procedures/hook-rollback.md` |
-| `operations/runbooks/rotate-git-pat.md` | `management/agentic/procedures/rotate-git-pat.md` |
-| `operations/runbooks/session-continuity.md` | `management/agentic/procedures/session-continuity.md` |
-| `operations/runbooks/session-reasoning-log.md` | `management/agentic/procedures/session-reasoning-log.md` |
-| `operations/runbooks/setup-mddoc.md` | `management/agentic/procedures/setup-mddoc.md` |
-| `operations/runbooks/sync-agent-definitions.md` | `management/agentic/procedures/sync-agent-definitions.md` |
-| `operations/runbooks/sync-opencode-config.md` | `management/agentic/procedures/sync-opencode-config.md` |
+| `management/runbooks/agent-authoring-workflow.md` | `management/agentic/procedures/agent-authoring-workflow.md` |
+| `management/runbooks/agent-session-tracking.md` | `management/agentic/procedures/agent-session-tracking.md` |
+| `management/runbooks/ai-doc-session-commit-discipline.md` | `management/agentic/procedures/ai-doc-session-commit-discipline.md` |
+| `management/runbooks/bench-recovery.md` | `management/agentic/procedures/bench-recovery.md` |
+| `management/runbooks/branch-protection-rulesets.md` | `management/agentic/procedures/branch-protection-rulesets.md` |
+| `management/runbooks/build-publish-mddocs.md` | `management/agentic/procedures/build-publish-mddocs.md` |
+| `management/runbooks/check-links-runbook.md` | `management/agentic/procedures/check-links-runbook.md` |
+| `management/runbooks/git-sync-runbook.md` | `management/agentic/procedures/git-sync-runbook.md` |
+| `management/runbooks/hook-rollback.md` | `management/agentic/procedures/hook-rollback.md` |
+| `management/runbooks/rotate-git-pat.md` | `management/agentic/procedures/rotate-git-pat.md` |
+| `management/runbooks/session-continuity.md` | `management/agentic/procedures/session-continuity.md` |
+| `management/runbooks/session-reasoning-log.md` | `management/agentic/procedures/session-reasoning-log.md` |
+| `management/runbooks/setup-mddoc.md` | `management/agentic/procedures/setup-mddoc.md` |
+| `management/runbooks/sync-agent-definitions.md` | `management/agentic/procedures/sync-agent-definitions.md` |
+| `management/runbooks/sync-opencode-config.md` | `management/agentic/procedures/sync-opencode-config.md` |
 
 The `management/runbooks/README.md` index is removed (no operational runbook
 home in the management plane; its index role is superseded by the

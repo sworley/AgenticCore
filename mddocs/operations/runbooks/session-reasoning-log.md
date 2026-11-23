@@ -8,7 +8,7 @@ domain: Management
 purpose: Record and maintain the session reasoning log
 ---
 
-# Session Reasoning Log (moved)
+# Procedure: Session Reasoning Log (moved)
 
 > **Compat stub.** The authoritative procedure now lives at
 > `mddocs/management/agentic/procedures/session-reasoning-log.md` (`primary: true`).

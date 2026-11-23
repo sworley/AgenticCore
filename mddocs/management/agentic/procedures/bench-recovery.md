@@ -4,6 +4,7 @@ status: active
 lifecycle: active
 primary: true
 domain: Management
+category: Agentic
 purpose: Wipe and reprovision a bench on context loss
 ---
 

@@ -4,6 +4,7 @@ status: active
 lifecycle: active
 primary: true
 domain: Management
+category: Agentic
 purpose: Maintain session continuity and end-of-focus memory writes
 ---
 

@@ -220,7 +220,7 @@ fi
 # GIT_ASKPASS - supplies token without embedding in URLs or .git/config
 # ---------------------------------------------------------------------------
 export _ASKPASS_TOKEN="$GIT_TOKEN"
-GIT_ASKPASS_SCRIPT="$(mktemp /tmp/git-sync-askpass.XXXXXX)"
+GIT_ASKPASS_SCRIPT="$(mktemp "${TMPDIR:-/tmp}/git-sync-askpass.XXXXXX")"
 printf '#!/bin/sh\necho "$_ASKPASS_TOKEN"\n' > "$GIT_ASKPASS_SCRIPT"
 chmod +x "$GIT_ASKPASS_SCRIPT"
 export GIT_ASKPASS="$GIT_ASKPASS_SCRIPT"

@@ -24,14 +24,13 @@ conformance:
       `.meta.yaml` value must be a member of the governed vocabulary in
       metadata-standard section 5 (catches invalid or typo values, not docs that
       omit the field).
-
-  * Advisory (reported, never blocks):
     - Home / category integrity: every doc under a management home whose index
-      declares a `category` must declare the same `category` (catches
-      taxonomy or directory drift before it reaches a home).
+      declares a `category` must declare the same `category` (catches taxonomy
+      or directory drift before it reaches a home).
     - Redirect-stub contract: a `primary: true` doc must not also carry a
-      `redirect`; this surfaces circular or primary redirects such as the
-      deferred D7/D8 guardrails.
+      `redirect`; this surfaces circular or primary redirects. Home/category and
+      redirect-stub checks flip from advisory (non-blocking) to blocking once the
+      AC-0013 physical-conformance stages 3-6 and D7/D8 land.
 
 Usage (from the repository root, or anywhere):
     python3 mddocs/scripts/reconcile-metadata-registry.py            # print report
@@ -316,12 +315,12 @@ def collect_category_homes():
 
 
 def check_home_category_integrity():
-    """Advisory: every doc under a category-declared home must share that category.
+    """Blocking: every doc under a category-declared home must share that category.
 
     For each `.md` under `management/`, the nearest ancestor directory that is a
     category home defines the expected `category`. A missing or mismatched
-    `category` is surfaced (non-blocking) so taxonomy or directory drift is
-    caught before it reaches a home.
+    `category` is surfaced (blocking on `--check`) so taxonomy or directory drift
+    is caught before it reaches a home.
     """
     homes = collect_category_homes()
     advice = []
@@ -350,7 +349,7 @@ def check_home_category_integrity():
 
 
 def check_redirect_contract():
-    """Advisory: a `primary: true` doc must not also carry a `redirect`.
+    """Blocking: a `primary: true` doc must not also carry a `redirect`.
 
     A primary artifact is authoritative and should not defer elsewhere, so a
     `primary: true` + `redirect` pairing is contradictory and typically forms a
@@ -642,11 +641,11 @@ def main():
                 f"section 5 governed vocabulary (+{len(vocab)} allowed)"
             )
 
-    # --- Home / category integrity (advisory) ---
-    advice.extend(check_home_category_integrity())
+    # --- Home / category integrity (blocking) ---
+    drift.extend(check_home_category_integrity())
 
-    # --- Redirect-stub contract (advisory) ---
-    advice.extend(check_redirect_contract())
+    # --- Redirect-stub contract (blocking) ---
+    drift.extend(check_redirect_contract())
 
     # --- Supersession ledger reconciliation (ADR-0035) ---
     drift.extend(reconcile_supersession_ledger(adrs))

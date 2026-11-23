@@ -3,7 +3,6 @@ document_type: spec
 status: active
 lifecycle: active
 primary: true
-redirect: management/architecture/system/AgenticCore-Spec.md
 domain: Management
 purpose: Authoritative harness specification and governance anchor
 ---

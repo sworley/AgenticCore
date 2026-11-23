@@ -40,4 +40,4 @@ deep-merges it over the committed `opencode.json`:
 
 - [Getting Started](../../onboarding/getting-started.md)
 - [Configuration Reference](../../configuration.md)
-- [adopt.sh](adopt.md)
+- [Bootstrap New Project](../../reference.architecture/bootstrap-new-project.md)

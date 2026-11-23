@@ -176,7 +176,7 @@ Type `y` to proceed. Any other input aborts with no side effects.
 `adopt.sh` orchestrates `export-framework.sh` - it does not reimplement any part of
 the export or its D-7 confidentiality controls. A non-zero exit from
 `export-framework.sh` aborts `adopt.sh` immediately, with its exit code and message
-surfaced verbatim; see [adopt.sh](../scripts/setup/adopt.md).
+surfaced verbatim.
 
 The manual procedure below documents each step this script performs, and remains the
 reference for running any single step independently (e.g. re-running validation only,

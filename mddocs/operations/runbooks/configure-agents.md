@@ -8,7 +8,7 @@ domain: Management
 purpose: Configure the agent namespace
 ---
 
-# Runbook: Configure Agent Namespace (moved)
+# Procedure: Configure Agent Namespace (moved)
 
 > **Compat stub.** The authoritative content now lives at
 > `mddocs/management/agentic/procedures/configure-agents.md` (`primary: true`).

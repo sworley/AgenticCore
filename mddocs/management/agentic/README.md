@@ -4,6 +4,7 @@ status: active
 lifecycle: active
 primary: true
 domain: Management
+category: Agentic
 purpose: Home for the harness agent model, agent namespace, and agentic procedures
 ---
 

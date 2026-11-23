@@ -4,6 +4,7 @@ status: active
 lifecycle: active
 primary: true
 domain: Management
+category: Architecture
 purpose: Bench model - git worktree isolation
 ---
 

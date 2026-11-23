@@ -4,6 +4,7 @@ status: active
 lifecycle: active
 primary: true
 domain: Management
+category: Architecture
 purpose: Home for management-plane architectural and structural content
 ---
 

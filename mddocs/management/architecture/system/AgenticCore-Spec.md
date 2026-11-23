@@ -5,6 +5,7 @@ lifecycle: active
 primary: false
 redirect: ../../../AGENTICCORE_SPEC.md
 domain: Management
+category: Architecture
 purpose: Cross-plane pointer to the authoritative harness-wide specification
 ---
 

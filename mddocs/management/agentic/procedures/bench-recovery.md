@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Wipe and reprovision a bench on context loss
 ---
 
-# Runbook: Bench Recovery (Wipe and Reprovision)
+# Procedure: Bench Recovery (Wipe and Reprovision)
 
 **Category:** Platform & Developer Tooling
 **Last Updated:** 2026-07-21
@@ -286,9 +286,9 @@ If the reprovision is incorrect:
 
 ## Related
 
-- [ADR-: AI toolchain Config Versioning and Bench Manifest](../../adr/adr-0011-lead-engineer-identity-anchoring.md)
-- [Provision Worker Bench](../../reference.architecture/provision-worker-bench.md) - first-time bench creation
-- [Configure Agent Namespace](../agentic/procedures/configure-agents.md) - agent namespace setup
-- [Bench Registry](../../reference.architecture/bench-registry.md) - bench tracking and registration
+- [ADR-: AI toolchain Config Versioning and Bench Manifest](../../../adr/adr-0011-lead-engineer-identity-anchoring.md)
+- [Provision Worker Bench](../../../reference.architecture/provision-worker-bench.md) - first-time bench creation
+- [Configure Agent Namespace](configure-agents.md) - agent namespace setup
+- [Bench Registry](../../../reference.architecture/bench-registry.md) - bench tracking and registration
 - `bench-registry.yaml` (collection root) - live bench state
 - `tasks.yaml` (collection root) - task queue and bench assignments

@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Rotate the Git PAT
 ---
 
-# Runbook: Rotate Git PAT
+# Procedure: Rotate Git PAT
 
 **Purpose:** Rotate a Git Personal Access Token (PAT) stored in the `pass` credential store.
 

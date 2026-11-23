@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Record and maintain the session reasoning log
 ---
 
-# Session Reasoning Log
+# Procedure: Session Reasoning Log
 
 Automatic capture of the natural-language reasoning layer - why decisions were made,
 what alternatives were rejected, and what the user intended - into an append-only on-disk
@@ -214,5 +214,5 @@ Hook script: `.agentic/hooks/session-logger.py`
 
 Related:
 - [Runbook: Session Continuity](session-continuity.md)
-- [Runbook: Session Open Checklist](../../reference.architecture/session-open-checklist.md)
-- [Runbook: Session Close Checklist](../../reference.architecture/session-close-checklist.md)
+- [Runbook: Session Open Checklist](../../../reference.architecture/session-open-checklist.md)
+- [Runbook: Session Close Checklist](../../../reference.architecture/session-close-checklist.md)

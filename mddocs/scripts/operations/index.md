@@ -14,14 +14,14 @@ in `mddocs/operations/runbooks/`.
 
 | Script | Language | Runbook | Purpose |
 |---|---|---|---|
-| [git-sync.sh](git-sync.md) | zsh | [git-sync runbook](../../management/runbooks/git-sync-runbook.md) | Clone/update all repos in a Git group |
-| [check-env.sh](check-env.md) | sh | [sync-agent-definitions](../../management/runbooks/sync-agent-definitions.md) | Validate developer environment |
+| [git-sync.sh](git-sync.md) | zsh | [git-sync runbook](../../management/agentic/procedures/git-sync-runbook.md) | Clone/update all repos in a Git group |
+| [check-env.sh](check-env.md) | sh | [sync-agent-definitions](../../management/agentic/procedures/sync-agent-definitions.md) | Validate developer environment |
 | [bench-status.sh](bench-status.md) | sh | - | Show all worktree states |
 | [provision-bench.sh](provision-bench.md) | sh | [provision-worker-bench](../../reference.architecture/provision-worker-bench.md) | Provision a worker bench |
-| [check-worktree-hygiene.sh](check-worktree-hygiene.md) | sh | [session-continuity](../../management/runbooks/session-continuity.md) | Verify all worktrees are clean |
-| [sync-agent-config.sh](sync-opencode-config.md) | bash | [sync-opencode-config](../../management/runbooks/sync-opencode-config.md) | Sync AGENT.md files between archive and on-disk locations |
+| [check-worktree-hygiene.sh](check-worktree-hygiene.md) | sh | [session-continuity](../../management/agentic/procedures/session-continuity.md) | Verify all worktrees are clean |
+| [sync-agent-config.sh](sync-opencode-config.md) | bash | [sync-opencode-config](../../management/agentic/procedures/sync-opencode-config.md) | Sync AGENT.md files between archive and on-disk locations |
 | [read-audit-log.sh](read-audit-log.md) | bash | - | Pretty-print the session egress audit log |
-| [check-links.sh](check-links.md) | sh | [check-links runbook](../../management/runbooks/check-links-runbook.md) | Validate internal markdown links in mddocs/ |
+| [check-links.sh](check-links.md) | sh | [check-links runbook](../../management/agentic/procedures/check-links-runbook.md) | Validate internal markdown links in mddocs/ |
 
 All scripts are invoked from the repository root:
 

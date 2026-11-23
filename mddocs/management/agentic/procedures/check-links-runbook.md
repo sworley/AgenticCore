@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Run the internal link validator
 ---
 
-# Runbook: check-links - mdBook Internal Link Validator
+# Procedure: check-links - mdBook Internal Link Validator
 
 **Script:** `mddocs/scripts/check-links.sh`
 **Purpose:** Scan all markdown files in `mddocs/` and report any internal links
@@ -135,6 +135,6 @@ or invoke directly from the session-open checklist after `mdbook build`.
 ## Related
 
 - AGENT.md - mdbook link gate standing rule (repo root, not served by mdbook)
-- [Session Close Checklist](../../reference.architecture/session-close-checklist.md)
+- [Session Close Checklist](../../../reference.architecture/session-close-checklist.md)
 - [Build and Publish mdBook](build-publish-mddocs.md)
-- [TC-017 - Automate mdbook internal link validation](../../backlog.md)
+- [TC-017 - Automate mdbook internal link validation](../../../backlog.md)

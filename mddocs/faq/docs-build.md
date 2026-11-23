@@ -24,13 +24,13 @@ Validate internal links before committing docs:
 ./mddocs/scripts/check-links.sh
 ```
 
-See the [Set Up mddoc](../management/runbooks/setup-mddoc.md) runbook and
-[check-links](../management/runbooks/check-links-runbook.md) runbook for full detail.
+See the [Set Up mddoc](../management/agentic/procedures/setup-mddoc.md) runbook and
+[check-links](../management/agentic/procedures/check-links-runbook.md) runbook for full detail.
 
 ## Canonical References
 
-- [Set Up mddoc Local Documentation Site](../management/runbooks/setup-mddoc.md)
-- [Runbook: check-links](../management/runbooks/check-links-runbook.md)
+- [Set Up mddoc Local Documentation Site](../management/agentic/procedures/setup-mddoc.md)
+- [Runbook: check-links](../management/agentic/procedures/check-links-runbook.md)
 
 ## Provenance
 

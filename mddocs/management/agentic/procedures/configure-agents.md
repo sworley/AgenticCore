@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Configure the agent namespace
 ---
 
-# Runbook: Configure Agent Namespace
+# Procedure: Configure Agent Namespace
 
 **Agent:** ops-engineer
 **Triggered by:** New clone, membership change, or an agent-definition change that
@@ -79,7 +79,7 @@ git commit -m "feat: configure agent namespace [AC-NNNN]"
 
 ## Related
 
-- [Agent Authoring Workflow](../../runbooks/agent-authoring-workflow.md)
-- [Sync Agent Definitions](../../runbooks/sync-agent-definitions.md)
+- [Agent Authoring Workflow](agent-authoring-workflow.md)
+- [Sync Agent Definitions](sync-agent-definitions.md)
 - [Shared Agent Context](../context/shared-context.md)
 - [Configure MCP Servers](../../../reference.architecture/configure-mcp.md)

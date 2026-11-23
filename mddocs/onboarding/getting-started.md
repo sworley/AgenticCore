@@ -237,5 +237,5 @@ The lead-engineer agent will:
 
 - [Visual Overview](visual-overview.md) - the system at a glance
 - [Repository Structure](repository-structure.md) - understand the layout
-- [Agentic Workflow Overview](../management/agentic/overview/agentic-workflow-overview.md) - understand how work flows
-- [Bench Model](../management/agentic/context/bench-model.md) - understand the namespace hierarchy
+- [Agentic Workflow Overview](../management/architecture/workflow/agentic-workflow-overview.md) - understand how work flows
+- [Bench Model](../management/architecture/bench/bench-model.md) - understand the namespace hierarchy

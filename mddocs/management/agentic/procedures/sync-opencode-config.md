@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Sync agent config between AGENT.md archive and on-disk
 ---
 
-# Runbook: Sync Agent Config (AGENT.md Archive ↔ On-Disk)
+# Procedure: Sync Agent Config (AGENT.md Archive ↔ On-Disk)
 
 **Purpose:** Keep the committed AGENT.md recovery archive in `_config/` in sync
 with the on-disk locations that live outside the git tree (e.g. org-level,
@@ -60,4 +60,4 @@ To add a new AGENT.md pair, append a `sync_pair <archive> <target>` line in the
 ## Related
 
 - [Sync Agent Definitions](sync-agent-definitions.md)
-- [Configure Agent Namespace](../agentic/procedures/configure-agents.md)
+- [Configure Agent Namespace](configure-agents.md)

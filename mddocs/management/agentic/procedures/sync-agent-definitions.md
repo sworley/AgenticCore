@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Sync agent definitions
 ---
 
-# Runbook: Sync Agent Definitions
+# Procedure: Sync Agent Definitions
 
 **Purpose:** Propagate changes from the canonical `.agents/` source to tool-specific
 agent directories (`.opencode/agents/`).

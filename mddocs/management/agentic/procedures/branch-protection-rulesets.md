@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Configure GitHub branch-protection rulesets
 ---
 
-# Runbook: GitHub Branch-Protection Rulesets
+# Procedure: GitHub Branch-Protection Rulesets
 
 **Purpose:** Apply and verify the GitHub branch-protection rulesets that implement
 ADR-0036 (the server-side enforcement of the `main` append-only / merge-only rule

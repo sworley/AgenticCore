@@ -73,13 +73,13 @@ specialty. Authorities are bounded: implementers write, evaluators verdict-only.
 2. Run `.agents/sync-agents.sh` to regenerate `.opencode/agents/`.
 3. Verify the generated files load (`opencode agent list`).
 
-See [Agent Authoring Workflow](../../runbooks/agent-authoring-workflow.md) and
-[Sync Agent Definitions](../../runbooks/sync-agent-definitions.md).
+See [Agent Authoring Workflow](../../agentic/procedures/agent-authoring-workflow.md) and
+[Sync Agent Definitions](../../agentic/procedures/sync-agent-definitions.md).
 
 ---
 
 ## Related
 
 - [Visual Overview](../../../onboarding/visual-overview.md)
-- [Agentic Workflow Overview](../overview/agentic-workflow-overview.md)
+- [Agentic Workflow Overview](../../architecture/workflow/agentic-workflow-overview.md)
 - [Shared Agent Context](../context/shared-context.md)

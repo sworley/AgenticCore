@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Enforce AI-assisted session commit discipline
 ---
 
-# Runbook: AI-Assisted Session Commit Discipline
+# Procedure: AI-Assisted Session Commit Discipline
 
 **Category:** AI Tooling
 **Last Updated:** 2026-07-21
@@ -264,7 +264,7 @@ git commit
 
 - `PROCESS.md` (collection root) - authoritative agent workflow contract; defines
   the human acceptance gate, security inspection gate, branch convention, and merge sequence
-- [Configure Agent Namespace](../agentic/procedures/configure-agents.md) - namespace structure and MCP setup
+- [Configure Agent Namespace](configure-agents.md) - namespace structure and MCP setup
 - [Agent Session Tracking](agent-session-tracking.md) - cross-session task continuity and audit log
 - `PROCESS.md` § *Security Gate* - full verdict table and escalation protocol
 - `PROCESS.md` § *Human Acceptance Gate* - acceptance signal examples and ambiguous response list

@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Author agent operation workflows
 ---
 
-# Agent Authoring Workflow
+# Procedure: Agent Authoring Workflow
 
 **Status:** Accepted
 **Applies to:** AI toolchain (`.agentic/agents/`) and opencode (`.opencode/agents/`)
@@ -320,5 +320,5 @@ git commit -m "feat: add <name> hook [AC-NNNN]"
 
 - `.agents/_meta.yaml` - per-agent frontmatter configuration
 - `.agents/sync-agents.sh` - the sync script
-- [Configure Agent Namespace](../agentic/procedures/configure-agents.md) - full agent namespace setup and MCP configuration
+- [Configure Agent Namespace](configure-agents.md) - full agent namespace setup and MCP configuration
 - [Runbook: Sync Agent Definitions](sync-agent-definitions.md) - operational sync procedure

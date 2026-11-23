@@ -3,15 +3,15 @@ document_type: index
 status: active
 lifecycle: active
 primary: false
-redirect: ../../management/runbooks/bench-recovery.md
+redirect: ../../management/agentic/procedures/bench-recovery.md
 domain: Management
 purpose: Wipe and reprovision a bench on context loss
 ---
 
-# Runbook: Bench Recovery (Wipe and Reprovision) (moved)
+# Procedure: Bench Recovery (Wipe and Reprovision) (moved)
 
-> **Compat stub.** The authoritative runbook now lives at
-> `mddocs/management/runbooks/bench-recovery.md` (`primary: true`).
+> **Compat stub.** The authoritative procedure now lives at
+> `mddocs/management/agentic/procedures/bench-recovery.md` (`primary: true`).
 > **Do not edit this stub.**
 
-→ [Open the authoritative runbook](../../management/runbooks/bench-recovery.md)
+→ [Open the authoritative procedure](../../management/agentic/procedures/bench-recovery.md)

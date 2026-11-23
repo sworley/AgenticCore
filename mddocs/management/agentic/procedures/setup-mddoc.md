@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Set up a local mddoc documentation site
 ---
 
-# Runbook: Set Up mddoc Local Documentation Site
+# Procedure: Set Up mddoc Local Documentation Site
 
 ## Overview
 
@@ -148,5 +148,5 @@ from `https://cdn.jsdelivr.net/npm/mermaid@<version>/dist/mermaid.min.js`.
 
 ## Related
 
-- [mddocs README](../../index.md)
-- [Runbook Index](../index.md)
+- [mddocs README](../../../index.md)
+- [Management plane](../../index.md)

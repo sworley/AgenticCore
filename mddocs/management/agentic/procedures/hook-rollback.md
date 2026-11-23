@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Roll back git hooks
 ---
 
-# Runbook: Hook Rollback
+# Procedure: Hook Rollback
 
 **Category:** Platform & Developer Tooling
 **Last Updated:** 2026-06-06
@@ -23,7 +23,7 @@ or needs to be rolled back after a rule change. Covers three scenarios:
 3. **Validate before committing** - confirm blocked and safe cases behave as expected
 
 For the general hook change strategy (per-hook circuit breakers, env var overrides,
-staged rollout), see [ADR-0010: Hook Rollback Strategy](../../adr/adr-0010-hook-rollback-strategy.md).
+staged rollout), see [ADR-0010: Hook Rollback Strategy](../../../adr/adr-0010-hook-rollback-strategy.md).
 
 ---
 
@@ -66,13 +66,13 @@ retry the command:
 |------|------------------------|
 | `secret-guard.py` | `export AGENT_SECRET_GUARD_DISABLED=1` |
 | `read-scope-guard.py` | `export AGENT_READ_SCOPE_GUARD_DISABLED=1` |
-| `package-install-guard.py` | none - unconditional by design (see [ADR-0010](../../adr/adr-0010-hook-rollback-strategy.md)) |
+| `package-install-guard.py` | none - unconditional by design (see [ADR-0010](../../../adr/adr-0010-hook-rollback-strategy.md)) |
 
 The env var takes effect immediately - no session restart needed. It does not persist
 across sessions unless exported in `.envrc`. Clear it when done: `unset AGENT_SECRET_GUARD_DISABLED`.
 
 `package-install-guard.py` has no circuit breaker by design - it is unconditional.
-See [ADR-0010](../../adr/adr-0010-hook-rollback-strategy.md) for rationale.
+See [ADR-0010](../../../adr/adr-0010-hook-rollback-strategy.md) for rationale.
 
 ### Option B - Edit settings.local.json (fallback, requires restart)
 
@@ -228,6 +228,6 @@ git checkout HEAD -- .agentic/hooks/<script-name>.py
 
 ## Related
 
-- [secret-guard Hook](../../operations/runbooks/secret-guard.md) - per-rule documentation, safe alternatives, and update guide
-- [ADR-: Agentic Agent Enforcement Posture](../../adr/adr-0022-git-pre-commit-permission-order-check.md)
-- [ADR-0010: Hook Rollback Strategy](../../adr/adr-0010-hook-rollback-strategy.md) - circuit breakers, env var naming convention, staged rollout, companion script
+- [secret-guard Hook](../../../operations/runbooks/secret-guard.md) - per-rule documentation, safe alternatives, and update guide
+- [ADR-: Agentic Agent Enforcement Posture](../../../adr/adr-0022-git-pre-commit-permission-order-check.md)
+- [ADR-0010: Hook Rollback Strategy](../../../adr/adr-0010-hook-rollback-strategy.md) - circuit breakers, env var naming convention, staged rollout, companion script

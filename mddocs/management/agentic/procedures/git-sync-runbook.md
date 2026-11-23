@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Sync the git workspace
 ---
 
-# Runbook: git-sync - Git Workspace Sync
+# Procedure: git-sync - Git Workspace Sync
 
 **Script:** `mddocs/scripts/git-sync.sh`
 **Purpose:** Clone or update every project in a Git group into the current
@@ -162,5 +162,5 @@ git commit -m "chore: gitignore synced namespace my-new-subgroup"
 
 ## Related
 
-- [Provision Worker Bench](../../reference.architecture/provision-worker-bench.md)
+- [Provision Worker Bench](../../../reference.architecture/provision-worker-bench.md)
 - [Rotate Git PAT](rotate-git-pat.md)

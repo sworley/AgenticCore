@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Track agent session state
 ---
 
-# Runbook: Agent Session Tracking
+# Procedure: Agent Session Tracking
 
 **Category:** Platform & Developer Tooling
 **Last Updated:** 2026-04-23
@@ -286,7 +286,7 @@ cat ~/.agentic/projects/<hashed-project-path>/memory/MEMORY.md
 
 ### Step 4 - Identify the manual commands
 
-For each outstanding task, find the relevant runbook in `mddocs/management/runbooks/`
+For each outstanding task, find the relevant procedure in `mddocs/management/agentic/procedures/`
 or `mddocs/reference.architecture/`.
 
 ### Step 5 - Execute manually and update the log

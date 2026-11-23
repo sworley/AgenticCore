@@ -17,7 +17,7 @@ related:
 
 # git-sync.sh
 
-<a href="../git-sync.sh" download>Download git-sync.sh</a> · zsh · [Runbook](../../management/runbooks/git-sync-runbook.md)
+<a href="../git-sync.sh" download>Download git-sync.sh</a> · zsh · [Runbook](../../management/agentic/procedures/git-sync-runbook.md)
 
 ```zsh
 {{#include ../git-sync.sh}}

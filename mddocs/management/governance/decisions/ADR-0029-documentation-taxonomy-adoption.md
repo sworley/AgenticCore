@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-12
 **Adopted:** 2026-11-12
-**Revised:** 2026-11-21 (additive revision: physical conformance layer)
+**Revised:** 2026-11-21 (additive revision: physical conformance layer); 2026-11-23 (artifact-class split, item #1)
 **Status:** accepted
 **Supersedes:** - (additive revision only; this ADR is not superseded and does not supersede)
 **Superseded by:** -
@@ -48,14 +48,16 @@ The two layers are not in tension. The metadata contract provides the typed node
 
 Adopt the following management homes as first-class, contract-backed, populated homes. Each is supported by a metadata contract and registered in the reconcile mapping:
 
-- `agentic/`. Agent roster, bench model, overview, shared context, and agent procedures (configure-agents, authoring-workflow, agent-session-tracking).
+- `agentic/`. Agent roster, shared agent context, and agentic procedures. The agentic procedures live in `agentic/procedures/` (configure-agents, authoring-workflow, agent-session-tracking, plus the harness self-maintenance procedures). The bench/worktree isolation model and the agentic workflow overview are structural, so they live in `architecture/bench/` and `architecture/workflow/`.
+- `architecture/`. Management-plane structural content: the bench/worktree isolation model (`architecture/bench/bench-model.md`), the agentic workflow overview (`architecture/workflow/agentic-workflow-overview.md`), and the cross-plane governing-body spec anchor (`architecture/system/AgenticCore-Spec.md`, `primary: false` + `redirect`). The authoritative harness spec is a corpus-root anchor (`mddocs/AGENTICCORE_SPEC.md`), not management-plane content.
 - `delivery/`. Release management, release notes, branch/PR flow, CI-CD controls, deployment provenance, environment promotion, rollback and recovery, configuration management, artifact management, customer project onboarding, template creation.
 - `audits/` with `audits/evidence/`. Gate outputs produced by the harness (reconcile-metadata-registry, check-links, mdbook build, coverage) as managed, provenance-carrying evidence bundles.
 - `governance/exceptions/`. Waivers (`WAV-XXXX`) and the waiver log, governed by the ADR-0032 contract.
-- `runbooks/`. Operational runbooks, promoted to a single home.
 - `tooling/mcp/`. MCP documentation home under the tooling category, one section per MCP server (`tooling/mcp/<mcp-name>/`, e.g. `mcp-rag-docs/`, `review-ledger/`) so each is identifiable by purpose. Native runtime code (`server.py`, and `mcp/review-ledger/` at the harness root) stays in place as an established runtime anchor and is referenced, not moved.
 
-Existing homes remain and are retained as-is: `governance/decisions/`, `security/guardrails/`, `assurance/reviews/`, `architecture/system/`, `tooling/`, `work/activities/`.
+**No operational runbook home in the management plane (item #1).** Agentic procedures are deterministic, script/gate-backed harness machinery and live in `agentic/procedures/`; operational runbooks are a project-plane artifact (`projects/<context>/runbooks/<runbook-id>/`, human-facing manual-parity). `management/runbooks/` dissolves; the former residents re-parent to `agentic/procedures/`.
+
+Existing homes remain and are retained as-is: `governance/decisions/`, `security/guardrails/`, `assurance/reviews/`, `tooling/`, `work/activities/`.
 
 Deferred homes (documented, not yet added): `telemetry/`, `reports/`, `activity/daily`, `governance/controls/`, `governance/policies/`, `governance/ownership/`. These are recorded here so the model knows they were considered; they are added only when they become populated and contract-backed.
 
@@ -71,8 +73,8 @@ The eight original sub-decisions are restated against the two-layer model. Those
 | D4 - Script/tooling classification | The annotation contract is authoritative and is carried in frontmatter / `.meta.yaml`. Physical placement is brought into conformance with the artefact's domain home (harness tooling under `tooling/`, project-activity scripts under their project). Graduation from activity-scoped to shared remains a metadata `lifecycle` change with `migrated_from` provenance. |
 | D5 - `AGENTICCORE_SPEC.md` | Directed coexistence. Stays at `mddocs/AGENTICCORE_SPEC.md` as `primary: true`. Companion at `management/architecture/system/AgenticCore-Spec.md` as `primary: false` with `redirect`. No physical move. |
 | D6 - Seed backlog | Directed coexistence. `mddocs/backlog.md` (live, `lifecycle: active`, `primary: true`) and `mddocs/scripts/seed/mddocs/backlog.md` (template, `lifecycle: template`, `primary: false`) carry mutual `redirect` frontmatter. Distinct lifecycles; distinct roles. |
-| D7 - Guardrail runbooks | Physical conformance. `credential-identity-guard.md` and `secret-guard.md` move into `security/guardrails/{credential-identity, secret-management}/` as the primary home, with `security_category: guardrail` and `governance_context` retained. The operational cross-reference is maintained in the runbooks home. |
-| D8 - Review ledger runbook | Physical conformance. `review-ledger-runbook.md` moves into `assurance/reviews/ledger-runbook/` as the primary home, with `assurance_category: review-governance` and `governance_context` retained. The operational cross-reference is maintained in the runbooks home. |
+| D7 - Guardrail runbooks | Physical conformance. `credential-identity-guard.md` and `secret-guard.md` move into `security/guardrails/{credential-identity, secret-management}/` as the primary home, with `security_category: guardrail` and `governance_context` retained. The operational cross-reference is maintained in the agentic procedures home. |
+| D8 - Review ledger runbook | Physical conformance. `review-ledger-runbook.md` moves into `assurance/reviews/ledger-runbook/` as the primary home, with `assurance_category: review-governance` and `governance_context` retained. The operational cross-reference is maintained in the agentic procedures home. |
 
 Each conformance change is staged by domain and gated. No single bulk move is carried out; each domain moves in its own reviewed, gate-passing change with the mapping and link-rewrite budget tracked in the reconciliation record (AC-0013).
 
@@ -107,9 +109,9 @@ Each conformance change is staged by domain and gated. No single bulk move is ca
 **Governed by:** `ADR-0032` (classification metadata and standard ID contracts), `ADR-0035` (ADR evolution - forward-only supersede and historical coexistence).
 
 **Immediate actions upon HIL approval:**
-1. Register the added homes (`agentic/`, `delivery/`, `audits/` + `evidence/`, `governance/exceptions/`, `runbooks/`, `tooling/mcp/`) in the metadata contract and the reconcile mapping.
+1. Register the added homes (`agentic/`, `architecture/`, `delivery/`, `audits/` + `evidence/`, `governance/exceptions/`, `tooling/mcp/`) in the metadata contract and the reconcile mapping.
 2. Produce the full current-to-new mapping and link-rewrite budget as an extension of AC-0013, and review it before any file move.
-3. Stage the conformance migration by domain (governance/decisions, security/assurance, delivery/reference, tooling, agentic, mcp, runbooks), each in its own gated change: reconcile CLEAN, check-links green, mdbook build green.
+3. Stage the conformance migration by domain (governance/decisions, security/assurance, delivery/reference, tooling, agentic, architecture, mcp), each in its own gated change: reconcile CLEAN, check-links green, mdbook build green.
 4. Update the tooling home to the retained subset per ADR-0032 Amendment 2026-11-20.
 
 **Out of scope for this ADR:** migration of the historical `mddocs/adr/` records, project context seeding, and any change to ADR-0015 or the adopter contract. The physical conformance layer applies to the management homes and the artefacts that populate them; historical ADR placement is governed by ADR-0035.

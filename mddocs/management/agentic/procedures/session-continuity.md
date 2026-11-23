@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Maintain session continuity and end-of-focus memory writes
 ---
 
-# Runbook: Session Continuity - Commit Discipline and End-of-Focus Memory Write
+# Procedure: Session Continuity - Commit Discipline and End-of-Focus Memory Write
 
 **Category:** Platform & Developer Tooling
 **Last Updated:** 2026-05-13
@@ -101,7 +101,7 @@ All worktrees clean.
 # Expected output when dirty:
 DIRTY: /path/to/<program>.02
   M  .agentic/work/tasks.yaml
-  ?? mddocs/management/runbooks/new-runbook.md
+  ?? mddocs/management/agentic/procedures/new-procedure.md
 ```
 
 ---

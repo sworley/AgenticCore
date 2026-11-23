@@ -262,6 +262,6 @@ accepted, verified-dead residual - do not re-open as a new finding:**
 - [ADR-0022: Git-Native Pre-Commit Permission-Order Check](../../adr/adr-0022-git-pre-commit-permission-order-check.md) - the sibling git-native hook and the parallel-surface rationale
 - [ADR-0024: Informed HIL Override](../../adr/adr-0024-informed-hil-override.md) - the governed path if a rewrite were ever directed
 - [Runbook: secret-guard Hook](secret-guard.md) - the PreToolUse credential guard (complementary surface)
-- [Runbook: Rotate Git PAT](../../management/runbooks/rotate-git-pat.md) - token rotation procedure
-- [Runbook: Hook Rollback](../../management/runbooks/hook-rollback.md) - emergency disable / revert for hooks
+- [Procedure: Rotate Git PAT](../../management/agentic/procedures/rotate-git-pat.md) - token rotation procedure
+- [Procedure: Hook Rollback](../../management/agentic/procedures/hook-rollback.md) - emergency disable / revert for hooks
 - `.agentic/scripts/install-git-hooks.sh` - the installer that wires both git-native pre-commit checks

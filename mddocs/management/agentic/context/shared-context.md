@@ -111,7 +111,7 @@ This file serves dual purpose:
 ## Related
 
 - [Runbook: Configure Agent Namespace](../procedures/configure-agents.md) - full agent namespace setup including shared context
-- [Runbook: Agent Authoring Workflow](../../runbooks/agent-authoring-workflow.md) - adding agents and keeping rosters in sync
+- [Runbook: Agent Authoring Workflow](../../agentic/procedures/agent-authoring-workflow.md) - adding agents and keeping rosters in sync
 - [ADR-0009: Agent Portability Model](../../../adr/adr-0009-agent-portability-model.md)
 - `.agents/bootstrap/project-context.md.template` - blank template
 - `.core/agents/_context.md` - populated AC framework context

@@ -1,5 +1,5 @@
 ---
-document_type: runbook
+document_type: procedure
 status: active
 lifecycle: active
 primary: true
@@ -7,7 +7,7 @@ domain: Management
 purpose: Build and publish the mdBook documentation site
 ---
 
-# Runbook: Build and Publish mdBook
+# Procedure: Build and Publish mdBook
 
 **Purpose:** Build the mdBook documentation locally and/or trigger Git Pages publication.
 

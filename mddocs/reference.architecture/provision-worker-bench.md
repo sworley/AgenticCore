@@ -107,7 +107,7 @@ with `PATTERN: H`.
 
 After provisioning, register `.00` in `bench-registry.yaml` with **`locked: true`** -
 the script's next-steps output reminds the operator of this. `.00` and `.01` are never
-torn down (see [Bench Model](../onboarding/bench-model.md)); `locked: true` is the
+torn down (see [Bench Model](../management/architecture/bench/bench-model.md)); `locked: true` is the
 signal that blocks any accidental `git worktree remove`.
 
 **First-startup auto-provision:** a fresh project has no `.00` yet. At session open the
@@ -200,7 +200,7 @@ Report:
 
 When `.01` changes the canonical `opencode.json` or the `.agents/bootstrap/bench-AGENT.md.pattern-h`
 template, the existing, locked `.00` worktree must be re-materialized in place - **never**
-torn down or rebased. `.00` is a long-living worktree (see [Bench Model](../onboarding/bench-model.md));
+torn down or rebased. `.00` is a long-living worktree (see [Bench Model](../management/architecture/bench/bench-model.md));
 this is a `.01` maintenance action, run from the `.01` root against the existing `$BENCH_DIR`.
 
 ```sh

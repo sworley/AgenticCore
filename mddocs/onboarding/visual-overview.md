@@ -3,7 +3,7 @@
 A single-page map of how AgenticCore works: the bench hierarchy, how personas map
 to workbenches, the workflow lifecycle, and the agent roster. Use this as your
 orientation before diving into [Getting Started](getting-started.md) or the
-[Agentic Workflow Overview](agentic-workflow-overview.md).
+[Agentic Workflow Overview](../management/architecture/workflow/agentic-workflow-overview.md).
 
 ---
 
@@ -61,7 +61,7 @@ flowchart LR
 | `.01` | Management repo | `lead-engineer` (whole-space owner) | Git-initialized; owns task queue, remote, bench lifecycle | Long-living, never torn down |
 | `.02`+ | Management/framework workbenches (Pattern A) | `lead-engineer` (agentic team lead) | Git worktrees provisioned by `.01` | Ephemeral; torn down after HIL auth |
 
-See [Bench Model](bench-model.md) for the canonical detail.
+See [Bench Model](../management/architecture/bench/bench-model.md) for the canonical detail.
 
 ---
 
@@ -155,14 +155,14 @@ the `.00` customer/HIL plane (Pattern W `attendant` + Pattern H `hil-assistant`)
 | `ux-engineer` | subagent | subagent | lead-engineer | UI/UX, information architecture, DX |
 
 Full roster with model tiers and permission posture:
-[Agent Roster](agent-roster.md).
+[Agent Roster](../management/agentic/roster/agent-roster.md).
 
 ---
 
 ## Related
 
-- [Agent Roster](agent-roster.md)
+- [Agent Roster](../management/agentic/roster/agent-roster.md)
 - [Getting Started](getting-started.md)
-- [Agentic Workflow Overview](agentic-workflow-overview.md)
-- [Bench Model](bench-model.md)
+- [Agentic Workflow Overview](../management/architecture/workflow/agentic-workflow-overview.md)
+- [Bench Model](../management/architecture/bench/bench-model.md)
 - [Repository Structure](repository-structure.md)

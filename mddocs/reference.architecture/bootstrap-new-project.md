@@ -77,7 +77,7 @@ explicitly.
 > within it, and tooling such as `git-sync.sh` derives your project/group name by stripping
 > the trailing `.NN` suffix. The **slug** is your project identity and does **not** carry
 > the suffix - only the directory does. See the
-> [Bench Model](../onboarding/bench-model.md) for the full `.00`/`.01`/`.02`+ hierarchy.
+> [Bench Model](../management/architecture/bench/bench-model.md) for the full `.00`/`.01`/`.02`+ hierarchy.
 >
 > `.00` (HIL) and `.02`+ (worker) benches are then provisioned as siblings of that layer
 > in the same parent (`myproject.v0.01.00`, `myproject.v0.01.02`, ...);

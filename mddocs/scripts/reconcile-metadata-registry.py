@@ -16,6 +16,23 @@ that each SH script-doc's `allowed_in_adopter_repos` matches its authoritative
 `.meta.yaml` (AC-0014 W3), so a reclassification cannot leave the shipped doc
 sidecar stale in the opposite direction.
 
+Beyond the registry tables, this tool enforces two categories of metadata
+conformance:
+
+  * Blocking (a `--check` failure):
+    - `document_type` vocabulary conformance: any present `.md` front-matter or
+      `.meta.yaml` value must be a member of the governed vocabulary in
+      metadata-standard section 5 (catches invalid or typo values, not docs that
+      omit the field).
+
+  * Advisory (reported, never blocks):
+    - Home / category integrity: every doc under a management home whose index
+      declares a `category` must declare the same `category` (catches
+      taxonomy or directory drift before it reaches a home).
+    - Redirect-stub contract: a `primary: true` doc must not also carry a
+      `redirect`; this surfaces circular or primary redirects such as the
+      deferred D7/D8 guardrails.
+
 Usage (from the repository root, or anywhere):
     python3 mddocs/scripts/reconcile-metadata-registry.py            # print report
     python3 mddocs/scripts/reconcile-metadata-registry.py --check    # exit 1 on drift
@@ -232,6 +249,133 @@ def scan_sh_script_docs():
     return docs
 
 
+VOCAB_SECTION_RE = re.compile(r"^## 5\.")
+VOCAB_ROW_RE = re.compile(r"^\|\s*`([a-z][a-z0-9_-]*)`\s*\|")
+HOME_INDEX_NAMES = ("README.md", "index.md")
+
+
+def parse_vocabulary_table():
+    """Parse the governed `document_type` vocabulary from metadata-standard section 5.
+
+    Returns the set of allowed values. The table header cell `` `document_type` ``
+    matches the row regex in its first column, so the literal `document_type` is
+    filtered out.
+    """
+    allowed = set()
+    try:
+        lines = STANDARD.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return allowed
+    in_section = False
+    for line in lines:
+        if VOCAB_SECTION_RE.match(line):
+            in_section = True
+            continue
+        if in_section and line.startswith("## "):
+            break
+        if not in_section:
+            continue
+        m = VOCAB_ROW_RE.match(line)
+        if m and m.group(1) != "document_type":
+            allowed.add(m.group(1))
+    return allowed
+
+
+def scan_document_types():
+    """Collect (rel path, document_type) for every `.md` front-matter and `.meta.yaml`
+    companion under `mddocs/`, excluding the generated `book/` output."""
+    recs = []
+    for f in sorted(MDDOCS.rglob("*.md")):
+        if "book" in f.parts:
+            continue
+        meta = parse_frontmatter(f)
+        recs.append((f.relative_to(MDDOCS).as_posix(), str(meta.get("document_type", "")).strip()))
+    for f in sorted(MDDOCS.rglob("*.meta.yaml")):
+        meta = parse_meta(f)
+        recs.append((f.relative_to(MDDOCS).as_posix(), str(meta.get("document_type", "")).strip()))
+    return recs
+
+
+def collect_category_homes():
+    """Map each management home directory -> its declared category.
+
+    A home is a directory under `management/` that contains an index
+    (`README.md` or `index.md`) whose front matter has `document_type: index`
+    and a non-empty `category`. The home index is the single source of truth
+    for the home's category; nothing is hand-maintained elsewhere.
+    """
+    homes = {}
+    for name in HOME_INDEX_NAMES:
+        for idx in sorted(MDDOCS.rglob(name)):
+            if "book" in idx.parts or "management" not in idx.parts:
+                continue
+            fm = parse_frontmatter(idx)
+            if fm.get("document_type") == "index" and fm.get("category"):
+                homes[idx.parent] = str(fm["category"]).strip()
+    return homes
+
+
+def check_home_category_integrity():
+    """Advisory: every doc under a category-declared home must share that category.
+
+    For each `.md` under `management/`, the nearest ancestor directory that is a
+    category home defines the expected `category`. A missing or mismatched
+    `category` is surfaced (non-blocking) so taxonomy or directory drift is
+    caught before it reaches a home.
+    """
+    homes = collect_category_homes()
+    advice = []
+    for f in sorted(MDDOCS.rglob("*.md")):
+        if "book" in f.parts or "management" not in f.parts:
+            continue
+        cand = f.parent
+        while cand != MDDOCS and cand not in homes and cand.parent != cand:
+            cand = cand.parent
+        expected = homes.get(cand)
+        if expected is None:
+            continue
+        meta = parse_frontmatter(f)
+        got = str(meta.get("category", "")).strip()
+        if not got:
+            advice.append(
+                f"[HOME-CATEGORY] {f.relative_to(MDDOCS)} is under '{cand.name}' "
+                f"(category {expected}) but declares no category"
+            )
+        elif got != expected:
+            advice.append(
+                f"[HOME-CATEGORY] {f.relative_to(MDDOCS)} category '{got}' does not "
+                f"match its home '{cand.name}' (expected {expected})"
+            )
+    return advice
+
+
+def check_redirect_contract():
+    """Advisory: a `primary: true` doc must not also carry a `redirect`.
+
+    A primary artifact is authoritative and should not defer elsewhere, so a
+    `primary: true` + `redirect` pairing is contradictory and typically forms a
+    redirect cycle (for example the deferred D7/D8 guardrail runbooks, or the
+    circular spec cross-plane pointer). Legitimate `primary: false` pointers are
+    allowed regardless of their `document_type` (index, spec, backlog, ...).
+    """
+    advice = []
+    for f in sorted(MDDOCS.rglob("*.md")):
+        if "book" in f.parts:
+            continue
+        meta = parse_frontmatter(f)
+        if not str(meta.get("redirect", "")).strip():
+            continue
+        primary = str(meta.get("primary", "")).strip().lower()
+        dt = str(meta.get("document_type", "")).strip()
+        if primary == "true":
+            advice.append(
+                f"[REDIRECT-CONTRACT] {f.relative_to(MDDOCS)} is primary: true but also "
+                f"carries redirect (document_type={dt or '(none)'}); a primary artifact "
+                f"should not defer elsewhere"
+            )
+    return advice
+
+
 def parse_classification_table():
     """Parse the section 8.1 classification-ID markdown table."""
     table = {}
@@ -412,8 +556,11 @@ def main():
     cls_table = parse_classification_table()
     adrs = scan_adr_status()
     ledger_entries = parse_supersession_ledger()
+    vocab = parse_vocabulary_table()
+    doc_types = scan_document_types()
 
     drift = []
+    advice = []
 
     # --- SH (executable) reconciliation ---
     for sh_id in sorted(sh_canonical):
@@ -483,6 +630,24 @@ def main():
                 f"[ORPHAN IN SECTION 8.1] {cid} `{cls_table[cid]['path']}` in the registry but no matching frontmatter"
             )
 
+    # --- document_type vocabulary conformance (blocking) ---
+    # Any PRESENT `.md` / `.meta.yaml` document_type must be a member of the
+    # governed vocabulary in metadata-standard section 5 (single source of truth).
+    # Docs without a document_type (legacy ADRs, reference.architecture, ...) are
+    # not flagged here; this guard catches invalid/typo values, not missing ones.
+    for path, dt in doc_types:
+        if dt and dt not in vocab:
+            drift.append(
+                f"[DOCUMENT_TYPE] {path} uses document_type '{dt}' which is not in the "
+                f"section 5 governed vocabulary (+{len(vocab)} allowed)"
+            )
+
+    # --- Home / category integrity (advisory) ---
+    advice.extend(check_home_category_integrity())
+
+    # --- Redirect-stub contract (advisory) ---
+    advice.extend(check_redirect_contract())
+
     # --- Supersession ledger reconciliation (ADR-0035) ---
     drift.extend(reconcile_supersession_ledger(adrs))
 
@@ -510,7 +675,14 @@ def main():
     for cid in sorted(cls_canonical):
         r = cls_canonical[cid]
         print(f"| {cid} | {r['doc_type']} | {r['domain']} | `{r['path']}` |")
+    print(f"Document_type vocabulary: {len(vocab)} governed value(s); scanned {len(doc_types)} artifact(s)")
     print()
+
+    if advice:
+        print(f"Advisory notes ({len(advice)} non-blocking item(s)):")
+        for item in sorted(advice):
+            print("  " + item)
+        print()
 
     if drift:
         print(f"Drift detected ({len(drift)} item(s)):")
@@ -522,7 +694,11 @@ def main():
         print("\nVerdict: DRIFT - update the registry table or the artifact metadata to reconcile.")
         return 0
 
-    print("Verdict: CLEAN - registry tables (sections 8 + 8.1) match the artifact metadata.")
+    if advice:
+        print(f"Verdict: CLEAN - registry tables (sections 8 + 8.1) match the artifact metadata. "
+              f"{len(advice)} advisory note(s) surfaced (non-blocking).")
+    else:
+        print("Verdict: CLEAN - registry tables (sections 8 + 8.1) match the artifact metadata.")
     return 0
 
 

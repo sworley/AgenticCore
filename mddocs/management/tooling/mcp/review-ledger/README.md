@@ -36,11 +36,7 @@ is referenced, not moved (AC-0013 D4 / P10).
 The primary operations content for the review-ledger workflow lives in the
 assurance plane:
 
-- [Review Ledger Runbook](../../../../operations/runbooks/review-ledger-runbook.md) - the sign-off package assembly procedure before HIL approval.
-
-> The review-ledger runbook completes its reroute to
-> `management/assurance/reviews/ledger-runbook/` (D8) in the assurance stage;
-> this cross-reference is updated there.
+- [Review Ledger Runbook](../../../../management/assurance/reviews/ledger-runbook/review-ledger-runbook.md) - the sign-off package assembly procedure before HIL approval.
 
 **Owner:** maintained by the harness. The MCP documentation homes live under the
 tooling category (ADR-0029); the runtime code and its location are fixed by the

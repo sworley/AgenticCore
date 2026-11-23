@@ -64,6 +64,7 @@
   - [Architecture · System](management/architecture/system/AgenticCore-Spec.md)
   - [Agentic](management/agentic/README.md)
   - [Agentic Procedures](management/agentic/procedures/README.md)
+  - [Delivery](management/delivery/README.md)
   - [Assurance · Reviews](management/assurance/reviews/ledger-runbook/index.md)
   - [Governance · Decisions](management/governance/decisions/index.md)
   - [Security · Guardrails](management/security/guardrails/credential-identity/index.md)
@@ -84,12 +85,9 @@
   - [Tooling Contract](reference.architecture/tooling-contract.md)
   - [Task Queue Operations](reference.architecture/task-queue-operations.md)
   - [Bench Registry](reference.architecture/bench-registry.md)
-  - [Release Process](reference.architecture/release-process.md)
-  - [Release Notes Template](reference.architecture/release-notes-template.md)
   - [Configure MCP Servers](reference.architecture/configure-mcp.md)
   - [Shared Agent Context](management/agentic/context/shared-context.md)
   - [Adopter Reconciliation](reference.architecture/adopter-reconciliation.md)
-  - [Sign-Off Package](reference.architecture/sign-off-package.md)
 
 ---
 
@@ -180,9 +178,9 @@
 
 # Release Notes
 
-- [Unreleased](release-notes/UNRELEASED.md)
-- [v0.7.0](release-notes/v0.7.0.md)
-- [v0.6.0](release-notes/v0.6.0.md)
+- [Unreleased](management/delivery/releases/UNRELEASED.md)
+- [v0.7.0](management/delivery/releases/v0.7.0.md)
+- [v0.6.0](management/delivery/releases/v0.6.0.md)
 
 ---
 

@@ -42,9 +42,9 @@ running the agent team:
 - **Per-agent tiers** - specialists reference `provider/model-opus-4-8` (high-reasoning),
   `provider/model-sonnet-5` (general), and `provider/model-haiku-4-5` (mechanical).
   Replace these with your own provider/models to match the ADR-0021 tiering, as
-  documented in the [Agent Roster](agent-roster.md).
+  documented in the [Agent Roster](../management/agentic/roster/agent-roster.md).
 
-List available models with `opencode models [provider]`. The [Agent Roster](agent-roster.md)
+List available models with `opencode models [provider]`. The [Agent Roster](../management/agentic/roster/agent-roster.md)
 is built from `.agents/_meta.yaml`, the single source of truth for these tiers.
 
 ---
@@ -237,5 +237,5 @@ The lead-engineer agent will:
 
 - [Visual Overview](visual-overview.md) - the system at a glance
 - [Repository Structure](repository-structure.md) - understand the layout
-- [Agentic Workflow Overview](agentic-workflow-overview.md) - understand how work flows
-- [Bench Model](bench-model.md) - understand the namespace hierarchy
+- [Agentic Workflow Overview](../management/architecture/workflow/agentic-workflow-overview.md) - understand how work flows
+- [Bench Model](../management/architecture/bench/bench-model.md) - understand the namespace hierarchy

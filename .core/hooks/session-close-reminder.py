@@ -8,7 +8,7 @@ repo (~/.dotfiles) for uncommitted config changes when it exists. Silent when
 all worktrees and dotfiles are clean.
 
 Complements the commit-early-commit-often and end-of-focus memory write practices
-documented in mddocs/operations/runbooks/session-continuity.md.
+documented in mddocs/management/agentic/procedures/session-continuity.md.
 """
 
 import json

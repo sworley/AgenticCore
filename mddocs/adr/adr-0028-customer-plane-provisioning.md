@@ -59,5 +59,5 @@ was implicit; it needs to be a written rule to be reproducible.
 ## Related
 
 - [ADR-0006: External Content Gate Scope](adr-0006-external-content-gate-scope.md)
-- [Bench Model](../onboarding/bench-model.md)
+- [Bench Model](../management/architecture/bench/bench-model.md)
 - [Visual Overview](../onboarding/visual-overview.md)

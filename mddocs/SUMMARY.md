@@ -14,11 +14,11 @@
 # Onboarding
 
 - [Visual Overview](onboarding/visual-overview.md)
-- [Agent Roster](onboarding/agent-roster.md)
+- [Agent Roster](management/agentic/roster/agent-roster.md)
 - [Getting Started](onboarding/getting-started.md)
 - [Repository Structure](onboarding/repository-structure.md)
-- [Agentic Workflow Overview](onboarding/agentic-workflow-overview.md)
-- [Bench Model](onboarding/bench-model.md)
+- [Agentic Workflow Overview](management/architecture/workflow/agentic-workflow-overview.md)
+- [Bench Model](management/architecture/bench/bench-model.md)
 
 ---
 
@@ -60,7 +60,10 @@
 # Documentation Planes
 
 - [Management Plane](management/index.md)
+  - [Architecture](management/architecture/README.md)
   - [Architecture · System](management/architecture/system/AgenticCore-Spec.md)
+  - [Agentic](management/agentic/README.md)
+  - [Agentic Procedures](management/agentic/procedures/README.md)
   - [Assurance · Reviews](management/assurance/reviews/ledger-runbook/index.md)
   - [Governance · Decisions](management/governance/decisions/index.md)
   - [Security · Guardrails](management/security/guardrails/credential-identity/index.md)
@@ -81,11 +84,10 @@
   - [Tooling Contract](reference.architecture/tooling-contract.md)
   - [Task Queue Operations](reference.architecture/task-queue-operations.md)
   - [Bench Registry](reference.architecture/bench-registry.md)
-  - [Agent Authoring Workflow](reference.architecture/agent-authoring-workflow.md)
   - [Release Process](reference.architecture/release-process.md)
   - [Release Notes Template](reference.architecture/release-notes-template.md)
   - [Configure MCP Servers](reference.architecture/configure-mcp.md)
-  - [Shared Agent Context](reference.architecture/shared-context.md)
+  - [Shared Agent Context](management/agentic/context/shared-context.md)
   - [Adopter Reconciliation](reference.architecture/adopter-reconciliation.md)
   - [Sign-Off Package](reference.architecture/sign-off-package.md)
 
@@ -94,24 +96,24 @@
 # Operations
 
 - [Operations Index](operations/index.md)
-  - [Runbook: git-sync - Git Workspace Sync](operations/runbooks/git-sync-runbook.md)
-  - [Runbook: Sync Agent Definitions](operations/runbooks/sync-agent-definitions.md)
-  - [Runbook: Configure Agent Namespace](operations/runbooks/configure-agents.md)
-  - [Runbook: Sync Agent Config](operations/runbooks/sync-opencode-config.md)
-  - [Runbook: Build and Publish mdBook](operations/runbooks/build-publish-mddocs.md)
-  - [Runbook: Rotate Git PAT](operations/runbooks/rotate-git-pat.md)
-  - [Runbook: Set Up mddoc Local Documentation Site](operations/runbooks/setup-mddoc.md)
-  - [Runbook: Hook Rollback](operations/runbooks/hook-rollback.md)
-  - [Runbook: Session Continuity](operations/runbooks/session-continuity.md)
-  - [Runbook: Agent Session Tracking](operations/runbooks/agent-session-tracking.md)
+  - [Procedure: git-sync - Git Workspace Sync](management/agentic/procedures/git-sync-runbook.md)
+  - [Procedure: Sync Agent Definitions](management/agentic/procedures/sync-agent-definitions.md)
+  - [Procedure: Configure Agent Namespace](management/agentic/procedures/configure-agents.md)
+  - [Procedure: Sync Agent Config](management/agentic/procedures/sync-opencode-config.md)
+  - [Procedure: Build and Publish mdBook](management/agentic/procedures/build-publish-mddocs.md)
+  - [Procedure: Rotate Git PAT](management/agentic/procedures/rotate-git-pat.md)
+  - [Procedure: Set Up mddoc Local Documentation Site](management/agentic/procedures/setup-mddoc.md)
+  - [Procedure: Hook Rollback](management/agentic/procedures/hook-rollback.md)
+  - [Procedure: Session Continuity](management/agentic/procedures/session-continuity.md)
+  - [Procedure: Agent Session Tracking](management/agentic/procedures/agent-session-tracking.md)
   - [Runbook: secret-guard Hook](operations/runbooks/secret-guard.md)
   - [Runbook: Credential-Identity Guard](operations/runbooks/credential-identity-guard.md)
-  - [Runbook: check-links - Internal Link Validator](operations/runbooks/check-links-runbook.md)
-  - [Runbook: Bench Recovery](operations/runbooks/bench-recovery.md)
-  - [Runbook: AI-Assisted Session Commit Discipline](operations/runbooks/ai-doc-session-commit-discipline.md)
-  - [Runbook: Agent Authoring Workflow](operations/runbooks/agent-authoring-workflow.md)
+  - [Procedure: check-links - Internal Link Validator](management/agentic/procedures/check-links-runbook.md)
+  - [Procedure: Bench Recovery](management/agentic/procedures/bench-recovery.md)
+  - [Procedure: AI-Assisted Session Commit Discipline](management/agentic/procedures/ai-doc-session-commit-discipline.md)
+  - [Procedure: Agent Authoring Workflow](management/agentic/procedures/agent-authoring-workflow.md)
   - [Runbook: Review Ledger](operations/runbooks/review-ledger-runbook.md)
-  - [Runbook: Session Reasoning Log](operations/runbooks/session-reasoning-log.md)
+  - [Procedure: Session Reasoning Log](management/agentic/procedures/session-reasoning-log.md)
 
 ---
 

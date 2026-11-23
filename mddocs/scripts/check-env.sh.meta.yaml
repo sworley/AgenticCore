@@ -11,4 +11,4 @@ allowed_in_adopter_repos: true
 related:
   paths:
     - operations/check-env.md
-    - ../operations/runbooks/sync-agent-definitions.md
+    - ../management/agentic/procedures/sync-agent-definitions.md

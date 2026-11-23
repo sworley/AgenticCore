@@ -5,14 +5,22 @@ lifecycle: active
 primary: false
 redirect: ../../../AGENTICCORE_SPEC.md
 domain: Management
-purpose: Companion redirect to the authoritative harness specification
+category: Architecture
+purpose: Cross-plane pointer to the authoritative harness-wide specification
 ---
 
-# AgenticCore Specification (companion)
+# AgenticCore Specification (cross-plane pointer)
 
-> **Compat stub - the authoritative copy lives at `mddocs/AGENTICCORE_SPEC.md`**
-> (`primary: true`). This page exists to make the harness specification
-> discoverable under the management/architecture/system/ taxonomy category.
-> **Do not edit this stub; edit the canonical file.**
+> **This is a pointer, not the specification.** The authoritative
+> `AgenticCore` specification is a **harness-wide governing-body anchor** at the
+> corpus root: `mddocs/AGENTICCORE_SPEC.md` (`primary: true`,
+> `document_type: spec`). It governs **both** the management plane (`.01`) and
+> the project plane (`.00`), so it is not management-plane content and is not
+> duplicated here.
+>
+> This page exists so the harness specification is discoverable under the
+> `management/architecture/system/` taxonomy category. **Do not edit this stub;
+> edit the canonical file.** `primary: false` with `redirect` to the authoritative
+> copy.
 
 → [Open the authoritative AgenticCore Specification](../../../AGENTICCORE_SPEC.md)

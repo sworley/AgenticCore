@@ -18,7 +18,8 @@ purpose: Harness management plane
 
 | Category | Scope | Present |
 |---|---|---|
-| [Architecture](architecture/system/AgenticCore-Spec.md) | Harness design, planes, integration | ✓ |
+| [Architecture](architecture/README.md) | Harness structure, planes, bench/workflow models, system spec anchor | ✓ |
+| [Agentic](agentic/README.md) | Agent model, agent namespace, agentic procedures | ✓ |
 | [Assurance](assurance/reviews/ledger-runbook/index.md) | Reviews, audits, evidence | ✓ |
 | [Governance](governance/decisions/index.md) | ADRs, standards, policies, exceptions | ✓ |
 | [Security](security/guardrails/credential-identity/index.md) · [Secret](security/guardrails/secret-management/index.md) | Trust boundaries, guardrails, access | ✓ |

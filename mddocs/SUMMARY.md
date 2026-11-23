@@ -104,13 +104,13 @@
   - [Procedure: Hook Rollback](management/agentic/procedures/hook-rollback.md)
   - [Procedure: Session Continuity](management/agentic/procedures/session-continuity.md)
   - [Procedure: Agent Session Tracking](management/agentic/procedures/agent-session-tracking.md)
-  - [Runbook: secret-guard Hook](operations/runbooks/secret-guard.md)
-  - [Runbook: Credential-Identity Guard](operations/runbooks/credential-identity-guard.md)
+  - [Runbook: secret-guard Hook](management/security/guardrails/secret-management/secret-guard.md)
+  - [Runbook: Credential-Identity Guard](management/security/guardrails/credential-identity/credential-identity-guard.md)
   - [Procedure: check-links - Internal Link Validator](management/agentic/procedures/check-links-runbook.md)
   - [Procedure: Bench Recovery](management/agentic/procedures/bench-recovery.md)
   - [Procedure: AI-Assisted Session Commit Discipline](management/agentic/procedures/ai-doc-session-commit-discipline.md)
   - [Procedure: Agent Authoring Workflow](management/agentic/procedures/agent-authoring-workflow.md)
-  - [Runbook: Review Ledger](operations/runbooks/review-ledger-runbook.md)
+  - [Runbook: Review Ledger](management/assurance/reviews/ledger-runbook/review-ledger-runbook.md)
   - [Procedure: Session Reasoning Log](management/agentic/procedures/session-reasoning-log.md)
 
 ---

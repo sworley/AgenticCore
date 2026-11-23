@@ -17,8 +17,8 @@ operations reference, and security audit artifact.
 | Server | Runtime | Tools | Reference |
 |--------|---------|-------|-----------|
 | [`mcp-rag-docs`](mcp-rag-docs/README.md) | `uv run server.py` | `search_docs`, `list_docs`, `get_doc` | [ADR-0002](../../../adr/adr-0002-mcp-rag-docs.md) |
-| `review-ledger` (security instance) | `uv run server.py` | `list_findings`, `log_finding`, `log_reviewer_run`, `request_finding_update`, `approve_finding_update` | [Runbook](../../../operations/runbooks/review-ledger-runbook.md) |
-| `review-ledger` (reviews instance) | `uv run server.py` | `list_findings`, `log_finding`, `log_reviewer_run`, `request_finding_update` | [Runbook](../../../operations/runbooks/review-ledger-runbook.md) |
+| `review-ledger` (security instance) | `uv run server.py` | `list_findings`, `log_finding`, `log_reviewer_run`, `request_finding_update`, `approve_finding_update` | [Runbook](../../../management/assurance/reviews/ledger-runbook/review-ledger-runbook.md) |
+| `review-ledger` (reviews instance) | `uv run server.py` | `list_findings`, `log_finding`, `log_reviewer_run`, `request_finding_update` | [Runbook](../../../management/assurance/reviews/ledger-runbook/review-ledger-runbook.md) |
 
 The `review-ledger` server is launched as **two instances** from the same
 `mcp/review-ledger/server.py`, each bound to a different backing path and

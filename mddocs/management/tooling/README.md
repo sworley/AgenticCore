@@ -4,6 +4,7 @@ document_type: index
 status: active
 lifecycle: active
 domain: Management
+category: Tooling
 ---
 
 # Tooling
@@ -24,6 +25,11 @@ classified per the
 - `mddoc-assets/` - mdBook navigation rendering assets (collapsible sidebar and
   external-link behavior).
 - `project_protection/` - project protection profile schema and its checks.
+- `mcp/` - MCP server documentation, one section per server
+  ([`mcp-rag-docs`](mcp/mcp-rag-docs/README.md),
+  [`review-ledger`](mcp/review-ledger/README.md)). Native runtime code stays at
+  the harness runtime anchors (`mddocs/mcp/mcp-rag-docs/server.py`,
+  `mcp/review-ledger/`), referenced not moved.
 
 **Owner:** maintained by the harness. The shipped adoption surface is governed
 by ADR-0015 D-9: what ships to an adopter workspace is the
@@ -51,7 +57,8 @@ Exclude dependency directories, caches, generated books, customer collectors,
 and historical migration scripts.
 
 Place reusable components here unless another Management subsystem owns them,
-such as MCP infrastructure under `management/mcp/`. Put project-specific tooling
-under the corresponding project namespace. Installed environments and transient
-artifacts stay in approved workspace-local state directories, not the maintained
-corpus. This convention does not itself move existing root-level components.
+such as MCP infrastructure under `management/tooling/mcp/`. Put project-specific
+tooling under the corresponding project namespace. Installed environments and
+transient artifacts stay in approved workspace-local state directories, not the
+maintained corpus. This convention does not itself move existing root-level
+components.

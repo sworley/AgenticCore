@@ -138,8 +138,9 @@
 
 # MCP Servers
 
-- [MCP Servers](mcp/index.md)
-  - [mcp-rag-docs](mcp/mcp-rag-docs/README.md)
+- [MCP Servers](management/tooling/mcp/README.md)
+  - [mcp-rag-docs](management/tooling/mcp/mcp-rag-docs/README.md)
+  - [review-ledger](management/tooling/mcp/review-ledger/README.md)
 
 ---
 

@@ -439,7 +439,8 @@ tasks:
     size: L
     labels: [governance, taxonomy, docs, scripts]
     agent: baseline-steward
-    status: merged
+    status: released
+    released_in: "v0.8.0"
     branch: "dev"
     bench: .01
     blocked_by: []
@@ -486,7 +487,8 @@ tasks:
     size: M
     labels: [governance, taxonomy, security, scripts]
     agent: baseline-steward
-    status: merged
+    status: released
+    released_in: "v0.8.0"
     branch: "feat/taxonomy-adoption"
     bench: .01
     blocked_by: []
@@ -552,7 +554,8 @@ tasks:
     size: L
     labels: [taxonomy, adoption, security, scripts]
     agent: baseline-steward
-    status: merged
+    status: released
+    released_in: "v0.8.0"
     branch: "feat/management-tooling-adoption"
     bench: .01
     blocked_by: []
@@ -593,7 +596,8 @@ tasks:
     size: M
     labels: [governance, adr, security]
     agent: baseline-steward
-    status: merged
+    status: released
+    released_in: "v0.8.0"
     branch: "feat/management-tooling-adoption"
     bench: .01
     blocked_by: []
@@ -649,7 +653,8 @@ tasks:
     size: M
     labels: [governance, adr, security]
     agent: baseline-steward
-    status: merged
+    status: released
+    released_in: "v0.8.0"
     branch: "feat/branch-protection-rulesets"
     bench: .01
     blocked_by: []
@@ -680,7 +685,8 @@ tasks:
     size: S
     labels: [release]
     agent: baseline-steward
-    status: merged
+    status: released
+    released_in: "v0.8.0"
     branch: "release/v0.8.0-prep"
     bench: .01
     blocked_by: [AC-0017]

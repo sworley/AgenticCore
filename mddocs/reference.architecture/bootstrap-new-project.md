@@ -23,8 +23,8 @@ directory's state or selected explicitly with `--flow`:
 
 | Flow | Target state | What happens |
 |---|---|---|
-| **A — empty-dir init** (greenfield) | Target is empty or does not exist | Framework content is copied in, `git init` runs, a clean new repo is produced |
-| **B — re-home** (brownfield) | Target is already a git repository with customer code | Framework files are overlaid into the existing tree; any framework remote is severed |
+| **A - empty-dir init** (greenfield) | Target is empty or does not exist | Framework content is copied in, `git init` runs, a clean new repo is produced |
+| **B - re-home** (brownfield) | Target is already a git repository with customer code | Framework files are overlaid into the existing tree; any framework remote is severed |
 
 Both flows converge on the same result: framework content at the repository root, the
 adopter's slug written (D-5), a `framework-version.txt` baseline reference (D-1), and
@@ -33,7 +33,7 @@ objects reachable from the adopter repository.**
 
 This runbook replaces the earlier manual copy-scaffold procedure. That procedure
 predated `export-framework.sh` and is retained below only as a **manual fallback**
-(for environments where the script cannot run) — see
+(for environments where the script cannot run) - see
 [Manual fallback](#manual-fallback-for-environments-where-the-script-cannot-run).
 
 ---
@@ -41,19 +41,19 @@ predated `export-framework.sh` and is retained below only as a **manual fallback
 ## Prerequisites
 
 - `git` (>= 2.5)
-- `bash` — the script uses bash-only features and must not be run under `/bin/sh` or
+- `bash` - the script uses bash-only features and must not be run under `/bin/sh` or
   `dash`
-- **Toolchain** — the docs/dev toolchain (`mdbook`, `mdbook-mermaid`, `typos-cli`,
+- **Toolchain** - the docs/dev toolchain (`mdbook`, `mdbook-mermaid`, `typos-cli`,
   `shellcheck`, `gh`, `jq`) is **not** installed by adoption. Validate what's present with
   `./mddocs/scripts/setup/toolchain.sh --check`, and install anything missing (opt-in)
   with `./mddocs/scripts/setup/toolchain.sh --install`. See
   [toolchain.sh](../scripts/setup/toolchain.md).
 - A Git (or other Git host) project already created for the adopter repo, if the
-  adopter wants a remote from day one — `export-framework.sh` does not create a
+  adopter wants a remote from day one - `export-framework.sh` does not create a
   remote Git project; it only initializes/overlays the local repository and severs any
   framework-resolving push path
 - For Flow B: the existing customer tree should be in a clean git working state (see
-  D-7.2 below) — commit or stash pending work before running the script
+  D-7.2 below) - commit or stash pending work before running the script
 
 ---
 
@@ -65,19 +65,19 @@ predated `export-framework.sh` and is retained below only as a **manual fallback
   git history** → Flow B (re-home). Point `--target` at that repository's root.
 
 If the target directory exists, is non-empty, and is **not** a git repository, flow
-detection is ambiguous and the script stops rather than guessing — pass `--flow`
+detection is ambiguous and the script stops rather than guessing - pass `--flow`
 explicitly.
 
 > **Give the base project name; the `.01` suffix is appended automatically.** `--target`
 > is your *base* project name (e.g. `~/dev/my-project`, or `~/dev/myproject.v0.01`). The
-> harness ALWAYS appends `.01` to form the lead-engineer management layer — `./my-project`
+> harness ALWAYS appends `.01` to form the lead-engineer management layer - `./my-project`
 > becomes `./my-project.01`, and `./myproject.v0.01` becomes `./myproject.v0.01.01` (a base
 > that already ends in `.01` still gets the management-layer `.01` on top). The `.01`
 > namespace matters: the agent runtime recognizes `.01` and operates as `lead-engineer`
 > within it, and tooling such as `git-sync.sh` derives your project/group name by stripping
 > the trailing `.NN` suffix. The **slug** is your project identity and does **not** carry
-> the suffix — only the directory does. See the
-> [Bench Model](../onboarding/bench-model.md) for the full `.00`/`.01`/`.02`+ hierarchy.
+> the suffix - only the directory does. See the
+> [Bench Model](../management/architecture/bench/bench-model.md) for the full `.00`/`.01`/`.02`+ hierarchy.
 >
 > `.00` (HIL) and `.02`+ (worker) benches are then provisioned as siblings of that layer
 > in the same parent (`myproject.v0.01.00`, `myproject.v0.01.02`, ...);
@@ -87,7 +87,7 @@ explicitly.
 
 ## Choosing your target path
 
-> **PLACEHOLDER — to be completed (tracked in the backlog).** This section will
+> **PLACEHOLDER - to be completed (tracked in the backlog).** This section will
 > document the recommended **host/group-mirroring target-path convention** for
 > multi-project adopters, i.e. structuring `--target` as
 > `<working-dir>/<git-toolset>/<git-host>/<group-or-project>` (for example
@@ -100,9 +100,9 @@ explicitly.
 > host/group structure. Adopters who intend to wire in secrets and multi-instance
 > credentials later will benefit from adopting this layout at bootstrap time.
 >
-> This is a **recommended convention, not a requirement.** The full write-up —
+> This is a **recommended convention, not a requirement.** The full write-up -
 > including the exact derivation rule and its relationship to the credential
-> injection pattern (ADR-0018) — is deferred; secrets/credential wiring is out of
+> injection pattern (ADR-0018) - is deferred; secrets/credential wiring is out of
 > scope for the current adoption path and will be addressed alongside this section.
 
 For now, a simple flat target path (e.g. `~/dev/my-project`) is fully supported and
@@ -122,7 +122,7 @@ Preview first (zero side effects):
 bash mddocs/scripts/setup/adopt.sh --target /path/to/target --slug ACME --dry-run
 ```
 
-Real run (interactive — the script prompts for confirmation before creating anything):
+Real run (interactive - the script prompts for confirmation before creating anything):
 
 ```sh
 bash mddocs/scripts/setup/adopt.sh --target /path/to/target --slug ACME
@@ -143,7 +143,7 @@ Type `y` to proceed. Any other input aborts with no side effects.
 > In non-interactive mode (stdin not a TTY), `--target` is required; the script
 > fails immediately with exit code 1 if it is omitted.
 
-> **Relative paths work:** `--target ./my-project` is valid — the `.01` management-layer
+> **Relative paths work:** `--target ./my-project` is valid - the `.01` management-layer
 > suffix is appended (`./my-project.01`) and the path is canonicalized to an absolute path
 > immediately after `mkdir -p` (TC-084), so downstream steps (validation, agent
 > configuration generation) are always working against the correct location.
@@ -170,13 +170,13 @@ Type `y` to proceed. Any other input aborts with no side effects.
 
 > **Choosing your target path:** See [Choosing your target path](#choosing-your-target-path)
 > below for the recommended TC-074 path convention. A simple flat path such as
-> `~/dev/my-project` is fully supported and is what the README Quick Start uses — the
+> `~/dev/my-project` is fully supported and is what the README Quick Start uses - the
 > management layer `.01` is appended automatically.
 
-`adopt.sh` orchestrates `export-framework.sh` — it does not reimplement any part of
+`adopt.sh` orchestrates `export-framework.sh` - it does not reimplement any part of
 the export or its D-7 confidentiality controls. A non-zero exit from
 `export-framework.sh` aborts `adopt.sh` immediately, with its exit code and message
-surfaced verbatim; see [adopt.sh](../scripts/setup/adopt.md).
+surfaced verbatim.
 
 The manual procedure below documents each step this script performs, and remains the
 reference for running any single step independently (e.g. re-running validation only,
@@ -186,7 +186,7 @@ or re-generating agent configuration after moving the repo).
 
 ## Procedure
 
-### Step 1 — Preview with `--dry-run` (recommended)
+### Step 1 - Preview with `--dry-run` (recommended)
 
 Before making any changes, preview what the script would do:
 
@@ -195,18 +195,18 @@ mddocs/scripts/export-framework.sh --target /path/to/target --dry-run
 ```
 
 `--dry-run` reports the flow selected, the files that would be copied or moved, and
-the configuration that would be severed, without writing anything — zero side effects
+the configuration that would be severed, without writing anything - zero side effects
 (D-7.4). It is safe to run repeatedly.
 
-### Step 2 — Run the export
+### Step 2 - Run the export
 
-**Flow A — empty-dir init:**
+**Flow A - empty-dir init:**
 
 ```sh
 mddocs/scripts/export-framework.sh --target /path/to/new-project
 ```
 
-**Flow B — re-home into an existing tree:**
+**Flow B - re-home into an existing tree:**
 
 ```sh
 mddocs/scripts/export-framework.sh --target /path/to/existing-customer-repo
@@ -233,13 +233,13 @@ Adopter project slug (uppercase ASCII, e.g. ACME):
 
 The slug must be non-empty uppercase ASCII. It is written to `AGENT.md`,
 `tasks.yaml`, and `PROCESS.md` (D-5). In non-interactive mode (stdin not a TTY),
-`--slug` is required — pass it directly:
+`--slug` is required - pass it directly:
 
 ```sh
 mddocs/scripts/export-framework.sh --target /path/to/target --slug ACME
 ```
 
-### Step 3 — Validate
+### Step 3 - Validate
 
 ```sh
 cd /path/to/target
@@ -258,16 +258,16 @@ git remote -v                        # confirm no framework remote is present
 > adoption, remember to run **`direnv allow`** once before the venv activates on `cd`
 > (`echo $VIRTUAL_ENV` should then show `<project>/.venv`).
 
-### Step 4 — Flow B only: review the reconciliation report
+### Step 4 - Flow B only: review the reconciliation report
 
-Flow A never produces this file — an empty-dir init has no pre-existing content to
+Flow A never produces this file - an empty-dir init has no pre-existing content to
 reconcile, so skip this step for Flow A.
 
 Flow B stages **only** the framework manifest into the re-home commit (every path
 copied from the framework release, plus the generated `framework-version.txt` and the
 slug-edited `AGENT.md`/`tasks.yaml`/`PROCESS.md`). It never runs a blind `git add -A`,
 so any content that already existed in the customer tree before the re-home is left
-exactly as it was — untouched and untracked, not swept into the framework commit.
+exactly as it was - untouched and untracked, not swept into the framework commit.
 
 The script writes `.framework-rehome-report.txt` at the target repo root listing every
 such pre-existing, untracked path. Read it and act on it before your first commit on
@@ -280,10 +280,10 @@ cat /path/to/target/.framework-rehome-report.txt
 For each path listed, decide:
 
 - **Should not be tracked** → add it to `.gitignore` yourself. The script never writes
-  `.gitignore` — this is always an explicit operator decision, never automatic.
+  `.gitignore` - this is always an explicit operator decision, never automatic.
 - **Should be tracked** → `git add <path>` yourself.
 
-Once every listed path is classified, the report file has served its purpose — delete
+Once every listed path is classified, the report file has served its purpose - delete
 it (or commit it as a team record, if you prefer; it is not framework or customer
 history, just a point-in-time provenance note).
 
@@ -304,13 +304,13 @@ Usage: export-framework.sh [--target <dir>] [--flow empty|rehome] [--slug <SLUG>
                             [--dry-run] [--force] [-y|--yes]
 
   --target <dir>       Target directory for the adopter repo. Optional when
-                       stdin is a TTY — prompted interactively with a suggested
+                       stdin is a TTY - prompted interactively with a suggested
                        path (TC-074 convention) and confirmed before mkdir -p.
                        Required in non-interactive mode (exit 1 if absent and
                        stdin is not a TTY).
   --flow empty|rehome  Explicit flow selection (required if detection is ambiguous)
   --slug <SLUG>        Adopter project slug (non-empty uppercase ASCII)
-  --dry-run            Report only — zero side effects (skips confirmation prompt)
+  --dry-run            Report only - zero side effects (skips confirmation prompt)
   --force              Override the Flow B dirty-tree guard ONLY
   -y, --yes            Skip the --target confirmation prompt (scripted use)
 ```
@@ -321,7 +321,7 @@ Usage: export-framework.sh [--target <dir>] [--flow empty|rehome] [--slug <SLUG>
 | `--flow empty\|rehome` | Only when detection is ambiguous | Forces flow selection instead of auto-detecting |
 | `--slug <SLUG>` | Only in non-interactive mode | Uppercase ASCII only; prompted interactively otherwise |
 | `--dry-run` | No | Report-only preview; guarantees zero side effects (D-7.4); skips confirmation |
-| `--force` | No | Overrides the Flow B dirty-tree guard (D-7.2) **only** — see below |
+| `--force` | No | Overrides the Flow B dirty-tree guard (D-7.2) **only** - see below |
 | `-y, --yes` | No | Skips the `--target` confirmation prompt for scripted/non-interactive adoption |
 
 ### Exit codes
@@ -330,15 +330,15 @@ Usage: export-framework.sh [--target <dir>] [--flow empty|rehome] [--slug <SLUG>
 |---|---|
 | `0` | Success (including the no-op/idempotent path and `--dry-run`) |
 | `1` | Argument or usage error |
-| `2` | Ambiguous flow detection — explicit `--flow` required |
-| `3` | Target-identity guard tripped (D-7.6) — target is the framework repository itself, or a nested/parent framework worktree |
-| `4` | Dirty-tree guard tripped (D-7.2) — Flow B target is not a clean working tree and `--force` was not given |
-| `5` | Remote-severance assertion failed (D-7.3) — a push path to the framework repository still exists |
+| `2` | Ambiguous flow detection - explicit `--flow` required |
+| `3` | Target-identity guard tripped (D-7.6) - target is the framework repository itself, or a nested/parent framework worktree |
+| `4` | Dirty-tree guard tripped (D-7.2) - Flow B target is not a clean working tree and `--force` was not given |
+| `5` | Remote-severance assertion failed (D-7.3) - a push path to the framework repository still exists |
 | `6` | History/refs/object scrub verification failed (D-7.5) |
 | `7` | Slug validation failed |
 
 A non-zero exit from the severance (`5`) or history-scrub (`6`) checks means the
-script detected a confidentiality risk and stopped. Do not re-run with a workaround —
+script detected a confidentiality risk and stopped. Do not re-run with a workaround -
 investigate the reported offending configuration or state directly (the script prints
 it) before retrying.
 
@@ -357,38 +357,38 @@ Flow B refuses to run against a customer tree that is not a clean git working tr
 aborts with exit code `4` and makes **no changes**.
 
 `--force` overrides **this guard only**. It does not weaken any other control. If you
-pass `--force`, the script echoes a warning and proceeds with the overlay — review the
+pass `--force`, the script echoes a warning and proceeds with the overlay - review the
 dirty status it prints first.
 
 **Why:** re-homing writes framework files directly into a tree the operator cares
 about. A one-shot, confidentiality-sensitive bootstrap operation must not silently
 overwrite uncommitted customer work.
 
-### Remote severance — verified, not assumed (D-7.3)
+### Remote severance - verified, not assumed (D-7.3)
 
 Severing the framework remote is a **confidentiality control**, not a convenience
 step. If an adopter forgets to sever the framework remote, customer code can later be
-pushed back to the framework repository — a pollution risk, and the reason TC-050 was
+pushed back to the framework repository - a pollution risk, and the reason TC-050 was
 filed.
 
 The script does not just remove a remote named `origin` and call it done. It verifies,
 by **resolved push target** (not by name or substring match), that after severance the
-remote set is empty or contains only the adopter's own remotes — never anything that
+remote set is empty or contains only the adopter's own remotes - never anything that
 resolves to the framework repository, including through SSH-form remotes, `insteadOf`/
 `pushInsteadOf` rewrite rules, `remote.pushDefault`, and `branch.<name>.pushRemote`. If
 any framework-resolving push path survives, the script **aborts loudly with exit code
 `5`** and prints the offending configuration.
 
-This assertion runs on **every invocation** — including the idempotent no-op path and
-`--dry-run` (in report-only form) — so a framework remote or rewrite rule reintroduced
+This assertion runs on **every invocation** - including the idempotent no-op path and
+`--dry-run` (in report-only form) - so a framework remote or rewrite rule reintroduced
 after initial adoption is caught, not silently tolerated. **`--force` does not
 override this assertion.**
 
 ### No framework history, refs, or objects remain (D-7.5)
 
 Removing a remote does not remove objects, `refs/remotes/*`, `FETCH_HEAD`, reflog
-entries, tags, or notes already fetched from it. The script's post-condition — "no
-framework commit history reachable" — is verified independently of remote severance:
+entries, tags, or notes already fetched from it. The script's post-condition - "no
+framework commit history reachable" - is verified independently of remote severance:
 it checks for surviving `refs/remotes/*`, a non-empty `FETCH_HEAD`, and unreachable
 objects, and it scrubs (reflog expire, `gc --prune=now`) before verifying. If framework
 history state still survives the scrub, the script **aborts with exit code `6`**.
@@ -407,11 +407,11 @@ framework checkout itself).
 ### `--dry-run` preview (D-7.4)
 
 `--dry-run` reports the flow, the files that would move or copy, and the configuration
-that would be severed — with **zero side effects**: no config writes, no ref updates,
+that would be severed - with **zero side effects**: no config writes, no ref updates,
 no file moves, no object changes. Re-running the script against an already-initialized
 adopter repo (Flow A: `.git` + `framework-version.txt` present; Flow B:
 `framework-version.txt` present) is a no-op that reports the existing baseline rather
-than re-exporting — but still re-runs the D-7.3 and D-7.5 assertions, so drift is
+than re-exporting - but still re-runs the D-7.3 and D-7.5 assertions, so drift is
 caught even on a repeat invocation.
 
 ---
@@ -426,9 +426,9 @@ caught even on a repeat invocation.
 - [ ] `.venv` exists and `./mddocs/scripts/setup/python-env.sh --check` reports imports OK
 - [ ] `direnv allow` run in the project (one-time), and `echo $VIRTUAL_ENV` shows `<project>/.venv`
 - [ ] Initial commit message records the framework release version
-- [ ] A remote Git project exists and is wired (`git remote add origin <adopter-repo-url>`), if desired — the script never adds an adopter remote on its own initiative
+- [ ] A remote Git project exists and is wired (`git remote add origin <adopter-repo-url>`), if desired - the script never adds an adopter remote on its own initiative
 - [ ] Working/integration branch created and pushed, per the adopter's own branch
-      strategy (the framework does not prescribe a branch layout — see
+      strategy (the framework does not prescribe a branch layout - see
       [ADR-0015](../adr/adr-0015-framework-distribution-adoption-model.md) D-8)
 
 ---
@@ -439,13 +439,13 @@ The framework ships its `.gitignore` (see the header comment for the two rule
 classes). These rules are inherited by the adopter by design:
 
 - **Universal** rules (machine-local config/secrets/build output: `.agentic/`,
-  `.envrc`, `.mcp.json`, `mddocs/book/`, `__pycache__/`, ...) — keep in every repo.
+  `.envrc`, `.mcp.json`, `mddocs/book/`, `__pycache__/`, ...) - keep in every repo.
   Do not un-ignore these; they prevent committing local secrets/config.
 - **Framework-bench** rules (`.bench/`, `relay-pending.md`, `.worktrees/`,
-  `_oob/*.log`, `_scratch/sessions/`) — the adopter's own bench mechanism uses
+  `_oob/*.log`, `_scratch/sessions/`) - the adopter's own bench mechanism uses
   these too.
 
-`export-framework.sh` never writes an adopter's `.gitignore` for customer paths —
+`export-framework.sh` never writes an adopter's `.gitignore` for customer paths -
 the operator classifies pre-existing customer content (see
 [Step 4](#step-4--flow-b-only-review-the-reconciliation-report)). Adopters add
 their own project-specific ignores on top.
@@ -455,11 +455,11 @@ their own project-specific ignores on top.
 The framework ships **two** file-backed review ledgers, both wired via the MCP
 servers in `opencode.json`:
 
-- `.core/review-ledger/security/` — security findings (SF / SR)
-- `.core/review-ledger/reviews/` — review findings (RF / RR)
+- `.core/review-ledger/security/` - security findings (SF / SR)
+- `.core/review-ledger/reviews/` - review findings (RF / RR)
 
 Both are wired and ready to receive entries for an adopter, but are **not utilized
-by the framework's own authoring** — the framework repo gitignores their runtime
+by the framework's own authoring** - the framework repo gitignores their runtime
 `findings.yaml` data, and the `.gitkeep` placeholders keep both directories present
 in the exported tree. See the
 [Review Ledger runbook](../operations/runbooks/review-ledger-runbook.md).
@@ -496,7 +496,7 @@ repository.
    (cd _framework-import && tar -c --exclude=.git .) | tar -x -C .
    ```
 5. **Before removing the throwaway subdirectory, capture its file list as your
-   framework manifest** — this is the same manifest `export-framework.sh` builds
+   framework manifest** - this is the same manifest `export-framework.sh` builds
    automatically (TC-051), and it is what makes step 6's reconciliation deterministic
    instead of a guess:
    ```sh
@@ -513,13 +513,13 @@ repository.
    comm -23 /tmp/untracked.txt <(sort /tmp/framework-manifest.txt)
    ```
    Every path `comm` prints existed in the customer tree before the re-home and is not
-   framework content — the same distinction `export-framework.sh`'s
+   framework content - the same distinction `export-framework.sh`'s
    `.framework-rehome-report.txt` report makes automatically (see
    [Step 4](#step-4--flow-b-only-review-the-reconciliation-report) above). For each
    such path, decide:
    - **Should not be tracked** → add it to `.gitignore` yourself.
    - **Should be tracked** → `git add <path>` yourself.
-   Do this now, before staging anything — the commit at the end of this procedure
+   Do this now, before staging anything - the commit at the end of this procedure
    should only ever contain the framework manifest paths plus your own explicit
    `git add` decisions, never a blind `git add -A` over the whole tree.
 7. Sever the framework remote and every other push path that could reach it:
@@ -527,7 +527,7 @@ repository.
    git remote remove <framework-remote-name>
    # Repeat for every remote name returned by: git remote
    ```
-8. **Required — verify no push path to the framework survives (D-7.3).** Do not treat
+8. **Required - verify no push path to the framework survives (D-7.3).** Do not treat
    step 7 as sufficient on its own; a name-based removal misses rewrite rules,
    `pushDefault`, and per-branch overrides. Run **all** of the following and confirm
    each returns nothing that resolves to the framework:
@@ -553,9 +553,9 @@ repository.
    git config --get-regexp '^branch\..*\.pushremote$'
    ```
    If any of these commands returns a URL or remote name that resolves to the
-   framework repository — including through a rewrite rule or a mirror URL, not only
-   an exact literal match — remove or reconfigure it and re-check before proceeding.
-9. **Required — verify no framework history, refs, or objects remain (D-7.5).** The
+   framework repository - including through a rewrite rule or a mirror URL, not only
+   an exact literal match - remove or reconfigure it and re-check before proceeding.
+9. **Required - verify no framework history, refs, or objects remain (D-7.5).** The
    clone in step 3 fetched framework objects into a `.git` you have since discarded,
    but if any framework-related git state was fetched into the **customer repository's
    own** object store (for example, if a framework remote was ever added and fetched
@@ -576,18 +576,18 @@ repository.
    ```
    `git for-each-ref refs/remotes` must return nothing. `FETCH_HEAD` must be empty or
    not exist. `git fsck --unreachable` must report nothing. If any of these checks
-   returns output, do not proceed to commit — investigate and remove the offending
+   returns output, do not proceed to commit - investigate and remove the offending
    ref, file, or object first.
 
 Only after both verification blocks (step 8 and step 9) come back clean, **and** step 6's
-reconciliation is complete (every pre-existing customer path classified — gitignored or
+reconciliation is complete (every pre-existing customer path classified - gitignored or
 explicitly `git add`ed), continue.
 
 First, write the adopter's slug (to `AGENT.md`, `tasks.yaml`, and `PROCESS.md`, per
-ADR-0015 D-5 — these are already in your framework manifest from step 5, since they
+ADR-0015 D-5 - these are already in your framework manifest from step 5, since they
 came from the framework tree) and a `framework-version.txt` recording the framework
-release and export date (matching the D-1 baseline-reference contract — this one is
-newly generated, so add it to your manifest). Then commit — staging the manifest
+release and export date (matching the D-1 baseline-reference contract - this one is
+newly generated, so add it to your manifest). Then commit - staging the manifest
 explicitly rather than a blind `git add -A`, so an unclassified customer path you
 missed in step 6 cannot silently ride along into the framework commit:
 
@@ -605,7 +605,7 @@ here, not the customer's ignore rules.)
 
 ## Related
 
-- [ADR-0015: Framework Distribution and Adoption Model](../adr/adr-0015-framework-distribution-adoption-model.md) — D-1, D-5, D-7 (binding spec for this runbook)
-- [Adopter Reconciliation Model](adopter-reconciliation.md) — how framework improvements reach adopters after initial adoption
-- `mddocs/scripts/export-framework.sh` — the script this runbook documents
-- `mddocs/scripts/test-export-framework-severance.sh` — the confidentiality-assertion test harness (D-7.3 / D-7.5 proof)
+- [ADR-0015: Framework Distribution and Adoption Model](../adr/adr-0015-framework-distribution-adoption-model.md) - D-1, D-5, D-7 (binding spec for this runbook)
+- [Adopter Reconciliation Model](adopter-reconciliation.md) - how framework improvements reach adopters after initial adoption
+- `mddocs/scripts/export-framework.sh` - the script this runbook documents
+- `mddocs/scripts/test-export-framework-severance.sh` - the confidentiality-assertion test harness (D-7.3 / D-7.5 proof)

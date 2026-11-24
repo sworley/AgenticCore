@@ -1,0 +1,14 @@
+id: SH-0028
+title: Metadata registry reconcile / report tool
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Governance
+process: metadata-registry-maintenance
+owner: docs-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - reconcile-metadata-registry.md
+    - metadata-standard.md

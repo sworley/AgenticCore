@@ -1,0 +1,13 @@
+id: SH-0021
+title: MCP RAG docs protocol test
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Testing
+process: mcp-protocol-test
+owner: ops-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - test-mcp-rag-docs.md

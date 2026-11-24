@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# run-all.sh — Run all MCP smoke tests and report pass/fail.
+# run-all.sh - Run all MCP smoke tests and report pass/fail.
 # Usage: bash mddocs/scripts/mcp-tests/run-all.sh
 # Must be run from the repository root.
 set -uo pipefail

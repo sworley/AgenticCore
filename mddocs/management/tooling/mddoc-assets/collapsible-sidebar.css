@@ -1,0 +1,58 @@
+/* Documentation navigation enhancement for the mdBook sidebar. */
+
+.mddoc-sidebar-controls {
+    display: flex;
+    gap: 0.4rem;
+    padding: 0.55rem 0.75rem;
+    border-block-end: 1px solid var(--sidebar-spacer);
+}
+
+.mddoc-sidebar-controls button,
+.mddoc-sidebar-toggle {
+    border: 1px solid var(--sidebar-spacer);
+    border-radius: 0.25rem;
+    background: transparent;
+    color: var(--sidebar-fg);
+    font: inherit;
+    cursor: pointer;
+}
+
+.mddoc-sidebar-controls button {
+    padding: 0.2rem 0.45rem;
+    font-size: 0.85em;
+}
+
+.mddoc-sidebar-controls button:hover,
+.mddoc-sidebar-toggle:hover,
+.mddoc-sidebar-controls button:focus-visible,
+.mddoc-sidebar-toggle:focus-visible {
+    color: var(--sidebar-active);
+    border-color: var(--sidebar-active);
+}
+
+.chapter-link-wrapper .mddoc-sidebar-toggle {
+    margin-inline-start: auto;
+    padding: 0 0.55rem;
+    border: 0;
+    opacity: 0.75;
+}
+
+.mddoc-sidebar-toggle > span {
+    display: inline-block;
+    transition: transform 0.15s ease-in-out;
+}
+
+.chapter li.expanded > span > .mddoc-sidebar-toggle > span {
+    transform: rotate(90deg);
+}
+
+.chapter li:not(.expanded) > span > .mddoc-sidebar-toggle > span {
+    transform: rotate(0deg);
+}
+
+@media print {
+    .mddoc-sidebar-controls,
+    .mddoc-sidebar-toggle {
+        display: none;
+    }
+}

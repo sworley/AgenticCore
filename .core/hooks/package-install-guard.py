@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-package-install-guard.py — PreToolUse hook for Bash.
+package-install-guard.py - PreToolUse hook for Bash.
 
 Blocks three high-risk patterns unconditionally:
   1. curl/wget piped to sh/bash/zsh (pipe-to-shell)
   2. eval $(curl ...) (eval-of-download)
   3. bash <(curl ...) (process substitution download)
 
-Exit 1 = block. No override flag — these are unconditional.
+Exit 1 = block. No override flag - these are unconditional.
 """
 import json
 import re

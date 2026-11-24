@@ -14,11 +14,11 @@
 # Onboarding
 
 - [Visual Overview](onboarding/visual-overview.md)
-- [Agent Roster](onboarding/agent-roster.md)
+- [Agent Roster](management/agentic/roster/agent-roster.md)
 - [Getting Started](onboarding/getting-started.md)
 - [Repository Structure](onboarding/repository-structure.md)
-- [Agentic Workflow Overview](onboarding/agentic-workflow-overview.md)
-- [Bench Model](onboarding/bench-model.md)
+- [Agentic Workflow Overview](management/architecture/workflow/agentic-workflow-overview.md)
+- [Bench Model](management/architecture/bench/bench-model.md)
 
 ---
 
@@ -37,8 +37,8 @@
   - [ADR-0009: Agent Portability Model](adr/adr-0009-agent-portability-model.md)
   - [ADR-0010: Hook Rollback Strategy](adr/adr-0010-hook-rollback-strategy.md)
   - [ADR-0011: Lead-Engineer Identity Anchoring](adr/adr-0011-lead-engineer-identity-anchoring.md)
-  - [ADR-0012: Bench Assignment — Canonical/Generated Split](adr/adr-0012-bench-assignment-canonical-generated-split.md)
-  - [ADR-0013: Pattern A — Two-Flavor Model](adr/adr-0013-pattern-a-two-flavor-model.md)
+  - [ADR-0012: Bench Assignment - Canonical/Generated Split](adr/adr-0012-bench-assignment-canonical-generated-split.md)
+  - [ADR-0013: Pattern A - Two-Flavor Model](adr/adr-0013-pattern-a-two-flavor-model.md)
   - [ADR-0014: Project Task Slug and ADR Ticket Governance](adr/adr-0014-project-slug-adr-ticket-governance.md)
   - [ADR-0015: Framework Distribution and Adoption Model](adr/adr-0015-framework-distribution-adoption-model.md)
   - [ADR-0016: Agentic Toolchain Secret Management](adr/adr-0016-agentic-toolchain-secret-management.md)
@@ -49,11 +49,32 @@
   - [ADR-0021: Per-Agent Model Tiering (Opt-In Overrides on Top of the Default)](adr/adr-0021-per-agent-model-tiering.md)
   - [ADR-0022: Git-Native Pre-Commit Permission-Order Check and Install-Only Hook Installer](adr/adr-0022-git-pre-commit-permission-order-check.md)
   - [ADR-0023: Config-Enforced opencode MCP Tool Restriction for approve_finding_update](adr/adr-0023-opencode-mcp-tool-restriction.md)
-  - [ADR-0024: Informed HIL Override — Documented Risk-Acceptance Valve](adr/adr-0024-informed-hil-override.md)
+  - [ADR-0024: Informed HIL Override - Documented Risk-Acceptance Valve](adr/adr-0024-informed-hil-override.md)
   - [ADR-0025: Framework Write-Protection Model](adr/adr-0025-framework-write-protection-model.md)
   - [ADR-0026: Release-Branch Curation Model](adr/adr-0026-release-branch-curation-model.md)
   - [ADR-0027: Authoring-Agent Execution Model](adr/adr-0027-authoring-agent-execution-model.md)
   - [ADR-0028: Customer/Project Plane Provisioning](adr/adr-0028-customer-plane-provisioning.md)
+
+---
+
+# Documentation Planes
+
+- [Management Plane](management/index.md)
+  - [Architecture](management/architecture/README.md)
+  - [Architecture · System](management/architecture/system/AgenticCore-Spec.md)
+  - [Agentic](management/agentic/README.md)
+  - [Agentic Procedures](management/agentic/procedures/README.md)
+  - [Delivery](management/delivery/README.md)
+  - [Assurance · Reviews](management/assurance/reviews/ledger-runbook/index.md)
+  - [Audits](management/audits/README.md)
+  - [Audits · Evidence](management/audits/evidence/README.md)
+  - [Governance · Decisions](management/governance/decisions/index.md)
+  - [Governance · Exceptions](management/governance/exceptions/README.md)
+  - [Governance · Exceptions · Waiver-Log Contract](management/governance/exceptions/waiver-log-contract.md)
+  - [Security · Guardrails](management/security/guardrails/credential-identity/index.md)
+  - [Security · Guardrails · Secret](management/security/guardrails/secret-management/index.md)
+  - [Tooling](management/tooling/README.md)
+- [Projects Plane](projects/index.md)
 
 ---
 
@@ -64,40 +85,37 @@
   - [Session Close Checklist](reference.architecture/session-close-checklist.md)
   - [Provision Worker Bench](reference.architecture/provision-worker-bench.md)
   - [Bootstrap New Project](reference.architecture/bootstrap-new-project.md)
+  - [Adopt a Project Context](reference.architecture/adopt-project-context.md)
   - [Tooling Contract](reference.architecture/tooling-contract.md)
   - [Task Queue Operations](reference.architecture/task-queue-operations.md)
   - [Bench Registry](reference.architecture/bench-registry.md)
-  - [Agent Authoring Workflow](reference.architecture/agent-authoring-workflow.md)
-  - [Release Process](reference.architecture/release-process.md)
-  - [Release Notes Template](reference.architecture/release-notes-template.md)
   - [Configure MCP Servers](reference.architecture/configure-mcp.md)
-  - [Shared Agent Context](reference.architecture/shared-context.md)
+  - [Shared Agent Context](management/agentic/context/shared-context.md)
   - [Adopter Reconciliation](reference.architecture/adopter-reconciliation.md)
-  - [Sign-Off Package](reference.architecture/sign-off-package.md)
 
 ---
 
 # Operations
 
 - [Operations Index](operations/index.md)
-  - [Runbook: git-sync — Git Workspace Sync](operations/runbooks/git-sync-runbook.md)
-  - [Runbook: Sync Agent Definitions](operations/runbooks/sync-agent-definitions.md)
-  - [Runbook: Configure Agent Namespace](operations/runbooks/configure-agents.md)
-  - [Runbook: Sync Agent Config](operations/runbooks/sync-opencode-config.md)
-  - [Runbook: Build and Publish mdBook](operations/runbooks/build-publish-mddocs.md)
-  - [Runbook: Rotate Git PAT](operations/runbooks/rotate-git-pat.md)
-  - [Runbook: Set Up mddoc Local Documentation Site](operations/runbooks/setup-mddoc.md)
-  - [Runbook: Hook Rollback](operations/runbooks/hook-rollback.md)
-  - [Runbook: Session Continuity](operations/runbooks/session-continuity.md)
-  - [Runbook: Agent Session Tracking](operations/runbooks/agent-session-tracking.md)
-  - [Runbook: secret-guard Hook](operations/runbooks/secret-guard.md)
-  - [Runbook: Credential-Identity Guard](operations/runbooks/credential-identity-guard.md)
-  - [Runbook: check-links — Internal Link Validator](operations/runbooks/check-links-runbook.md)
-  - [Runbook: Bench Recovery](operations/runbooks/bench-recovery.md)
-  - [Runbook: AI-Assisted Session Commit Discipline](operations/runbooks/ai-doc-session-commit-discipline.md)
-  - [Runbook: Agent Authoring Workflow](operations/runbooks/agent-authoring-workflow.md)
-  - [Runbook: Review Ledger](operations/runbooks/review-ledger-runbook.md)
-  - [Runbook: Session Reasoning Log](operations/runbooks/session-reasoning-log.md)
+  - [Procedure: git-sync - Git Workspace Sync](management/agentic/procedures/git-sync-runbook.md)
+  - [Procedure: Sync Agent Definitions](management/agentic/procedures/sync-agent-definitions.md)
+  - [Procedure: Configure Agent Namespace](management/agentic/procedures/configure-agents.md)
+  - [Procedure: Sync Agent Config](management/agentic/procedures/sync-opencode-config.md)
+  - [Procedure: Build and Publish mdBook](management/agentic/procedures/build-publish-mddocs.md)
+  - [Procedure: Rotate Git PAT](management/agentic/procedures/rotate-git-pat.md)
+  - [Procedure: Set Up mddoc Local Documentation Site](management/agentic/procedures/setup-mddoc.md)
+  - [Procedure: Hook Rollback](management/agentic/procedures/hook-rollback.md)
+  - [Procedure: Session Continuity](management/agentic/procedures/session-continuity.md)
+  - [Procedure: Agent Session Tracking](management/agentic/procedures/agent-session-tracking.md)
+  - [Runbook: secret-guard Hook](management/security/guardrails/secret-management/secret-guard.md)
+  - [Runbook: Credential-Identity Guard](management/security/guardrails/credential-identity/credential-identity-guard.md)
+  - [Procedure: check-links - Internal Link Validator](management/agentic/procedures/check-links-runbook.md)
+  - [Procedure: Bench Recovery](management/agentic/procedures/bench-recovery.md)
+  - [Procedure: AI-Assisted Session Commit Discipline](management/agentic/procedures/ai-doc-session-commit-discipline.md)
+  - [Procedure: Agent Authoring Workflow](management/agentic/procedures/agent-authoring-workflow.md)
+  - [Runbook: Review Ledger](management/assurance/reviews/ledger-runbook/review-ledger-runbook.md)
+  - [Procedure: Session Reasoning Log](management/agentic/procedures/session-reasoning-log.md)
 
 ---
 
@@ -124,8 +142,9 @@
 
 # MCP Servers
 
-- [MCP Servers](mcp/index.md)
-  - [mcp-rag-docs](mcp/mcp-rag-docs/README.md)
+- [MCP Servers](management/tooling/mcp/README.md)
+  - [mcp-rag-docs](management/tooling/mcp/mcp-rag-docs/README.md)
+  - [review-ledger](management/tooling/mcp/review-ledger/README.md)
 
 ---
 
@@ -148,24 +167,24 @@
   - [test-mcp-git.sh](scripts/mcp-tests/test-mcp-git.md)
 
 - [Onboarding](scripts/setup/index.md)
-  - [adopt.sh](scripts/setup/adopt.md)
   - [python-env.sh](scripts/setup/python-env.md)
   - [toolchain.sh](scripts/setup/toolchain.md)
-  - [opencode.json — init-opencode-settings](scripts/setup/init-opencode-settings.md)
+  - [opencode.json - init-opencode-settings](scripts/setup/init-opencode-settings.md)
   - [phase2-dev-toolchain.sh](scripts/setup/phase2-dev-toolchain.md)
   - [verify-toolchain.sh](scripts/setup/verify-toolchain.md)
 
 - [Hooks and Utilities](scripts/hooks-index.md)
   - [statusline-command.sh](scripts/statusline-command.md)
   - [update-summary-on-adr-write.py](scripts/update-summary-on-adr-write.md)
+  - [reconcile-metadata-registry.py](scripts/reconcile-metadata-registry.md)
 
 ---
 
 # Release Notes
 
-- [Unreleased](release-notes/UNRELEASED.md)
-- [v0.7.0](release-notes/v0.7.0.md)
-- [v0.6.0](release-notes/v0.6.0.md)
+- [Unreleased](management/delivery/releases/UNRELEASED.md)
+- [v0.7.0](management/delivery/releases/v0.7.0.md)
+- [v0.6.0](management/delivery/releases/v0.6.0.md)
 
 ---
 

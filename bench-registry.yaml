@@ -1,4 +1,4 @@
-# bench-registry.yaml — AgenticCore Bench Registry
+# bench-registry.yaml - AgenticCore Bench Registry
 #
 # Tracks the state of every git-worktree bench. Owned and maintained by
 # lead-engineer (`.01`). See `mddocs/AGENTICCORE_SPEC.md` §6 (Bench Model)

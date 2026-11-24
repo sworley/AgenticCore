@@ -1,4 +1,4 @@
-/* mermaid-init.js — Client-side Mermaid rendering for mdBook.
+/* mermaid-init.js - Client-side Mermaid rendering for mdBook.
  * mdBook emits fenced `` ```mermaid `` blocks as `<pre><code class="language-mermaid">`.
  * This script finds those blocks and replaces each with the rendered SVG using the
  * mermaid bundle loaded from `mermaid.min.js` (see book.toml `additional-js`).

@@ -1,0 +1,41 @@
+# supersession-ledger.yaml
+# Authoritative record of every accepted ADR superseded by a new ADR under the
+# forward-only ADR evolution convention (ADR-0035). Validated by
+# mddocs/scripts/reconcile-metadata-registry.py so a supersession cannot be
+# recorded inconsistently or dropped silently.
+#
+# This ledger records forward-only supersessions (a new ADR that embodies the
+# decision it replaces). Transitions that predate the convention and were made
+# via in-place amendment (e.g. ADR-0034 folded into ADR-0015 D-9) are NOT
+# recorded here as clean supersessions; they are consolidated and recreated as a
+# clean superseding ADR in the later consolidation pass.
+#
+# Field contract: see AGENTICCORE_SPEC.md (ADR Lifecycle / Supersession Ledger).
+#   superseded       - the ADR ID being retired (string, ADR-NNNN)
+#   superseding      - the ADR ID that embodies the decision (string, ADR-NNNN)
+#   status           - lifecycle state of the retired record: superseded | deprecated
+#   date             - YYYY-MM-DD the supersession was accepted
+#   ticket           - the task that authorized it (AC-NNNN)
+#   disposition      - superseded (substance carried forward) | waived (dropped with rationale)
+#   outcome          - concise note of what changed between the two ADRs
+#   retired          - true once the file is removed from the working tree + active index
+#   retired_git_ref  - (optional) git SHA/ref where the retired file last existed
+supersessions:
+  - superseded: ADR-0030
+    superseding: ADR-0035
+    status: superseded
+    date: 2026-11-20
+    ticket: AC-0016
+    disposition: superseded
+    outcome: "superseded by ADR-0035 - forward-only supersede and historical coexistence convention"
+    retired: false
+    retired_git_ref: null
+  - superseded: ADR-0004
+    superseding: ADR-0036
+    status: superseded
+    date: 2026-11-20
+    ticket: AC-0017
+    disposition: superseded
+    outcome: "superseded by ADR-0036 - GitHub branch-protection rulesets as the server-side enforcement of the main append-only / merge-only rule"
+    retired: false
+    retired_git_ref: null

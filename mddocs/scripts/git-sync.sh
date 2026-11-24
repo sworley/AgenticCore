@@ -1,5 +1,5 @@
 #!/bin/zsh
-# git-sync.sh — Git workspace sync tool
+# git-sync.sh - Git workspace sync tool
 #
 # Crawls a Git group, clones missing repos, pulls existing ones,
 # and checks out the default branch (main or master) for each.
@@ -11,16 +11,16 @@
 #   git-sync.sh [--profile `<name>`] [--group `<path>`] [--mode sync|update] [--dry-run]
 #
 # Modes:
-#   sync    — Query Git API, clone missing repos, pull existing ones (default)
-#   update  — Local pull only — no API calls, no token required
+#   sync    - Query Git API, clone missing repos, pull existing ones (default)
+#   update  - Local pull only - no API calls, no token required
 #
-# Environment overrides (all optional — take precedence over profile):
-#   GIT_SYNC_PROFILE   — profile name from ~/.config/git-sync/profiles
-#   GIT_SYNC_GROUP     — override the group/namespace to sync
-#   GIT_SYNC_URL       — override the Git base URL
-#   GIT_SYNC_PASS_PATH — override the pass store path to the PAT
-#   GIT_SYNC_TOKEN     — supply token directly (use only in non-interactive scripts)
-#   GIT_SYNC_MODE      — sync | update
+# Environment overrides (all optional - take precedence over profile):
+#   GIT_SYNC_PROFILE   - profile name from ~/.config/git-sync/profiles
+#   GIT_SYNC_GROUP     - override the group/namespace to sync
+#   GIT_SYNC_URL       - override the Git base URL
+#   GIT_SYNC_PASS_PATH - override the pass store path to the PAT
+#   GIT_SYNC_TOKEN     - supply token directly (use only in non-interactive scripts)
+#   GIT_SYNC_MODE      - sync | update
 #
 # Profiles file format (~/.config/git-sync/profiles):
 #   # name   url                              pass-path                  default-group
@@ -115,13 +115,13 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Mode selection — interactive if not set
+# Mode selection - interactive if not set
 # ---------------------------------------------------------------------------
 if [[ -z "$MODE" ]]; then
     print ""
     print "Select mode:"
-    print "  1) sync   — clone/update from Git API"
-    print "  2) update — local pull only (no API calls)"
+    print "  1) sync   - clone/update from Git API"
+    print "  2) update - local pull only (no API calls)"
     printf "Choice [1]: "
     read -r _choice
     case "${_choice:-1}" in
@@ -131,11 +131,11 @@ if [[ -z "$MODE" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
-# UPDATE mode — local pull only, no token needed
+# UPDATE mode - local pull only, no token needed
 # ---------------------------------------------------------------------------
 if [[ "$MODE" == "update" ]]; then
     print "---------------------------------------"
-    print "   Git Workspace Sync — UPDATE mode"
+    print "   Git Workspace Sync - UPDATE mode"
     print "---------------------------------------"
     print "  Root    : $(pwd)"
     [[ "$DRY_RUN" == true ]] && print "  Mode    : DRY RUN"
@@ -144,7 +144,7 @@ if [[ "$MODE" == "update" ]]; then
     total_updated=0
     total_skipped=0
 
-    # Find all .git directories — exclude dotted directories (bench copies)
+    # Find all .git directories - exclude dotted directories (bench copies)
     while IFS= read -r git_dir; do
         repo_dir="${git_dir%/.git}"
         # Skip directories whose name starts with a dot (bench worktrees)
@@ -173,7 +173,7 @@ if [[ "$MODE" == "update" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
-# SYNC mode — requires Git URL and token
+# SYNC mode - requires Git URL and token
 # ---------------------------------------------------------------------------
 if [[ -z "$GIT_HOST" ]]; then
     print -u2 "Error: Git URL not set."
@@ -217,10 +217,10 @@ if [[ -z "$GIT_TOKEN" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
-# GIT_ASKPASS — supplies token without embedding in URLs or .git/config
+# GIT_ASKPASS - supplies token without embedding in URLs or .git/config
 # ---------------------------------------------------------------------------
 export _ASKPASS_TOKEN="$GIT_TOKEN"
-GIT_ASKPASS_SCRIPT="$(mktemp /tmp/git-sync-askpass.XXXXXX)"
+GIT_ASKPASS_SCRIPT="$(mktemp "${TMPDIR:-/tmp}/git-sync-askpass.XXXXXX")"
 printf '#!/bin/sh\necho "$_ASKPASS_TOKEN"\n' > "$GIT_ASKPASS_SCRIPT"
 chmod +x "$GIT_ASKPASS_SCRIPT"
 export GIT_ASKPASS="$GIT_ASKPASS_SCRIPT"
@@ -230,7 +230,7 @@ trap 'rm -f "$GIT_ASKPASS_SCRIPT"; unset _ASKPASS_TOKEN' EXIT INT TERM
 # Banner
 # ---------------------------------------------------------------------------
 print "---------------------------------------"
-print "   Git Workspace Sync — SYNC mode"
+print "   Git Workspace Sync - SYNC mode"
 print "---------------------------------------"
 print "  Profile : ${PROFILE}"
 print "  URL     : ${GIT_HOST}"
@@ -256,7 +256,7 @@ fi
 print "Found group '${SYNC_GROUP}' (id: ${NAMESPACE_ID}). Fetching projects..."
 
 # ---------------------------------------------------------------------------
-# Checkout helper — ensures repo is on default branch and up to date
+# Checkout helper - ensures repo is on default branch and up to date
 # ---------------------------------------------------------------------------
 checkout_default_branch() {
     local dir="$1"

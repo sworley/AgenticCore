@@ -13,5 +13,5 @@ canonical source rather than restating it.>
 
 ## Provenance
 
-- **Session:** <YYYY-MM-DD> — "<topic>" Q&A.
+- **Session:** <YYYY-MM-DD> - "<topic>" Q&A.
 - **Related ADRs:** <ADR-NNNN, ...>

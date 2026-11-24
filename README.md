@@ -1,6 +1,6 @@
 # AgenticCore
 
-Portable agentic framework — documentation-first, mdBook-based, git-worktree bench model
+Portable agentic framework - documentation-first, mdBook-based, git-worktree bench model
 for developers, DevOps engineers, and SREs building AI-assisted workflows.
 
 ---
@@ -12,7 +12,7 @@ for developers, DevOps engineers, and SREs building AI-assisted workflows.
 
 Want a visual map of the whole system first? Start with the
 [`mddocs/onboarding/visual-overview.md`](mddocs/onboarding/visual-overview.md)
-— benches, personas, workflows, and the agent roster at a glance. The full guide
+- benches, personas, workflows, and the agent roster at a glance. The full guide
 lives in the docs: [`mddocs/onboarding/getting-started.md`](mddocs/onboarding/getting-started.md).
 
 ---
@@ -22,12 +22,12 @@ lives in the docs: [`mddocs/onboarding/getting-started.md`](mddocs/onboarding/ge
 AgenticCore provides a structured, repeatable scaffold for operating AI coding agents
 in a team or solo engineering context. It defines:
 
-- **Roles and governance** — human-in-the-loop (HIL) acceptance gates, agent boundaries, no self-approval
-- **Bench model** — git-worktree-based isolated workspaces (`.00` HIL, `.01` lead-engineer, `.02`+ workers)
-- **Agent definitions** — portable agent specs for OpenCode and compatible runtimes (auto-synced from `.agents/`)
-- **Documentation system** — mdBook-based docs with ADRs, runbooks, onboarding, and examples
-- **Security controls** — hooks, commit/push gates, credential injection via `pass` + `direnv`
-- **Task queue** — `tasks.yaml` as the single source of truth for all work items
+- **Roles and governance** - human-in-the-loop (HIL) acceptance gates, agent boundaries, no self-approval
+- **Bench model** - git-worktree-based isolated workspaces (`.00` HIL, `.01` lead-engineer, `.02`+ workers)
+- **Agent definitions** - portable agent specs for OpenCode and compatible runtimes (auto-synced from `.agents/`)
+- **Documentation system** - mdBook-based docs with ADRs, runbooks, onboarding, and examples
+- **Security controls** - hooks, commit/push gates, credential injection via `pass` + `direnv`
+- **Task queue** - `tasks.yaml` as the single source of truth for all work items
 
 ---
 
@@ -35,7 +35,7 @@ in a team or solo engineering context. It defines:
 
 The current baseline is **v0.7.0** (2026-11-09). The initial open-source baseline was
 **v0.5.0** (2026-11-01). Releases follow a curated, gated process owned by
-`baseline-steward` with tactical execution by `release-engineer` — see the
+`baseline-steward` with tactical execution by `release-engineer` - see the
 [Release Process runbook](mddocs/reference.architecture/release-process.md) and
 [`CHANGELOG.md`](CHANGELOG.md). Release notes are published under
 [`mddocs/release-notes/`](mddocs/release-notes/UNRELEASED.md).
@@ -44,7 +44,7 @@ The current baseline is **v0.7.0** (2026-11-09). The initial open-source baselin
 
 ## Quick Start (Adopter)
 
-Your adopted project is **not** a clone of this framework — adoption exports a
+Your adopted project is **not** a clone of this framework - adoption exports a
 versioned, severed release into your own target directory, with no framework remote,
 upstream reference, or commit history afterward (ADR-0015). You do need a local copy
 of the framework to *run* the export from, so obtain it first (below).
@@ -60,8 +60,8 @@ of the framework to *run* the export from, so obtain it first (below).
 | `pass` | Secrets store (GPG-backed) | 1.7+ |
 | OpenCode or compatible runtime | AI coding agent runtime | latest |
 
-> **Toolchain helper:** validate (or install) the docs/dev toolchain — `mdbook`,
-> `mdbook-mermaid`, `typos-cli`, `shellcheck`, `gh`, `jq` — with
+> **Toolchain helper:** validate (or install) the docs/dev toolchain - `mdbook`,
+> `mdbook-mermaid`, `typos-cli`, `shellcheck`, `gh`, `jq` - with
 > `./mddocs/scripts/setup/toolchain.sh --check` (read-only) or `--install` (opt-in).
 > The Python deps (`mcp`, `pyyaml`, `fastmcp`) are provisioned into a project-local
 > `.venv` at adoption time.
@@ -87,14 +87,14 @@ git clone --branch main https://git.example.com/example-group/AgenticCore.git
 ```
 
 > **What you'll see (and why it's fine):** cloning the release tag can print a few
-> alarming-looking lines — all expected:
+> alarming-looking lines - all expected:
 >
-> - `warning: refs/tags/<tag> <sha> is not a commit!` — the release tag is an
+> - `warning: refs/tags/<tag> <sha> is not a commit!` - the release tag is an
 >   *annotated* tag (it points at a tag object, not a commit directly); the warning is
 >   cosmetic and the clone still succeeds.
-> - `You are in 'detached HEAD' state.` — expected whenever you check out a tag rather
+> - `You are in 'detached HEAD' state.` - expected whenever you check out a tag rather
 >   than a branch; it is not an error.
-> - A `Username for ...` / `Password for ...` prompt — expected for an authenticated
+> - A `Username for ...` / `Password for ...` prompt - expected for an authenticated
 >   host. See [Bootstrap New Project](mddocs/reference.architecture/bootstrap-new-project.md)
 >   if you haven't wired up credentials yet.
 
@@ -120,7 +120,7 @@ framework export. Confirm? [y/N]
 ```
 
 Type `y` and press Enter to proceed. If the path is wrong, press Enter (or type
-anything other than `y`/`yes`) to abort — then re-run with the correct `--target`.
+anything other than `y`/`yes`) to abort - then re-run with the correct `--target`.
 
 > **The `.01` management-layer suffix is always appended.** `--target` is your *base*
 > project name; the harness appends `.01` to create the lead-engineer management layer.
@@ -138,7 +138,7 @@ anything other than `y`/`yes`) to abort — then re-run with the correct `--targ
 > the project (run `direnv allow` once). To re-provision: `./mddocs/scripts/setup/python-env.sh`.
 
 > **The harness doesn't prescribe an agent runtime.** The core is tool-agnostic
-> (roles, process, benches, MCP servers). `--tool` selects an optional adapter —
+> (roles, process, benches, MCP servers). `--tool` selects an optional adapter -
 > default `none` = bring your own:
 >
 > ```sh
@@ -161,16 +161,16 @@ anything other than `y`/`yes`) to abort — then re-run with the correct `--targ
 > ```
 >
 > In non-interactive mode (stdin not a TTY) without `--yes`, the script fails
-> immediately if `--target` is omitted — there is no hidden prompt.
+> immediately if `--target` is omitted - there is no hidden prompt.
 
-Preview first with `--dry-run` (zero side effects — reports what would happen, creates
+Preview first with `--dry-run` (zero side effects - reports what would happen, creates
 nothing; skips the confirmation prompt automatically):
 
 ```sh
 bash ./AgenticCore/mddocs/scripts/setup/adopt.sh --target ./my-project --slug MYPROJECT --dry-run
 ```
 
-`adopt.sh` orchestrates existing tooling only — it calls `export-framework.sh` for the
+`adopt.sh` orchestrates existing tooling only - it calls `export-framework.sh` for the
 export itself and surfaces its exit code faithfully; a failed export aborts immediately
 with no further steps run. Full reference:
 [adopt.sh](mddocs/scripts/setup/adopt.md).
@@ -187,21 +187,21 @@ plane suffix automatically (given `./my-project`, it creates `./my-project.01`):
 mkdir -p ./my-project
 ```
 
-> **Why `.01`?** The `.01` suffix marks this as your lead-engineer management plane —
+> **Why `.01`?** The `.01` suffix marks this as your lead-engineer management plane -
 > the long-living workspace that owns your task queue and provisions other benches.
 > Your agent runtime (OpenCode/AI toolchain) recognizes the `.01` namespace and operates
 > as `lead-engineer` within it (`.00` = HIL, `.02`+ = workers). Tooling such as
 > `git-sync.sh` also derives your project/group name by stripping this suffix. See the
 > [Bench Model](mddocs/onboarding/bench-model.md) for the full namespace hierarchy.
 >
-> The **slug** (below) is your project identity and does **not** carry the suffix —
+> The **slug** (below) is your project identity and does **not** carry the suffix -
 > only the directory does. The `.01` layer suffix is appended automatically at adoption
 > (even a base that already ends in `.01`, e.g. `myproject.v0.01`, becomes the management
 > layer `myproject.v0.01.01`).
 
 #### 4. Run the export into your target
 
-Still in your working directory, run the export by relative path — `export-framework.sh`
+Still in your working directory, run the export by relative path - `export-framework.sh`
 auto-detects Flow A (empty-dir init) or Flow B (re-home into an existing repo):
 
 ```sh
@@ -244,24 +244,24 @@ bash mddocs/scripts/setup/tool-adapter.sh --tool opencode
 opencode   # or: opencode
 ```
 
-Say: **"Lead-engineer, session open"** — as an adopter you operate as
+Say: **"Lead-engineer, session open"** - as an adopter you operate as
 `lead-engineer` for your own project, distinct from framework development
 (`baseline-steward`).
 
-The full procedure — prerequisites, both flows, validation steps, and a manual
-fallback — lives in
+The full procedure - prerequisites, both flows, validation steps, and a manual
+fallback - lives in
 [Bootstrap New Project](mddocs/reference.architecture/bootstrap-new-project.md).
 
 ### Full onboarding guide
 
-Start at `mddocs/onboarding/getting-started.md` — it identifies you as an adopter
+Start at `mddocs/onboarding/getting-started.md` - it identifies you as an adopter
 vs. contributor and routes accordingly.
 
 ---
 
 ## Contributing / Extending (Maintainer)
 
-Contributing to the framework itself starts with cloning this repository — see
+Contributing to the framework itself starts with cloning this repository - see
 [Getting Started § Contributing to the Framework](mddocs/onboarding/getting-started.md#contributing-to-the-framework)
 for the full clone-and-setup procedure. The rest of this section covers layout and
 workflow once your environment is set up.
@@ -270,17 +270,17 @@ workflow once your environment is set up.
 
 ```
 .agents/          Canonical agent definitions (source of truth)
-.agentic/          AI toolchain config — agents auto-synced from .agents/
-.opencode/        OpenCode config — agents auto-synced from .agents/
+.agentic/          AI toolchain config - agents auto-synced from .agents/
+.opencode/        OpenCode config - agents auto-synced from .agents/
 .core/work/            Session state and relay notes
-mddocs/           mdBook source — all documentation lives here
+mddocs/           mdBook source - all documentation lives here
   adr/            Architecture Decision Records
   onboarding/     Getting started guides
   reference.architecture/  Runbooks and process docs
   examples/       Worked examples
   release-notes/  Per-release frozen release notes
   scripts/        Operational scripts
-tasks.yaml        Task queue — .01 is sole writer
+tasks.yaml        Task queue - .01 is sole writer
 PROCESS.md        Governance, roles, lifecycle, and hard rules
 AGENT.md         Lead-engineer persona and session procedures
 bench-registry.yaml  Registered worktree benches
@@ -296,7 +296,7 @@ bench-registry.yaml  Registered worktree benches
 6. HIL LGTM → merge to `dev` (no-ff); task moves to `merged`
 7. Tear down bench (requires HIL authorization)
 
-Releases are curated separately from `dev` onto `main` — see
+Releases are curated separately from `dev` onto `main` - see
 `mddocs/reference.architecture/release-process.md`.
 
 Full procedure: `mddocs/reference.architecture/`
@@ -332,11 +332,11 @@ mdbook serve mddocs/
 
 Key sections:
 
-- `mddocs/onboarding/` — visual overview, agent roster, getting started, repo structure, bench model
-- `mddocs/reference.architecture/` — all runbooks and process docs
-- `mddocs/faq/` — distilled Q&A from working sessions, each linked to its canonical source
-- `mddocs/adr/` — architecture decisions (ADR-0001 through ADR-0027)
-- `mddocs/examples/` — worked examples: ticket lifecycle, bench session, ADR process, release
+- `mddocs/onboarding/` - visual overview, agent roster, getting started, repo structure, bench model
+- `mddocs/reference.architecture/` - all runbooks and process docs
+- `mddocs/faq/` - distilled Q&A from working sessions, each linked to its canonical source
+- `mddocs/adr/` - architecture decisions (ADR-0001 through ADR-0027)
+- `mddocs/examples/` - worked examples: ticket lifecycle, bench session, ADR process, release
 
 ---
 

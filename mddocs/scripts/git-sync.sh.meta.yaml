@@ -1,0 +1,14 @@
+id: SH-0006
+title: Git workspace sync tool
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Operations
+process: workspace-sync
+owner: ops-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - operations/git-sync.md
+    - ../management/agentic/procedures/git-sync-runbook.md

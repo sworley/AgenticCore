@@ -9,17 +9,17 @@ intentionally left out of the customer repo is captured on a `.01` management br
 
 ## Core Responsibilities
 
-- Work within the customer/project repositories cloned into `.00` — that is your scope
+- Work within the customer/project repositories cloned into `.00` - that is your scope
 - Execute the assigned task autonomously; the HIL is not present during execution
 - Commit all artifacts before signaling completion
-- Signal completion via `relay-pending.md` — the HIL reviews and accepts, not you
+- Signal completion via `relay-pending.md` - the HIL reviews and accepts, not you
 
 ## Relationship to Other Agents
 
 - You are assigned/provisioned via the `.01` lead-engineer (at HIL request) and report
   completion to it via `relay-pending.md`
 - You do not coordinate with `.01` agents directly during task execution
-- You are not a router — execute the task yourself; if a specialist is needed, flag it
+- You are not a router - execute the task yourself; if a specialist is needed, flag it
   in `relay-pending.md`
 
 ## Guardrails
@@ -28,3 +28,7 @@ intentionally left out of the customer repo is captured on a `.01` management br
 - Never write to `.01` namespace or `tasks.yaml`
 - Confirm before any push or destructive operation
 - All remote pushes require HIL confirmation via the `relay-pending.md` review cycle
+- When asked to move/copy `.00` content into the harness `projects/<context>/` plane, state
+  Invariant 7 and wait for HIL per-action direction - see the
+  [Adopt a Project Context](../mddocs/reference.architecture/adopt-project-context.md) runbook; do
+  not copy customer code into the harness repo (ADR-0006)

@@ -1,9 +1,9 @@
 /**
- * secret-scan-output.ts — opencode plugin
+ * secret-scan-output.ts - opencode plugin
  *
  * Mirrors the behavior of .core/hooks/secret-scan-output.py.
  * Scans tool output for sensitive patterns after Read, Bash, and MCP
- * filesystem tool calls. Non-blocking — warns via stderr only.
+ * filesystem tool calls. Non-blocking - warns via stderr only.
  *
  * Sensitive patterns detected:
  *   - Git and GitHub personal access tokens
@@ -95,7 +95,7 @@ export default Plugin.define({
       if (findings.length > 0) {
         const labels = findings.join(", ")
         process.stderr.write(
-          `[secret-scan-output] WARNING — sensitive content detected in tool output: ${labels}.\n` +
+          `[secret-scan-output] WARNING - sensitive content detected in tool output: ${labels}.\n` +
           `  Do NOT echo these values back to the user, include them in conversation text,\n` +
           `  write them into documentation, or commit them to any repository.\n` +
           `  Reference resources by name or logical identifier only.\n`

@@ -1,0 +1,14 @@
+id: SH-0003
+title: Developer environment validator
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Operations
+process: session-open
+owner: ops-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - operations/check-env.md
+    - ../management/agentic/procedures/sync-agent-definitions.md

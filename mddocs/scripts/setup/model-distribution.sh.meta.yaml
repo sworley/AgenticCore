@@ -1,0 +1,14 @@
+id: SH-0012
+title: Per-agent model distribution
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Agentic
+process: model-tier-distribution
+owner: lead-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - index.md
+    - ../../reference.architecture/tooling-contract.md

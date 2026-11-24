@@ -1,4 +1,4 @@
-# tasks.yaml — AgenticCore Task Queue
+# tasks.yaml - AgenticCore Task Queue
 #
 # Single source of truth for all work in the harness. Maintained by
 # lead-engineer (`.01`). Only `.01` writes to this file. See
@@ -111,12 +111,14 @@ tasks:
     size: S
     labels: [fix, tooling]
     agent: ops-engineer
-    status: merged
+    status: released
     branch: "fix/AC-slug-tooling"
     bench: .01
     blocked_by: []
     created: "2026-11-08"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-08T16:00:00"
 
   - id: AC-0005
@@ -137,12 +139,14 @@ tasks:
     size: M
     labels: [docs, governance]
     agent: baseline-steward
-    status: merged
+    status: released
     branch: "docs/AC-namespace-migration"
     bench: .01
     blocked_by: [AC-0002]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T09:00:00"
 
   - id: AC-0006
@@ -162,12 +166,14 @@ tasks:
     size: S
     labels: [fix, tooling, governance]
     agent: ops-engineer
-    status: in_progress
+    status: released
     branch: "fix/AC-namespace-completion"
     bench: .01
     blocked_by: [AC-0004, AC-0005]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T10:00:00"
 
   - id: AC-0007
@@ -176,7 +182,7 @@ tasks:
       Bump the MCP SDK (mcp) to 1.30.0. Trivial requirements.txt pin change
       surfaced by dependabot. Verified compatible with fastmcp 3.4.2 + pyyaml
       (modules import cleanly). Part of the dependency/security review
-      (mcp, fastmcp, fastmcp-slim) — reviewed one at a time on dev.
+      (mcp, fastmcp, fastmcp-slim) - reviewed one at a time on dev.
     acceptance_criteria:
       - "requirements.txt pins mcp==1.30.0"
       - "mcp/fastmcp/yaml import cleanly"
@@ -186,12 +192,14 @@ tasks:
     size: XS
     labels: [deps, chore]
     agent: ops-engineer
-    status: in_progress
+    status: released
     branch: "chore/deps/bump-mcp-1.30.0"
     bench: .01
     blocked_by: []
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T11:00:00"
 
   - id: AC-0008
@@ -210,12 +218,14 @@ tasks:
     size: XS
     labels: [deps, chore]
     agent: ops-engineer
-    status: in_progress
+    status: released
     branch: "chore/deps/bump-fastmcp-3.4.10"
     bench: .01
     blocked_by: [AC-0007]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T12:00:00"
 
   - id: AC-0009
@@ -234,12 +244,14 @@ tasks:
     size: XS
     labels: [deps, chore]
     agent: ops-engineer
-    status: in_progress
+    status: released
     branch: "chore/deps/bump-fastmcp-slim-3.4.10"
     bench: .01
     blocked_by: [AC-0008]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T13:00:00"
 
   - id: AC-0010
@@ -260,10 +272,419 @@ tasks:
     size: S
     labels: [release]
     agent: baseline-steward
-    status: in_progress
+    status: released
     branch: "release/v0.7.0-prep"
     bench: .01
     blocked_by: [AC-0009]
     created: "2026-11-09"
     updated: "2026-11-09"
+    released_in: "v0.7.0"
+    completed_at: "2026-11-09T16:00:00"
     started_at: "2026-11-09T14:00:00"
+
+  - id: AC-0011
+    title: "Seed next release baseline (v0.8.0)"
+    description: |
+      Seed the next release cycle after v0.7.0: reset the running release-notes
+      draft (mddocs/release-notes/UNRELEASED.md) to the v0.7.0 baseline and begin
+      gathering candidate material for v0.8.0. The curated release process
+      (ADR-0026) is proven by v0.6.0/v0.7.0.
+    acceptance_criteria:
+      - "UNRELEASED.md reflects baseline v0.7.0 + next v0.8.0"
+      - "Candidate-material gather point established"
+    adr: [ADR-0026]
+    priority: P3
+    size: XS
+    labels: [release, chore]
+    agent: baseline-steward
+    status: merged
+    branch: "dev"
+    bench: .01
+    blocked_by: [AC-0010]
+    created: "2026-11-09"
+    updated: "2026-11-24"
+    started_at: "2026-11-09T17:00:00"
+    completed_at: "2026-11-24"
+
+  - id: AC-0012
+    title: "HIL submission: adopt documentation and knowledge taxonomy (ADR-0029)"
+    description: |
+      Formalize the adoption of the proposed documentation and knowledge taxonomy
+      (the Documentation Knowledge Taxonomy proposal v0.4) as the governance framework for all current and
+      future mddocs/ artefacts.
+
+      Governing principle: the taxonomy covers documentation and metadata
+      contracts. The metadata on a tool is the contractual record of its owner,
+      its domain, and the governance it enforces or participates in. Physical
+      file location is downstream of both - it is an execution detail, not an
+      authority. Artefacts are governed by their frontmatter contract, not by
+      their directory path.
+
+      Deliverable: management-plane ADR-0029 with all eight sub-decisions resolved
+      (D1–D8), submitted to HIL for approval. Supporting evidence is recorded in
+      AC-0013 (taxonomy reconciliation).
+
+      Scope of this ticket: approve the taxonomy adoption decision and the
+      frontmatter annotation contract. Physical directory restructuring, ADR
+      migration, and script relocation are explicitly out of scope - they are
+      future migration ADR work, not prerequisites for this approval.
+    acceptance_criteria:
+      - "ADR-0029 drafted with all 8 sub-decisions (D1–D8) resolved and recorded"
+      - "AC-0013 reconciliation exists as supporting evidence"
+      - "HIL APPROVED on ADR-0029"
+    adr: [ADR-0029]
+    priority: P1
+    size: L
+    labels: [governance, taxonomy, docs, hil-approval]
+    agent: baseline-steward
+    status: merged
+    completed_at: "2026-11-12T00:00:00"
+    branch: "chore/taxonomy-adoption"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-12"
+    updated: "2026-11-12"
+
+  - id: AC-0013
+    title: "Annotate script frontmatter contracts (ADR-0029 D4 implementation)"
+    description: |
+      Execute the one-time frontmatter annotation pass required by ADR-0029
+      D4. The adopted taxonomy governs documentation and metadata contracts;
+      the metadata on a tool is the contractual record of its owner, its
+      domain, and the governance it enforces or participates in. Physical
+      file location is downstream of both - this ticket adds the metadata,
+      it does not move files.
+
+      Scope covers every file under mddocs/scripts/:
+
+      **Executables (27 files):**
+      - .sh (23): bench-status, check-env, check-links, check-worktree-hygiene,
+        export-framework, git-sync, mcp-tests/run-all, mcp-tests/test-mcp-filesystem,
+        mcp-tests/test-mcp-git, provision-bench, read-audit-log, setup/{adopt,
+        model-distribution, phase2-dev-toolchain, python-env, tool-adapter,
+        toolchain, verify-toolchain}, statusline-command, sync-agent-config,
+        test-{adopt-target-handling, export-framework-severance,
+        provision-bench-substitution}
+      - .py (2): mcp-tests/test-mcp-rag-docs.py, update-summary-on-adr-write.py
+      - .yaml (2): seed/bench-registry.yaml, seed/tasks.yaml
+
+      **Script `.md` files under mddocs/scripts/ (27 total):**
+      - **script-docs sidecars (19)** - document a single executable:
+        mcp-tests/{run-all, test-mcp-filesystem, test-mcp-git, test-mcp-rag-docs},
+        operations/{bench-status, check-env, check-links, check-worktree-hygiene,
+        git-sync, provision-bench, read-audit-log, sync-opencode-config},
+        setup/{adopt, phase2-dev-toolchain, python-env, toolchain, verify-toolchain},
+        statusline-command, update-summary-on-adr-write
+      - **index / standard / reference / seed docs (8)** - NOT script-docs:
+        hooks-index.md (SDX-002), mcp-tests/README.md (SDX-001),
+        operations/index.md (SDX-003), setup/index.md (SDX-004),
+        metadata-standard.md (STD-0001), setup/init-opencode-settings.md (REF-0001),
+        seed/.core/agents/_context.md (SEED-CONTEXT), seed/mddocs/backlog.md (SEED-BACKLOG)
+
+      **Classification contract per ADR-0029 D4:**
+
+      Each artefact receives frontmatter encoding:
+        id:        SH-<STABLE_ID>
+        document_type: script | script-docs | data
+        status:    active | template | superseded | retired
+        lifecycle: active | template | shared (migrated) | superseded | retired
+        domain:    Management | Projects/<context>
+        category:  Operations | Security | Agentic | Architecture | Adoption | Governance | Testing
+        process:   <workflow artefact participates in>
+        owner:     <agent role>
+        allowed_in_adopter_repos: false | true   (default: false)
+        enforces:  ADR-XXXX   (only for governance enforcement scripts; omit otherwise)
+        source_ticket: AC-XXXX   (only for project-activity scripts; omit for Management-owned)
+        source_context: <context>   (only for project-activity scripts; omit for Management-owned)
+        migrated_from: <path>       (only when lifecycle=shared; omit otherwise)
+        related.paths: [<relative paths to docs this script is documented by or governs>]
+
+      For executable files (.sh, .py, .yaml, .js) that cannot carry YAML
+      frontmatter natively, a .meta.yaml companion file is created alongside
+      the executable using the same contract.
+
+      **Four-class classification:**
+
+      1. Harness-owned tooling - domain: Management, allowed_in_adopter_repos: false
+      2. Harness-provided general-use - domain: Management, allowed_in_adopter_repos: true
+         (provision-bench.sh, git-sync.sh as exemplars). adopt.sh is NOT class 2 - it is a
+         class 1 bootstrap (allowed_in_adopter_repos: false) and must never ship into an
+         adopted environment.
+      3. Project-activity script - domain: Projects/<context>, source_ticket and
+         source_context populated; currently no instances exist; annotate as
+         domain: Management with a NOTE that these will be classified when
+         Projects/<context> activity begins
+      4. Governance enforcement - enforces: ADR-XXXX as primary identity field;
+         placement governed by the mandating ADR, not the taxonomy
+
+      **Out of scope:**
+      - Physical file relocation (future migration ADR per D4)
+      - Creation of Management/Tools/ or Projects/Tools/ directories
+      - Changes to mddocs/scripts/seed/ provisioning templates (handled separately if needed)
+
+      Source document for all decisions: AC-0013 section 4.10 and D4.
+      Approval authority: this ticket requires lead-engineer sign-off before
+      commit, per ADR-0019 HIL gates.
+    acceptance_criteria:
+      - "All 27 executables annotated - .meta.yaml companion on .sh/.py/.yaml executables; frontmatter where natively supported"
+      - "All 19 executable-documentation sidecars annotated with document_type: script-docs and inheriting domain from parent artefact (the remaining 8 mddocs/scripts/ .md files are index/standard/reference/seed docs: SDX-001–004, STD-0001, REF-0001, SEED-CONTEXT, SEED-BACKLOG)"
+      - "Governance enforcement scripts identified and annotated with enforces: ADR-XXXX"
+      - "Harness-provided general-use scripts (provision-bench.sh, git-sync.sh) annotated with allowed_in_adopter_repos: true"
+      - "adopt.sh annotated with allowed_in_adopter_repos: false (class 1 bootstrap). It must NOT ship into an adopted environment: a downstream adopter could otherwise re-run adopt.sh to adopt the already-adopted environment. The class-2 exemplar list accordingly drops adopt.sh."
+      - "lead-engineer review and sign-off recorded before commit"
+      - "No files relocated; no scripts renamed; no provisioning templates modified"
+      - "ADR-0029 D4 frontmatter contract verified against AC-0013 reference positions"
+    adr: [ADR-0029]
+    priority: P1
+    size: L
+    labels: [governance, taxonomy, docs, scripts]
+    agent: baseline-steward
+    status: merged
+    branch: "dev"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-12"
+    updated: "2026-11-18"
+    completed_at: "2026-11-18"
+    review:
+      docs-reviewer:
+        verdict: approved_with_notes
+        run: RR-2026-11-17-01
+        note: "5 findings/notes recorded then resolved; no open findings"
+      security-reviewer:
+        verdict: clean
+        run: SR-2026-11-18-01
+        note: "Branch touches .core/hooks/*.py + adopt.sh classification; sweep verified cosmetic, no secrets, no authz hole"
+
+  - id: AC-0014
+    title: "Wire allowed_in_adopter_repos to export-framework.sh shipping (bootstrap exclusion)"
+    description: |
+      The `allowed_in_adopter_repos` metadata flag (metadata-standard §4) documents
+      which scripts ship as the supported adoption surface, but it is descriptive
+      only - `export-framework.sh`'s `FRAMEWORK_EXCLUDE_PATTERNS` ignores it, so
+      `allowed_in_adopter_repos: false` artifacts still ship to adopters.
+
+      Stage 1 (done): exclude the one-shot bootstrap tools `setup/adopt.sh` and
+      `export-framework.sh` from the adopter tree (a downstream adopter could
+      otherwise re-run adopt.sh to re-adopt an adopted environment, or re-home
+      via export-framework.sh).
+
+      Stage 2 (done): make the flag authoritative - `export-framework.sh`
+      computes exclusions from `.meta.yaml` for every `allowed_in_adopter_repos:
+      false` artifact; re-review each of the 19 false flags; record the decision
+      as an ADR-0015 D-9 amendment (the governing adoption model) + manifest/
+      severance test coverage (the test harness already sources
+      `FRAMEWORK_EXCLUDE_PATTERNS`, so new excludes are asserted automatically).
+    acceptance_criteria:
+      - "setup/adopt.sh and export-framework.sh are absent from an exported adopter tree"
+      - "test-export-framework-severance.sh and test-adopt-target-handling.sh pass"
+      - "D-7 confidentiality controls intact; --dry-run manifests reflect the excludes"
+      - "metadata-standard §4 documents the flag as the authoritative shipping gate"
+      - "governance recorded as an ADR-0015 D-9 amendment (adoption model), not a new ADR"
+    adr: [ADR-0015]
+    priority: P2
+    size: M
+    labels: [governance, taxonomy, security, scripts]
+    agent: baseline-steward
+    status: merged
+    branch: "feat/taxonomy-adoption"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-18"
+    updated: "2026-11-18"
+    completed_at: "2026-11-18"
+    review:
+      docs-reviewer:
+        verdict: approved_with_notes
+        run: RR-2026-11-18-01
+        note: "ADR-0034 stub properly covered via decisions index; no blocking findings"
+      security-reviewer:
+        verdict: approved_with_notes
+        run: SR-2026-11-18-02
+        note: "Baseline/Tier 1; gate injection-safe, D-7 untouched, surface only narrowed. Non-blocking notes W1 (fail-open default), W2 (gate .md frontmatter scope), W3 (stale .md doc frontmatter) - none blocking"
+
+  - id: AC-0015
+    title: "Adopt management tooling as canonical reusable tooling home"
+    description: |
+      Adopt the `feat/management-tools-for-review` team-workspace provisioning and
+      adoption toolchain as canonical reusable tooling under
+      `mddocs/management/tooling/`, classified per the metadata standard and
+      governed by an in-place ADR-0032 amendment.
+
+      The toolchain (template deploy, receipt state machine, verified dependency
+      install from locks, mdBook validation, git pre-commit guardrail, project
+      protection schema, and rendering assets) is distinct from the existing
+      framework adoption path (`scripts/setup/adopt.sh`); it is a distinct,
+      reusable team-workspace provisioning and adoption surface.
+
+      Sanitized per the no-project-names rule: `AgenticTeam` is retained as a
+      generic workspace role and team-name default (overridden by adopting
+      teams), not a project reference; test fixtures (`Test.v0.1`, `Team-X.v0.x`,
+      `OtherTeam.v0.99`) are generic. Foreign taxonomy references in the tooling
+      READMEs were repaired to the adopted taxonomy.
+
+      Dedup: the tooling tree's stock mdBook mermaid assets were redundant with
+      the taxonomy-fixed root `mddocs/` mermaid bundle (AC-0013) and were
+      dropped; the root bundle stays the single wired source, and the new
+      navigation assets (collapsible sidebar, external links) are wired via
+      `book.toml`.
+
+      **Rejected scope (ADR-0032, 2026-11-20).** On review, the harness-coupled
+      provisioning toolchain (`template-deploy.sh`, `team-adopt.sh`,
+      `adoption_state.py`, `receipt_check.py`, `create_venv.py`,
+      `install_dependencies.py` and their tests), the git commit guardrail
+      (`git-hooks/`), the harness dependency locks (`python/requirements/`), and
+      the project-protection test-requirements pointer were formally rejected:
+      they depend on a project `pyproject.toml` (SHA-256 pinned in
+      `verified-target.json`) and generated lock files that are not present in
+      this framework, so they cannot be made functional here. Only the
+      self-contained, functional artefacts were adopted (mdBook validation/build
+      helpers, rendering assets, and the project-protection schema + its test).
+    acceptance_criteria:
+      - "retained tooling artefacts carry classification metadata (SH-0035/0036/0045, REF-0002..0005, SDX-005) registered in metadata-standard section 8/8.1"
+      - "harness-coupled tooling (SH-0029..0034, SH-0037..0044, REF-0006..0009, SDX-006) formally rejected and removed; withdrawal recorded in ADR-0032 and metadata-standard"
+      - "reconcile-metadata-registry.py --check passes after extending its scan scope to mddocs/management/tooling/"
+      - "mdbook build and check-links pass; no em-dashes; no broken links"
+      - "no project names or new SLUGs; AgenticTeam naming justified in ADR-0032"
+      - "existing mddocs/scripts/ not migrated in this change"
+    adr: [ADR-0032]
+    priority: P2
+    size: L
+    labels: [taxonomy, adoption, security, scripts]
+    agent: baseline-steward
+    status: merged
+    branch: "feat/management-tooling-adoption"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-19"
+    updated: "2026-11-24"
+    started_at: "2026-11-19T00:00:00"
+    completed_at: "2026-11-24"
+  - id: AC-0016
+    title: "ADR evolution convention: forward-only supersede and supersession ledger"
+    description: |
+      Establish the ADR evolution convention as forward-only supersede: accepted
+      ADR text is never edited in place; any change to a governed decision
+      produces a new ADR that supersedes the prior one. Codify the convention in
+      AGENTICCORE_SPEC.md and create ADR-0035 (superseding ADR-0030, carrying the
+      ADR-0029 D1/D2 placement resolution) as the clean record. Add the
+      machine-checked supersession ledger and the retire-and-remove gate, and wire
+      the reconcile gate to validate the ledger.
+
+      No in-place amendment / addendum / modify is permitted on an accepted ADR.
+      The superseding ADR embodies the substance of the decision it supersedes,
+      rewritten clean rather than pasted.
+
+      ADR-0035 is created as `proposed` in this change; HIL transitions it to
+      `accepted` at review. ADR-0030 is marked `superseded` (status metadata only)
+      and is NOT removed until the retire-and-remove gate passes (ADR-0035
+      accepted). The ledger records the transition with `retired: false`.
+    acceptance_criteria:
+      - "AGENTICCORE_SPEC.md states forward-only supersede; no in-place amendment/addendum/modify"
+      - "ADR-0035 created in mddocs/management/governance/decisions/ superseding ADR-0030, carrying ADR-0029 D1/D2"
+      - "ADR-0030 marked superseded by ADR-0035 (status metadata only; body unedited)"
+      - "supersession-ledger.yaml records ADR-0030 -> ADR-0035 (retired: false); pre-convention amendment-based transitions (e.g. ADR-0034) are handled in the later consolidation pass"
+      - "reconcile-metadata-registry.py --check validates the supersession ledger and passes"
+      - "mdbook build and check-links pass; no em-dashes; no broken links"
+      - "active decisions index lists ADR-0035 and marks ADR-0030 superseded"
+      - "branch-protection rulesets are a separate governed change (not in scope here)"
+    adr: [ADR-0030, ADR-0035]
+    priority: P2
+    size: M
+    labels: [governance, adr, security]
+    agent: baseline-steward
+    status: merged
+    branch: "feat/management-tooling-adoption"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-20"
+    updated: "2026-11-24"
+    started_at: "2026-11-20T00:00:00"
+    completed_at: "2026-11-24"
+  - id: AC-0017
+    title: "Adopt GitHub branch-protection rulesets for main and dev"
+    description: |
+      Implement ADR-0036: adopt GitHub branch-protection rulesets as the
+      server-side enforcement layer for the `main` append-only / merge-only rule
+      (previously ADR-0004, deferred to TC-002) and for the PR-gated integration
+      into `dev`. Two active rulesets are defined:
+
+        - main-strict (target `main`): block creation/deletion/non-fast-forward;
+          require a pull request with the `verify` CI check, strict (branches up
+          to date), 0 approving reviews and no code-owner review (single-operator;
+          GitHub disallows self-approval, so the gate is CI + workflow + signed
+          commits); require signed commits. Bypass actor: the operator account
+          (deliberate lock-out avoidance; agentic sessions share that identity).
+        - dev-strict (target `dev`): same shape as main-strict - block
+          creation/deletion/non-fast-forward (`dev` is shared and never rebased);
+          require a pull request with strict `verify` CI, 0 approving reviews and
+          no code-owner review; require signed commits. Bypass actor: the operator
+          account.
+
+      Branch naming (PROCESS.md §5) is a documented convention enforced locally,
+      not via these rulesets; there is no server-side branch-name validation.
+
+      ADR-0036 supersedes ADR-0004 (clean forward-only supersession, recorded in
+      the supersession ledger). ADR-0004 is marked `superseded` (metadata only).
+      The legacy branch protection on `main` and `dev` is removed once the
+      rulesets are active (single source of truth). The ruleset definitions are
+      versioned in the runbook
+      mddocs/management/agentic/procedures/branch-protection-rulesets.md.
+
+      Note: single-operator harness - the operator is the only human; these
+      rulesets are a process-level backstop, with local pre-commit hooks (ADR-0022)
+      and HIL discipline as the first line of defense.
+    acceptance_criteria:
+      - "ADR-0036 created in mddocs/management/governance/decisions/ superseding ADR-0004 (forward-only)"
+      - "ADR-0004 marked superseded by ADR-0036 (status metadata only; body unedited)"
+      - "supersession-ledger.yaml records ADR-0004 -> ADR-0036 (retired: false)"
+      - "active decisions index lists ADR-0036; historical index marks ADR-0004 superseded"
+      - "runbook branch-protection-rulesets.md documents main-strict + dev-strict, bypass actor, apply/verify/rollback"
+      - "dev-strict mirrors main-strict (PR + strict verify CI + signed commits + operator bypass), targeting dev"
+      - "reconcile-metadata-registry.py --check validates the supersession ledger and passes"
+      - "mdbook build and check-links pass; no em-dashes"
+      - "legacy branch protection on main and dev removed after rulesets active (applied out-of-band by operator)"
+    adr: [ADR-0004, ADR-0036]
+    priority: P2
+    size: M
+    labels: [governance, adr, security]
+    agent: baseline-steward
+    status: merged
+    branch: "feat/branch-protection-rulesets"
+    bench: .01
+    blocked_by: []
+    created: "2026-11-20"
+    updated: "2026-11-24"
+    started_at: "2026-11-20T00:00:00"
+    completed_at: "2026-11-24"
+
+  - id: AC-0018
+    title: "Release v0.8.0"
+    description: |
+      Cut the v0.8.0 release from dev to main under the formalized release process:
+      curate release/v0.8.0-prep (all-selected from dev), gate via security/docs
+      review + HIL, tag v0.8.0, cut release/v0.8.0, update README as-built, and
+      merge main back to dev. Scope: documentation/metadata taxonomy adoption
+      (AC-0013), the allowed_in_adopter_repos fail-closed shipping gate (AC-0014,
+      adopter-Required with migration note), management tooling adoption (AC-0015),
+      ADR forward-only supersede convention (AC-0016), GitHub branch-protection
+      rulesets (AC-0017), plus release hygiene (privacy strip / .tmp convention).
+    acceptance_criteria:
+      - "mddocs/management/delivery/releases/v0.8.0.md published"
+      - "v0.8.0 tag pushed"
+      - "release/v0.8.0 branch pushed"
+      - "README as-built updated"
+      - "main -> dev merge-back complete; tickets released"
+    adr: [ADR-0026]
+    priority: P1
+    size: S
+    labels: [release]
+    agent: baseline-steward
+    status: merged
+    branch: "release/v0.8.0-prep"
+    bench: .01
+    blocked_by: [AC-0017]
+    created: "2026-11-24"
+    updated: "2026-11-24"
+    started_at: "2026-11-24T00:00:00"
+    completed_at: "2026-11-24"

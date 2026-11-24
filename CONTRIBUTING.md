@@ -9,13 +9,13 @@ Please read the architecture and the governance rules before making changes.
 There are **two distinct paths** for improvements to reach AgenticCore, depending
 on how you came to the framework:
 
-- **Contributing to this repo directly** — you cloned or forked
-  `sworley/AgenticCore`. Your branch shares history with `main`, so a standard
+- **Contributing to this repo directly** - you cloned or forked
+  `<owner>/AgenticCore`. Your branch shares history with `main`, so a standard
   PR works: branch, open a PR against `main`, attach the `AC-NNNN` task id and
   governing ADR, and pass the required gates (below). This is the normal OSS
   contribution flow.
 
-- **You adopted the framework via `export-framework.sh`** — your copy is a
+- **You adopted the framework via `export-framework.sh`** - your copy is a
   **severed** release with no shared history with this repo, so a raw PR cannot
   be merged cleanly. Contribute improvements back through **Pattern Promotion**
   instead: abstract the portable pattern (strip all project-specific content),
@@ -35,7 +35,7 @@ on how you came to the framework:
   requires a proposed ADR as part of the change.
 - **No self-approval.** Your own change must be reviewed by a different
   reviewer (documentation and security use a two-role implementer/evaluator
-  model — see `mddocs/AGENTICCORE_SPEC.md` §8).
+  model - see `mddocs/AGENTICCORE_SPEC.md` §8).
 - **Secrets hygiene.** Never commit credentials, tokens, or secrets. Use the
   credential store and reference variables.
 - **External content gate.** Any change that incorporates external content
@@ -88,9 +88,38 @@ to a task in `tasks.yaml`, use its `AC-NNNN` id in the branch name.
 
 ## Commit Discipline
 
-- Commit after each discrete unit of work — do not accumulate unrelated changes.
-- Use a concise summary line, then a body explaining the why.
-- Reference the task and, where applicable, the governing ADR.
+- **One change per commit.** Commit after each discrete unit of work; do not
+  accumulate unrelated changes. Each commit is independently reviewable and
+  revertible, and is GPG-signed (see Ground Rules).
+- **Traceable message.** Use a concise summary line, then a body explaining the
+  *why*. Reference the governing task (`[AC-NNNN]`) and, where applicable, the
+  governing ADR (`ADR-XXXX`). The commit message is the durable, human-readable
+  link from the change to its ticket/decision.
+- **History is provenance.** The git log is the authoritative historical and
+  provenance record for the management layer. Never rewrite, squash, or
+  force-push shared branch history; use `git log` / `git show` to inspect prior
+  versions. Review happens change-by-change so the record stays legible.
+
+## Management-Layer Scope & Guardrails
+
+This discipline governs the **management layer**: AgenticCore itself (the
+framework/harness - `.01` + `.02+` Pattern A) and the management layer of any
+project that adopts AgenticCore as a project support tool (the `.01`
+`lead-engineer`, the enforcer for the team). Guardrails are why the harness
+exists: the management layer exists to enforce them, not to relax them.
+
+It does **not** govern how the HIL `.00` session interacts with the project it
+supports - project code, project slugs, API access, or CLI/SDK development.
+Each adoption is different and will reasonably require different standards
+depending on the contract requirements, the customer, the environment, the
+activity, or the standards we choose to establish. That `.00` surface stays
+naturally flexible.
+
+**Caution on harness implications:** flexibility in `.00` is expected, but a
+management-layer change must never compromise the harness's guardrails or
+integrity. Where a framework improvement is needed, follow the same traced,
+reviewed lifecycle and capture behavioral changes in an ADR so the decision and
+its rationale persist.
 
 ## Pull Requests
 
@@ -104,9 +133,13 @@ to a task in `tasks.yaml`, use its `AC-NNNN` id in the branch name.
 ## Documentation
 
 - All documentation lives in `mddocs/` and builds via mdBook.
+- **No em-dashes.** Never use the em-dash character (U+2014) in any doc, code, or
+  comment. Use an ASCII hyphen, comma, colon, or parentheses instead; remove any
+  em-dash you encounter rather than preserving it. The `check-links.sh` em-dash
+  guard fails on any em-dash, so keep new prose clean.
 - ADRs are forward-only and append-only; update `mddocs/adr/index.md` and
   `mddocs/SUMMARY.md` when adding or modifying docs.
-- Run `mdbook clean && mdbook build` after any `mddocs/` change — zero errors required.
+- Run `mdbook clean && mdbook build` after any `mddocs/` change - zero errors required.
 - Keep node labels short in diagrams; prefer Mermaid only when it helps.
 
 ## Testing

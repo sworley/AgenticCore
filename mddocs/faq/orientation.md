@@ -6,7 +6,7 @@ documentation?"
 
 ## Answer
 
-Yes. Start with the [Visual Overview](../onboarding/visual-overview.md) — a
+Yes. Start with the [Visual Overview](../onboarding/visual-overview.md) - a
 single-page map of the bench hierarchy, personas, workflows, and agent roster. From
 there:
 
@@ -17,7 +17,7 @@ there:
 3. The mdBook docs in `mddocs/` are the full reference: ADRs, runbooks, onboarding.
 
 The repository is documentation-first, so each concept also has a canonical source
-doc — the FAQ answers link back to those rather than restating them.
+doc - the FAQ answers link back to those rather than restating them.
 
 ## Canonical References
 
@@ -28,5 +28,5 @@ doc — the FAQ answers link back to those rather than restating them.
 
 ## Provenance
 
-- **Session:** 2026-11-02 — "open-source visibility / visual representation" Q&A.
+- **Session:** 2026-11-02 - "open-source visibility / visual representation" Q&A.
 - **Related ADRs:** ADR-0015 (distribution & adoption).

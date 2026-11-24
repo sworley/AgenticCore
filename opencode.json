@@ -7,7 +7,7 @@
     ".core/invariants.md",
     "AGENT.md",
     "PROCESS.md",
-    "mddocs/operations/runbooks/session-continuity.md"
+    "mddocs/management/agentic/procedures/session-continuity.md"
   ],
   "default_agent": "lead-engineer",
   "share": "disabled",

@@ -1,5 +1,5 @@
 #!/bin/sh
-# check-env.sh — Validate the developer environment before starting a session
+# check-env.sh - Validate the developer environment before starting a session
 #
 # Usage: ./mddocs/scripts/check-env.sh
 #
@@ -29,7 +29,7 @@ check() {
   if [ "$result" = "ok" ]; then
     printf "  [ok] %s\n" "$label"
   else
-    printf "  [FAIL] %s — %s\n" "$label" "$result"
+    printf "  [FAIL] %s - %s\n" "$label" "$result"
     failures=$((failures + 1))
   fi
 }
@@ -65,25 +65,25 @@ echo "-- tools --"
 if command -v mdbook >/dev/null 2>&1; then
   check "mdbook" "ok"
 else
-  check "mdbook" "not found — install with: cargo install mdbook"
+  check "mdbook" "not found - install with: cargo install mdbook"
 fi
 
 if command -v jq >/dev/null 2>&1; then
   check "jq" "ok"
 else
-  check "jq" "not found — install with: brew install jq"
+  check "jq" "not found - install with: brew install jq"
 fi
 
 if command -v python3 >/dev/null 2>&1; then
   check "python3" "ok"
 else
-  check "python3" "not found — required for sync-agents.sh"
+  check "python3" "not found - required for sync-agents.sh"
 fi
 
 if command -v uv >/dev/null 2>&1; then
   check "uv" "ok"
 else
-  check "uv" "not found — install with: curl -LsSf https://astral.sh/uv/install.sh | sh"
+  check "uv" "not found - install with: curl -LsSf https://astral.sh/uv/install.sh | sh"
 fi
 
 # --- Python virtualenv / dependencies ---
@@ -93,23 +93,23 @@ echo "-- python env --"
 if [ -f "requirements.txt" ]; then
   check "requirements.txt" "ok"
 else
-  check "requirements.txt" "not found — run ./mddocs/scripts/setup/python-env.sh --freeze (or re-adopt) to pin harness deps"
+  check "requirements.txt" "not found - run ./mddocs/scripts/setup/python-env.sh --freeze (or re-adopt) to pin harness deps"
 fi
 
 if [ -d ".venv" ]; then
   check ".venv" "ok"
 else
-  check ".venv" "not found — run ./mddocs/scripts/setup/python-env.sh"
+  check ".venv" "not found - run ./mddocs/scripts/setup/python-env.sh"
 fi
 
 if [ -x ".venv/bin/python" ]; then
   if ".venv/bin/python" -c "import mcp, yaml, fastmcp" >/dev/null 2>&1; then
     check "python deps (mcp, yaml, fastmcp)" "ok"
   else
-    check "python deps (mcp, yaml, fastmcp)" "missing modules — run ./mddocs/scripts/setup/python-env.sh --install"
+    check "python deps (mcp, yaml, fastmcp)" "missing modules - run ./mddocs/scripts/setup/python-env.sh --install"
   fi
 else
-  check "python deps (mcp, yaml, fastmcp)" ".venv/bin/python not found — run ./mddocs/scripts/setup/python-env.sh"
+  check "python deps (mcp, yaml, fastmcp)" ".venv/bin/python not found - run ./mddocs/scripts/setup/python-env.sh"
 fi
 
 # --- MCP server presence checks ---
@@ -119,17 +119,17 @@ echo "-- mcp servers --"
 if [ -f "mcp/review-ledger/server.py" ]; then
   check "mcp/review-ledger/server.py" "ok"
 else
-  check "mcp/review-ledger/server.py" "not found — TC-026 MCP server missing; ensure mcp/review-ledger/ is present"
+  check "mcp/review-ledger/server.py" "not found - TC-026 MCP server missing; ensure mcp/review-ledger/ is present"
 fi
 
 if command -v jq >/dev/null 2>&1 && [ -f "opencode.json" ]; then
   if jq -e '.mcp["review-ledger-security"] and .mcp["review-ledger-reviews"]' opencode.json >/dev/null 2>&1; then
     check "opencode.json mcp wiring (review-ledger-security, review-ledger-reviews)" "ok"
   else
-    check "opencode.json mcp wiring (review-ledger-security, review-ledger-reviews)" "not wired — TC-031 opencode.json mcp block missing review-ledger-security and/or review-ledger-reviews entries"
+    check "opencode.json mcp wiring (review-ledger-security, review-ledger-reviews)" "not wired - TC-031 opencode.json mcp block missing review-ledger-security and/or review-ledger-reviews entries"
   fi
 else
-  check "opencode.json mcp wiring (review-ledger-security, review-ledger-reviews)" "skipped — jq or opencode.json not found"
+  check "opencode.json mcp wiring (review-ledger-security, review-ledger-reviews)" "skipped - jq or opencode.json not found"
 fi
 
 # --- Summary ---
@@ -138,6 +138,6 @@ if [ "$failures" -eq 0 ]; then
   echo "==> All checks passed"
   exit 0
 else
-  echo "==> $failures check(s) failed — resolve before proceeding"
+  echo "==> $failures check(s) failed - resolve before proceeding"
   exit 1
 fi

@@ -1,10 +1,10 @@
 #!/bin/sh
-# git-askpass.sh — env->git credential bridge for the AgenticCore workspace.
+# git-askpass.sh - env->git credential bridge for the AgenticCore workspace.
 #
 # Git calls GIT_ASKPASS when it needs a username or password and no other
 # credential source answered. This script supplies the token that the ADR-0018
 # credential-injection layer (.envrc + direnv) already placed in the process
-# environment as $GIT_TOKEN — bridging Layer 1 (env injection) to Layer 2
+# environment as $GIT_TOKEN - bridging Layer 1 (env injection) to Layer 2
 # (git auth) for any ad-hoc git invocation, not just git-sync.sh.
 #
 # Design (ADR-0018):

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-secret-guard.py — PreToolUse hook for Bash.
+secret-guard.py - PreToolUse hook for Bash.
 
 Blocks commands that would expand or print credential values in plaintext.
 Triggered by:
@@ -17,7 +17,7 @@ import os
 import re
 import sys
 
-# Circuit breaker — set SECRET_GUARD_DISABLED=1 to bypass for the current session.
+# Circuit breaker - set SECRET_GUARD_DISABLED=1 to bypass for the current session.
 # Naming convention: AGENTIC_<HOOKNAME>_DISABLED=1. Does not persist across sessions
 # unless exported in .envrc. Clear when done.
 if os.environ.get("SECRET_GUARD_DISABLED") == "1":
@@ -70,7 +70,7 @@ RULES = [
 for pattern, reason, alt in RULES:
     if re.search(pattern, command, re.IGNORECASE):
         print(
-            f"[secret-guard] Blocked — command may expose credential values in plaintext.\n"
+            f"[secret-guard] Blocked - command may expose credential values in plaintext.\n"
             f"  Reason  : {reason}\n"
             f"  Safe alt: {alt}\n"
             f"  To inspect config with redaction use: grep 'KEY' ~/.zshrc | sed 's/=.*/=[REDACTED]/'",
@@ -78,12 +78,12 @@ for pattern, reason, alt in RULES:
         )
         sys.exit(1)
 
-# pass show guard — block bare invocations; allow output-captured form $( pass show ... )
+# pass show guard - block bare invocations; allow output-captured form $( pass show ... )
 if re.search(r"\bpass\s+show\b", command, re.IGNORECASE):
     sanitized = re.sub(r"\$\(\s*pass\s+show\b", "__SAFE__", command, flags=re.IGNORECASE)
     if re.search(r"\bpass\s+show\b", sanitized, re.IGNORECASE):
         print(
-            "[secret-guard] Blocked — bare `pass show` will print the secret to stdout.\n"
+            "[secret-guard] Blocked - bare `pass show` will print the secret to stdout.\n"
             "  Reason  : pass show without output capture prints the plaintext secret\n"
             "  Safe alt: VARNAME=\"$(pass show <path> 2>/dev/null)\"\n"
             "            The captured form assigns the value to a variable without printing it.",

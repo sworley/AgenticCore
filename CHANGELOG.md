@@ -6,6 +6,19 @@ Versioning follows semantic versioning: `MAJOR.MINOR.PATCH` (see
 Release history starts with the open-source baseline; see `mddocs/release-notes/` for
 published notes.
 
+## [v0.8.0] - 2026-11-24
+
+Taxonomy/metadata adoption and the metadata-driven shipping contract.
+
+- Documentation/knowledge taxonomy adoption (AC-0013, ADR-0029-0033) with the
+  classification-ID metadata contract and machine-checked conformance.
+- `allowed_in_adopter_repos` authoritative, fail-closed shipping gate (AC-0014,
+  ADR-0015 D-9); adoption-bootstrap tools no longer ship to adopters (adopter-Required).
+- Management tooling adoption (AC-0015); ADR forward-only supersede convention
+  (AC-0016, ADR-0035); GitHub branch-protection rulesets (AC-0017, ADR-0036).
+- Release hygiene: deployer-neutral placeholders, `.tmp` scratch convention.
+- See `mddocs/release-notes/v0.8.0.md` for the full release notes.
+
 ## [v0.7.0] - 2026-11-09
 
 Maintenance/consistency release.

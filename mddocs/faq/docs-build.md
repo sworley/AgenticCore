@@ -24,14 +24,14 @@ Validate internal links before committing docs:
 ./mddocs/scripts/check-links.sh
 ```
 
-See the [Set Up mddoc](../operations/runbooks/setup-mddoc.md) runbook and
-[check-links](../operations/runbooks/check-links-runbook.md) runbook for full detail.
+See the [Set Up mddoc](../management/agentic/procedures/setup-mddoc.md) runbook and
+[check-links](../management/agentic/procedures/check-links-runbook.md) runbook for full detail.
 
 ## Canonical References
 
-- [Set Up mddoc Local Documentation Site](../operations/runbooks/setup-mddoc.md)
-- [Runbook: check-links](../operations/runbooks/check-links-runbook.md)
+- [Set Up mddoc Local Documentation Site](../management/agentic/procedures/setup-mddoc.md)
+- [Runbook: check-links](../management/agentic/procedures/check-links-runbook.md)
 
 ## Provenance
 
-- **Session:** 2026-11-02 — "mermaid rendering / docs build" Q&A.
+- **Session:** 2026-11-02 - "mermaid rendering / docs build" Q&A.

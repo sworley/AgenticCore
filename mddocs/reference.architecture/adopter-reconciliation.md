@@ -24,7 +24,7 @@ This document defines:
 ### Framework ADRs
 
 Framework ADRs live in the AgenticCore repo and carry the `AC ADR-NNNN` identifier.
-They govern decisions that apply to all adopters — agent patterns, MCP architecture,
+They govern decisions that apply to all adopters - agent patterns, MCP architecture,
 bench model, hook contracts, release lifecycle.
 
 ### Adopter ADRs
@@ -34,7 +34,7 @@ ADRs use that slug: `<PROJECT> ADR-NNNN`. Example: `ACME ADR-0001`.
 
 The ADR number space is independent. `AC ADR-0015` and `ACME ADR-0015` are unrelated
 decisions in separate repos with separate governance. Cross-project references use the
-full prefixed form — `AC ADR-0015`, never bare `ADR-0015` in a context where both
+full prefixed form - `AC ADR-0015`, never bare `ADR-0015` in a context where both
 namespaces are in scope.
 
 ### Decision boundary
@@ -43,7 +43,7 @@ namespaces are in scope.
 |---|---|
 | Agent definitions, bench model, hook contracts, MCP server design | AC (framework) |
 | Project task governance, customer delivery patterns, team-specific guardrails | Adopter project |
-| A pattern that originated in an adopter but is portable and stable | AC (via promotion — see below) |
+| A pattern that originated in an adopter but is portable and stable | AC (via promotion - see below) |
 
 When in doubt: if the decision requires no reference to a specific customer,
 environment, or team structure to be stated, it belongs in the framework.
@@ -87,11 +87,11 @@ Adopters update this file when they upgrade.
 No cadence is mandated. Government programs follow their own configuration management
 discipline. The recommended model is:
 
-1. **At each AC minor release** — review the release notes for `Required` class items.
+1. **At each AC minor release** - review the release notes for `Required` class items.
    Plan reconciliation work as a task in the adopter's task queue.
-2. **At each AC major release** — full reconciliation review; treat as a deliberate
+2. **At each AC major release** - full reconciliation review; treat as a deliberate
    upgrade decision with HIL sign-off.
-3. **On security findings** — if AC publishes a `Required` security fix, reconcile
+3. **On security findings** - if AC publishes a `Required` security fix, reconcile
    within the adopter's next sprint regardless of cadence.
 
 Adopters do not need to track every AC patch release. Versioned baseline discipline
@@ -104,18 +104,18 @@ means: know what version you are on, review the delta when you choose to upgrade
 When an adopter develops a pattern that is portable and stable, it can be promoted to
 the framework (ADR-0015 D-4). The promotion path:
 
-1. The adopter's steward abstracts the pattern — strips project-specific content,
+1. The adopter's steward abstracts the pattern - strips project-specific content,
    states the requirement without reference to customer or environment.
 2. Steward opens an `AC-NNNN` task in the AgenticCore issue tracker, describing the
    portable pattern and citing the source artifact (`<PROJECT> ADR-NNNN` or
    `<PROJECT>-NNNN`) using the cross-project citation format (ADR-0014 D-6).
-3. AC baseline-steward evaluates the abstraction — not the raw source artifact — and
+3. AC baseline-steward evaluates the abstraction - not the raw source artifact - and
    assigns a disposition: ADR, runbook, script, or decline with rationale.
-4. If accepted, the pattern enters AC's normal development lifecycle — bench,
+4. If accepted, the pattern enters AC's normal development lifecycle - bench,
    review (including security-reviewer pass per AC standing rules), and release.
 
 A pattern is ready for promotion when (ADR-0015 D-6):
-- The portable shape is clear — statable without project-specific reference
+- The portable shape is clear - statable without project-specific reference
 - Customer-specific content is fully stripped
 - Guardrails are understood from experience, not hypothesized
 
@@ -138,5 +138,5 @@ This model is correctly implemented when:
 
 - [ADR-0014: Project Task Slug and ADR Ticket Governance](../adr/adr-0014-project-slug-adr-ticket-governance.md)
 - [ADR-0015: Framework Distribution and Adoption Model](../adr/adr-0015-framework-distribution-adoption-model.md)
-- [Release Process](release-process.md) — Step 3.5: adopter impact classification
-- [Bootstrap New Project](bootstrap-new-project.md) — initialization procedure
+- [Release Process](release-process.md) - Step 3.5: adopter impact classification
+- [Bootstrap New Project](bootstrap-new-project.md) - initialization procedure

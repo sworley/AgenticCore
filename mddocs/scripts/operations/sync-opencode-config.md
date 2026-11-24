@@ -1,8 +1,25 @@
+---
+id: SH-0010-doc
+document_type: script-docs
+status: active
+lifecycle: active
+title: AGENT.md config synchronizer (script docs)
+domain: Management
+category: Agentic
+process: agent-config-sync
+owner: lead-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - ../sync-agent-config.sh
+    - ../../operations/runbooks/sync-opencode-config.md
+---
+
 # sync-agent-config.sh
 
 Sync AGENT.md files between the `_config/` repo archive and on-disk parent-directory
 locations. See the
-[Sync Agent Config runbook](../../operations/runbooks/sync-opencode-config.md) for
+[Sync Agent Config runbook](../../management/agentic/procedures/sync-opencode-config.md) for
 full usage.
 
 ```sh
@@ -11,5 +28,5 @@ bash mddocs/scripts/sync-agent-config.sh --collect   # on-disk → _config/
 bash mddocs/scripts/sync-agent-config.sh --check     # diff only; exits 1 if out of sync
 ```
 
-Related: [Sync Agent Definitions](../../operations/runbooks/sync-agent-definitions.md)
+Related: [Sync Agent Definitions](../../management/agentic/procedures/sync-agent-definitions.md)
 (in `mddocs/operations/runbooks/`).

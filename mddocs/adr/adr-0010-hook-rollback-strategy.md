@@ -2,7 +2,7 @@
 
 **Date:** 2026-06-06
 **Status:** accepted
-**Supersedes:** —
+**Supersedes:** -
 
 ## Prior Art
 
@@ -34,46 +34,46 @@ Four open questions:
 
 ## Decision Drivers
 
-- Emergency disable must be possible within a running session — no restart required
+- Emergency disable must be possible within a running session - no restart required
 - Security-critical hooks must not have opt-outs that are easy to misuse
 - New rules must be validated against real workflows before they enforce
 - All runbooks with operational steps must have an idempotent companion script
 
 ## Considered Options
 
-### Q1 — Per-hook circuit breakers
+### Q1 - Per-hook circuit breakers
 
 - **Option A:** No circuit breakers
-- **Option B:** Universal circuit breakers — every blocking hook checks a corresponding env var
-- **Option C:** Selective circuit breakers — only for hooks whose blocking is conditional by design
+- **Option B:** Universal circuit breakers - every blocking hook checks a corresponding env var
+- **Option C:** Selective circuit breakers - only for hooks whose blocking is conditional by design
 
-### Q2 — Env var override naming convention
+### Q2 - Env var override naming convention
 
-- **Option A:** `AGENT_<HOOKNAME>_DISABLED=1` — derived from script filename stem
-- **Option B:** `AGENT_<SCOPE>_BYPASS=1` — action-centric
-- **Option C:** `AGENT_HOOKS_DISABLED=<hookname>` — single variable, comma-separated list
+- **Option A:** `AGENT_<HOOKNAME>_DISABLED=1` - derived from script filename stem
+- **Option B:** `AGENT_<SCOPE>_BYPASS=1` - action-centric
+- **Option C:** `AGENT_HOOKS_DISABLED=<hookname>` - single variable, comma-separated list
 
-### Q3 — Staged rollout for new rules
+### Q3 - Staged rollout for new rules
 
-- **Option A:** No staged rollout — new rules go straight to hard-block
+- **Option A:** No staged rollout - new rules go straight to hard-block
 - **Option B:** Warn-only mode for all blocking hooks
 - **Option C:** Warn-only mode for `secret-guard.py` only
 
-### Q4 — Companion script for hook-rollback.md
+### Q4 - Companion script for hook-rollback.md
 
-- **Option A:** No companion script — runbook is procedure-only
+- **Option A:** No companion script - runbook is procedure-only
 - **Option B:** Companion script that validates hook inventory and known-block/known-pass cases
 
 ## Decision
 
 | Question | Chosen Option |
 |---|---|
-| Q1 | Option C — selective circuit breakers |
-| Q2 | Option A — `AGENT_<HOOKNAME>_DISABLED=1` |
-| Q3 | Option C — warn-only mode for `secret-guard.py` only |
-| Q4 | Option B — companion script required |
+| Q1 | Option C - selective circuit breakers |
+| Q2 | Option A - `AGENT_<HOOKNAME>_DISABLED=1` |
+| Q3 | Option C - warn-only mode for `secret-guard.py` only |
+| Q4 | Option B - companion script required |
 
-**Q1 rationale:** `package-install-guard.py` is unconditional by design — a circuit
+**Q1 rationale:** `package-install-guard.py` is unconditional by design - a circuit
 breaker would undermine the control. `secret-guard.py` and `read-scope-guard.py` block
 on pattern matches against legitimate targets in edge cases; each benefits from a
 session-scoped emergency opt-out.
@@ -100,7 +100,7 @@ if os.environ.get("AGENT_SECRET_GUARD_DISABLED") == "1":
 ```
 
 Same pattern for `read-scope-guard.py` (`AGENT_READ_SCOPE_GUARD_DISABLED=1`).
-`package-install-guard.py` — no circuit breaker added. The absence is intentional.
+`package-install-guard.py` - no circuit breaker added. The absence is intentional.
 
 ### Warn-only mode for secret-guard.py
 
@@ -111,14 +111,14 @@ list.
 
 Promotion requires explicit HIL action. There is no time-based automatic promotion.
 
-### Companion script — validate-hooks.sh
+### Companion script - validate-hooks.sh
 
 `mddocs/scripts/validate-hooks.sh` validates:
 
-1. **Inventory check** — all hook scripts are present and executable
-2. **Known-block cases** — runs each blocking hook against synthetic input; asserts exit non-zero
-3. **Known-pass cases** — runs each blocking hook against clean input; asserts exit 0
-4. **Circuit breaker check** — for each circuit-breaker-eligible hook, sets the env var and re-runs the known-block case; asserts exit 0
+1. **Inventory check** - all hook scripts are present and executable
+2. **Known-block cases** - runs each blocking hook against synthetic input; asserts exit non-zero
+3. **Known-pass cases** - runs each blocking hook against clean input; asserts exit 0
+4. **Circuit breaker check** - for each circuit-breaker-eligible hook, sets the env var and re-runs the known-block case; asserts exit 0
 
 `--check` mode (no side effects) is required. Script is idempotent.
 
@@ -134,7 +134,7 @@ Promotion requires explicit HIL action. There is no time-based automatic promoti
 - Warn-only mode creates a sprint window where a new rule does not enforce
 
 **Neutral:**
-- `egress-audit-log.py` does not capture blocked `PreToolUse` events — blocked attempts are visible in the session transcript only
+- `egress-audit-log.py` does not capture blocked `PreToolUse` events - blocked attempts are visible in the session transcript only
 
 ## Lessons Learned
 
@@ -144,5 +144,5 @@ Promotion requires explicit HIL action. There is no time-based automatic promoti
 ## Related
 
 - [ADR-: Agentic Agent Enforcement Posture](adr-0022-git-pre-commit-permission-order-check.md)
-- [hook-rollback.md](../operations/runbooks/hook-rollback.md)
+- [hook-rollback.md](../management/agentic/procedures/hook-rollback.md)
 - [secret-guard.md](../operations/runbooks/secret-guard.md)

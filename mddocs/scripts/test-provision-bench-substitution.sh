@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# test-provision-bench-substitution.sh — Smoke test for TC-081
+# test-provision-bench-substitution.sh - Smoke test for TC-081
 # (provision-bench.sh AGENT.md placeholder substitution).
 #
 # Proves the two defects TC-081 fixed are actually gone:
-#   Defect 1 (unescaped delimiter/special chars) — a --task value containing
+#   Defect 1 (unescaped delimiter/special chars) - a --task value containing
 #     `/`, `&`, or `\` must render completely and literally in the
 #     generated AGENT.md, with no truncation and no interpreter error
 #     (the old `sed "s/.../$TASK/.../"` form broke on `/` with
 #     "sed: bad flag in substitute command" and mangled `&`/`\`).
-#   Defect 2 (placeholder-ordering double-substitution) — the rendered
+#   Defect 2 (placeholder-ordering double-substitution) - the rendered
 #     BRANCH line must equal the real branch, never the literal
 #     "feat/AC-NNNN-short-slug" placeholder residue.
 #
@@ -35,9 +35,9 @@
 #
 # Exit codes:
 #   0  All test cases passed
-#   1  One or more test cases failed — see per-case FAIL lines
+#   1  One or more test cases failed - see per-case FAIL lines
 #
-# See mddocs/adr — TC-081 (no dedicated ADR; fix tracked by ticket only).
+# See mddocs/adr - TC-081 (no dedicated ADR; fix tracked by ticket only).
 
 set -euo pipefail
 
@@ -83,7 +83,7 @@ echo "=================================================================="
 echo ""
 
 # ---------------------------------------------------------------------------
-# render() — invoke render_bench_agent_md in a fresh subshell, sourcing
+# render() - invoke render_bench_agent_md in a fresh subshell, sourcing
 # provision-bench.sh with PROVISION_BENCH_SOURCED=1 so the main argument-
 # parse/worktree flow never runs. TICKET/BRANCH/TASK/output path are passed
 # via environment so no value crosses a shell quoting boundary as literal
@@ -109,7 +109,7 @@ TEMPLATES=(
 )
 
 # ---------------------------------------------------------------------------
-# Group 1 — header comment stripped, well-formed output, plain case
+# Group 1 - header comment stripped, well-formed output, plain case
 # ---------------------------------------------------------------------------
 echo "-- Group 1: header stripped, well-formed output (plain values) --"
 for tmpl in "${TEMPLATES[@]}"; do
@@ -137,13 +137,13 @@ for tmpl in "${TEMPLATES[@]}"; do
 done
 
 # ---------------------------------------------------------------------------
-# Group 2 — TC-081 Defect 1: TASK containing a slash must render complete
+# Group 2 - TC-081 Defect 1: TASK containing a slash must render complete
 # and literal, with no sed/interpreter error. This is the exact repro from
 # the ticket ("detect/offer ..." breaking with "sed: bad flag in substitute
 # command").
 # ---------------------------------------------------------------------------
 echo ""
-echo "-- Group 2: TC-081 Defect 1 — TASK containing '/' --"
+echo "-- Group 2: TC-081 Defect 1 - TASK containing '/' --"
 TASK_SLASH="detect/offer to fix formatting issues"
 out="$WORKDIR/slash.md"
 err_out="$WORKDIR/slash.err"
@@ -163,13 +163,13 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Group 3 — TC-081 Defect 1: TASK containing '&' must render literally, not
+# Group 3 - TC-081 Defect 1: TASK containing '&' must render literally, not
 # expanded as a sed/awk-gsub "matched text" backreference; and a TASK
 # containing '/', '&', and backslash together (the worst-case combination)
 # must still render byte-for-byte.
 # ---------------------------------------------------------------------------
 echo ""
-printf '%s\n' "-- Group 3: TC-081 Defect 1 — TASK containing '&', backslash, and combinations --"
+printf '%s\n' "-- Group 3: TC-081 Defect 1 - TASK containing '&', backslash, and combinations --"
 TASK_AMP='fix ports A & B'
 out="$WORKDIR/amp.md"
 err_out="$WORKDIR/amp.err"
@@ -196,14 +196,14 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Group 4 — TC-081 Defect 2: placeholder-ordering double-substitution. The
+# Group 4 - TC-081 Defect 2: placeholder-ordering double-substitution. The
 # rendered BRANCH line must equal the real branch, never the literal
 # "feat/AC-NNNN-short-slug" placeholder (which is what the old
 # TICKET-before-BRANCH substitution order produced, since it rewrote the
 # AC-NNNN inside the branch placeholder before the branch rule ever ran).
 # ---------------------------------------------------------------------------
 echo ""
-echo "-- Group 4: TC-081 Defect 2 — placeholder-ordering (BRANCH line correctness) --"
+echo "-- Group 4: TC-081 Defect 2 - placeholder-ordering (BRANCH line correctness) --"
 REAL_BRANCH="fix/TC-081-provision-bench-substitution"
 out="$WORKDIR/order.md"
 render "$FRAMEWORK_ROOT/.agents/bootstrap/bench-AGENT.md.pattern-a-framework" "$out" \
@@ -231,7 +231,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Group 5 — end-to-end CLI smoke test against a real, throwaway, self-
+# Group 5 - end-to-end CLI smoke test against a real, throwaway, self-
 # cleaning sibling worktree. Exercises the actual Pattern A and Pattern W
 # call sites (not just the extracted function), with a --task containing
 # '/' and '&'. Uses high bench numbers (98, 99) unlikely to collide with
@@ -267,7 +267,7 @@ else
 
   if [ -e "$E2E_DIR_A" ] || [ -e "$E2E_DIR_W" ]; then
     fail_case "Group5: pre-flight collision check (bench .98/.99 must be free before e2e test runs)"
-    echo "  refusing to run e2e group — one of $E2E_DIR_A / $E2E_DIR_W already exists"
+    echo "  refusing to run e2e group - one of $E2E_DIR_A / $E2E_DIR_W already exists"
   else
     # --- Pattern A ---
     e2e_a_out="$WORKDIR/e2e_a.out"
@@ -285,9 +285,9 @@ else
        && [ "$a_task_line" = "**TASK:** detect/offer & fix e2e things" ] \
        && [ -z "$a_status" ] \
        && ! grep -qi 'sed: bad flag' "$e2e_a_out"; then
-      pass_case "Group5a: Pattern A e2e — BRANCH correct, TASK complete with '/' and '&', clean git status, no sed error"
+      pass_case "Group5a: Pattern A e2e - BRANCH correct, TASK complete with '/' and '&', clean git status, no sed error"
     else
-      fail_case "Group5a: Pattern A e2e — BRANCH correct, TASK complete with '/' and '&', clean git status, no sed error"
+      fail_case "Group5a: Pattern A e2e - BRANCH correct, TASK complete with '/' and '&', clean git status, no sed error"
       echo "  rc=$e2e_a_rc branch_line=[$a_branch_line] task_line=[$a_task_line] status=[$a_status]"
       sed 's/^/  /' "$e2e_a_out"
     fi
@@ -306,9 +306,9 @@ else
        && [ "$w_branch_line" = "**BRANCH:** fix/TC-081-e2e-smoke-w" ] \
        && [ "$w_task_line" = '**TASK:** handle a/b & c\d cases' ] \
        && ! grep -qi 'sed: bad flag' "$e2e_w_out"; then
-      pass_case "Group5b: Pattern W e2e — BRANCH correct, TASK complete with '/', '&', '\\', no sed error"
+      pass_case "Group5b: Pattern W e2e - BRANCH correct, TASK complete with '/', '&', '\\', no sed error"
     else
-      fail_case "Group5b: Pattern W e2e — BRANCH correct, TASK complete with '/', '&', '\\', no sed error"
+      fail_case "Group5b: Pattern W e2e - BRANCH correct, TASK complete with '/', '&', '\\', no sed error"
       echo "  rc=$e2e_w_rc branch_line=[$w_branch_line] task_line=[$w_task_line]"
       sed 's/^/  /' "$e2e_w_out"
     fi

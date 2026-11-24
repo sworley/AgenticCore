@@ -19,7 +19,7 @@
 
 ## Procedure
 
-### Step 1 — Determine bench number and branch name
+### Step 1 - Determine bench number and branch name
 
 Bench numbers are sequential. Check existing benches:
 ```sh
@@ -32,7 +32,7 @@ Branch name follows convention: `<type>/<ticket-id>-<short-slug>`
 
 Example: `feat/TC-004-add-ci-pipeline`
 
-### Step 2 — Provision the worktree
+### Step 2 - Provision the worktree
 
 ```sh
 PROJECT="AgenticCore"
@@ -53,7 +53,7 @@ Or use the script (recommended):
   --bench 02 --ticket TC-004 --type feat --slug add-ci-pipeline \
   --task "Brief description of the task"
 
-# Pattern W bench (customer/project-scoped work — attendant bench-lead):
+# Pattern W bench (customer/project-scoped work - attendant bench-lead):
 ./mddocs/scripts/provision-bench.sh \
   --bench 02 --ticket TC-004 --type feat --slug add-ci-pipeline \
   --pattern w \
@@ -67,24 +67,24 @@ Or use the script (recommended):
 - Pattern W bench branches do NOT merge AGENT.md back to main; teardown cherry-picks only session-state and mddocs/ artifacts
 - Pattern A behavior (skip-worktree, AGENT.md not committed) is unchanged
 
-The script handles Steps 3 and part of Step 4 automatically — see below.
+The script handles Steps 3 and part of Step 4 automatically - see below.
 
-### Pattern H — provisioning the `.00` HIL worktree
+### Pattern H - provisioning the `.00` HIL worktree
 
 ```sh
 ./mddocs/scripts/provision-bench.sh --pattern h
 ```
 
-`--bench`, `--ticket`, `--type`, and `--slug` are not required for `--pattern h` — the
+`--bench`, `--ticket`, `--type`, and `--slug` are not required for `--pattern h` - the
 bench number and branch are fixed:
 
 - Bench number: `00`
 - Branch: `workspace/owner` (created with `-b` if it does not already exist; reused if
-  a `workspace/owner` branch is already present — e.g. after a prior `.00` teardown)
+  a `workspace/owner` branch is already present - e.g. after a prior `.00` teardown)
 
 The `.00` worktree is created as a **sibling of the management plane** in the same
 parent directory: `provision-bench.sh` strips the trailing `.NN` suffix from the repo
-root (`.01`) to derive the base name, then appends `.00` — so a management plane at
+root (`.01`) to derive the base name, then appends `.00` - so a management plane at
 `AgenticCore.v0.02.01` provisions `.00` at `AgenticCore.v0.02.00` (and `.02`+ workers
 the same way).
 
@@ -92,36 +92,36 @@ Pattern H materializes two overlay files in the new `.00` worktree, both tracked
 excluded from `git status` via `update-index --skip-worktree` (same mechanism as
 Pattern A's `AGENT.md`):
 
-- **`AGENT.md`** — generated from `.agents/bootstrap/bench-AGENT.md.pattern-h`
+- **`AGENT.md`** - generated from `.agents/bootstrap/bench-AGENT.md.pattern-h`
   (the hil-assistant persona; header comment line stripped, no other placeholders to
   substitute)
-- **`opencode.json`** — the canonical `opencode.json` piped through
-  `jq '.default_agent = "hil-assistant"'`. This preserves every other field —
+- **`opencode.json`** - the canonical `opencode.json` piped through
+  `jq '.default_agent = "hil-assistant"'`. This preserves every other field -
   permission block, MCP wiring, the `hil-assistant` agent's `approve_finding_update`
-  grant — and changes only `default_agent`.
+  grant - and changes only `default_agent`.
 
 `jq` is required for `--pattern h`; the script exits with an error if it is not on `PATH`.
 
 `.bench/assignment.md` is still written to disk (gitignored, not committed) for `.00`,
 with `PATTERN: H`.
 
-After provisioning, register `.00` in `bench-registry.yaml` with **`locked: true`** —
+After provisioning, register `.00` in `bench-registry.yaml` with **`locked: true`** -
 the script's next-steps output reminds the operator of this. `.00` and `.01` are never
-torn down (see [Bench Model](../onboarding/bench-model.md)); `locked: true` is the
+torn down (see [Bench Model](../management/architecture/bench/bench-model.md)); `locked: true` is the
 signal that blocks any accidental `git worktree remove`.
 
 **First-startup auto-provision:** a fresh project has no `.00` yet. At session open the
 `.01` lead-engineer provisions `.00` automatically (runs `provision-bench.sh --pattern h`
 and registers it with `locked: true`) rather than deferring to the operator. This is the
-sole exception to the "`.00` is HIL-owned" rule — after `.00` exists it is HIL-owned and
+sole exception to the "`.00` is HIL-owned" rule - after `.00` exists it is HIL-owned and
 never reprovisioned (use the [in-place overlay refresh](#in-place-00-overlay-refresh) if
 `.01` config changes).
 
-### Step 3 — Bench files (automatic)
+### Step 3 - Bench files (automatic)
 
 `provision-bench.sh` creates two bench-identity files automatically:
 
-**`.bench/assignment.md`** — written to disk (gitignored, regenerable), NOT committed;
+**`.bench/assignment.md`** - written to disk (gitignored, regenerable), NOT committed;
 provenance in `bench-registry.yaml`:
 ```markdown
 # Bench Assignment
@@ -136,7 +136,7 @@ It is a disk-local, gitignored convenience file read by the attendant/tools insi
 live worktree; it is never staged or committed. The canonical, durable, queryable
 per-bench provenance record is `bench-registry.yaml` (ADR-0012 amendment, TC-056).
 
-**`AGENT.md`** — tool-specific, generated, not committed:
+**`AGENT.md`** - tool-specific, generated, not committed:
 Generated by substituting the assignment fields into the appropriate pattern template
 (`.agents/bootstrap/bench-AGENT.md.pattern-a-framework` or
 `.agents/bootstrap/bench-AGENT.md.pattern-a-project` for Pattern A benches;
@@ -146,12 +146,12 @@ For Pattern A and Pattern H: written to disk only; skip-worktree applied so it c
 be accidentally staged or committed; never merged.
 For Pattern W: written to disk and committed to the bench branch immediately.
 
-Pattern H additionally overlays `opencode.json` (see above) — no other pattern touches
+Pattern H additionally overlays `opencode.json` (see above) - no other pattern touches
 this file.
 
 No manual copy or edit step is required.
 
-### Step 4 — Register in bench-registry.yaml
+### Step 4 - Register in bench-registry.yaml
 
 Add an entry to `bench-registry.yaml`:
 ```yaml
@@ -164,7 +164,7 @@ Add an entry to `bench-registry.yaml`:
   notes: ""
 ```
 
-### Step 5 — Update tasks.yaml
+### Step 5 - Update tasks.yaml
 
 ```yaml
   status: in_progress
@@ -173,7 +173,7 @@ Add an entry to `bench-registry.yaml`:
   started_at: YYYY-MM-DD
 ```
 
-### Step 6 — Confirm to HIL
+### Step 6 - Confirm to HIL
 
 Report:
 - Bench number and path
@@ -192,22 +192,22 @@ Report:
 - [ ] Pattern A: `AGENT.md` has skip-worktree set (not tracked by git); Pattern W: `AGENT.md` is committed to the bench branch; Pattern H: both `AGENT.md` and `opencode.json` have skip-worktree set
 - [ ] Pattern H only: `opencode.json` in the bench dir has `default_agent: hil-assistant` and is otherwise identical to the canonical `opencode.json`
 - [ ] `bench-registry.yaml` updated (Pattern H: `locked: true`)
-- [ ] `tasks.yaml` updated (Pattern H: not applicable — `.00` is not a ticket-scoped bench)
+- [ ] `tasks.yaml` updated (Pattern H: not applicable - `.00` is not a ticket-scoped bench)
 
 ---
 
 ## In-Place `.00` Overlay Refresh
 
 When `.01` changes the canonical `opencode.json` or the `.agents/bootstrap/bench-AGENT.md.pattern-h`
-template, the existing, locked `.00` worktree must be re-materialized in place — **never**
-torn down or rebased. `.00` is a long-living worktree (see [Bench Model](../onboarding/bench-model.md));
+template, the existing, locked `.00` worktree must be re-materialized in place - **never**
+torn down or rebased. `.00` is a long-living worktree (see [Bench Model](../management/architecture/bench/bench-model.md));
 this is a `.01` maintenance action, run from the `.01` root against the existing `$BENCH_DIR`.
 
 ```sh
 REPO_ROOT="$(git rev-parse --show-toplevel)"          # .01 root
 BENCH_DIR="$(dirname "$REPO_ROOT")/AgenticCore.00"  # existing .00 worktree
 
-# Re-materialize AGENT.md (skip-worktree is already set from initial provisioning —
+# Re-materialize AGENT.md (skip-worktree is already set from initial provisioning -
 # writing to the file in place does not require re-running update-index)
 sed "1d" "$REPO_ROOT/.agents/bootstrap/bench-AGENT.md.pattern-h" > "$BENCH_DIR/AGENT.md"
 
@@ -224,12 +224,12 @@ safe to re-run any time the source files change.
 
 ---
 
-## Adopter Repair — Misconfigured `.00`
+## Adopter Repair - Misconfigured `.00`
 
 If an existing `.00` was provisioned before Pattern H existed (skip-worktree is set on
 `AGENT.md` but the hil-assistant overlay was never written), it will show the `.01`
 baseline-steward persona and `default_agent: lead-engineer` instead of `hil-assistant`.
-Fix it in place with the same two commands as the refresh procedure above — no
+Fix it in place with the same two commands as the refresh procedure above - no
 reprovisioning or worktree recreation required:
 
 ```sh
@@ -256,14 +256,14 @@ git -C "$BENCH_DIR" status --short                     # expect: empty
 
 If `update-index --skip-worktree` was never applied at all (both files show as modified
 in `git status`), run the `update-index --skip-worktree` lines above before or after the
-overlay writes — order does not matter.
+overlay writes - order does not matter.
 
 ---
 
 ## Teardown
 
 Applies to Pattern A and Pattern W benches only. **Pattern H (`.00`) and `.01` are
-never torn down** — use the in-place overlay refresh procedure above instead.
+never torn down** - use the in-place overlay refresh procedure above instead.
 
 When the ticket reaches `merged`:
 1. Verify bench is clean: `git -C "$BENCH_DIR" status`

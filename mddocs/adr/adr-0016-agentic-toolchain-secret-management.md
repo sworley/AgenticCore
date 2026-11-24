@@ -2,12 +2,12 @@
 
 **Date:** 2026-07-02
 **Status:** Accepted
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** -
+**Superseded by:** -
 
 ## Prior Art
 
-EXAMPLE-ADR-0008 (Secret Management Posture — Current State, 2026-04-24, updated
+EXAMPLE-ADR-0008 (Secret Management Posture - Current State, 2026-04-24, updated
 2026-06-01). This ADR extracts the agentic toolchain credential section of that
 document and generalizes it as a framework-level policy. Infrastructure and
 cloud credential content is adopter-specific and is not carried forward.
@@ -16,7 +16,7 @@ cloud credential content is adopter-specific and is not carried forward.
 
 ## Context
 
-Agentic sessions consume credentials — at minimum, a token to reach the Git
+Agentic sessions consume credentials - at minimum, a token to reach the Git
 hosting platform for issue sync, GL/GH API calls, and repo operations. These
 tokens are sensitive and require explicit handling rules to prevent accidental
 exposure through agent context artifacts, conversation output, or committed
@@ -26,7 +26,7 @@ Without a declared policy, each adopter project develops ad-hoc habits:
 tokens in shell profiles, values echoed in scripts, credentials surfacing
 in `tasks.yaml` notes or memory files. The framework's agentic model creates
 new exposure vectors that a general-purpose secret management policy does not
-address — agent context files, memory systems, and tool call results are not
+address - agent context files, memory systems, and tool call results are not
 standard surfaces covered by existing secure coding guidance.
 
 ---
@@ -46,7 +46,7 @@ standard surfaces covered by existing secure coding guidance.
 
 ## Decisions
 
-### D-1: Credential storage — secret store, not shell profiles
+### D-1: Credential storage - secret store, not shell profiles
 
 Credential values (tokens, passwords, API keys) must be stored in a
 GPG-encrypted secret store (e.g., `pass`, system keychain, or organizational
@@ -59,7 +59,7 @@ secret that grants access, it belongs in the secret store.
 
 ---
 
-### D-2: Injection model — env vars, not files, not URLs
+### D-2: Injection model - env vars, not files, not URLs
 
 Credentials are injected into the shell environment at runtime by a credential
 injection mechanism (see ADR-0018 for the reference pattern). The consuming
@@ -79,7 +79,7 @@ PRIVATE-TOKEN: $GIT_TOKEN
 
 ---
 
-### D-3: Agent session hygiene — mandatory rules
+### D-3: Agent session hygiene - mandatory rules
 
 The following rules apply to all agent sessions. They are policy, not
 guidelines. Agents must be instructed to follow them; operators are
@@ -132,8 +132,8 @@ not be started when `check-env.sh` exits non-zero.
 
 | ID | Finding | Risk | Status |
 |----|---------|------|--------|
-| G-1 | No tooling enforcement preventing credential values in agent context files (`tasks.yaml`, memory files, AGENT.md) — relies on operator convention | Medium | Open |
-| G-2 | No pre-commit secret scanning across project repos — accidental token commits are not automatically blocked | Low | Open |
+| G-1 | No tooling enforcement preventing credential values in agent context files (`tasks.yaml`, memory files, AGENT.md) - relies on operator convention | Medium | Open |
+| G-2 | No pre-commit secret scanning across project repos - accidental token commits are not automatically blocked | Low | Open |
 
 Improvement opportunities for G-1 and G-2 are tracked in `tasks.yaml` and
 addressed as capacity allows.
@@ -145,13 +145,13 @@ addressed as capacity allows.
 **Positive:**
 - Credentials are never in git history, agent context windows, or conversation
   logs
-- The rules are tool-agnostic — they apply equally to AI toolchain, OpenCode,
+- The rules are tool-agnostic - they apply equally to AI toolchain, OpenCode,
   and any future agentic interface
 - `check-env.sh` as Step 0 catches missing credentials before a session starts,
   not mid-sprint when an agent blocks on an interactive prompt
 
 **Negative / Trade-offs:**
-- Operators must set up a secret store before their first agentic session —
+- Operators must set up a secret store before their first agentic session -
   one additional onboarding step
 - Convention-only enforcement (G-1) means a policy violation is possible;
   tooling enforcement is an improvement opportunity, not a hard gate at this
@@ -161,7 +161,7 @@ addressed as capacity allows.
 
 ## Related
 
-- [ADR-0018: Credential Injection Pattern](adr-0018-credential-injection-pattern.md) — how credentials reach the environment
-- [ADR-0006: External Content Gate Scope](adr-0006-external-content-gate-scope.md) — capability gate controls
-- [ADR-: Agentic Agent Enforcement Posture](adr-0022-git-pre-commit-permission-order-check.md) — guardrail model that these rules operate within
-- `mddocs/scripts/check-env.sh` — pre-session environment verification tool
+- [ADR-0018: Credential Injection Pattern](adr-0018-credential-injection-pattern.md) - how credentials reach the environment
+- [ADR-0006: External Content Gate Scope](adr-0006-external-content-gate-scope.md) - capability gate controls
+- [ADR-: Agentic Agent Enforcement Posture](adr-0022-git-pre-commit-permission-order-check.md) - guardrail model that these rules operate within
+- `mddocs/scripts/check-env.sh` - pre-session environment verification tool

@@ -1,4 +1,4 @@
-# AgenticCore — Portable Agentic Framework
+# AgenticCore - Portable Agentic Framework
 
 **AgenticCore** is a portable, documentation-first, open-source harness for
 orchestrating tool-use AI agents in a team-based architecture. It is designed
@@ -18,7 +18,7 @@ This repository provides:
 | Principle | Implementation |
 |---|---|
 | Documentation-first | All decisions, workflows, and procedures live in `mddocs/` |
-| Agentic portability | Agent definitions in `.opencode/agents/` — tool-agnostic source in `.agents/` |
+| Agentic portability | Agent definitions in `.opencode/agents/` - tool-agnostic source in `.agents/` |
 | Namespace separation | `.00` (HIL) / `.01` (lead-engineer) / `.02`+ (ephemeral workers) |
 | HIL acceptance gate | No merge, push, or external action without explicit human approval |
 | Minimal viable config | Lean, auditable, no project-specific bleed |
@@ -46,7 +46,7 @@ mdbook serve mddocs/
 
 ```
 AgenticCore/
-├── AGENT.md                  # Root instruction — session rules and persona
+├── AGENT.md                  # Root instruction - session rules and persona
 ├── PROCESS.md                # Canonical workflow, roles, and governance
 ├── opencode.json             # AI toolchain configuration
 ├── tasks.yaml                # Task queue (lead-engineer only writes here)
@@ -54,7 +54,7 @@ AgenticCore/
 ├── .agents/                  # Canonical agent definition source
 ├── .core/                    # Governance + enforcement layer
 │   ├── Core.md               # Instruction contract (session checklists, standing rules)
-│   ├── invariants.md         # Absolute prohibitions — loaded by every agent
+│   ├── invariants.md         # Absolute prohibitions - loaded by every agent
 │   ├── hooks/                # Enforcement scripts
 │   ├── scripts/              # Environment + hook tooling
 │   ├── bootstrap/            # Bench/project bootstrap templates
@@ -70,6 +70,6 @@ AgenticCore/
 ## Navigation
 
 - New to the project? Start with [Getting Started](onboarding/getting-started.md)
-- Understanding the workflow? See [Agentic Workflow Overview](onboarding/agentic-workflow-overview.md)
+- Understanding the workflow? See [Agentic Workflow Overview](management/architecture/workflow/agentic-workflow-overview.md)
 - Architecture decisions: [ADR Index](adr/index.md)
 - Operational procedures: [Runbook Index](reference.architecture/index.md)

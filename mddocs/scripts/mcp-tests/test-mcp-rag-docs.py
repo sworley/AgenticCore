@@ -48,42 +48,42 @@ async def run_tests() -> None:
     )
 
     async with Client(transport) as client:
-        # 1. search_docs — query present in corpus
+        # 1. search_docs - query present in corpus
         result = await client.call_tool("search_docs", {"query": "session open checklist", "top_k": 3})
         results = json.loads(result.content[0].text)
         if results:
-            ok(f"search_docs 'session open checklist' — {len(results)} result(s)")
+            ok(f"search_docs 'session open checklist' - {len(results)} result(s)")
         else:
             fail("search_docs 'session open checklist'", "empty results")
 
-        # 2. search_docs — bench model query
+        # 2. search_docs - bench model query
         result = await client.call_tool("search_docs", {"query": "agent bench model worktree", "top_k": 5})
         results = json.loads(result.content[0].text)
         if results:
-            ok(f"search_docs 'agent bench model worktree' — {len(results)} result(s)")
+            ok(f"search_docs 'agent bench model worktree' - {len(results)} result(s)")
         else:
             fail("search_docs 'agent bench model worktree'", "empty results")
 
-        # 3. search_docs — may return 0 results; warn only
+        # 3. search_docs - may return 0 results; warn only
         result = await client.call_tool("search_docs", {"query": "BM25 index rebuild", "top_k": 3})
         results = json.loads(result.content[0].text)
-        ok(f"search_docs 'BM25 index rebuild' — {len(results)} result(s) (0 acceptable)")
+        ok(f"search_docs 'BM25 index rebuild' - {len(results)} result(s) (0 acceptable)")
 
-        # 4. list_docs — assert non-empty
+        # 4. list_docs - assert non-empty
         result = await client.call_tool("list_docs", {})
         docs = json.loads(result.content[0].text)
         if docs:
-            ok(f"list_docs — {len(docs)} document(s) indexed")
+            ok(f"list_docs - {len(docs)} document(s) indexed")
         else:
             fail("list_docs", "empty document list")
             return
 
-        # 5. get_doc — use a known stable path
+        # 5. get_doc - use a known stable path
         known_path = "adr/adr-0001-bootstrap-architecture.md"
         result = await client.call_tool("get_doc", {"file_path": known_path})
         content = result.content[0].text
         if content:
-            ok(f"get_doc '{known_path}' — {len(content)} chars")
+            ok(f"get_doc '{known_path}' - {len(content)} chars")
         else:
             fail(f"get_doc '{known_path}'", "empty content")
 

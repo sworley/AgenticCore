@@ -1,5 +1,5 @@
 #!/bin/sh
-# check-links.sh — Validate internal markdown links within mddocs/
+# check-links.sh - Validate internal markdown links within mddocs/
 #
 # Scans all .md files in the mddocs/ directory tree and checks that every
 # relative link target resolves to an existing file. Does not perform HTTP
@@ -54,8 +54,8 @@ if [ ! -d "$SCAN_ABS" ]; then
 fi
 
 # Temp file to accumulate results (avoids subshell counter loss)
-RESULTS="$(mktemp /tmp/check-links.XXXXXX)"
-trap 'rm -f "$RESULTS"' EXIT
+RESULTS="$(mktemp "${TMPDIR:-/tmp}/check-links.XXXXXX")"
+trap 'rm -f "$RESULTS" "$EMRESULTS"' EXIT
 
 [ "$SUMMARY_ONLY" -eq 0 ] && printf "==> check-links: scanning %s\n\n" "$SCAN_DIR"
 
@@ -139,16 +139,38 @@ checked=$(grep -c "^checked$" "$RESULTS" 2>/dev/null); checked=${checked:-0}
 broken=$(grep -c "^broken$" "$RESULTS" 2>/dev/null); broken=${broken:-0}
 external=$(grep -c "^external$" "$RESULTS" 2>/dev/null); external=${external:-0}
 
+# --- Em-dash guard (durable no-em-dash rule; U+2014 built from bytes so this file stays ASCII) ---
+EMDASH=$(printf '\342\200\224')
+EMRESULTS="$(mktemp "${TMPDIR:-/tmp}/check-links-emdash.XXXXXX")"
+find "$SCAN_ABS" -name "*.md" | sort | while IFS= read -r mdfile; do
+  if grep -q "$EMDASH" "$mdfile" 2>/dev/null; then
+    rel="${mdfile#$REPO_ROOT/}"
+    c=$(grep -o "$EMDASH" "$mdfile" 2>/dev/null | wc -l)
+    printf "%s\t%s\n" "$rel" "$c" >> "$EMRESULTS"
+  fi
+done
+emdash_files=$(wc -l < "$EMRESULTS" 2>/dev/null); emdash_files=${emdash_files:-0}
+emdash_total=$(awk -F'\t' '{s+=$2} END{print s+0}' "$EMRESULTS" 2>/dev/null); emdash_total=${emdash_total:-0}
+
 [ "$SUMMARY_ONLY" -eq 0 ] && printf "\n"
 
-if [ "$broken" -eq 0 ]; then
+if [ "$broken" -eq 0 ] && [ "$emdash_total" -eq 0 ]; then
   printf "==> check-links: all links OK (%d checked" "$checked"
   [ "$external" -gt 0 ] && printf ", %d external skipped" "$external"
-  printf ")\n"
+  printf ", 0 em-dashes)\n"
   exit 0
 else
-  printf "==> check-links: %d broken link(s) found (%d checked" "$broken" "$checked"
-  [ "$external" -gt 0 ] && printf ", %d external skipped" "$external"
-  printf ")\n"
+  if [ "$broken" -gt 0 ]; then
+    printf "==> check-links: %d broken link(s) found (%d checked" "$broken" "$checked"
+    [ "$external" -gt 0 ] && printf ", %d external skipped" "$external"
+    printf ")\n"
+  fi
+  if [ "$emdash_total" -gt 0 ]; then
+    printf "==> check-links: %d em-dash(es) in %d file(s) (no-em-dash rule)\n" "$emdash_total" "$emdash_files"
+    if [ "$SUMMARY_ONLY" -eq 0 ]; then
+      printf "  %s\n" "em-dash locations:"
+      cat "$EMRESULTS"
+    fi
+  fi
   exit 1
 fi

@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project protection profile, version 1",
+  "description": "Structural draft validation only. Passing this schema grants no authority or activity readiness. Filesystem safety, semantic checks, evidence verification, and enforcement require separate implementation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "profile_id", "revision", "repository", "boundaries", "branches", "integration", "approvals", "protections", "revalidation"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "profile_id": {"allOf": [{"$ref": "#/$defs/text"}, {"maxLength": 128}]},
+    "revision": {"type": "integer", "minimum": 1},
+    "repository": {
+      "type": "object", "additionalProperties": false,
+      "required": ["checkout_relative_path", "platform", "identity", "remotes"],
+      "properties": {
+        "checkout_relative_path": {"anyOf": [{"$ref": "#/$defs/checkoutPath"}, {"type": "null"}]},
+        "platform": {"enum": ["github", "gitlab", "other", null]},
+        "identity": {"$ref": "#/$defs/nullableText"},
+        "remotes": {
+          "type": "array", "maxItems": 100, "uniqueItems": true,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["name", "url"],
+            "properties": {"name": {"$ref": "#/$defs/text"}, "url": {"$ref": "#/$defs/text"}}
+          }
+        }
+      }
+    },
+    "boundaries": {
+      "type": "object", "additionalProperties": false,
+      "required": ["allowed_relative_paths", "denied_relative_paths", "harness_ignore_required"],
+      "properties": {
+        "allowed_relative_paths": {"$ref": "#/$defs/scopePaths"},
+        "denied_relative_paths": {"$ref": "#/$defs/scopePaths"},
+        "harness_ignore_required": {"type": "boolean", "const": true}
+      }
+    },
+    "branches": {
+      "type": "object", "additionalProperties": false,
+      "required": ["protected", "ticket_id_pattern", "work_branch_pattern"],
+      "properties": {
+        "protected": {
+          "type": "array", "maxItems": 100, "uniqueItems": true,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["name", "role", "integration_method"],
+            "properties": {
+              "name": {"$ref": "#/$defs/text"},
+              "role": {"$ref": "#/$defs/text"},
+              "integration_method": {"const": "pr_or_mr"}
+            }
+          }
+        },
+        "ticket_id_pattern": {"$ref": "#/$defs/nullablePattern"},
+        "work_branch_pattern": {"$ref": "#/$defs/nullablePattern"}
+      }
+    },
+    "integration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["required_approvals", "required_checks", "allowed_merge_methods", "merge_authority_ref"],
+      "properties": {
+        "required_approvals": {"type": ["integer", "null"], "minimum": 0},
+        "required_checks": {"$ref": "#/$defs/textArray"},
+        "allowed_merge_methods": {
+          "type": "array", "maxItems": 100, "uniqueItems": true,
+          "items": {"enum": ["merge", "squash", "rebase"]}
+        },
+        "merge_authority_ref": {"$ref": "#/$defs/nullableText"}
+      }
+    },
+    "approvals": {
+      "type": "object", "additionalProperties": false,
+      "required": ["profile_approval_ref", "approved_revision", "task_scoped_access_required", "per_push_approval_required", "separate_merge_approval_required"],
+      "properties": {
+        "profile_approval_ref": {"$ref": "#/$defs/nullableText"},
+        "approved_revision": {"type": ["integer", "null"], "minimum": 1},
+        "task_scoped_access_required": {"type": "boolean", "const": true},
+        "per_push_approval_required": {"type": "boolean", "const": true},
+        "separate_merge_approval_required": {"type": "boolean", "const": true}
+      }
+    },
+    "protections": {
+      "type": "array", "maxItems": 100, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["control", "target", "requested", "locally_tested", "remotely_verified"],
+        "properties": {
+          "control": {"enum": ["checkout_excluded_from_harness", "task_access_gate", "protected_branch_updates", "ticketed_work_branch", "per_push_approval", "pr_mr_review", "required_checks", "force_push_restriction", "branch_deletion_restriction", "bypass_restriction"]},
+          "target": {"$ref": "#/$defs/text"},
+          "requested": {"$ref": "#/$defs/status"},
+          "locally_tested": {"$ref": "#/$defs/status"},
+          "remotely_verified": {"$ref": "#/$defs/status"}
+        }
+      }
+    },
+    "revalidation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_ref", "triggers"],
+      "properties": {
+        "owner_ref": {"$ref": "#/$defs/nullableText"},
+        "triggers": {"allOf": [{"$ref": "#/$defs/textArray"}, {"minItems": 1}]}
+      }
+    }
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1, "maxLength": 2048, "pattern": "^(?!UNSET$)[^\\x00-\\x1f\\x7f-\\x9f]+$(?![\\s\\S])"},
+    "nullableText": {"anyOf": [{"$ref": "#/$defs/text"}, {"type": "null"}]},
+    "textArray": {"type": "array", "maxItems": 100, "items": {"$ref": "#/$defs/text"}},
+    "relativePath": {
+      "allOf": [
+        {"$ref": "#/$defs/text"},
+        {"pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*:)(?!.*\\/$).+$"}
+      ]
+    },
+    "checkoutPath": {
+      "allOf": [
+        {"$ref": "#/$defs/relativePath"},
+        {"not": {"pattern": "^(?:mddocs|harness|\\.codex-home|\\.codex|\\.git|\\.githooks|\\.archive|\\.tmp|\\.scratch|\\.codex-backups|\\.poc-backups|\\.mcp)(?:/|$)"}}
+      ]
+    },
+    "scopePaths": {
+      "type": "array", "maxItems": 100,
+      "items": {"anyOf": [{"const": "."}, {"$ref": "#/$defs/relativePath"}]}
+    },
+    "nullablePattern": {
+      "anyOf": [{"allOf": [{"$ref": "#/$defs/text"}, {"maxLength": 256}]}, {"type": "null"}]
+    },
+    "timestamp": {
+      "type": "string", "maxLength": 20, "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "status": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "evidence_ref", "checked_at", "limitations"],
+      "properties": {
+        "status": {"enum": ["unknown", "pass", "fail", "not_applicable"]},
+        "evidence_ref": {"$ref": "#/$defs/nullableText"},
+        "checked_at": {"anyOf": [{"$ref": "#/$defs/timestamp"}, {"type": "null"}]},
+        "limitations": {"$ref": "#/$defs/textArray"}
+      },
+      "allOf": [{
+        "if": {"properties": {"status": {"const": "not_applicable"}}},
+        "then": {"properties": {"evidence_ref": {"$ref": "#/$defs/text"}, "limitations": {"minItems": 1}}}
+      }]
+    }
+  }
+}

@@ -2,8 +2,8 @@
 
 **Date:** 2026-07-02
 **Status:** Accepted
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** -
+**Superseded by:** -
 
 ## Prior Art
 
@@ -18,7 +18,7 @@ Azure credentials) are adopter-specific and are not carried forward.
 ## Context
 
 All tooling, scripts, and agent configuration in an AgenticCore-governed
-project must be usable by any engineer who clones the repository — regardless
+project must be usable by any engineer who clones the repository - regardless
 of their username, home directory path, or where on disk they clone it.
 
 Without explicit conventions, projects accumulate hardcoded absolute paths,
@@ -36,18 +36,18 @@ This ADR establishes:
 
 ## Decision Drivers
 
-- **Portability** — any engineer clones the repo and runs a single init script;
+- **Portability** - any engineer clones the repo and runs a single init script;
   no manual path substitution required
-- **Maintainability** — machine-specific values are generated at setup time,
+- **Maintainability** - machine-specific values are generated at setup time,
   not committed; committed artifacts are always portable
-- **Discoverability** — onboarding engineers have a single catalog of what must
+- **Discoverability** - onboarding engineers have a single catalog of what must
   be set up outside the project root before the project is usable
-- **Auditability** — outer dependencies are visible at ADR level so changes
+- **Auditability** - outer dependencies are visible at ADR level so changes
   (new credential requirements, new tool dependencies) are deliberate decisions
 
 ---
 
-## Outer Dependencies — Categories
+## Outer Dependencies - Categories
 
 These items live outside the project root. They are required for the toolchain
 to function but cannot be committed to the project repository. Each engineer
@@ -56,7 +56,7 @@ satisfies them on their own machine following the project's onboarding guide.
 | Category | Examples | Notes |
 |----------|---------|-------|
 | Shell environment | `~/.zshrc`, `~/.bashrc` | PATH, tool-specific env vars, non-credential config vars |
-| Secret store | `pass`, system keychain, organizational vault | Credential values only — never committed; see ADR-0016 |
+| Secret store | `pass`, system keychain, organizational vault | Credential values only - never committed; see ADR-0016 |
 | Language runtimes and package managers | `python3`, `uv`, `node`, `cargo` | Installed via system package manager or version manager |
 | System package manager | Homebrew (macOS), apt, etc. | Platform-dependent; tool resolution via `$PATH` |
 | Generated configuration | `.mcp.json`, `settings.local.json` | Machine-specific; gitignored; generated from templates at setup time |
@@ -136,7 +136,7 @@ Scripts that reference tools outside the project root use:
 ## Consequences
 
 **Positive:**
-- Any engineer clones the repository and runs `opencode.json` —
+- Any engineer clones the repository and runs `opencode.json` -
   no manual path substitution required
 - Machine-specific configuration is never committed, eliminating the
   "works on my machine" failure class
@@ -158,8 +158,8 @@ Scripts that reference tools outside the project root use:
 
 ## Related
 
-- [ADR-0001: Bootstrap Architecture](adr-0001-bootstrap-architecture.md) — original scaffold decisions; portability was a design requirement from day one
-- [ADR-0002: mcp-rag-docs](adr-0002-mcp-rag-docs.md) — MCP server config uses the template model defined here
-- [ADR-0015: Framework Distribution and Adoption Model](adr-0015-framework-distribution-adoption-model.md) — export+init model depends on these conventions
-- [ADR-0018: Credential Injection Pattern](adr-0018-credential-injection-pattern.md) — credential injection tooling is an outer dependency per this ADR
-- `mddocs/scripts/setup/tool-adapter.sh` — generates the agent-runtime adapter (regenerates `.opencode/agents/`, writes a start script); machine-local overrides go in the gitignored `opencode.json.local`
+- [ADR-0001: Bootstrap Architecture](adr-0001-bootstrap-architecture.md) - original scaffold decisions; portability was a design requirement from day one
+- [ADR-0002: mcp-rag-docs](adr-0002-mcp-rag-docs.md) - MCP server config uses the template model defined here
+- [ADR-0015: Framework Distribution and Adoption Model](adr-0015-framework-distribution-adoption-model.md) - export+init model depends on these conventions
+- [ADR-0018: Credential Injection Pattern](adr-0018-credential-injection-pattern.md) - credential injection tooling is an outer dependency per this ADR
+- `mddocs/scripts/setup/tool-adapter.sh` - generates the agent-runtime adapter (regenerates `.opencode/agents/`, writes a start script); machine-local overrides go in the gitignored `opencode.json.local`

@@ -1,0 +1,38 @@
+---
+document_type: index
+status: active
+lifecycle: active
+primary: true
+domain: Management
+purpose: Harness management plane
+---
+
+# Management Plane
+
+> **Plane purpose.** `management/` documents **AgenticCore itself** - the
+> harness's architecture, governance, security posture, operations, and
+> adoption. It does not document customer work performed by adopted project
+> benches (that is the `projects/` plane).
+
+## Categories
+
+| Category | Scope | Present |
+|---|---|---|
+| [Architecture](architecture/README.md) | Harness structure, planes, bench/workflow models, system spec anchor | ✓ |
+| [Agentic](agentic/README.md) | Agent model, agent namespace, agentic procedures | ✓ |
+| [Delivery](delivery/README.md) | Release management, release notes, delivery process contracts | ✓ |
+| [Assurance](assurance/reviews/ledger-runbook/index.md) | Reviews, audits, evidence | ✓ |
+| [Governance](governance/decisions/index.md) · [Exceptions](governance/exceptions/README.md) | ADRs, standards, policies, exceptions, waivers | ✓ |
+| [Audits](audits/README.md) · [Evidence](audits/evidence/README.md) | Gate-output provenance, audits, evidence | ✓ |
+| [Security](security/guardrails/credential-identity/index.md) · [Secret](security/guardrails/secret-management/index.md) | Trust boundaries, guardrails, access | ✓ |
+| [Tooling](tooling/README.md) · [MCP](tooling/mcp/README.md) | Reusable framework tooling, schemas, assets, MCP servers | ✓ |
+| [Work](work/activities/ac-0013-taxonomy-reconciliation/index.md) | Time-bounded harness improvement work | ✓ |
+
+## Rules
+
+- **Management-only.** Management-plane agents use the existing authorized
+  ticket/HIL workflow for structural changes; project-scoped agents cannot
+  create or modify management objects merely because paths are visible.
+- **Metadata is authority.** Taxonomy frontmatter governs artefact identity;
+  physical location is fixed by the forward-only coexistence model (ADR-0035);
+  any relocation would be a separate decision.

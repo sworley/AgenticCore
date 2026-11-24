@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# python-env.sh — Create the project-local Python virtualenv (.venv) and
+# python-env.sh - Create the project-local Python virtualenv (.venv) and
 # install/validate the harness's required Python packages.
 #
 # PURPOSE
@@ -10,7 +10,7 @@
 #     2. Sources it and pip-installs requirements.txt
 #     3. Validates that the required modules import (mcp, yaml, fastmcp)
 #
-#   It is tool-neutral and idempotent — safe to re-run.
+#   It is tool-neutral and idempotent - safe to re-run.
 #
 # USAGE
 #   python-env.sh [--create] [--install] [--check] [--freeze] [--dry-run]
@@ -19,7 +19,7 @@
 #   --install   pip install -r requirements.txt (skipped if already satisfied)
 #   --check     Validate required modules import; exit non-zero if any missing
 #   --freeze    Regenerate requirements.txt from `pip freeze` (harness
-#               maintenance — run in a CLEAN venv, then commit the result)
+#               maintenance - run in a CLEAN venv, then commit the result)
 #   --dry-run   Report the actions without making changes
 #
 #   With no flags, it runs --create, --install, --check (the adoption default).
@@ -112,7 +112,7 @@ if [ ! -f "$REQUIREMENTS" ] && [ "$DO_INSTALL" -eq 1 ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# venv_activate — set PATH so .venv/bin takes precedence; sources activate if
+# venv_activate - set PATH so .venv/bin takes precedence; sources activate if
 # present (robust across `bash` vs direct `python` invocation).
 # ---------------------------------------------------------------------------
 venv_activate() {
@@ -125,7 +125,7 @@ venv_activate() {
 }
 
 # ---------------------------------------------------------------------------
-# Step 1 — create .venv
+# Step 1 - create .venv
 # ---------------------------------------------------------------------------
 if [ "$DO_CREATE" -eq 1 ]; then
   if [ -d "$VENV_DIR" ]; then
@@ -146,7 +146,7 @@ if [ "$DRY_RUN" -eq 1 ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Step 2 — install requirements.txt
+# Step 2 - install requirements.txt
 # ---------------------------------------------------------------------------
 if [ "$DO_INSTALL" -eq 1 ]; then
   if [ "$DRY_RUN" -eq 1 ]; then
@@ -158,14 +158,14 @@ if [ "$DO_INSTALL" -eq 1 ]; then
     fi
     log "==> python-env: installing $REQUIREMENTS"
     if ! "$VENV_DIR/bin/pip" install -r "$REQUIREMENTS"; then
-      err "pip install failed — see output above"
+      err "pip install failed - see output above"
       exit 1
     fi
   fi
 fi
 
 # ---------------------------------------------------------------------------
-# Step 3 — validate required modules import
+# Step 3 - validate required modules import
 # ---------------------------------------------------------------------------
 if [ "$DO_CHECK" -eq 1 ]; then
   if [ "$DRY_RUN" -eq 1 ]; then
@@ -177,7 +177,7 @@ if [ "$DO_CHECK" -eq 1 ]; then
     fi
     log "==> python-env: validating imports ($REQUIRED_MODULES)"
     if ! "$VENV_DIR/bin/python" -c "import $REQUIRED_IMPORT"; then
-      err "one or more required modules failed to import — re-run python-env.sh --install, or check requirements.txt"
+      err "one or more required modules failed to import - re-run python-env.sh --install, or check requirements.txt"
       exit 1
     fi
     log "    imports OK: $REQUIRED_MODULES"
@@ -185,7 +185,7 @@ if [ "$DO_CHECK" -eq 1 ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Step 4 — --freeze: regenerate requirements.txt (harness maintenance)
+# Step 4 - --freeze: regenerate requirements.txt (harness maintenance)
 # ---------------------------------------------------------------------------
 if [ "$DO_FREEZE" -eq 1 ]; then
   if [ "$DRY_RUN" -eq 1 ]; then

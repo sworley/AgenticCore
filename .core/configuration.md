@@ -1,4 +1,4 @@
-# .core/configuration.md — AgenticCore Configuration Reference
+# .core/configuration.md - AgenticCore Configuration Reference
 
 <!-- schema: configuration/v1 -->
 
@@ -36,11 +36,11 @@ AgenticCore requires minimal hard requirements. Everything else is adopter choic
 | `just` | Task runner alternative to Make | Optional; Make is also fine |
 | `docker` / `podman` | Container runtime for agent pods | Required for K8s deployment |
 
-## configure.sh — Environment Bootstrap
+## configure.sh - Environment Bootstrap
 
 ```bash
 #!/usr/bin/env bash
-# .core/scripts/configure.sh — Set up AgenticCore environment
+# .core/scripts/configure.sh - Set up AgenticCore environment
 
 set -e
 
@@ -94,7 +94,7 @@ For K8s deployment (Tier 3 / Path A ephemeral agents), a container runtime is
 required. The harness does not manage container images or the K8s API. Agent pods
 are deployed via standard Kubernetes manifests managed by the infrastructure team.
 
-## adopt.sh — Future Feature
+## adopt.sh - Future Feature
 
 `adopt.sh` (severed-copy export for adopter onboarding) is deferred to v0.2.
 See ADR-0005 for the adoption model specification. v0.1 operators are expected

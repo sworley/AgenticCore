@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
-# adopt.sh — Single-command adopter onboarding wrapper (README Quick Start
+# adopt.sh - Single-command adopter onboarding wrapper (README Quick Start
 # (Adopter) steps 3-7).
 #
 # PURPOSE
 #   Wraps the POST-CLONE steps of the README Quick Start (Adopter) into one
 #   command:
-#     Step 3  — confirm the target path, create the target project directory,
+#     Step 3  - confirm the target path, create the target project directory,
 #               and canonicalize to an absolute path (AP-084, AP-085)
-#     Step 4  — run export-framework.sh into that target
-#     Step 5  — provision the project-local Python virtualenv (python-env.sh:
+#     Step 4  - run export-framework.sh into that target
+#     Step 5  - provision the project-local Python virtualenv (python-env.sh:
 #               create .venv, install requirements.txt, validate deps) and build
 #               .envrc from .envrc.template so the venv sources on cd
-#     Step 6  — toolchain dependency check (toolchain.sh --check; optional
+#     Step 6  - toolchain dependency check (toolchain.sh --check; optional
 #               --install, or skip with an impact note)
-#     Step 7  — validate the exported target (check-env.sh + mdbook build)
-#     Step 8  — agent runtime configuration (OpenCode uses committed opencode.json directly)
+#     Step 7  - validate the exported target (check-env.sh + mdbook build)
+#     Step 8  - agent runtime configuration (OpenCode uses committed opencode.json directly)
 #
 #   Step 2 (clone the framework) and Step 8 (open an agentic session) remain
-#   manual — see the printed instruction at the end of this script for Step 8.
+#   manual - see the printed instruction at the end of this script for Step 8.
 #
 #   This script ORCHESTRATES existing tooling only. It calls
 #   export-framework.sh for the export/adoption logic (ADR-0015 D-1, D-5,
-#   D-7) and does not reimplement any part of it — in particular, no D-7
+#   D-7) and does not reimplement any part of it - in particular, no D-7
 #   confidentiality control (dirty-tree guard, remote severance, history
 #   scrub, target-identity guard) is duplicated or altered here. Every
 #   export-framework.sh exit code is surfaced faithfully; a non-zero export
@@ -39,10 +39,10 @@
 #                            mode (exit 1 if absent and stdin is not a TTY).
 #                            ALWAYS echoed back and confirmed (y/N) before
 #                            mkdir -p, unless -y/--yes is passed.
-#   --slug <SLUG>            Adopter project slug — non-empty uppercase ASCII
+#   --slug <SLUG>            Adopter project slug - non-empty uppercase ASCII
 #                            (required in non-interactive mode; prompted if
 #                            omitted and stdin is a TTY, same behavior as
-#                            export-framework.sh — this script does not
+#                            export-framework.sh - this script does not
 #                            re-validate or re-prompt, it delegates entirely).
 #   --flow empty|rehome     Pass-through to export-framework.sh (explicit
 #                            flow selection; usually left to auto-detect).
@@ -57,30 +57,30 @@
 #                            effects end to end. Reports what would happen.
 #   --force                  Pass-through to export-framework.sh. Scoped by
 #                            export-framework.sh itself to the Flow B
-#                            dirty-tree guard ONLY — this script adds no
+#                            dirty-tree guard ONLY - this script adds no
 #                            force of its own to anything.
 #      Skip Step 7 (agent settings generation).
-#                            Use this if you plan to use OpenCode only —
+#                            Use this if you plan to use OpenCode only -
 #                            OpenCode needs no generation step.
 #   -y, --yes                Skip the explicit confirmation prompt before
 #                            mkdir -p (non-interactive / scripted adoption).
-#                            Does NOT skip the slug prompt — export-framework.sh
+#                            Does NOT skip the slug prompt - export-framework.sh
 #                            is the authority on that.
 #   -h, --help               Show this help and exit.
 #
 # EXIT CODES
 #   0  Success
 #   1  Argument/usage error (this script's own arg parsing)
-#   Any export-framework.sh exit code (2-7) — surfaced verbatim when the
+#   Any export-framework.sh exit code (2-7) - surfaced verbatim when the
 #     export step fails; see export-framework.sh's own header for the
 #     meaning of each. This script adds no exit codes of its own beyond 0/1.
-#   8  Post-export validation failed (check-env.sh and/or mdbook build) —
+#   8  Post-export validation failed (check-env.sh and/or mdbook build) -
 #      the target was already created by a successful export; this code
 #      reports a validation failure, it does not mean the export failed.
 #   9  agent settings generation failed (Step 7)
 #
 # EXAMPLES
-#   # Preview only — zero side effects
+#   # Preview only - zero side effects
 #   adopt.sh --target ~/dev/my-project --slug ACME --dry-run
 #
 #   # Real run, greenfield target
@@ -141,7 +141,7 @@ FLOW=""
 DRY_RUN=0
 FORCE=0
 YES=0   # AP-085: -y/--yes skips the mkdir confirmation prompt
-TOOL="none"   # tool-neutral default — adapter generated on demand (tool-adapter.sh)
+TOOL="none"   # tool-neutral default - adapter generated on demand (tool-adapter.sh)
 TOOL_SET=0    # 1 when --tool was supplied explicitly (vs. prompt-default)
 REGEN=0       # 1 when --regen: regenerate agents/models (skip export on existing tree)
 
@@ -150,7 +150,7 @@ usage() {
 Usage: adopt.sh [--target <dir>] --slug <SLUG> [--flow empty|rehome] [--tool none|opencode|codex]
                 [--regen] [--dry-run] [--force]  [-y|--yes]
 
-Single-command adopter onboarding — wraps README Quick Start (Adopter)
+Single-command adopter onboarding - wraps README Quick Start (Adopter)
 steps 3-7 (create target, run export, validate, generate agent configuration).
 Step 2 (clone) and Step 8 (open an agentic session) remain manual.
 
@@ -176,7 +176,7 @@ Step 2 (clone) and Step 8 (open an agentic session) remain manual.
                           On an existing framework export this skips the full
                           re-export and updates agents/models in place.
   --dry-run               Pass-through to export-framework.sh; also skips
-                          every mutating step in this script — zero side
+                          every mutating step in this script - zero side
                           effects end to end
   --force                 Pass-through to export-framework.sh (scoped by
                           export-framework.sh to the Flow B dirty-tree
@@ -198,8 +198,8 @@ Examples:
   # --target is the base name; .01 is appended -> <name>.01
 
 This script orchestrates existing tooling only:
-  export-framework.sh    — the export/adoption logic (ADR-0015 D-7)
-  check-env.sh            — environment validation
+  export-framework.sh    - the export/adoption logic (ADR-0015 D-7)
+  check-env.sh            - environment validation
 
 Every export-framework.sh exit code is surfaced verbatim; a non-zero export
 exit aborts immediately with no further steps run. See
@@ -230,7 +230,7 @@ done
 # non-interactive mode.
 #
 # Whether supplied by flag or prompt: ALWAYS echo the resolved path and
-# require explicit confirmation (y/N) before mkdir -p — unless -y/--yes was
+# require explicit confirmation (y/N) before mkdir -p - unless -y/--yes was
 # passed for non-interactive / scripted adoption.
 #
 # The AP-074 convention for --target:
@@ -243,7 +243,7 @@ prompt_for_target() {
   # Derive a suggested path: <cwd>/<basename-of-cwd> as a minimal anchor (the
   # .01 management-layer suffix is appended later by normalize_target_plane).
   # In the common "I cloned into ./AgenticCore" pattern, the cwd is the
-  # parent of the clone — this gives "~/dev/my-project" as a suggestion.
+  # parent of the clone - this gives "~/dev/my-project" as a suggestion.
   # Adopters running from inside the clone will see the clone dir's parent.
   local _suggested
   _suggested="$(pwd)/$(basename "$(pwd)")"
@@ -278,21 +278,21 @@ confirm_target() {
   case "$_confirm" in
     y|Y|yes|YES) return 0 ;;
     *)
-      printf 'Aborted — re-run with --target <correct-path> to choose a different directory.\n' >&2
+      printf 'Aborted - re-run with --target <correct-path> to choose a different directory.\n' >&2
       exit 1
       ;;
   esac
 }
 
 # ---------------------------------------------------------------------------
-# normalize_target_plane — append the `.01` management-plane suffix to TARGET.
+# normalize_target_plane - append the `.01` management-plane suffix to TARGET.
 #
 # `--target` is the adopter's BASE project identity. The management layer is
 # ALWAYS this base + `.01` (e.g. `myproject.v0.01` -> `myproject.v0.01.01`),
 # enforced onto the `.01` namespace that the agent runtime, bench provisioning,
 # and personae all key off. Benches are provisioned as siblings of that layer in
 # the SAME parent (`myproject.v0.01.00`, `myproject.v0.01.02`, ...), matching how
-# `.00` is auto-materialized as a sibling worktree. Always appended — even when
+# `.00` is auto-materialized as a sibling worktree. Always appended - even when
 # the base already ends in `.01`, so a base `myproject.v0.01` becomes the
 # management layer `myproject.v0.01.01`. Apply this BEFORE the confirmation
 # prompt so the adopter sees (and confirms) the real `.01` path.
@@ -305,7 +305,7 @@ normalize_target_plane() {
 }
 
 # ---------------------------------------------------------------------------
-# prompt_for_tool — interactive pick of the agent-runtime adapter (when
+# prompt_for_tool - interactive pick of the agent-runtime adapter (when
 # --tool was NOT supplied and stdin is a TTY). The harness core is
 # tool-agnostic; this only surfaces the choice so adoption never prescribes a
 # tool by surprise. Default: none (bring your own). Scripted / non-interactive
@@ -323,12 +323,12 @@ prompt_for_tool() {
    case "$_tool_in" in
      ""|none)          TOOL="none" ;;
      opencode|codex)   TOOL="$_tool_in" ;;
-     *) err "unknown tool: $_tool_in — defaulting to none"; TOOL="none" ;;
+     *) err "unknown tool: $_tool_in - defaulting to none"; TOOL="none" ;;
    esac
 }
 
 # ---------------------------------------------------------------------------
-# regen_adapter — regenerate the agent runtime adapter + re-apply the model
+# regen_adapter - regenerate the agent runtime adapter + re-apply the model
 # distribution, refreshing the framework's canonical agent source and setup
 # scripts into the target. Preserves the adopter's .agents/model-profile.yaml
 # so their configured models survive the refresh. Used by --regen to update a
@@ -375,7 +375,7 @@ regen_adapter() {
 }
 
 # ---------------------------------------------------------------------------
-# is_framework_export — 1 when the target already looks like an AgenticCore
+# is_framework_export - 1 when the target already looks like an AgenticCore
 # framework export (has the tool-adapter). Used by --regen to decide whether
 # to regenerate in place (skip the full re-export) or export first.
 # ---------------------------------------------------------------------------
@@ -401,7 +401,7 @@ normalize_target_plane
 
 # --regen against an existing framework export: refresh agent source + setup
 # scripts and regenerate the adapter/models in place. Skip the full re-export,
-# the mkdir confirmation, and validation — this is an in-place update, not a
+# the mkdir confirmation, and validation - this is an in-place update, not a
 # fresh adoption.
 if [ "$REGEN" -eq 1 ] && ! [ "$DRY_RUN" -eq 1 ]; then
   if is_framework_export; then
@@ -419,7 +419,7 @@ if [ "$REGEN" -eq 1 ] && ! [ "$DRY_RUN" -eq 1 ]; then
     log "  Say: \"Lead-engineer, session open\""
     exit 0
   fi
-  warn "--regen given but $TARGET is not yet a framework export — exporting fresh first, then regenerating."
+  warn "--regen given but $TARGET is not yet a framework export - exporting fresh first, then regenerating."
 fi
 
 # Confirm the target path (show it back, require y/N) unless --yes was passed.
@@ -449,7 +449,7 @@ case "$TOOL" in
   *) err "--tool must be one of: none opencode codex"; exit 1 ;;
 esac
 
-# --slug is not re-validated here — export-framework.sh is the single
+# --slug is not re-validated here - export-framework.sh is the single
 # authority on slug validation and interactive prompting (do not reimplement
 # it). An empty --slug is passed through as-is; export-framework.sh will
 # prompt if stdin is a TTY, or fail with its own exit 7 otherwise.
@@ -464,10 +464,10 @@ log "==> adopt.sh: onboarding into $TARGET"
 log "    framework root: $FRAMEWORK_ROOT"
 
 # ---------------------------------------------------------------------------
-# Step 3 — create the target project directory and canonicalize to an
+# Step 3 - create the target project directory and canonicalize to an
 # absolute path (AP-084, AP-085).
 #
-# AP-084: $TARGET may be a relative path (e.g. ./my-project.01 — the exact
+# AP-084: $TARGET may be a relative path (e.g. ./my-project.01 - the exact
 # form used in README examples). adopt.sh's Steps 6 and 7 construct script
 # paths like "$TARGET/mddocs/scripts/check-env.sh" and then run
 # ( cd "$TARGET" && "$target_check_env" ). When $TARGET is relative, the cd
@@ -475,20 +475,20 @@ log "    framework root: $FRAMEWORK_ROOT"
 # looking for a doubly-nested path that never exists. Fix: canonicalize
 # $TARGET to an absolute path once, immediately after mkdir -p (the directory
 # must exist for `cd ... && pwd -P` to work), then use the absolute path for
-# every downstream reference — mirroring export-framework.sh's own
+# every downstream reference - mirroring export-framework.sh's own
 # `target_abs="$(cd "$TARGET" && pwd -P)"` pattern (~line 373).
 #
 # AP-085 confirmation happened above; mkdir is the first mutating operation.
 #
 # Note: suffixing the target with .01 marks it as the lead-engineer
 # management plane namespace (see the Bench Model doc). normalize_target_plane()
-# above ALWAYS appends .01 to the given base — `--target ./my-project` lands at
+# above ALWAYS appends .01 to the given base - `--target ./my-project` lands at
 # `./my-project.01`, and `--target ./myproject.v0.01` lands at
 # `./myproject.v0.01.01` (the base's own trailing .01 is part of the project
 # identity; the management-layer suffix is added on top). Benches are then
 # provisioned as siblings: `./myproject.v0.01.00`, `./myproject.v0.01.02`, ...
 #
-# --dry-run: do NOT create the directory for real (zero side effects) —
+# --dry-run: do NOT create the directory for real (zero side effects) -
 # report only.
 # ---------------------------------------------------------------------------
 if [ "$DRY_RUN" -eq 1 ]; then
@@ -507,12 +507,12 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 4 — run export-framework.sh into the target.
+# Step 4 - run export-framework.sh into the target.
 #
 # CRITICAL: capture the export's exit code explicitly (arithmetic under
 # set -e requires this to not have the failure abort before we get to
 # report it). On any non-zero exit, abort adopt.sh immediately and surface
-# export-framework.sh's own message and exit code faithfully — no retry,
+# export-framework.sh's own message and exit code faithfully - no retry,
 # no masking, no continuing to Steps 6-7.
 # ---------------------------------------------------------------------------
 EXPORT_ARGS=(--target "$BASE_TARGET" --slug "$SLUG")
@@ -531,7 +531,7 @@ export_exit=0
 "$EXPORT_SCRIPT" "${EXPORT_ARGS[@]}" || export_exit=$?
 
 if [ "$export_exit" -ne 0 ]; then
-  err "export-framework.sh exited with code $export_exit — aborting adopt.sh."
+  err "export-framework.sh exited with code $export_exit - aborting adopt.sh."
   err "No further steps (validation, agent settings generation) will run."
   err "See export-framework.sh's own output above for the specific failure."
   exit "$export_exit"
@@ -545,19 +545,19 @@ if [ "$DRY_RUN" -eq 1 ]; then
   dry_note "would run Step 7 validation (check-env.sh + mdbook build) in $TARGET"
   dry_note "would run Step 8 (tool adapter) in $TARGET for --tool $TOOL"
   log ""
-  log "[dry-run] zero side effects — report only. Nothing was created or written."
+  log "[dry-run] zero side effects - report only. Nothing was created or written."
   exit 0
 fi
 
 # ---------------------------------------------------------------------------
-# Step 5 — create the project-local Python virtualenv and validate deps.
+# Step 5 - create the project-local Python virtualenv and validate deps.
 #
 # The harness's Python dependencies are pinned in requirements.txt. This step
 # creates <target>/.venv, installs from requirements.txt, and validates that the
 # required modules (mcp, yaml, fastmcp) import. It is tool-neutral and
 # idempotent. It also builds .envrc from .envrc.template (if absent) so the
 # venv is sourced on cd via direnv's `layout python`. Set up here (post-export)
-# because the target tree — including requirements.txt and python-env.sh — must
+# because the target tree - including requirements.txt and python-env.sh - must
 # exist first.
 # ---------------------------------------------------------------------------
 log "==> Step 5: provisioning Python environment"
@@ -572,7 +572,7 @@ if [ -x "$target_python_env" ]; then
     validation_failed=1
   fi
 else
-  warn "python-env.sh not found or not executable at: $target_python_env — skipping"
+  warn "python-env.sh not found or not executable at: $target_python_env - skipping"
   validation_failed=1
 fi
 
@@ -584,18 +584,18 @@ fi
 if [ -f "$TARGET/.envrc.template" ]; then
   log "    building .envrc from .envrc.template"
   cp "$TARGET/.envrc.template" "$TARGET/.envrc"
-  log "    .envrc created — run 'direnv allow' once to activate the venv on cd"
+  log "    .envrc created - run 'direnv allow' once to activate the venv on cd"
 else
-  warn "    .envrc.template not found — skipping .envrc build"
+  warn "    .envrc.template not found - skipping .envrc build"
   validation_failed=1
 fi
 
 # ---------------------------------------------------------------------------
-# Step 6 — toolchain dependency check (validate / install / skip).
+# Step 6 - toolchain dependency check (validate / install / skip).
 #
 # Checks the harness's non-Python dev/docs toolchain (mdbook, typos, shellcheck,
 # gh, jq). If a required or optional tool is missing or out of date, offers to
-# install/update or skip. Skipping does not fail the adoption — it prints a
+# install/update or skip. Skipping does not fail the adoption - it prints a
 # note about what is skipped and the impact, then continues. The toolchain is
 # validated in the target but uses the adopter's installed tools; nothing is
 # force-installed unless the adopter chooses to.
@@ -606,7 +606,7 @@ tc_script="$TARGET/mddocs/scripts/setup/toolchain.sh"
 if [ "$DRY_RUN" -eq 1 ]; then
   dry_note "would run toolchain.sh --check (and optionally --install) in $TARGET"
 elif [ ! -x "$tc_script" ]; then
-  warn "toolchain.sh not found or not executable at: $tc_script — skipping toolchain check"
+  warn "toolchain.sh not found or not executable at: $tc_script - skipping toolchain check"
   validation_failed=1
 else
   log "    running: $tc_script --check"
@@ -629,7 +629,7 @@ else
       if ( cd "$TARGET" && "$tc_script" --install ); then
         log "    toolchain updated"
       else
-        warn "toolchain --install reported a failure — continuing with the findings above"
+        warn "toolchain --install reported a failure - continuing with the findings above"
       fi
     else
       warn "Skipping toolchain install/update (exit $tc_exit). Impact: docs build / docs-reviewer (typos) and quality gates may need tools that are missing or out of date. Resolve later with: ./mddocs/scripts/setup/toolchain.sh --install"
@@ -638,12 +638,12 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 7 — validate the exported target.
+# Step 7 - validate the exported target.
 #
 # Runs check-env.sh and `mdbook build` INSIDE the target (the target already
 # exists at this point because export-framework.sh exited 0 above). A
 # validation failure here is surfaced as a non-zero exit, but it is
-# POST-export — the target has already been created — so this is reported
+# POST-export - the target has already been created - so this is reported
 # as a validation failure, not masked as export failure or silently ignored.
 # ---------------------------------------------------------------------------
 log "==> Step 7: validating exported target"
@@ -656,7 +656,7 @@ if [ -x "$target_check_env" ]; then
     validation_failed=1
   fi
 else
-  warn "check-env.sh not found or not executable at: $target_check_env — skipping"
+  warn "check-env.sh not found or not executable at: $target_check_env - skipping"
   validation_failed=1
 fi
 
@@ -667,12 +667,12 @@ if command -v mdbook >/dev/null 2>&1; then
     validation_failed=1
   fi
 else
-  warn "mdbook not found — skipping mdbook build validation. Install with: cargo install mdbook"
+  warn "mdbook not found - skipping mdbook build validation. Install with: cargo install mdbook"
   validation_failed=1
 fi
 
 if [ "$validation_failed" -eq 1 ]; then
-  err "Step 6 validation reported failure(s) — see warnings above."
+  err "Step 6 validation reported failure(s) - see warnings above."
   err "The target has already been created by export-framework.sh; this failure is"
   err "post-export and does not undo it. Resolve the reported issue(s), then re-run"
   err "check-env.sh / mdbook build directly in $TARGET."
@@ -681,12 +681,12 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 7 — generate/configure the agent-runtime adapter (tool-adapter.sh).
+# Step 7 - generate/configure the agent-runtime adapter (tool-adapter.sh).
 #
 # The harness core is TOOL-AGNOSTIC (roles, process, benches, MCP servers).
 # tool-adapter.sh emits an OPTIONAL adapter for a chosen runtime, driven by
 # --tool (default: none = bring your own). It does not prescribe a tool.
-# Step 8 — NOT executed here. Print the exact copy-pasteable instruction,
+# Step 8 - NOT executed here. Print the exact copy-pasteable instruction,
 # matching export-framework.sh's own cold-start pointer tone.
 # ---------------------------------------------------------------------------
 TOOL_ADAPTER="$TARGET/mddocs/scripts/setup/tool-adapter.sh"
@@ -696,7 +696,7 @@ if [ -x "$TOOL_ADAPTER" ]; then
     warn "tool-adapter.sh reported a failure in $TARGET (post-export, does not undo the export)"
   fi
 else
-  warn "tool-adapter.sh not found at: $TOOL_ADAPTER — skipping tool adapter generation"
+  warn "tool-adapter.sh not found at: $TOOL_ADAPTER - skipping tool adapter generation"
 fi
 
 # --regen on a freshly exported/new target: refresh + regenerate agent source and
@@ -707,13 +707,13 @@ if [ "$REGEN" -eq 1 ]; then
 fi
 
 log ""
-log "You are here — adopter management plane ready"
+log "You are here - adopter management plane ready"
 log ""
 log "adopt.sh finished Steps 3-8 (create, export, python env, toolchain, validate, tool adapter)."
 log "Target: $TARGET"
 if [ "$validation_failed" -eq 1 ]; then
   log ""
-  warn "One or more post-export steps above reported a failure — review before proceeding."
+  warn "One or more post-export steps above reported a failure - review before proceeding."
 fi
 log ""
 if [ "$TOOL" = "none" ]; then
@@ -744,7 +744,7 @@ log ""
 log "Later, to refresh agents/models without a full re-adopt (e.g. newer models):"
 log "  ./mddocs/scripts/setup/adopt.sh --target <base> --tool $TOOL --regen"
 log ""
-log "Persona: as an adopter you operate as lead-engineer for your own project —"
+log "Persona: as an adopter you operate as lead-engineer for your own project -"
 log "distinct from framework development (baseline-steward)."
 
 if [ "$validation_failed" -eq 1 ]; then

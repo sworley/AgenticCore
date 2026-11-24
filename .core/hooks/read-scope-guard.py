@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-read-scope-guard.py — PreToolUse hook for the Read tool.
+read-scope-guard.py - PreToolUse hook for the Read tool.
 
 Blocks Read calls whose resolved path falls outside:
 
@@ -11,8 +11,8 @@ Override: set READ_SCOPE_GUARD_DISABLED=1 in the session environment to
 bypass the guard for the duration of that session.
 
 Exit codes:
-  0  — allow
-  2  — block (JSON body on stdout consumed by the harness)
+  0  - allow
+  2  - block (JSON body on stdout consumed by the harness)
 
 The hook is non-fatal on errors: malformed input, git failure, or any
 unexpected exception is logged to stderr and exits 0 so agent work is
@@ -72,7 +72,7 @@ def main() -> None:
     raw_path = tool_input.get("file_path", "")
 
     if not raw_path:
-        # No path provided — let the harness handle validation
+        # No path provided - let the harness handle validation
         sys.exit(0)
 
     resolved = os.path.realpath(os.path.expanduser(raw_path))
@@ -102,4 +102,4 @@ if __name__ == "__main__":
         main()
     except Exception as exc:  # noqa: BLE001
         print(f"[read-scope-guard] Unexpected error: {exc}", file=sys.stderr)
-        sys.exit(0)  # non-fatal — never silently kill agent work
+        sys.exit(0)  # non-fatal - never silently kill agent work

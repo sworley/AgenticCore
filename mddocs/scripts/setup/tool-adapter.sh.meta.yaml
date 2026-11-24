@@ -1,0 +1,14 @@
+id: SH-0015
+title: Agent runtime adapter generator
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Agentic
+process: runtime-adapter-gen
+owner: lead-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - index.md
+    - ../../reference.architecture/tooling-contract.md

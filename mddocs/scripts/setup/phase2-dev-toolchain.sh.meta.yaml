@@ -1,0 +1,13 @@
+id: SH-0013
+title: Phase 2 dev toolchain installer
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Architecture
+process: dev-toolchain-install
+owner: infra-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - phase2-dev-toolchain.md

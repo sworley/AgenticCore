@@ -8,18 +8,18 @@ is managed."
 The workspace is one git repository governed by a **git-worktree bench hierarchy**.
 It is managed at three layers:
 
-1. **Physical layout** — the repo is split into long-living namespaces and ephemeral
+1. **Physical layout** - the repo is split into long-living namespaces and ephemeral
    worker benches, each a checked-out worktree on its own branch.
-   - `.00` — HIL management plane (long-living, never torn down)
-   - `.01` — lead-engineer management plane (long-living, never torn down)
-   - `.02`+ — worker benches (ephemeral, per-ticket)
+   - `.00` - HIL management plane (long-living, never torn down)
+   - `.01` - lead-engineer management plane (long-living, never torn down)
+   - `.02`+ - worker benches (ephemeral, per-ticket)
 
-2. **Provenance** — durable, queryable per-bench state lives in
+2. **Provenance** - durable, queryable per-bench state lives in
    [`bench-registry.yaml`](../reference.architecture/bench-registry.md) (branch, task, pattern, `locked`
    flag, status). The disk-local `.bench/assignment.md` is regenerable and gitignored;
    it is *not* the durable record.
 
-3. **Operational tooling** — a small set of scripts drives the lifecycle:
+3. **Operational tooling** - a small set of scripts drives the lifecycle:
    - [`provision-bench.sh`](../scripts/operations/provision-bench.md) creates benches
      from the current `.01` HEAD and generates per-bench files.
    - [`git-sync.sh`](../scripts/operations/git-sync.md) clones/updates every project
@@ -29,8 +29,8 @@ It is managed at three layers:
      working session (environment checks, hook wiring, clean `dev`/`main` tree,
      bench status, task-queue scan).
 
-Because the model is documentation-first and HIL-gated, every structural change —
-provisioning a bench, merging to `dev`, or tearing one down — is preceded by a
+Because the model is documentation-first and HIL-gated, every structural change -
+provisioning a bench, merging to `dev`, or tearing one down - is preceded by a
 runbook step and requires explicit human authorization.
 
 ## Key Rules
@@ -42,22 +42,22 @@ runbook step and requires explicit human authorization.
 - The lead-engineer (`.01`) is the sole writer of `tasks.yaml`; bench leads cannot
   write to `.01` or `tasks.yaml`.
 - Synced top-level directories must be in `.gitignore` (see
-  [`git-sync-runbook.md`](../operations/runbooks/git-sync-runbook.md#gitignore-requirement)).
+  [`git-sync-runbook.md`](../management/agentic/procedures/git-sync-runbook.md#gitignore-requirement)).
 
 ## Canonical References
 
-- [Bench Model](../onboarding/bench-model.md)
+- [Bench Model](../management/architecture/bench/bench-model.md)
 - [Repository Structure](../onboarding/repository-structure.md)
 - [Provision Worker Bench](../reference.architecture/provision-worker-bench.md)
 - [Bench Registry](../reference.architecture/bench-registry.md)
 - [Task Queue Operations](../reference.architecture/task-queue-operations.md)
 - [Session Open Checklist](../reference.architecture/session-open-checklist.md)
 - [Session Close Checklist](../reference.architecture/session-close-checklist.md)
-- [git-sync Runbook](../operations/runbooks/git-sync-runbook.md)
-- [Session Continuity Runbook](../operations/runbooks/session-continuity.md)
+- [git-sync Runbook](../management/agentic/procedures/git-sync-runbook.md)
+- [Session Continuity Runbook](../management/agentic/procedures/session-continuity.md)
 
 ## Provenance
 
-- **Session:** 2026-11-02 — "project workspace management" Q&A (AgenticCore v0.5.0).
+- **Session:** 2026-11-02 - "project workspace management" Q&A (AgenticCore v0.5.0).
 - **Related ADRs:** ADR-0001 (bootstrap architecture), ADR-0007 (bench scope
   isolation), ADR-0015 (distribution & adoption), ADR-0026 (release-branch curation).

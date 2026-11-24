@@ -1,0 +1,13 @@
+id: SH-0026
+title: Bench registry seed data
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Operations
+process: bench-registry
+owner: ops-engineer
+allowed_in_adopter_repos: false
+related:
+  paths:
+    - ../../reference.architecture/bench-registry.md

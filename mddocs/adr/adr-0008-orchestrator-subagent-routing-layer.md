@@ -1,12 +1,12 @@
-# ADR-0008: Orchestrator Subagent — Dedicated Routing Planning Layer
+# ADR-0008: Orchestrator Subagent - Dedicated Routing Planning Layer
 
 **Date:** 2026-05-22
 **Status:** accepted
-**Supersedes:** —
+**Supersedes:** -
 
 ## Prior Art
 
-EXAMPLE-ADR-0022 (Orchestrator Subagent — Dedicated Routing Planning Layer, 2026-05-22).
+EXAMPLE-ADR-0022 (Orchestrator Subagent - Dedicated Routing Planning Layer, 2026-05-22).
 Routing layer separation rationale and orchestrator responsibility model carried forward
 unchanged.
 
@@ -24,37 +24,37 @@ definition identified four distinct responsibility clusters:
 | Technical orchestration | 14% |
 | Execution guardrails | 13% |
 
-The orchestration cluster — the routing function — was the thinnest and most
+The orchestration cluster - the routing function - was the thinnest and most
 under-specified. No guidance existed for parallel vs. sequential invocation,
 specialist conflict resolution, escalation criteria, routing disambiguation, or
 agent roster evolution.
 
 ## Decision Drivers
 
-- Routing decisions required the same judgment as specialist execution — lead-engineer
+- Routing decisions required the same judgment as specialist execution - lead-engineer
   was silently making architectural calls with no documented criteria
 - Specialist boundary overlaps had no documented disambiguation rules
 - The orchestration function needed to grow without polluting program management and
   gate enforcement context
-- HIL interaction surface must remain at one agent — adding a co-primary entry point
+- HIL interaction surface must remain at one agent - adding a co-primary entry point
   was explicitly rejected
 
 ## Considered Options
 
-**COA A — Extract PM work into `delivery-coordinator` subagent**
+**COA A - Extract PM work into `delivery-coordinator` subagent**
 Lead-engineer retains gates, orchestration, guardrails. Gates (34% of file) stay in
-lead-engineer — conceptual muddle persists.
+lead-engineer - conceptual muddle persists.
 
-**COA B — Refocus lead-engineer as program manager; new `engineering-lead` for orchestration**
+**COA B - Refocus lead-engineer as program manager; new `engineering-lead` for orchestration**
 Creates HIL interaction surface problem: either engineering-lead is a subagent (relay
 noise, fidelity risk) or co-primary (user carries routing burden).
 
-**COA B — Configuration 1 analysis (subagent):**
+**COA B - Configuration 1 analysis (subagent):**
 Every technical question becomes a visible three-party relay: HIL → PM → engineering-lead
 → PM → HIL. Four fidelity failure modes: omission, reframing, false reconciliation,
 confidence laundering.
 
-**COA C — Three-way split; gates fold into security layer**
+**COA C - Three-way split; gates fold into security layer**
 Maximum specialization; highest coordination complexity; lead-engineer retired. Rejected:
 gates are not purely security concerns.
 
@@ -69,9 +69,9 @@ subagent that lead-engineer delegates to silently.
 ### Architecture
 
 ```
-HIL → lead-engineer (primary — sole entry point)
+HIL → lead-engineer (primary - sole entry point)
            ↓ multi-specialist routing decisions
-      orchestrator (subagent — planning only, read-only tools)
+      orchestrator (subagent - planning only, read-only tools)
            ↓ ROUTING_PLAN block
       lead-engineer validates and executes
            ↓
@@ -83,7 +83,7 @@ synthesize outputs, or take any action beyond producing a plan.
 
 ### Three-layer fidelity protection
 
-**Layer 1 — Invariant rules (preventive)**
+**Layer 1 - Invariant rules (preventive)**
 
 | Invariant | Trigger | Rule |
 |---|---|---|
@@ -92,12 +92,12 @@ synthesize outputs, or take any action beyond producing a plan.
 | `adr-coa-poc-sequence` | ADR/COA/POC decision | docs-engineer → security-reviewer → lead advances |
 | `merge-push` | Merge/push in plan | HIL confirmation request |
 
-**Layer 2 — Structured output with pre-execution assertions**
+**Layer 2 - Structured output with pre-execution assertions**
 Orchestrator emits a `ROUTING_PLAN` schema. Lead-engineer runs assertions before
 executing: invariants present, sequencing consistent, reasons map to recognized
 triggers, sensitivity classification correct.
 
-**Layer 3 — Selective HIL visibility**
+**Layer 3 - Selective HIL visibility**
 Requests above sensitivity threshold surface a one-line routing confirmation before
 execution. Threshold triggers: external content, credentials, ADR/COA/POC, 3+
 specialists, destructive operations.
@@ -115,7 +115,7 @@ across sustained sessions, lead-engineer retires its inline routing table.
 ## Consequences
 
 **Positive:**
-- HIL interaction surface unchanged — sole primary entry point preserved
+- HIL interaction surface unchanged - sole primary entry point preserved
 - Routing decisions are now documented, auditable, and improvement-trackable
 - Fidelity risks addressed at three independent layers
 - Deprecation gate is evidence-based
@@ -131,5 +131,5 @@ across sustained sessions, lead-engineer retires its inline routing table.
 ## Related
 
 - [ADR-0007: Bench Scope Isolation](adr-0007-bench-scope-isolation.md)
-- `.agentic/agents/orchestrator.md` — full orchestrator spec
-- `.agentic/agents/lead-engineer.md` — Orchestrator Delegation section
+- `.agentic/agents/orchestrator.md` - full orchestrator spec
+- `.agentic/agents/lead-engineer.md` - Orchestrator Delegation section

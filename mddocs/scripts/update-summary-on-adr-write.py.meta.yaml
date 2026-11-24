@@ -1,0 +1,14 @@
+id: SH-0022
+title: Active ADR index auto-update hook
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Governance
+process: adr-docs-maintenance
+owner: docs-engineer
+allowed_in_adopter_repos: true
+related:
+  paths:
+    - update-summary-on-adr-write.md
+    - hooks-index.md

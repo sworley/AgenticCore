@@ -297,13 +297,14 @@ tasks:
     size: XS
     labels: [release, chore]
     agent: baseline-steward
-    status: in_progress
+    status: merged
     branch: "dev"
     bench: .01
     blocked_by: [AC-0010]
     created: "2026-11-09"
-    updated: "2026-11-09"
+    updated: "2026-11-24"
     started_at: "2026-11-09T17:00:00"
+    completed_at: "2026-11-24"
 
   - id: AC-0012
     title: "HIL submission: adopt documentation and knowledge taxonomy (ADR-0029)"
@@ -438,7 +439,7 @@ tasks:
     size: L
     labels: [governance, taxonomy, docs, scripts]
     agent: baseline-steward
-    status: accepted
+    status: merged
     branch: "dev"
     bench: .01
     blocked_by: []
@@ -485,7 +486,7 @@ tasks:
     size: M
     labels: [governance, taxonomy, security, scripts]
     agent: baseline-steward
-    status: accepted
+    status: merged
     branch: "feat/taxonomy-adoption"
     bench: .01
     blocked_by: []
@@ -551,13 +552,14 @@ tasks:
     size: L
     labels: [taxonomy, adoption, security, scripts]
     agent: baseline-steward
-    status: in_progress
+    status: merged
     branch: "feat/management-tooling-adoption"
     bench: .01
     blocked_by: []
     created: "2026-11-19"
-    updated: "2026-11-20"
+    updated: "2026-11-24"
     started_at: "2026-11-19T00:00:00"
+    completed_at: "2026-11-24"
   - id: AC-0016
     title: "ADR evolution convention: forward-only supersede and supersession ledger"
     description: |
@@ -591,13 +593,14 @@ tasks:
     size: M
     labels: [governance, adr, security]
     agent: baseline-steward
-    status: in_progress
+    status: merged
     branch: "feat/management-tooling-adoption"
     bench: .01
     blocked_by: []
     created: "2026-11-20"
-    updated: "2026-11-20"
+    updated: "2026-11-24"
     started_at: "2026-11-20T00:00:00"
+    completed_at: "2026-11-24"
   - id: AC-0017
     title: "Adopt GitHub branch-protection rulesets for main and dev"
     description: |
@@ -646,10 +649,42 @@ tasks:
     size: M
     labels: [governance, adr, security]
     agent: baseline-steward
-    status: in_progress
+    status: merged
     branch: "feat/branch-protection-rulesets"
     bench: .01
     blocked_by: []
     created: "2026-11-20"
-    updated: "2026-11-20"
+    updated: "2026-11-24"
     started_at: "2026-11-20T00:00:00"
+    completed_at: "2026-11-24"
+
+  - id: AC-0018
+    title: "Release v0.8.0"
+    description: |
+      Cut the v0.8.0 release from dev to main under the formalized release process:
+      curate release/v0.8.0-prep (all-selected from dev), gate via security/docs
+      review + HIL, tag v0.8.0, cut release/v0.8.0, update README as-built, and
+      merge main back to dev. Scope: documentation/metadata taxonomy adoption
+      (AC-0013), the allowed_in_adopter_repos fail-closed shipping gate (AC-0014,
+      adopter-Required with migration note), management tooling adoption (AC-0015),
+      ADR forward-only supersede convention (AC-0016), GitHub branch-protection
+      rulesets (AC-0017), plus release hygiene (privacy strip / .tmp convention).
+    acceptance_criteria:
+      - "mddocs/management/delivery/releases/v0.8.0.md published"
+      - "v0.8.0 tag pushed"
+      - "release/v0.8.0 branch pushed"
+      - "README as-built updated"
+      - "main -> dev merge-back complete; tickets released"
+    adr: [ADR-0026]
+    priority: P1
+    size: S
+    labels: [release]
+    agent: baseline-steward
+    status: merged
+    branch: "release/v0.8.0-prep"
+    bench: .01
+    blocked_by: [AC-0017]
+    created: "2026-11-24"
+    updated: "2026-11-24"
+    started_at: "2026-11-24T00:00:00"
+    completed_at: "2026-11-24"

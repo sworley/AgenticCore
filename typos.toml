@@ -39,6 +39,7 @@ nd       = "nd"      # BM25 variable name in mcp-rag-docs/server.py
 # tasks.yaml is excluded because it contains commit SHAs that typos flags as misspellings.
 extend-exclude = [
     "mddocs/book/**",
+    "mddocs/mermaid.min.js",
     ".opencode/node_modules/**",
     "_oob/**",
     "_poc/**",

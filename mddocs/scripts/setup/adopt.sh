@@ -617,7 +617,7 @@ else
   else
     tc_action="skip"
     if [ "$YES" -eq 0 ] && [ -t 0 ]; then
-      printf 'Toolchain needs install/update. Install/update now, or skip? [i]nstall / [s]kip: ' >&2
+      printf 'Toolchain needs install/update. Install/update now, or skip? (i=install, s=skip): ' >&2
       read -r _tc
       case "$_tc" in
         i|I|install|Install|y|Y|yes|YES) tc_action="install" ;;

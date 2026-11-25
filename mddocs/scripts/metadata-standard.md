@@ -219,6 +219,7 @@ The complete set of `document_type` values the harness governs, covering both
 | SH-0035 | `management/tooling/scripts/validate_book.py` | 2 | docs-engineer | true | - |
 | SH-0036 | `management/tooling/scripts/build.sh` | 2 | docs-engineer | true | - |
 | SH-0045 | `management/tooling/project_protection/test_profile_schema.py` | 2 | security-engineer | true | - |
+| SH-0046 | `check-privacy.sh` | 1 | security-engineer | false | - |
 
 > Note: the generated per-file `.meta.yaml` metadata is authoritative over this
 > table. Reconcile the table here whenever a classification changes - or run

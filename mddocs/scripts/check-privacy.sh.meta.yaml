@@ -1,0 +1,10 @@
+id: SH-0046
+title: Personal/private-value leak scanner
+document_type: script
+status: active
+lifecycle: active
+domain: Management
+category: Security
+process: privacy-guard
+owner: security-engineer
+allowed_in_adopter_repos: false

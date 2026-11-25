@@ -41,6 +41,11 @@ on how you came to the framework:
 - **External content gate.** Any change that incorporates external content
   (fetched URLs, upstream pull, external API data, pasted third-party text)
   must pass the security inspection gate before it is acted on.
+- **Deployer-neutral hygiene.** Never commit operator-specific values: absolute
+  local paths, private/LAN addresses, home-lab hostnames, or a personal GitHub
+  identity/numeric id. Use portable placeholders (`<owner>`, `<repo>`,
+  `<OWNER_ID>`, `${HOME}`) so the harness stays deployer-neutral. CI runs
+  `mddocs/scripts/check-privacy.sh` to enforce this.
 
 ## Main Branch Protection
 

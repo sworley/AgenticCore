@@ -30,16 +30,21 @@ EOF
 )"
 
 found=0
-while IFS= read -r f; do
+tmp_out="$(mktemp)"
+git ls-files | while IFS= read -r f; do
   case "$f" in
     mddocs/book/*|mddocs/mermaid.min.js|mddocs/scripts/check-privacy.sh|mddocs/scripts/check-privacy.sh.meta.yaml) continue ;;
   esac
   if grep -niE "$PATTERNS" "$f" 2>/dev/null | grep -q .; then
-    found=1
-    echo "check-privacy: personal/private value in $f"
-    grep -niE "$PATTERNS" "$f" 2>/dev/null | sed 's/^/    /' | head -5
+    echo "check-privacy: personal/private value in $f" >> "$tmp_out"
+    grep -niE "$PATTERNS" "$f" 2>/dev/null | sed 's/^/    /' | head -5 >> "$tmp_out"
   fi
-done < <(git ls-files)
+done
+if [ -s "$tmp_out" ]; then
+  cat "$tmp_out"
+  found=1
+fi
+rm -f "$tmp_out"
 
 if [ "$found" -eq 0 ]; then
   echo "check-privacy: clean (no personal/private values)"

@@ -100,9 +100,10 @@ def parse_meta(path):
 def to_bool(value):
     if value is None:
         return None
-    if str(value).strip().lower() in ("true", "yes", "1"):
+    v = str(value).strip().lower()
+    if v == "true":
         return True
-    if str(value).strip().lower() in ("false", "no", "0"):
+    if v == "false":
         return False
     return None
 

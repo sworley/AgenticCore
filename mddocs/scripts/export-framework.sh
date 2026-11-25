@@ -1079,11 +1079,12 @@ _append_metadata_excludes() {
       exec="${rel%.meta.yaml}"
       FRAMEWORK_EXCLUDE_PATTERNS+=("$exec" "$rel")
     fi
-  done < <(find "$FRAMEWORK_ROOT/mddocs/scripts" -name '*.meta.yaml' -print0 2>/dev/null)
+  done < <(find "$FRAMEWORK_ROOT/mddocs/scripts" "$FRAMEWORK_ROOT/mddocs/management/tooling" -name '*.meta.yaml' -print0 2>/dev/null)
   # W2 (honor .md script-doc frontmatter): exclude a script-doc whose declared
   # flag is not 'true', so documentation for a non-shipping tool (e.g.
   # setup/adopt.md) never reaches the adopter tree. Only files that declare the
-  # flag are gated; .md files without it are unaffected.
+  # flag are gated; .md files without it are unaffected. (Extended to
+  # management/tooling so a non-`true` tooling artifact fails closed, SR-01.)
   local md
   while IFS= read -r -d '' md; do
     if grep -q '^[[:space:]]*allowed_in_adopter_repos:' "$md" 2>/dev/null && \
@@ -1091,7 +1092,7 @@ _append_metadata_excludes() {
       rel="${md#"$FRAMEWORK_ROOT"/}"
       FRAMEWORK_EXCLUDE_PATTERNS+=("$rel")
     fi
-  done < <(find "$FRAMEWORK_ROOT/mddocs/scripts" -name '*.md' -print0 2>/dev/null)
+  done < <(find "$FRAMEWORK_ROOT/mddocs/scripts" "$FRAMEWORK_ROOT/mddocs/management/tooling" -name '*.md' -print0 2>/dev/null)
 }
 _append_metadata_excludes
 
@@ -1109,6 +1110,10 @@ _copy_framework_content_raw() {
   for p in "${FRAMEWORK_EXCLUDE_PATTERNS[@]}"; do
     tar_excludes+=(--exclude="$p")
   done
+  # SR-02 - the working-tree tar walk does not honor gitignore, so Python
+  # bytecode (gitignored on disk) could reach the adopter tree. Exclude it
+  # here; the manifest is built from this filtered copy, so it stays consistent.
+  tar_excludes+=(--exclude='*__pycache__*' --exclude='*.pyc')
   ( cd "$FRAMEWORK_ROOT" && tar -c "${tar_excludes[@]}" . ) | ( cd "$dest" && tar -x )
 }
 

@@ -246,7 +246,7 @@ Consequences recorded for implementation (not yet staged):
 
 1. `management/runbooks/` dissolves. Both the agentic-domain items and the
    harness self-maintenance items re-parent to a single procedures home,
-   `management/agentic/procedures/` (clear, concise, hard to mis-read). The
+   `management/agentic/procedures/` (clear, concise, hard to misread). The
    harness self-maintenance items are re-borne as agentic procedures with an
    inline manual fallback.
 2. `projects/<context>/runbooks/` is added to the project-plane context grammar

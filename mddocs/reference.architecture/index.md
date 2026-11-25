@@ -20,6 +20,7 @@ for the AgenticCore framework.
 | [Configure MCP Servers](configure-mcp.md) | One-time MCP setup - cache warm, config, verify |
 | [Sign-Off Package](../management/delivery/sign-off-package.md) | HIL approval gate - diff, verdicts, open findings, blockers |
 | [Adopter Reconciliation Model](adopter-reconciliation.md) | Change propagation, ADR namespace, upgrade cadence |
+| [Adopter Upgrade Runbook](adopter-upgrade.md) | Re-export a newer baseline into a fresh copy and reconcile |
 
 ## Guide: Scripts
 

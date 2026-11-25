@@ -92,6 +92,7 @@
   - [Configure MCP Servers](reference.architecture/configure-mcp.md)
   - [Shared Agent Context](management/agentic/context/shared-context.md)
   - [Adopter Reconciliation](reference.architecture/adopter-reconciliation.md)
+  - [Adopter Upgrade](reference.architecture/adopter-upgrade.md)
 
 ---
 

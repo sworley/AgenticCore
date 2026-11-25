@@ -1109,6 +1109,10 @@ _copy_framework_content_raw() {
   for p in "${FRAMEWORK_EXCLUDE_PATTERNS[@]}"; do
     tar_excludes+=(--exclude="$p")
   done
+  # SR-02 - the working-tree tar walk does not honor gitignore, so Python
+  # bytecode (gitignored on disk) could reach the adopter tree. Exclude it
+  # here; the manifest is built from this filtered copy, so it stays consistent.
+  tar_excludes+=(--exclude='*__pycache__*' --exclude='*.pyc')
   ( cd "$FRAMEWORK_ROOT" && tar -c "${tar_excludes[@]}" . ) | ( cd "$dest" && tar -x )
 }
 

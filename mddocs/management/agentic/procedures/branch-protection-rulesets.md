@@ -34,7 +34,7 @@ the enforcement layer.
 - `gh` authenticated (see the credential store; the PAT lives in `pass`).
 
 ```sh
-export GH_TOKEN="$(pass show github.com/<owner>/AgenticCore/pat | head -1)"
+export GH_TOKEN="$(pass show github.com/<owner>/<repo>/pat | head -1)"
 ```
 
 ---

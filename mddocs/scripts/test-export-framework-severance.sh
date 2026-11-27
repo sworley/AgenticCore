@@ -867,6 +867,115 @@ else
 fi
 
 # ---------------------------------------------------------------------------
+# Group 11 - D-7.4 idempotence: re-export against an already-adopted target
+# is a no-op that preserves the baseline, versioning, and commit count.
+# Proves the anti re-export / dual-export / dirty re-home guard is real.
+# ---------------------------------------------------------------------------
+echo ""
+echo "-- Group 11: D-7.4 idempotence (re-export no-op, versioning preserved) --"
+
+# (11a) Flow A already-initialized target re-runs as a no-op.
+FA_TARGET="$(eff "$FLOWA_DIR")"
+FA_VER_BEFORE="$WORKDIR/fa_ver_before.txt"
+cp "$FA_TARGET/framework-version.txt" "$FA_VER_BEFORE" 2>/dev/null || true
+FA_COMMITS_BEFORE="$(git -C "$FA_TARGET" log --oneline 2>/dev/null | wc -l | tr -d ' ')"
+fa_rerun_rc=0
+bash "$EXPORT_SCRIPT" --target "$FLOWA_DIR" --slug ACME --yes > "$WORKDIR/flowA_rerun.out" 2>&1 || fa_rerun_rc=$?
+if [ "$fa_rerun_rc" -eq 0 ] \
+   && grep -q 'no-op (D-7.4 idempotence)' "$WORKDIR/flowA_rerun.out" \
+   && [ -f "$FA_VER_BEFORE" ] \
+   && cmp -s "$FA_VER_BEFORE" "$FA_TARGET/framework-version.txt" \
+   && [ "$(git -C "$FA_TARGET" log --oneline 2>/dev/null | wc -l | tr -d ' ')" = "$FA_COMMITS_BEFORE" ] \
+   && [ -z "$(git -C "$FA_TARGET" remote 2>/dev/null)" ]; then
+  pass_case "Flow A re-export: no-op (D-7.4), framework-version.txt byte-identical, commit count unchanged, no remote"
+else
+  fail_case "Flow A re-export: no-op (D-7.4), framework-version.txt byte-identical, commit count unchanged, no remote"
+  sed 's/^/  /' "$WORKDIR/flowA_rerun.out"
+fi
+
+# (11b) Flow B already-re-homed target re-runs as a no-op.
+CB_TARGET="$(eff "$CUST_DIR")"
+CB_VER_BEFORE="$WORKDIR/cust_ver_before.txt"
+cp "$CB_TARGET/framework-version.txt" "$CB_VER_BEFORE" 2>/dev/null || true
+CB_COMMITS_BEFORE="$(git -C "$CB_TARGET" log --oneline 2>/dev/null | wc -l | tr -d ' ')"
+cb_rerun_rc=0
+bash "$EXPORT_SCRIPT" --target "$CUST_DIR" --slug ACME --yes > "$WORKDIR/cust_rerun.out" 2>&1 || cb_rerun_rc=$?
+if [ "$cb_rerun_rc" -eq 0 ] \
+   && grep -q 'no-op (D-7.4 idempotence)' "$WORKDIR/cust_rerun.out" \
+   && [ -f "$CB_VER_BEFORE" ] \
+   && cmp -s "$CB_VER_BEFORE" "$CB_TARGET/framework-version.txt" \
+   && [ "$(git -C "$CB_TARGET" log --oneline 2>/dev/null | wc -l | tr -d ' ')" = "$CB_COMMITS_BEFORE" ] \
+   && [ -f "$CB_TARGET/src/app.py" ] \
+   && [ -z "$(git -C "$CB_TARGET" remote 2>/dev/null)" ]; then
+  pass_case "Flow B re-export: no-op (D-7.4), framework-version.txt byte-identical, commit count unchanged, customer files preserved"
+else
+  fail_case "Flow B re-export: no-op (D-7.4), framework-version.txt byte-identical, commit count unchanged, customer files preserved"
+  sed 's/^/  /' "$WORKDIR/cust_rerun.out"
+fi
+
+# ---------------------------------------------------------------------------
+# Group 12 - Fail-closed adoption surface: the exported tree ships exactly the
+# artifacts declaring `allowed_in_adopter_repos: true`, and every non-allowlisted
+# artifact (sourced FRAMEWORK_EXCLUDE_PATTERNS) is absent. Proves AC-0014's
+# fail-closed gate (ADR-0015 D-9) is real, not vacuous.
+# ---------------------------------------------------------------------------
+echo ""
+echo "-- Group 12: fail-closed adoption surface (allowlist set) --"
+
+EXPORTED_TREE="$(eff "$FLOWA_DIR")"
+
+# (12a) every exclude-only (no seed) non-allowlisted artifact is absent from
+# the adopted tree. Uses SOURCED_EXCLUDE_ONLY_PATTERNS (SF-128's derivation),
+# which already excludes seed paths and the framework's own .git dir.
+absent_ok=1
+absent_hits=""
+for _p in "${SOURCED_EXCLUDE_ONLY_PATTERNS[@]}"; do
+  if [ -e "$EXPORTED_TREE/$_p" ]; then
+    absent_ok=0
+    absent_hits="$absent_hits $_p"
+  fi
+done
+if [ "$absent_ok" -eq 1 ] && [ "${#SOURCED_EXCLUDE_ONLY_PATTERNS[@]}" -gt 0 ]; then
+  pass_case "Fail-closed: all ${#SOURCED_EXCLUDE_ONLY_PATTERNS[@]} non-allowlisted (no-seed) artifacts absent from adopted tree"
+else
+  fail_case "Fail-closed: non-allowlisted (no-seed) artifacts absent from adopted tree (present:${absent_hits:-none-sourced})"
+fi
+
+# (12b) every `allowed_in_adopter_repos: true` script/tool (exec + .meta.yaml)
+# ships, so the check is not vacuous and did not over-exclude.
+true_meta_count=0
+missing_true=""
+while IFS= read -r -d '' meta; do
+  if grep -q '^[[:space:]]*allowed_in_adopter_repos:[[:space:]]*true[[:space:]]*$' "$meta" 2>/dev/null; then
+    rel="${meta#"$FRAMEWORK_ROOT"/}"
+    exec="${rel%.meta.yaml}"
+    true_meta_count=$((true_meta_count + 1))
+    if [ ! -e "$EXPORTED_TREE/$exec" ] || [ ! -e "$EXPORTED_TREE/$rel" ]; then
+      missing_true="$missing_true $rel"
+    fi
+  fi
+done < <(find "$FRAMEWORK_ROOT/mddocs/scripts" "$FRAMEWORK_ROOT/mddocs/management/tooling" -name '*.meta.yaml' -print0 2>/dev/null)
+if [ "$true_meta_count" -gt 0 ] && [ -z "$missing_true" ]; then
+  pass_case "Fail-closed: all $true_meta_count allowlisted (true) artifacts present (exec + .meta.yaml) in adopted tree"
+else
+  fail_case "Fail-closed: allowlisted artifacts present in adopted tree (count=$true_meta_count, missing:${missing_true:-none})"
+fi
+
+# (12c) explicit release-noted bootstrap/adopt exclusions are absent (signal).
+for _p in \
+  mddocs/scripts/setup/adopt.sh \
+  mddocs/scripts/setup/adopt.sh.meta.yaml \
+  mddocs/scripts/setup/adopt.md \
+  mddocs/scripts/export-framework.sh \
+  mddocs/scripts/export-framework.sh.meta.yaml; do
+  if [ ! -e "$EXPORTED_TREE/$_p" ]; then
+    pass_case "Excluded (absent) in adopted tree: $_p"
+  else
+    fail_case "Excluded (absent) in adopted tree: $_p (PRESENT in adopted tree!)"
+  fi
+done
+
+# ---------------------------------------------------------------------------
 # Summary
 # ---------------------------------------------------------------------------
 echo ""

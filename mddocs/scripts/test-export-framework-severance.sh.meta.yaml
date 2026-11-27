@@ -12,3 +12,4 @@ related:
   paths:
     - export-framework.sh
     - ../adr/adr-0015-framework-distribution-adoption-model.md
+    - ../reference.architecture/adopter-upgrade.md

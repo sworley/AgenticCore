@@ -31,6 +31,10 @@ conformance:
       `redirect`; this surfaces circular or primary redirects. Home/category and
       redirect-stub checks flip from advisory (non-blocking) to blocking once the
       AC-0013 physical-conformance stages 3-6 and D7/D8 land.
+    - Metadata completeness: every `.meta.yaml` companion must carry all
+      required fields, reference an existing executable, and have resolvable
+      `related.paths` - so artifact metadata is maintained as the artifact
+      changes (the durable metadata-discipline gate).
 
 Usage (from the repository root, or anywhere):
     python3 mddocs/scripts/reconcile-metadata-registry.py            # print report
@@ -547,6 +551,90 @@ def reconcile_supersession_ledger(adrs):
     return drift
 
 
+# Metadata fields every `.meta.yaml` companion must carry (metadata-standard
+# sections 3/4). A companion missing any of these is incomplete; the completeness
+# check is BLOCKING so a newly-added or lightly-maintained artifact cannot ship
+# without a fully-populated authoritative record.
+REQUIRED_META_FIELDS = (
+    "id", "title", "document_type", "status", "domain", "category",
+    "process", "owner",
+)
+
+
+def _meta_related_paths(meta_path):
+    """Extract the `related.paths` list from a .meta.yaml.
+
+    parse_meta() only reads top-level `key: value` scalars, so the indented
+    `- ` items under `related:` need their own scan. Returns the list of path
+    strings (bare, unquoted).
+    """
+    paths = []
+    try:
+        lines = meta_path.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return paths
+    in_related = False
+    for line in lines:
+        st = line.strip()
+        if st.startswith("related:"):
+            in_related = True
+            continue
+        if in_related:
+            if st.startswith("paths:"):
+                continue
+            if st.startswith("- "):
+                p = st[2:].strip().strip("'\"")
+                if p:
+                    paths.append(p)
+            elif st and not st.startswith(("-", "paths:", "#")):
+                # Next top-level key reached - stop collecting.
+                in_related = False
+    return paths
+
+
+def check_metadata_completeness():
+    """BLOCKING: every `.meta.yaml` companion must be complete and internally
+    consistent.
+
+    Enforces three invariants so artifact metadata is maintained as the artifact
+    changes (the durable metadata-discipline gate):
+
+      1. all required fields (REQUIRED_META_FIELDS) are present and non-empty;
+      2. the referenced executable (path minus `.meta.yaml`) exists; and
+      3. every `related.paths` entry resolves to an existing file (external URLs
+         are skipped as they are not repo-relative paths).
+
+    Returns a list of drift messages; empty means fully conformant.
+    """
+    drift = []
+    for base_dir, rel_base in ANNOTATION_ROOTS:
+        for meta_path in sorted(base_dir.rglob("*.meta.yaml")):
+            rel = meta_path.relative_to(rel_base)
+            exec_path = str(rel)[: -len(".meta.yaml")]
+            meta = parse_meta(meta_path)
+            # 1. required fields
+            for f in REQUIRED_META_FIELDS:
+                if not str(meta.get(f, "")).strip():
+                    drift.append(
+                        f"[COMPLETENESS] {meta_path.relative_to(REPO)} missing required metadata field '{f}'"
+                    )
+            # 2. referenced executable exists
+            if not (rel_base / exec_path).exists():
+                drift.append(
+                    f"[COMPLETENESS] {meta_path.relative_to(REPO)} references executable "
+                    f"'{exec_path}' which does not exist"
+                )
+            # 3. related paths resolve
+            for p in _meta_related_paths(meta_path):
+                if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*://", p):
+                    continue  # external URL - not a repo-relative path
+                if not (meta_path.parent / p).resolve().exists():
+                    drift.append(
+                        f"[COMPLETENESS] {meta_path.relative_to(REPO)} related path '{p}' does not resolve"
+                    )
+    return drift
+
+
 def main():
     check_only = "--check" in sys.argv[1:]
     sh_canonical = scan_canonical()
@@ -650,6 +738,12 @@ def main():
 
     # --- Supersession ledger reconciliation (ADR-0035) ---
     drift.extend(reconcile_supersession_ledger(adrs))
+
+    # --- Metadata completeness (blocking) ---
+    # Every .meta.yaml companion must carry all required fields, reference an
+    # existing executable, and have resolvable `related.paths`. This is the
+    # durable gate that keeps artifact metadata maintained as artifacts change.
+    drift.extend(check_metadata_completeness())
 
     # ---- report ----
     print("== Metadata Registry Reconcile ==")

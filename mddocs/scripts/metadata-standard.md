@@ -163,11 +163,16 @@ The complete set of `document_type` values the harness governs, covering both
 ### Add a new script
 1. Create the script under the appropriate `mddocs/scripts/` subdirectory.
 2. Allocate the next `SH-NNNN`.
-3. Add a `.meta.yaml` companion (or frontmatter if natively supported).
+3. Add a `.meta.yaml` companion (or frontmatter if natively supported) with all
+   required fields (`id`, `title`, `document_type`, `status`, `domain`,
+   `category`, `process`, `owner`) and resolvable `related.paths`.
 4. Add an `SDX`/index entry if it belongs to a script group.
 5. Reference it from the relevant runbook / `SUMMARY.md` if applicable.
 6. Run `python3 mddocs/scripts/reconcile-metadata-registry.py --check` (SH-0028) to
-   confirm the registry table (§8) matches the new metadata.
+   confirm the registry table (§8) matches the new metadata. This is blocking on
+   any missing field, missing referenced executable, or unresolved `related.paths`
+   (the completeness gate), so a new artifact cannot ship without a complete,
+   current authoritative record.
 
 ### Reclassify a script (D3 - case-by-case)
 1. Identify the change (class, `owner`, `category`, `allowed_in_adopter_repos`,

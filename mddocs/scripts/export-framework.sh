@@ -1057,6 +1057,16 @@ FRAMEWORK_EXCLUDE_PATTERNS=(
   # empty scaffold by seed_adopter_state() below - see
   # mddocs/scripts/seed/mddocs/backlog.md.
   "mddocs/backlog.md"
+  # The framework's CI is FRAMEWORK-ONLY and must not carry forward to
+  # adopter repos. The workflow invokes framework-only tooling that is
+  # deliberately excluded from the adopt surface (export-framework.sh,
+  # check-privacy.sh, etc.), so shipping it would make an adopter's own
+  # GitHub Actions fail on the missing scripts. Exclude the whole
+  # .github/workflows/ directory (covers current and future workflow files);
+  # .github/CODEOWNERS and PULL_REQUEST_TEMPLATE.md are intentionally retained
+  # as useful adopter contribution conventions. Excluded-only, not seeded:
+  # an adopter has no framework CI to replace it with.
+  ".github/workflows"
 )
 
 # AC-0014 (Stage 2) - metadata-driven shipping, fail-closed. An artifact is part

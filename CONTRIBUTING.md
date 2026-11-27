@@ -46,6 +46,15 @@ on how you came to the framework:
   identity/numeric id. Use portable placeholders (`<owner>`, `<repo>`,
   `<OWNER_ID>`, `${HOME}`) so the harness stays deployer-neutral. CI runs
   `mddocs/scripts/check-privacy.sh` to enforce this.
+- **Metadata discipline.** Any change to a governed artifact (a script with a
+  `.meta.yaml` companion, or a classified doc with YAML frontmatter) must
+  maintain its metadata alongside the change: update `title`/`process`/`related`
+  as the artifact's role or relationships change, and update the `metadata-standard.md`
+  §8 registry when its classification (`allowed_in_adopter_repos`, class, owner,
+  `enforces`) changes. CI runs `mddocs/scripts/reconcile-metadata-registry.py --check`
+  (SH-0028), which is blocking on drift and on any missing field, missing
+  referenced executable, or unresolved `related.paths` - so metadata cannot
+  silently fall out of sync with the artifact.
 
 ## Main Branch Protection
 

@@ -88,9 +88,15 @@ echo "<TARGET_TAG>" > framework-version.txt
 ## Known limitations
 
 - Automated validation (CI `verify`, the export/severing harnesses) covers the
-  **adoption surface** (Flow A/B export, re-home, target handling). The cross-version
-  adopter "upgrade + reconcile" step is a **manual, adopter-scheduled process** by
-  design (ADR-0015) and is not exercised by an automated harness.
+  **adoption surface** (Flow A/B export, re-home, target handling) and the
+  **re-export / idempotence guard** (D-7.4): re-running `export-framework.sh`
+  against an already-adopted target is a fail-closed **no-op** that preserves the
+  baseline, `framework-version.txt`, and commit count, and the fail-closed
+  allowlist set ships exactly the `allowed_in_adopter_repos: true` artifacts. The
+  **cross-version adopter "upgrade + reconcile" step itself** is a **manual,
+  adopter-scheduled process** by design (ADR-0015) and is not exercised by an
+  automated harness - an adopter reconciles the delta between their baseline and
+  the new release in a fresh working copy.
 
 ---
 

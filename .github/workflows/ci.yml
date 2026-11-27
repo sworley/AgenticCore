@@ -34,3 +34,11 @@ jobs:
         run: |
           bash mddocs/scripts/test-adopt-target-handling.sh --skip-e2e
           bash mddocs/scripts/test-provision-bench-substitution.sh --skip-e2e
+
+      - name: Configure git identity (for export/severance harness)
+        run: |
+          git config --global user.name "AgenticCore CI"
+          git config --global user.email "ci@agenticcore.invalid"
+
+      - name: Run export/severance harness (D-7.3/D-7.4/D-7.5 + fail-closed surface)
+        run: bash mddocs/scripts/test-export-framework-severance.sh
